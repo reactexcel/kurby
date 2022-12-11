@@ -1,0 +1,15 @@
+html, body { height: 100%; font-family: 'FilsonPro'; }
+body { margin: 0;  }
+
+select {
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    padding: 6px;
+    border-right: 6px solid transparent;
+}
+
+.container{
+    display: flex;
+    padding: 32px;
+}

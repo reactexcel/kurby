@@ -1,0 +1,11 @@
+.nearbyIcon{
+    background-color: #fff;
+    border-radius: 50%;
+    padding: 7px;
+    border: 1px solid rgba(0,0,0,.1);
+    margin-right: 8px;
+}
+.nearbyDistanceBox{
+    display: flex;
+    margin-top: 12px;
+}
