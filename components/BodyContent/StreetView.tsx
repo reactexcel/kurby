@@ -29,6 +29,6 @@ export default React.memo(function StreetView() {
   
   
   return (
-    <div style={{height:"200px", width:"200px", marginRight:"20px"}} ref={streetViewMap}>StreetView</div>
+    <div style={{height:"200px", width:"200px", minWidth:"200px", marginRight:"20px"}} ref={streetViewMap}>StreetView</div>
   )
 })
