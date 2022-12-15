@@ -8,6 +8,7 @@ import Script from "next/script";
 import {
   RecoilRoot,
 } from "recoil";
+import GLOBAL_SETTINGS from "../globals/GLOBAL_SETTINGS";
 
 /**
  * Home
@@ -19,7 +20,7 @@ export default function Home() {
       <RecoilRoot>
         <Script
           strategy="beforeInteractive"
-          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-j4y1h-28ZVSr_YyTfPrOsQ1YxOVMygY&libraries=places"
+          src={`https://maps.googleapis.com/maps/api/js?key=${GLOBAL_SETTINGS.GOOGLE_MAPS_API_KEY}&libraries=places`}
         />
         <ThemeProvider theme={theme}>
           <Navbar />
