@@ -1,4 +1,4 @@
-import { Box, Skeleton, Typography } from "@mui/material";
+import { Box, IconButton, Skeleton, Tooltip, Typography } from "@mui/material";
 import styles from "./BodyContent.module.css";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
@@ -7,6 +7,7 @@ import { useRecoilState } from "recoil";
 import filterContext from "../../context/filterContext";
 import StreetView from "./StreetView";
 import Nearby from "./Nearby/Nearby";
+import InfoIcon from '@mui/icons-material/Info';
 /**
  * FilterResults
  * @description: Displays right side of the home page. Will show home information and nearby places
@@ -50,10 +51,22 @@ export default function FilterResults() {
     getOpenAiData();
   }, [filterVal.address]);
 
+  const AIWarningToolTip = ()=>(
+    <Tooltip title="This is a placeholder for a disclaimer about how AI generated information is never 100% accurate and that this is just a starting point for additional research">
+    <IconButton>
+      <InfoIcon sx={{ fontSize: 20 }}/>
+    </IconButton>
+  </Tooltip>
+  )
+
   const Flags = ({color, flagsArr}: {color:string, flagsArr: any[]}) => {
     const Title = ()=> (
+      
     <Box style={{marginTop:"10px"}}>
-      <Typography variant="subtitle2">{color} Flags</Typography>
+      <Typography variant="subtitle2">{color} Flags
+      <AIWarningToolTip />
+      </Typography>
+    
     </Box>
   )
     
@@ -67,6 +80,7 @@ export default function FilterResults() {
     return (
       <>
         <Title />
+        
         <Box className={styles.box}>
             <ul>
               {flagsArr.length &&
@@ -141,6 +155,7 @@ export default function FilterResults() {
                         variant="subtitle2"
                       >
                         Explain it like a local:
+                        <AIWarningToolTip />
                       </Typography>
                       {loading ? (
                         <ParagraphSkeleton />
