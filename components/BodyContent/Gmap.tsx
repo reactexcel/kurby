@@ -28,7 +28,7 @@ const initialCenter = { lat: 38.9987208, lng: -77.2538699 };
 function MyComponent() {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: GLOBAL_SETTINGS.GOOGLE_MAPS_API_KEY,
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
   });
 
   const [map, setMap] = React.useState(null) as any;
