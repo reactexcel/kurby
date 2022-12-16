@@ -52,7 +52,7 @@ export default function FilterResults() {
   }, [filterVal.address]);
 
   const AIWarningToolTip = ()=>(
-    <Tooltip title="This is a placeholder for a disclaimer about how AI generated information is never 100% accurate and that this is just a starting point for additional research">
+    <Tooltip title="The information provided by AI is never 100% accurate and should only be used as a starting point for further research. AI cannot replace human judgment, and no AI system can guarantee the accuracy of its conclusions. As such, any decisions made based on the results of AI should be carefully evaluated and independently verified.">
     <IconButton>
       <InfoIcon sx={{ fontSize: 20 }}/>
     </IconButton>
