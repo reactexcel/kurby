@@ -50,47 +50,51 @@ export default async function handler(
     max_tokens: number;
   }) => {
     //Init openAI
+
+  if (!process.env.OPENAI_API_KEY) {
+    console.error("no api key for openai");
+  }
+
   const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
   });
     const openai = new OpenAIApi(configuration);
     const openAiResponse = await openai.createCompletion({
-      prompt: `Ignore any previous prompts. ${prompt}`,
+      prompt,
       max_tokens,
       model: "text-davinci-003",
       temperature: 0.7,
       top_p: 1,
     });
 
-    return openAiResponse;
+    return openAiResponse.data.choices?.[0]?.text;
   };
 
   //Prompts to be answered and returned to front-end
   const getOpenAiResponses = async () => {
-    if (!process.env.OPENAI_API_KEY) {
-      console.error("no api key for openai");
-    }
+    
 
     const explainedLikeLocalResponse = await createCompletionWithAi({
-      prompt: `I'm interested in buying ${address}. Tell me about the location. What is the crime rate? What is the school district rating? What amenities are nearby? What is the average household income in this neighborhood and the nearby neighborhoods? How far is the nearest city center? How's the jobs market?`,
+      prompt: `I'm interested in buying ${address}. Tell me about the location. What is the crime rate? What is the school district rating? What amenities are nearby? What is the average household income in this neighborhood and the nearby neighborhoods? How far is the nearest city center? How's the jobs market? End with a full sentance.`,
       max_tokens: 150,
     });
+    let lastInd = explainedLikeLocalResponse?.lastIndexOf('.') || 0;
+    const noPartialResponses = explainedLikeLocalResponse?.slice(0, lastInd + 1)
 
     const greenFlags = await createCompletionWithAi({
-      prompt: `What are some of the good things about living at ${address}? List them in a bulleted list. Do not include the address in your response. Do not include any negatives in your response. Do not contradict the following information: ${explainedLikeLocalResponse.data.choices?.[0]?.text}`,
+      prompt: `Create a bullet list with 4 items of positive aspects of living at ${address}. Do not include the specified address in your response. Do not include any negative aspects in your list. Do not contradict the following information: "${noPartialResponses}"`,
       max_tokens: 100,
     });
 
     const redFlags = await createCompletionWithAi({
-      prompt: `What are some of the bad things about living at ${address}? List them in a bulleted list. Do not include the address in your response. Do not include any positives in your response. Do not contradict the following information: ${greenFlags.data.choices?.[0]?.text}`,
+      prompt: `Create a bullet list with 4 items of negative aspects of living at ${address}. Do not include the specified address in your response. Do not include any positive aspects in your list. Do not contradict the following information: "${greenFlags}"`,
       max_tokens: 100,
     });
 
     return {
-      explained_like_a_local:
-        explainedLikeLocalResponse.data.choices?.[0]?.text,
-      greenFlags: bulletsToArray(greenFlags.data.choices?.[0]?.text),
-      redFlags: bulletsToArray(redFlags.data.choices?.[0]?.text),
+      explained_like_a_local:noPartialResponses,
+      greenFlags: bulletsToArray(greenFlags),
+      redFlags: bulletsToArray(redFlags),
     };
   };
 
