@@ -77,9 +77,9 @@ export default function Nearby() {
         next={fetchMoreData}
         hasMore={filterVal.nearbyPlaces.length - loadedNearbyPlaces.length !== 0}
         loader={<h4>Loading...</h4>}
-        height="580px"
+        height="56vh"
       >
-        {loadedNearbyPlaces.length &&
+        {
           loadedNearbyPlaces.map((place: any) => {
             return <NearbyPlaceCard key={`placecard_${place.place_id}`} place={place} />;
           })}

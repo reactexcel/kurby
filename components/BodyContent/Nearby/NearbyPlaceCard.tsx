@@ -19,7 +19,11 @@ import styles from "./NearbyPlace.module.css";
 //TODO Get distance info and render it
 
 export default function NearbyPlaceCard({ place }: any) {
-  const { name: placeName, vicinity, rating, totalRatings, photos, website, walking, biclycling, driving } = place;
+  const { name: placeName, vicinity, user_ratings_total, rating, photos, website, walking, biclycling, driving } = place;
+  
+  const formatPlaceType = (type: string) => {
+    return type && type.replaceAll('_', ' ');
+  }
 
   //Todo add to style sheet
   const resultsContentStyle = {
@@ -59,7 +63,7 @@ export default function NearbyPlaceCard({ place }: any) {
             {
               //* only show rating box, if the item has a rating
               rating && (
-                <Box style={{ display: "flex", justifyContent: "space-between" }}>
+                <Box style={{ display: "flex" }}>
                   <Rating
                     fillColor="#7ed321"
                     initialValue={rating}
@@ -67,12 +71,17 @@ export default function NearbyPlaceCard({ place }: any) {
                     allowFraction={true}
                     size={20}
                   />
-                  <Typography>({rating}/5)</Typography>
-                  <Typography>{totalRatings} reviews</Typography>
+                  <Typography style={{}}>({rating}/5)</Typography>
+                  <Typography style={{
+                    fontStyle: "italic",
+                    marginLeft: "8px"
+                  }}>{user_ratings_total} reviews</Typography>
                 </Box>
               )}
 
-            <ul>{place._type}</ul>
+            <ul style={{ paddingLeft: "18px", color: "#727272" }}>
+              <li>{formatPlaceType(place._type)}</li>
+            </ul>
           </Box>
         </Box>
         <Box
