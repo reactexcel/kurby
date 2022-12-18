@@ -107,7 +107,7 @@ export default function Filters() {
     } catch (error) {
 
       //TODO error handling - errors should be displayed to end user
-      console.error(error);
+      // console.error(error);
     }
   };
 

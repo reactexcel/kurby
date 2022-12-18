@@ -2,84 +2,87 @@ import { useRecoilState } from "recoil";
 import filterContext from "../../../context/filterContext";
 import NearbyPlaceCard from "./NearbyPlaceCard";
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import loadDirectionsApi from "./loadDirectionsApi";
 
+
+
+async function prepareLoadedPlaces(places: any[], currentCenter: {lat: number, lng: number} | null): Promise<any[]> {
+  if (!places) { return []}
+  const resolved = await Promise.all(places.map(async p => {
+    return {
+      ...p,
+      ...(await loadAdditionalData(p)),
+      ...(await loadDirections(p, currentCenter))
+    }
+  }))
+  console.log(resolved);
+  return resolved;
+}
+
+async function loadAdditionalData(place: any): Promise<{ website: string }> {
+  const service = new google.maps.places.PlacesService(document.createElement('div'));
+  // TODO: add reject handling
+  const rPromise = new Promise((resolve, reject) => {
+    service.getDetails({ placeId: place.place_id }, (r) => {
+      resolve(r);
+    });
+  });
+  const response: any = await rPromise;
+  return { website: response?.website };
+}
+
+async function loadDirections(place: any, origin: any): Promise<{walking: any, driving: any, biclycling: any}> {
+  return await loadDirectionsApi({
+    origin,
+    destination: {
+      lat: place.geometry.location.lat(),
+      lng: place.geometry.location.lng()
+    }
+  })
+}
+
+const PAGE_SIZE = 5;
 
 /**
  * Nearby
  * @description: Container for the nearby place cards. 
 */
 
-const PAGE_SIZE = 5;
-
-// Update the loadMore function to accept setFilterV as an argument
-export const loadMore = (filterVal: any, setFilterV: any) => {
-  console.log('load more..')
-  const diff = filterVal.nearbyPlaces.length - filterVal.loadedNearbyPlaces.length;
-  if (diff === 0) {
-    return;
-  }
-  const plus = diff < PAGE_SIZE ? diff : PAGE_SIZE;
-  // Use the setFilterV function to update the state
-  setFilterV((prev: any) => {
-    return {
-      ...prev,
-      loadedNearbyPlaces: filterVal.nearbyPlaces.slice(0, filterVal.loadedNearbyPlaces.length + plus)
-    }
-  });
-}
-
-
-const style = {
-  height: 30,
-  border: "1px solid green",
-  margin: 6,
-  padding: 8
-};
-
-// Pass setFilterV as an argument to the loadMore function
 export default function Nearby() {
-  const [filterVal, setFilterVal] = useRecoilState(filterContext);
-  const [firstCall, setfirstCall] = useState(true)
-  const [items, setItems] = useState(Array.from({length: 20}))
-
+  const [filterVal] = useRecoilState(filterContext);
+  const [loadedNearbyPlaces, setLoadedNearbyPlaces] = useState([])
   const fetchMoreData = () => {
-    // a fake async api call like which sends
-    // 20 more records in 1.5 secs
-    setTimeout(() => {
-      setItems(
-        items.concat(Array.from({ length: 20 }))
+    setTimeout(async () => {
+      const newPlaces = filterVal.nearbyPlaces.slice(loadedNearbyPlaces.length, loadedNearbyPlaces.length + PAGE_SIZE);
+      const updatedPlaces: any = await prepareLoadedPlaces(newPlaces, filterVal.mapCenter);
+      console.log(updatedPlaces);
+      console.log(loadedNearbyPlaces);
+      
+      console.log(loadedNearbyPlaces);
+      setLoadedNearbyPlaces(
+        loadedNearbyPlaces.concat(updatedPlaces)
       );
-    }, 1500);
+    }, 1000);
   };
-
-  useEffect(() => {
-    console.log('filterVal.nearbyPlaces.length', filterVal.nearbyPlaces.length)
-  }, [])
-
-  if(firstCall) {
-    // Pass setFilterV as an argument to loadMore
-    loadMore(filterVal, setFilterVal);
-    setfirstCall(!firstCall)
+  if(!loadedNearbyPlaces.length) {
+    fetchMoreData();
   }
+
   return (
     <>
       <InfiniteScroll
-        // style={{ height: "600px" }}
-        dataLength={items.length} //This is important field to render the next data
+        dataLength={loadedNearbyPlaces.length} //This is important field to render the next data
         // Pass setFilterV as an argument to loadMore
         next={fetchMoreData}
-        hasMore={true}
+        hasMore={filterVal.nearbyPlaces.length - loadedNearbyPlaces.length !== 0}
         loader={<h4>Loading...</h4>}
-        height="600px"
+        height="580px"
       >
-        {items.map((i, index)=>{
-          return (
-            <div style={style} key={index}>
-              div - #{index}
-            </div>
-          )
-        })}
+        {loadedNearbyPlaces.length &&
+          loadedNearbyPlaces.map((place: any) => {
+            return <NearbyPlaceCard key={`placecard_${place.place_id}`} place={place} />;
+          })}
       </InfiniteScroll>
 
     </>
