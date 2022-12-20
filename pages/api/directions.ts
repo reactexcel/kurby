@@ -9,6 +9,7 @@ export default async function handler(
 
     const createAPIUrl = (origin: any, destination: any, travelMode: string) => {
         const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+        console.log("API KEY", API_KEY)
         const o = `${origin.lat},${origin.lng}`
         const d = `${destination.lat},${destination.lng}`
         return `https://maps.googleapis.com/maps/api/directions/json?origin=${o}&destination=${d}&mode=${travelMode.toLocaleLowerCase()}&key=${API_KEY}`;
@@ -20,6 +21,14 @@ export default async function handler(
           'Content-Type': 'application/json',
         },
       });
-    res.status(200).json(await r.json())
+    const directionResponse =await r.json();
+
+    //TODO map responses to error codes?
+    if(directionResponse.status !== "OK"){
+      res.status(500).send(directionResponse)
+    }else{
+
+      res.status(200).json(directionResponse)
+    }
 }
 

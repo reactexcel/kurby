@@ -34,6 +34,12 @@ export default function NearbyPlaceCard({ place }: any) {
     marginTop: "25px",
   };
 
+  const walkingDistanceText = (directionObj: {time: string})=>{
+    if(directionObj.time) return `${walking.time} min (${walking.distance} Miles)`
+   
+    return 'not found'
+  }
+
   return (
     <Box style={resultsContentStyle}>
       <Box style={{ display: "flex", justifyContent: "space-between" }}>
@@ -93,20 +99,20 @@ export default function NearbyPlaceCard({ place }: any) {
             padding: "12px",
           }}
         >
-          <Typography>1.6 Miles</Typography>
+          <Typography></Typography>
           <Divider />
 
           <Box className={styles.nearbyDistanceBox}>
             <PersonIcon className={styles.nearbyIcon} />
-            <Typography>{walking.time} min ({walking.distance} Miles)</Typography>
+            <Typography>{walkingDistanceText(walking)}</Typography>
           </Box>
           <Box className={styles.nearbyDistanceBox}>
             <CarIcon className={styles.nearbyIcon} />
-            <Typography>{driving.time} min ({driving.distance} Miles)</Typography>
+            <Typography>{walkingDistanceText(driving)}</Typography>
           </Box>
           <Box className={styles.nearbyDistanceBox}>
             <BicycleIcon className={styles.nearbyIcon} />
-            <Typography>{biclycling.time} min ({biclycling.distance} Miles)</Typography>
+            <Typography>{walkingDistanceText(biclycling)}</Typography>
           </Box>
         </Box>
       </Box>

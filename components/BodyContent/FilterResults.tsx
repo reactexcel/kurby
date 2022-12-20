@@ -20,7 +20,6 @@ export default function FilterResults() {
   const [redFlags, setRedFlags] = useState<any[]>([]);
   const [loading, isLoading] = useState(false);
 
-  //TODO should this be sent in via PROPs????
   const [filterVal] = useRecoilState(filterContext);
 
   const handleTabChange = () => setIsHomeTab(!isHomeTab);
@@ -42,7 +41,6 @@ export default function FilterResults() {
       const response = await request.json();
 
       setExplainedLikeAlocal(response.explained_like_a_local);
-      console.log("res", response);
       setGreenFlags(response.greenFlags);
       setRedFlags(response.redFlags);
       isLoading(false);

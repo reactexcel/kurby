@@ -2,13 +2,13 @@ import { useRecoilState } from "recoil";
 import filterContext from "../../../context/filterContext";
 import NearbyPlaceCard from "./NearbyPlaceCard";
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import loadDirectionsApi from "./loadDirectionsApi";
 
 
 
 async function prepareLoadedPlaces(places: any[], currentCenter: {lat: number, lng: number} | null): Promise<any[]> {
-  if (!places) { return []}
+  if (!places || !places.length) { return []}
   const resolved = await Promise.all(places.map(async p => {
     return {
       ...p,
@@ -16,7 +16,7 @@ async function prepareLoadedPlaces(places: any[], currentCenter: {lat: number, l
       ...(await loadDirections(p, currentCenter))
     }
   }))
-  console.log(resolved);
+  console.log({resolved});
   return resolved;
 }
 
@@ -65,6 +65,11 @@ export default function Nearby() {
   if(!loadedNearbyPlaces.length) {
     fetchMoreData();
   }
+
+  useEffect(() => {
+    setLoadedNearbyPlaces([])
+  }, [filterVal.nearbyPlaces])
+  
 
   return (
     <>
