@@ -7,6 +7,8 @@ import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { Rating } from "react-simple-star-rating";
 import { Divider } from "@mui/material";
 import PersonIcon from "../../../public/images/person.svg";
+import BicycleIcon from "../../../public/images/bicycle.svg";
+import CarIcon from "../../../public/images/car.svg";
 import styles from "./NearbyPlace.module.css";
 
 /**
@@ -17,8 +19,12 @@ import styles from "./NearbyPlace.module.css";
 //TODO Get distance info and render it
 
 export default function NearbyPlaceCard({ place }: any) {
-  const { name: placeName, vicinity, rating, totalRatings, photos } = place;
+  const { name: placeName, vicinity, user_ratings_total, rating, photos, website, walking, biclycling, driving } = place;
   
+  const formatPlaceType = (type: string) => {
+    return type && type.replaceAll('_', ' ');
+  }
+
   //Todo add to style sheet
   const resultsContentStyle = {
     padding: "20px",
@@ -46,26 +52,36 @@ export default function NearbyPlaceCard({ place }: any) {
             height={200}
           />
           <Box>
-            <Typography variant="h6">{placeName}</Typography>
+            {website ?
+              <Typography variant="h6">
+                <a href={website} target="_blank">{placeName}</a>
+              </Typography> :
+              <Typography variant="h6">{placeName}</Typography>
+            }
             <Typography>{vicinity}</Typography>
 
             {
-            //* only show rating box, if the item has a rating
-            rating && (
-              <Box style={{ display: "flex", justifyContent: "space-between" }}>
-                <Rating
-                  fillColor="#7ed321"
-                  initialValue={rating}
-                  readonly={true}
-                  allowFraction={true}
-                  size={20}
-                />
-                <Typography>({rating}/5)</Typography>
-                <Typography>{totalRatings} reviews</Typography>
-              </Box>
-            )}
+              //* only show rating box, if the item has a rating
+              rating && (
+                <Box style={{ display: "flex" }}>
+                  <Rating
+                    fillColor="#7ed321"
+                    initialValue={rating}
+                    readonly={true}
+                    allowFraction={true}
+                    size={20}
+                  />
+                  <Typography style={{}}>({rating}/5)</Typography>
+                  <Typography style={{
+                    fontStyle: "italic",
+                    marginLeft: "8px"
+                  }}>{user_ratings_total} reviews</Typography>
+                </Box>
+              )}
 
-            <ul>{place._type}</ul>
+            <ul style={{ paddingLeft: "18px", color: "#727272" }}>
+              <li>{formatPlaceType(place._type)}</li>
+            </ul>
           </Box>
         </Box>
         <Box
@@ -82,15 +98,15 @@ export default function NearbyPlaceCard({ place }: any) {
 
           <Box className={styles.nearbyDistanceBox}>
             <PersonIcon className={styles.nearbyIcon} />
-            <Typography>30 min (1.5 Miles)</Typography>
+            <Typography>{walking.time} min ({walking.distance} Miles)</Typography>
           </Box>
           <Box className={styles.nearbyDistanceBox}>
-            <PersonIcon className={styles.nearbyIcon} />
-            <Typography>5 min (1.6 Miles)</Typography>
+            <CarIcon className={styles.nearbyIcon} />
+            <Typography>{driving.time} min ({driving.distance} Miles)</Typography>
           </Box>
           <Box className={styles.nearbyDistanceBox}>
-            <PersonIcon className={styles.nearbyIcon} />
-            <Typography>8 min (1.5 Miles)</Typography>
+            <BicycleIcon className={styles.nearbyIcon} />
+            <Typography>{biclycling.time} min ({biclycling.distance} Miles)</Typography>
           </Box>
         </Box>
       </Box>

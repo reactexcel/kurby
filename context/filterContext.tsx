@@ -16,6 +16,7 @@ interface FilterContext {
         radius: any | null,
         address: string | null,
         nearbyPlaces: any[],
+        loadedNearbyPlaces: [],
         selectedPlace: any | null,
         mapCenter: {lat: number, lng: number} | null
     }
@@ -28,6 +29,7 @@ const filterContext: FilterContext  = {
         radius: null,
         address: null,
         nearbyPlaces: [],
+        loadedNearbyPlaces: [],
         selectedPlace: null,
         mapCenter: null
     }, // default value (aka initial value)

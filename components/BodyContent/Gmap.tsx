@@ -16,7 +16,7 @@ import GLOBAL_SETTINGS from "../../globals/GLOBAL_SETTINGS";
 //TODO add to stylesheet
 const googleMapContainerStyle: React.CSSProperties = {
   width: "100%",
-  height: "65vh",
+  height: "62vh",
   position: "relative",
   overflow: "hidden",
 };
