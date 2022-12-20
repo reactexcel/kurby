@@ -95,6 +95,7 @@ export default function Filters() {
       }
       const nearbyLocations = await searchNearbyApi(searchNearbyPayload)
 
+      console.log('nearbyLocations', nearbyLocations)
       setFilterVal((prevVal: any) => {
         //TODO save old nearby locations to prevent repeat requests
 
@@ -119,7 +120,7 @@ export default function Filters() {
 
     const getNearbyState = async () => {
       if (!filterVal.mapCenter) return;
-
+      console.log("getting nearby data...", {filterVal})
       //* Retreive all of the nearby places
       await getNearby({
         lat: filterVal.mapCenter.lat,

@@ -38,10 +38,11 @@ export default async ({request, typeOfPlace}: searchNearbyParams) => {
                   _type: reqType,
                 };
               });
+              console.log('withType',withType)
               resolve(withType);
             } else {
               console.error("error getting nearby places", status);
-              reject(status);
+              resolve([]);
             }
           }
         );
@@ -49,6 +50,7 @@ export default async ({request, typeOfPlace}: searchNearbyParams) => {
 
     let typesToSearch = typeOfPlace.length ? typeOfPlace : PLACE_TYPES;
 
+    console.log('types to search', typesToSearch);
     let allResults: any = [];
     for (const searchType of typesToSearch) {
       //* setup place request payload
@@ -58,6 +60,7 @@ export default async ({request, typeOfPlace}: searchNearbyParams) => {
         type: searchType.toLowerCase().replace(" ", "_"),
       };
 
+      console.log('req to nearby', request)
       const placeResults: any = await getNearbyPlace(request);
 
       allResults.push(...placeResults);
