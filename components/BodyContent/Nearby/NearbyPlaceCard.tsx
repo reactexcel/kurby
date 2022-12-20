@@ -34,8 +34,8 @@ export default function NearbyPlaceCard({ place }: any) {
     marginTop: "25px",
   };
 
-  const walkingDistanceText = (directionObj: {time: string})=>{
-    if(directionObj.time) return `${walking.time} min (${walking.distance} Miles)`
+  const distanceText = (directionObj: {time: string, distance: string})=>{
+    if(directionObj.time) return `${directionObj.time} min (${directionObj.distance} Miles)`
    
     return 'not found'
   }
@@ -104,15 +104,15 @@ export default function NearbyPlaceCard({ place }: any) {
 
           <Box className={styles.nearbyDistanceBox}>
             <PersonIcon className={styles.nearbyIcon} />
-            <Typography>{walkingDistanceText(walking)}</Typography>
+            <Typography>{distanceText(walking)}</Typography>
           </Box>
           <Box className={styles.nearbyDistanceBox}>
             <CarIcon className={styles.nearbyIcon} />
-            <Typography>{walkingDistanceText(driving)}</Typography>
+            <Typography>{distanceText(driving)}</Typography>
           </Box>
           <Box className={styles.nearbyDistanceBox}>
             <BicycleIcon className={styles.nearbyIcon} />
-            <Typography>{walkingDistanceText(biclycling)}</Typography>
+            <Typography>{distanceText(biclycling)}</Typography>
           </Box>
         </Box>
       </Box>

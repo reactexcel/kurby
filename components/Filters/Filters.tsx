@@ -120,7 +120,6 @@ export default function Filters() {
 
     const getNearbyState = async () => {
       if (!filterVal.mapCenter) return;
-      console.log("getting nearby data...", {filterVal})
       //* Retreive all of the nearby places
       await getNearby({
         lat: filterVal.mapCenter.lat,

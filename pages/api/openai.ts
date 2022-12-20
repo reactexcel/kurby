@@ -99,7 +99,6 @@ export default async function handler(
   };
 
   const openAiResponses = await getOpenAiResponses();
-  console.log("response", openAiResponses);
 
   res.status(200).json(openAiResponses);
 }

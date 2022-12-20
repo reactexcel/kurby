@@ -9,14 +9,13 @@ import loadDirectionsApi from "./loadDirectionsApi";
 
 async function prepareLoadedPlaces(places: any[], currentCenter: {lat: number, lng: number} | null): Promise<any[]> {
   if (!places || !places.length) { return []}
-  const resolved = await Promise.all(places.map(async p => {
+  const resolved = await Promise.all(places.map(async place => {
     return {
-      ...p,
-      ...(await loadAdditionalData(p)),
-      ...(await loadDirections(p, currentCenter))
+      ...place,
+      ...(await loadAdditionalData(place)),
+      ...(await loadDirections(place, currentCenter))
     }
   }))
-  console.log({resolved});
   return resolved;
 }
 
@@ -24,8 +23,8 @@ async function loadAdditionalData(place: any): Promise<{ website: string }> {
   const service = new google.maps.places.PlacesService(document.createElement('div'));
   // TODO: add reject handling
   const rPromise = new Promise((resolve, reject) => {
-    service.getDetails({ placeId: place.place_id }, (r) => {
-      resolve(r);
+    service.getDetails({ placeId: place.place_id }, (resp) => {
+      resolve(resp);
     });
   });
   const response: any = await rPromise;
@@ -62,6 +61,8 @@ export default function Nearby() {
       );
     }, 1000);
   };
+
+  //TODO verify that this doesn't run fetchMoreData if there is no places
   if(!loadedNearbyPlaces.length) {
     fetchMoreData();
   }

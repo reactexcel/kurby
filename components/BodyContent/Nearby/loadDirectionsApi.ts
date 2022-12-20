@@ -7,7 +7,6 @@ export default async (request: {origin: any, destination: any}) => {
     
     const getLegs = (r: any) => {
       // if there was an error in the api then make this var false so components show different message 
-      console.log('r', r)
       if(!r || r.status != "OK") return false;
 
       return {
@@ -33,7 +32,6 @@ export default async (request: {origin: any, destination: any}) => {
       driving: getLegs(await getDirectionsByType(origin, destination, google.maps.TravelMode.DRIVING)),
   }
 
-   console.log('directions', directions)
 
     return directions
 }

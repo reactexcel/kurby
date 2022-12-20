@@ -74,7 +74,7 @@ function MyComponent() {
 
   //* When the marker loads
   const onMarkerLoad = (marker: any) => {
-    console.log("marker: ", marker);
+    //console.log("marker: ", marker);
   };
 
  
