@@ -40,6 +40,10 @@ export default function NearbyPlaceCard({ place }: any) {
     return 'not found'
   }
 
+  const handleImageLoad = ()=>{
+    //console.log('image loaded!')
+  }
+
   return (
     <Box style={resultsContentStyle}>
       <Box style={{ display: "flex", justifyContent: "space-between" }}>
@@ -51,11 +55,14 @@ export default function NearbyPlaceCard({ place }: any) {
               backgroundPosition: "center",
               borderRadius: "10px",
               marginRight: "16px",
+              minWidth: "200px",
+              objectFit: 'cover'
             }}
             src={photos?.[0]?.getUrl() || "/../public/images/maps_dummy.png"}
             alt="Picture of the author"
             width={200}
             height={200}
+            onLoad={handleImageLoad}
           />
           <Box>
             {website ?
