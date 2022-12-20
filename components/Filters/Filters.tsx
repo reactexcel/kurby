@@ -96,7 +96,6 @@ export default function Filters() {
       }
       const nearbyLocations = await searchNearbyApi(searchNearbyPayload)
 
-      console.log('nearbyLocations', nearbyLocations)
       setFilterVal((prevVal: any) => {
         //TODO save old nearby locations to prevent repeat requests
 
@@ -109,7 +108,7 @@ export default function Filters() {
     } catch (error) {
 
       //TODO error handling - errors should be displayed to end user
-      // console.error(error);
+      console.error(error);
     }
   };
 

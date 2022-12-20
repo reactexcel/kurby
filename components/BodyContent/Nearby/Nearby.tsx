@@ -56,10 +56,7 @@ export default function Nearby() {
     setTimeout(async () => {
       const newPlaces = filterVal.nearbyPlaces.slice(loadedNearbyPlaces.length, loadedNearbyPlaces.length + PAGE_SIZE);
       const updatedPlaces: any = await prepareLoadedPlaces(newPlaces, filterVal.mapCenter);
-      console.log(updatedPlaces);
-      console.log(loadedNearbyPlaces);
       
-      console.log(loadedNearbyPlaces);
       setLoadedNearbyPlaces(
         loadedNearbyPlaces.concat(updatedPlaces)
       );

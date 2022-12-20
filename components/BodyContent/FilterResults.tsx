@@ -30,7 +30,7 @@ export default function FilterResults() {
       if (!filterVal.address) return;
 
       isLoading(true);
-
+      setIsHomeTab(true);
       //* the entire selected place is sent in so we can validate the address
       const request = await fetch(`/api/openai/`, {
         method:"POST",
