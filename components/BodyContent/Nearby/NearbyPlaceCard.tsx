@@ -99,7 +99,9 @@ export default function NearbyPlaceCard({ place }: any) {
             padding: "12px",
           }}
         >
-          <Typography></Typography>
+          <Typography>
+            {Object.keys(driving).length ? `${driving.distance} Miles` : ""}
+          </Typography>
           <Divider />
 
           <Box className={styles.nearbyDistanceBox}>
