@@ -35,7 +35,7 @@ export default function NearbyPlaceCard({ place }: any) {
   };
 
   const distanceText = (directionObj: {time: string, distance: string})=>{
-    if(directionObj.time) return `${directionObj.time} min (${directionObj.distance} Miles)`
+    if(directionObj.time) return `${directionObj.time} (${directionObj.distance} Miles)`
    
     return 'not found'
   }
