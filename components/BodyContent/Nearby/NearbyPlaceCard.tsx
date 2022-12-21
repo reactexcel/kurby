@@ -40,9 +40,6 @@ export default function NearbyPlaceCard({ place }: any) {
     return 'not found'
   }
 
-  const handleImageLoad = ()=>{
-    //console.log('image loaded!')
-  }
 
   return (
     <Box style={resultsContentStyle}>
@@ -62,7 +59,6 @@ export default function NearbyPlaceCard({ place }: any) {
             alt="Picture of the author"
             width={200}
             height={200}
-            onLoad={handleImageLoad}
           />
           <Box>
             {website ?
