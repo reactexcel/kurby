@@ -28,6 +28,7 @@ const MenuProps = {
       width: 250,
     },
   }
+ 
 };
 
 /**
@@ -238,26 +239,25 @@ export default function Filters() {
           </div>
           <div className={styles.typeOfPlace}>
             <div className={styles.row}>
-              <div className={styles.label}>Place of interest</div>
+              <div className={styles.label}>Places of interest</div>
             </div>
             <div className={styles.row} style={{ marginTop: "12px"}}>
               <form style={{ width: "100%" }}>
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label"
-                    style={{ background: "#F1F4F6", paddingRight: "4px", fontSize: "14px", marginTop: '-9px' }}>
-                    Place of interest
+                <FormControl fullWidth >
+                  <InputLabel id="demo-simple-select-label">
                   </InputLabel>
                   <Select
                     id="demo-multiple-checkbox"
                     multiple
-                    displayEmpty
+                 
                     value={typeOfPlace}
                     onChange={handleSelectChange}
-                    input={<OutlinedInput label="Tag" />}
                     renderValue={(selected) => selected.join(", ")}
                     MenuProps={MenuProps}
                     style={{ fontSize: "16px" }}
                     autoWidth={true}
+                    label=""
+                   
                   >
                     <MenuItem key="toggleAll" style={{ padding: "0px" }}>
                     <Checkbox
