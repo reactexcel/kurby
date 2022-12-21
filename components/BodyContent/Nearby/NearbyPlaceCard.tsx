@@ -67,7 +67,7 @@ export default function NearbyPlaceCard({ place }: any) {
           <Box>
             {website ?
               <Typography variant="h6">
-                <a href={website} target="_blank">{placeName}</a>
+                <a href={website} target="_blank" rel="noreferrer">{placeName}</a>
               </Typography> :
               <Typography variant="h6">{placeName}</Typography>
             }

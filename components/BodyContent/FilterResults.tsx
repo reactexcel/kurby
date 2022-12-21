@@ -47,7 +47,7 @@ export default function FilterResults() {
     };
 
     getOpenAiData();
-  }, [filterVal.address]);
+  }, [filterVal.address, filterVal.selectedPlace]);
 
   const AIWarningToolTip = ()=>(
     <Tooltip title="The information provided by AI is never 100% accurate and should only be used as a starting point for further research. AI cannot replace human judgment, and no AI system can guarantee the accuracy of its conclusions. As such, any decisions made based on the results of AI should be carefully evaluated and independently verified.">
