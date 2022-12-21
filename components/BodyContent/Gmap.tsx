@@ -16,7 +16,7 @@ import GLOBAL_SETTINGS from "../../globals/GLOBAL_SETTINGS";
 //TODO add to stylesheet
 const googleMapContainerStyle: React.CSSProperties = {
   width: "100%",
-  height: "65vh",
+  height: "62vh",
   position: "relative",
   overflow: "hidden",
 };
@@ -74,7 +74,7 @@ function MyComponent() {
 
   //* When the marker loads
   const onMarkerLoad = (marker: any) => {
-    console.log("marker: ", marker);
+    //console.log("marker: ", marker);
   };
 
  
@@ -130,7 +130,7 @@ function MyComponent() {
 
         {filterVal.latlong && (
           <>
-            <MarkerF position={filterVal.latlong} onLoad={onMarkerLoad} />
+            <MarkerF position={filterVal.latlong} onLoad={onMarkerLoad} key={"addressMarker"}/>
             {
             placesMarkers().map(place=>
               <MarkerF key={place.place_id} position={place.position} options={place.options} />

@@ -9,4 +9,17 @@ export default createTheme({
           main: "#fe6907",
         },
       },
+    typography: {
+      'fontFamily': "FilsonPro"
+    },
+    components: {
+      MuiSelect: {
+        styleOverrides: {
+          select: {
+            padding: "6px 12px !important",
+            fontSize: "14px"
+          }
+        }
+      }
+    }
 });

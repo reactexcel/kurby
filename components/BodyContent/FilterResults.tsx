@@ -20,7 +20,6 @@ export default function FilterResults() {
   const [redFlags, setRedFlags] = useState<any[]>([]);
   const [loading, isLoading] = useState(false);
 
-  //TODO should this be sent in via PROPs????
   const [filterVal] = useRecoilState(filterContext);
 
   const handleTabChange = () => setIsHomeTab(!isHomeTab);
@@ -30,7 +29,7 @@ export default function FilterResults() {
       if (!filterVal.address) return;
 
       isLoading(true);
-
+      setIsHomeTab(true);
       //* the entire selected place is sent in so we can validate the address
       const request = await fetch(`/api/openai/`, {
         method:"POST",
@@ -42,14 +41,13 @@ export default function FilterResults() {
       const response = await request.json();
 
       setExplainedLikeAlocal(response.explained_like_a_local);
-      console.log("res", response);
       setGreenFlags(response.greenFlags);
       setRedFlags(response.redFlags);
       isLoading(false);
     };
 
     getOpenAiData();
-  }, [filterVal.address]);
+  }, [filterVal.address, filterVal.selectedPlace]);
 
   const AIWarningToolTip = ()=>(
     <Tooltip title="The information provided by AI is never 100% accurate and should only be used as a starting point for further research. AI cannot replace human judgment, and no AI system can guarantee the accuracy of its conclusions. As such, any decisions made based on the results of AI should be carefully evaluated and independently verified.">

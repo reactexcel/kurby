@@ -41,7 +41,7 @@ export default async ({request, typeOfPlace}: searchNearbyParams) => {
               resolve(withType);
             } else {
               console.error("error getting nearby places", status);
-              reject(status);
+              resolve([]);
             }
           }
         );

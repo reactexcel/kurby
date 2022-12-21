@@ -1,3 +1,19 @@
+@font-face {
+    font-family: "FilsonPro";   /*Can be any text*/
+    font-style: normal;
+    font-weight: 400;
+    src: local("FilsonProLight"),
+      url("../public/fonts/FilsonProLight/FilsonProLight.woff") format("truetype");
+}
+
+@font-face {
+    font-family: "FilsonPro";   /*Can be any text*/
+    font-style: normal;
+    font-weight: 500;
+    src: local("FilsonProRegular"),
+      url("../public/fonts/FilsonProRegular/FilsonProRegular.woff") format("truetype");
+}
+
 html, body { height: 100%; font-family: 'FilsonPro'; }
 body { margin: 0;  }
 
