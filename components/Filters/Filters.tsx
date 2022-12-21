@@ -13,6 +13,8 @@ import Checkbox from "@mui/material/Checkbox";
 import { ListItemText, OutlinedInput, Radio } from "@mui/material";
 import GLOBAL_SETTINGS from "../../globals/GLOBAL_SETTINGS";
 import searchNearbyApi from "./searchNearbyApi";
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
@@ -36,9 +38,11 @@ const MenuProps = {
 export default function Filters() {
   //* Use global state management
   const [filterVal, setFilterVal] = useRecoilState(filterContext);
+  
+  const [isSelectAll, setSelectAll] = useState<boolean>(true);
 
   //* State for the place select element
-  const [typeOfPlace, setTypeOfPlace] = useState<any[]>([]);
+  const [typeOfPlace, setTypeOfPlace] = useState<any[]>(PLACE_TYPES);
 
   //* Refs to html elements - used for google autocomplete
   //TODO add correct typeface
@@ -63,7 +67,7 @@ export default function Filters() {
 
   //* All the types that the select element can be
   //TODO map these to values that the client requests
-  GLOBAL_SETTINGS.PLACE_TYPES
+  //GLOBAL_SETTINGS.PLACE_TYPES
 
   //* Handle the change of the select element
   const handleSelectChange = (event: SelectChangeEvent<typeof typeOfPlace>) => {
@@ -75,9 +79,12 @@ export default function Filters() {
       // On autofill we get a stringified value.
       typeof value === "string" ? value.split(",") : value
     );
+
+    //* If not all are selected show the 'select all' option
+    const allItemsSelected = value.length == PLACE_TYPES.length;
+    setSelectAll(allItemsSelected);
+    
   };
-
-
 
   const getNearby = async ({ lat, lng }: { lat: number; lng: number }) => {
     try {
@@ -111,6 +118,17 @@ export default function Filters() {
       console.error(error);
     }
   };
+
+  const handleToggleAll = ()=>{
+    setSelectAll(!isSelectAll)
+
+    if(!isSelectAll){
+      setTypeOfPlace(PLACE_TYPES);
+    }else{
+      setTypeOfPlace([]);
+    }
+    console.log('toggle me! is select all', isSelectAll)
+  }
 
   useEffect(() => {
     //* this use effect only runs when the map center or type of place changes
@@ -239,10 +257,17 @@ export default function Filters() {
                     renderValue={(selected) => selected.join(", ")}
                     MenuProps={MenuProps}
                     style={{ fontSize: "16px" }}
+                    autoWidth={true}
                   >
-                    <MenuItem key="deselect" value="deselect" style={{ padding: "0px" }}>
-                      <Radio />
-                      <ListItemText primary={"Deselect All"} />
+                    <MenuItem key="toggleAll" style={{ padding: "0px" }}>
+                    <Checkbox
+                   
+                      icon={<RadioButtonUncheckedIcon />}
+                      checkedIcon={<RadioButtonCheckedIcon />}
+                      onChange={handleToggleAll}
+                      checked={isSelectAll}
+                    />
+                      <ListItemText primary={isSelectAll ? 'Deselect All' : 'Select All'} />
                     </MenuItem>
                     {PLACE_TYPES.map((name) => (
                       <MenuItem key={name} value={name} style={{ padding: "0px" }}>
