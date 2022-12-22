@@ -4,6 +4,7 @@ const nextConfig = {
   swcMinify: true,
   images: {
     domains: ['lh3.googleusercontent.com', 'maps.googleapis.com', 'app.kurby.ai'],
+    unoptimized: true
   },
   remotePatterns: [
     {
