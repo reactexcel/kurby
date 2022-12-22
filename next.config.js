@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['lh3.googleusercontent.com', 'maps.googleapis.com'],
+    domains: ['lh3.googleusercontent.com', '*maps.googleapis.com*'],
   },
   webpack(config) {
     config.module.rules.push({
