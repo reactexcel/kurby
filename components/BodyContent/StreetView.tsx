@@ -12,19 +12,32 @@ export default React.memo(function StreetView() {
   const [filterVal] = useRecoilState(filterContext);
   
   useEffect(() => {
-    new google.maps.StreetViewPanorama(
-        streetViewMap.current as any,
-        {
-          position: filterVal.latlong,
-          fullscreenControl: false,
-          visible: true,
-          zoomControl: false,
-          enableCloseButton: false,
-          linksControl: false,
-          panControl: false,
-          addressControl: false,
-        }
-      );
+    const getStreetViewData = async () => {
+      const streetViewService = new google.maps.StreetViewService();
+      const position = filterVal.latlong;
+      if(!position) {
+        return;
+      }
+        const panorama = await streetViewService.getPanorama({
+            location: position,
+            radius: 100
+        });
+        const point = panorama.data.location?.latLng as google.maps.LatLng;
+        const marker_position = google.maps.geometry.spherical.computeOffset(position, 10, 0);
+        const heading = google.maps.geometry.spherical.computeHeading(point, marker_position);
+
+        const panoramaOptions = {
+            position,
+            disableDefaultUI: true,
+            pov: {
+                heading,
+                pitch: 0
+            }
+        };
+        const r = new google.maps.StreetViewPanorama(streetViewMap.current as any, panoramaOptions);
+        return r;
+    }
+    getStreetViewData();
   }, [filterVal])
   
   
