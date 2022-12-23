@@ -23,7 +23,7 @@ export default {
         "University",
         "Park",
         "Hospital",
-        "Department Store",
+        "Shopping mall",
         "Tourist Attraction",
         "Restaurants",
         "Supermarket"
