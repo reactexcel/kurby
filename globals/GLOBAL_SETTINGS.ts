@@ -26,5 +26,6 @@ export default {
         "Department Store",
         "Tourist Attraction",
         "Restaurants",
+        "Supermarket"
       ]
 }
