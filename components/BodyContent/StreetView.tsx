@@ -19,7 +19,7 @@ export default React.memo(function StreetView({position}: any) {
       }
         const panorama = await streetViewService.getPanorama({
             location: position,
-            radius: 1000
+            radius: 200
         });
         console.log(panorama);
         const point = panorama.data.location?.latLng as google.maps.LatLng;
@@ -34,9 +34,9 @@ export default React.memo(function StreetView({position}: any) {
                 pitch: 0
             }
         };
-        console.log(panoramaOptions);
+        console.log("🚀 ~ file: StreetView.tsx:30 ~ getStreetViewData ~ panoramaOptions", panoramaOptions)
         const r = new google.maps.StreetViewPanorama(streetViewMap.current as any, panoramaOptions);
-        console.log(r);
+        console.log("🚀 ~ file: StreetView.tsx:39 ~ getStreetViewData ~ r", r)
         return r;
     }
     getStreetViewData();
