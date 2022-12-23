@@ -3,7 +3,12 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['lh3.googleusercontent.com', 'maps.googleapis.com', 'app.kurby.ai'],
+    domains: [
+      'lh3.googleusercontent.com',
+      'lh3.ggpht.com',
+      'maps.googleapis.com',
+      'app.kurby.ai'
+    ],
     unoptimized: true
   },
   remotePatterns: [
@@ -15,6 +20,10 @@ const nextConfig = {
       protocol: "https",
       hostname: "lh3.googleusercontent.com",
     },
+    {
+      protocol: "https",
+      hostname: "lh3.ggpht.com",
+    }
   ],
   webpack(config) {
     config.module.rules.push({

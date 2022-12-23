@@ -10,6 +10,7 @@ import PersonIcon from "../../../public/images/person.svg";
 import BicycleIcon from "../../../public/images/bicycle.svg";
 import CarIcon from "../../../public/images/car.svg";
 import styles from "./NearbyPlace.module.css";
+import StreetView from "../StreetView";
 
 /**
  * NearbyPlaceCard
@@ -20,7 +21,10 @@ import styles from "./NearbyPlace.module.css";
 
 export default function NearbyPlaceCard({ place }: any) {
   const { name: placeName, vicinity, user_ratings_total, rating, photos, website, walking, biclycling, driving } = place;
-  
+  const position = {
+    lat: place.geometry.location.lat(),
+    lng: place.geometry.location.lng(),
+  }
   const formatPlaceType = (type: string) => {
     return type && type.replaceAll('_', ' ');
   }
@@ -34,35 +38,37 @@ export default function NearbyPlaceCard({ place }: any) {
     marginTop: "25px",
   };
 
-  const distanceText = (directionObj: {time: string, distance: string})=>{
-    if(directionObj.time) return `${directionObj.time} (${directionObj.distance} Miles)`
-   
+  const distanceText = (directionObj: { time: string, distance: string }) => {
+    if (directionObj.time) return `${directionObj.time} (${directionObj.distance} Miles)`
+
     return 'not found'
   }
-  const handleImageLoad = ()=>{
-    //console.log('image loaded!')
-  }
+
 
   return (
     <Box style={resultsContentStyle}>
       <Box style={{ display: "flex", justifyContent: "space-between" }}>
         <Box style={{ display: "flex" }}>
-          <Image
-            style={{
-              backgroundSize: "cover",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center",
-              borderRadius: "10px",
-              marginRight: "16px",
-              minWidth: "200px",
-              objectFit: 'cover'
-            }}
-            src={photos?.[0]?.getUrl() || "/../public/images/maps_dummy.png"}
-            alt="Picture of the author"
-            width={200}
-            height={200}
-            onLoad={handleImageLoad}
-          />
+          {photos?.[0]?.getUrl() &&
+            <img
+              style={{
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+                borderRadius: "10px",
+                marginRight: "16px",
+                minWidth: "200px",
+                objectFit: 'cover'
+              }}
+              src={photos?.[0]?.getUrl()}
+              alt="Picture of the author"
+              width={200}
+              height={200}
+            />
+          }
+          { !photos?.[0]?.getUrl() && 
+            <StreetView position={position}/>
+          }
           <Box>
             {website ?
               <Typography variant="h6">

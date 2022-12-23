@@ -143,7 +143,7 @@ export default function FilterResults() {
               <Box style={resultsContentStyle}>
                 <Box>
                   <Box style={{ display: "flex" }}>
-                    <StreetView />
+                    <StreetView position={filterVal.latlong} />
                     <Box>
                       <Typography variant="h5" component="h5">
                         {filterVal.address}

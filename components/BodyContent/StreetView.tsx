@@ -7,14 +7,13 @@ import filterContext from "../../context/filterContext";
  * @description: Displays the street view instance for the given location
 */
 
-export default React.memo(function StreetView() {
+export default React.memo(function StreetView({position}: any) {
   const streetViewMap = useRef(null)  
-  const [filterVal] = useRecoilState(filterContext);
-  
+  // const [filterVal] = useRecoilState(filterContext);
+  console.log(position);
   useEffect(() => {
     const getStreetViewData = async () => {
       const streetViewService = new google.maps.StreetViewService();
-      const position = filterVal.latlong;
       if(!position) {
         return;
       }
@@ -22,6 +21,7 @@ export default React.memo(function StreetView() {
             location: position,
             radius: 100
         });
+        console.log(panorama);
         const point = panorama.data.location?.latLng as google.maps.LatLng;
         const marker_position = google.maps.geometry.spherical.computeOffset(position, 10, 0);
         const heading = google.maps.geometry.spherical.computeHeading(point, marker_position);
@@ -34,11 +34,13 @@ export default React.memo(function StreetView() {
                 pitch: 0
             }
         };
+        console.log(panoramaOptions);
         const r = new google.maps.StreetViewPanorama(streetViewMap.current as any, panoramaOptions);
+        console.log(r);
         return r;
     }
     getStreetViewData();
-  }, [filterVal])
+  }, [position])
   
   
   return (
