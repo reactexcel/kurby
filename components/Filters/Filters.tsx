@@ -252,7 +252,7 @@ export default function Filters() {
                  
                     value={typeOfPlace}
                     onChange={handleSelectChange}
-                    renderValue={(selected) => selected.join(", ")}
+                    renderValue={(selected) => `Places of Interest (${selected.length})`}
                     MenuProps={MenuProps}
                     style={{ fontSize: "16px" }}
                     autoWidth={true}
