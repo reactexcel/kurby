@@ -1,4 +1,4 @@
-import { Box, SvgIcon, Typography } from "@mui/material";
+import { Box, Chip, SvgIcon, Typography } from "@mui/material";
 import { borderRadius } from "@mui/system";
 import Image from "next/image";
 import React from "react";
@@ -26,7 +26,7 @@ export default function NearbyPlaceCard({ place }: any) {
     lng: place.geometry.location.lng(),
   }
   const formatPlaceType = (type: string) => {
-    return type && type.replaceAll('_', ' ');
+    return type && type.charAt(0).toUpperCase() + type.replaceAll('_', ' ').slice(1);
   }
 
   //Todo add to style sheet
@@ -96,10 +96,7 @@ export default function NearbyPlaceCard({ place }: any) {
                   }}>{user_ratings_total} reviews</Typography>
                 </Box>
               )}
-
-            <ul style={{ paddingLeft: "18px", color: "#727272" }}>
-              <li>{formatPlaceType(place._type)}</li>
-            </ul>
+            <Chip disabled={true} style={{ color: "#000000", opacity: '0.8' }} label={formatPlaceType(place._type)} />
           </Box>
         </Box>
         <Box
