@@ -22,11 +22,18 @@ import StreetView from "../StreetView";
 export default function NearbyPlaceCard({ place }: any) {
   const { name: placeName, vicinity, user_ratings_total, rating, photos, website, walking, biclycling, driving } = place;
   const position = {
-    lat: place.geometry.location.lat(),
-    lng: place.geometry.location.lng(),
+    lat: place.geometry.location.lat,
+    lng: place.geometry.location.lng,
   }
   const formatPlaceType = (type: string) => {
     return type && type.charAt(0).toUpperCase() + type.replaceAll('_', ' ').slice(1);
+  }
+
+  const getPhoto = (photo_reference: string) => {
+    if(!photo_reference) {
+      return ''
+    }
+    return `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photo_reference}&sensor=false&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
   }
 
   //Todo add to style sheet
@@ -49,7 +56,7 @@ export default function NearbyPlaceCard({ place }: any) {
     <Box style={resultsContentStyle}>
       <Box style={{ display: "flex", justifyContent: "space-between" }}>
         <Box style={{ display: "flex" }}>
-          {photos?.[0]?.getUrl() &&
+          {getPhoto(photos?.[0]?.photo_reference) &&
             <img
               style={{
                 backgroundSize: "cover",
@@ -60,13 +67,13 @@ export default function NearbyPlaceCard({ place }: any) {
                 minWidth: "200px",
                 objectFit: 'cover'
               }}
-              src={photos?.[0]?.getUrl()}
+              src={getPhoto(photos?.[0]?.photo_reference)}
               alt="Picture of the author"
               width={200}
               height={200}
             />
           }
-          { !photos?.[0]?.getUrl() && 
+          { !getPhoto(photos?.[0]?.photo_reference) && 
             <StreetView position={position}/>
           }
           <Box>

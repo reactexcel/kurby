@@ -10,7 +10,6 @@ import filterContext from "../../context/filterContext";
 export default React.memo(function StreetView({position}: any) {
   const streetViewMap = useRef(null)  
   // const [filterVal] = useRecoilState(filterContext);
-  console.log(position);
   useEffect(() => {
     const getStreetViewData = async () => {
       const streetViewService = new google.maps.StreetViewService();
@@ -21,7 +20,6 @@ export default React.memo(function StreetView({position}: any) {
             location: position,
             radius: 200
         });
-        console.log(panorama);
         const point = panorama.data.location?.latLng as google.maps.LatLng;
         const marker_position = google.maps.geometry.spherical.computeOffset(position, 10, 0);
         const heading = google.maps.geometry.spherical.computeHeading(point, marker_position);
@@ -34,9 +32,7 @@ export default React.memo(function StreetView({position}: any) {
                 pitch: 0
             }
         };
-        console.log("🚀 ~ file: StreetView.tsx:30 ~ getStreetViewData ~ panoramaOptions", panoramaOptions)
         const r = new google.maps.StreetViewPanorama(streetViewMap.current as any, panoramaOptions);
-        console.log("🚀 ~ file: StreetView.tsx:39 ~ getStreetViewData ~ r", r)
         return r;
     }
     getStreetViewData();

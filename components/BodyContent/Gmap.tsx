@@ -100,8 +100,8 @@ function MyComponent() {
       //Create the marker instance
       const marker = {
         position: {
-          lat: place.geometry.location.lat(),
-          lng: place.geometry.location.lng(),
+          lat: place.geometry.location.lat,
+          lng: place.geometry.location.lng,
         },
         options: { icon, clickable: true },
         place,

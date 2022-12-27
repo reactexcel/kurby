@@ -23,7 +23,7 @@ async function loadAdditionalData(place: any): Promise<{ website: string }> {
   const service = new google.maps.places.PlacesService(document.createElement('div'));
   // TODO: add reject handling
   const rPromise = new Promise((resolve, reject) => {
-    service.getDetails({ placeId: place.place_id }, (resp) => {
+    service.getDetails({ placeId: place.place_id, fields: ['website'] }, (resp) => {
       resolve(resp);
     });
   });
@@ -35,8 +35,8 @@ async function loadDirections(place: any, origin: any): Promise<{walking: any, d
   return await loadDirectionsApi({
     origin,
     destination: {
-      lat: place.geometry.location.lat(),
-      lng: place.geometry.location.lng()
+      lat: place.geometry.location.lat,
+      lng: place.geometry.location.lng
     }
   })
 }
