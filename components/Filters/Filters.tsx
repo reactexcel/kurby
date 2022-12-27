@@ -259,9 +259,8 @@ export default function Filters() {
                     label=""
                    
                   >
-                    <MenuItem key="toggleAll" style={{ padding: "0px" }}>
+                    <MenuItem key="toggleAll" style={{ padding: "0px" }} onClick={handleToggleAll}>
                     <Checkbox
-                   
                       icon={<RadioButtonUncheckedIcon />}
                       checkedIcon={<RadioButtonCheckedIcon />}
                       onChange={handleToggleAll}
