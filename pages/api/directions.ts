@@ -20,13 +20,14 @@ export default async function handler(
           'Content-Type': 'application/json',
         },
       });
-    const directionResponse =await r.json();
+    const directionResponse = await r.json();
 
     //TODO map responses to error codes?
-    if(directionResponse.status !== "OK"){
+    if (directionResponse.status === "ZERO_RESULTS") {
+      res.status(200).json(directionResponse)
+    } else if(directionResponse.status !== "OK"){
       res.status(500).send(directionResponse)
     }else{
-
       res.status(200).json(directionResponse)
     }
 }

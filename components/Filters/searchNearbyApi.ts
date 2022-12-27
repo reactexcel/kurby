@@ -28,7 +28,6 @@ export default async ({ request, typeOfPlace }: searchNearbyParams) => {
 
     if (response.status === 200) {
       const places = (await response.json()).results;
-      console.log(places);
       const withType = places.map((r: any) => {
         //* Add the request type that was used so we can see if they are correct
         return {
