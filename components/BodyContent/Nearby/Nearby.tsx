@@ -53,7 +53,12 @@ export default function Nearby() {
   const [loadedNearbyPlaces, setLoadedNearbyPlaces] = useState([])
   const fetchMoreData = () => {
     setTimeout(async () => {
-      const newPlaces = filterVal.nearbyPlaces.slice(loadedNearbyPlaces.length, loadedNearbyPlaces.length + PAGE_SIZE);
+      //* remove duplciates
+      const noDups = filterVal.nearbyPlaces.filter((place: {reference: string}, index, array)=>{
+        return index === array.findIndex(x=> place.reference === x.reference)
+      })
+
+      const newPlaces = noDups.slice(loadedNearbyPlaces.length, loadedNearbyPlaces.length + PAGE_SIZE);
       const updatedPlaces: any = await prepareLoadedPlaces(newPlaces, filterVal.mapCenter);
       
       setLoadedNearbyPlaces(
