@@ -9,22 +9,22 @@ const nextConfig = {
       'maps.googleapis.com',
       'app.kurby.ai'
     ],
-    unoptimized: true
+    unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "maps.googleapis.com",
+      },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
+      {
+        protocol: "https",
+        hostname: "lh3.ggpht.com",
+      }
+    ],
   },
-  remotePatterns: [
-    {
-      protocol: "https",
-      hostname: "maps.googleapis.com",
-    },
-    {
-      protocol: "https",
-      hostname: "lh3.googleusercontent.com",
-    },
-    {
-      protocol: "https",
-      hostname: "lh3.ggpht.com",
-    }
-  ],
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/i,
