@@ -135,6 +135,7 @@ export default function Filters() {
     //* this use effect only runs when the map center or type of place changes
     //* Searching a different place will change map center
 
+    console.log('change place type!')
     if (!filterVal?.selectedPlace) return;
 
     const getNearbyState = async () => {
