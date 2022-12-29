@@ -58,11 +58,26 @@ export default function Nearby() {
         return index === array.findIndex(x=> place.reference === x.reference)
       })
 
-      const newPlaces = noDups.slice(loadedNearbyPlaces.length, loadedNearbyPlaces.length + PAGE_SIZE);
+      //*filter out certain data / incorrect info
+      const goodPlaceListings = noDups.filter(place=>{
+        const operational = "OPERATIONAL"
+
+        const isNotLocality = !place.types.includes('locality');
+        const isOpen = place.business_status === operational;
+        const hasRating = !!place.rating;
+
+        return isNotLocality && isOpen && hasRating
+      })
+
+
+      const newPlaces = goodPlaceListings.slice(loadedNearbyPlaces.length, loadedNearbyPlaces.length + PAGE_SIZE);
       const updatedPlaces: any = await prepareLoadedPlaces(newPlaces, filterVal.mapCenter);
       
+      //* remove items with no websites
+      const updatesPlacesWithWebsites = updatedPlaces.filter((place:{website:string})=> place.website)
+      
       setLoadedNearbyPlaces(
-        loadedNearbyPlaces.concat(updatedPlaces)
+        loadedNearbyPlaces.concat(updatesPlacesWithWebsites)
       );
     }, 1000);
   };
