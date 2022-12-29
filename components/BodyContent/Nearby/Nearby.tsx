@@ -16,6 +16,7 @@ async function prepareLoadedPlaces(places: any[], currentCenter: {lat: number, l
       ...(await loadDirections(place, currentCenter))
     }
   }))
+
   return resolved;
 }
 
@@ -59,6 +60,7 @@ export default function Nearby() {
       })
 
       //*filter out certain data / incorrect info
+      console.log('noDups', noDups)
       const goodPlaceListings = noDups.filter(place=>{
         const operational = "OPERATIONAL"
 
@@ -73,11 +75,8 @@ export default function Nearby() {
       const newPlaces = goodPlaceListings.slice(loadedNearbyPlaces.length, loadedNearbyPlaces.length + PAGE_SIZE);
       const updatedPlaces: any = await prepareLoadedPlaces(newPlaces, filterVal.mapCenter);
       
-      //* remove items with no websites
-      const updatesPlacesWithWebsites = updatedPlaces.filter((place:{website:string})=> place.website)
-      
       setLoadedNearbyPlaces(
-        loadedNearbyPlaces.concat(updatesPlacesWithWebsites)
+        loadedNearbyPlaces.concat(updatedPlaces)
       );
     }, 1000);
   };
