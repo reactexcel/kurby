@@ -16,7 +16,6 @@ interface searchNearbyParams {
 export default async ({ request, typeOfPlace }: searchNearbyParams) => {
   const { location } = request;
   
-  console.log('typeOfPlace', typeOfPlace)
   if(!typeOfPlace.length) return[];
 
   const getNearbyPlace = async (nearbySearchRequest: any) => {
