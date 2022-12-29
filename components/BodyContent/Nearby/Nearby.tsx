@@ -60,7 +60,6 @@ export default function Nearby() {
       })
 
       //*filter out certain data / incorrect info
-      console.log('noDups', noDups)
       const goodPlaceListings = noDups.filter(place=>{
         const operational = "OPERATIONAL"
 
