@@ -15,6 +15,7 @@ import GLOBAL_SETTINGS from "../../globals/GLOBAL_SETTINGS";
 import searchNearbyApi from "./searchNearbyApi";
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
+import WalkscoreListApi from "../BodyContent/Walkscore/WalkscoreListApi";
 
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
@@ -166,18 +167,22 @@ export default function Filters() {
     autoCompleteRef.current.addListener("place_changed", async function () {
       //TODO handle error and display it to the client
       const place = await autoCompleteRef.current.getPlace();
+      const getScore = (address: string, location: any) => WalkscoreListApi({ address, location });
 
       //TODO save all of place variable to state instead of destructuring it.
+      const location = {
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng(),
+      }
+      const walkscore = await getScore(place.formatted_address, location)
       setFilterVal((prevVal: any) => {
         return {
           ...prevVal,
           latlong: place.geometry.location,
           address: place.formatted_address,
           selectedPlace: place,
-          mapCenter: {
-            lat: place.geometry.location.lat(),
-            lng: place.geometry.location.lng(),
-          },
+          mapCenter: location,
+          walkscore
         };
       });
     });
