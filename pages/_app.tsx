@@ -5,6 +5,7 @@ import Script from "next/script";
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
+    {/* @next/next/no-before-interactive-script-outside-document */}
       <Script strategy="beforeInteractive" id="google-tag-manager">
         {`
         (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
