@@ -1,7 +1,7 @@
 import {
     atom,
 } from "recoil";
-import { Walkscore } from "../pages/interfaces/walkscore";
+import { Walkscore } from "../interfaces/walkscore";
 
 /**
  * Filter Contect
