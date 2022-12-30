@@ -17,7 +17,7 @@ export default function WalkscoreList() {
         {
           Object.keys(filterVal.walkscore).map((type: any) => {
             if (!filterVal.walkscore) { return }
-            return <Walkscore type={`${type}`} score={(filterVal as any).walkscore[type]} />;
+            return <Walkscore key={type} type={type} score={(filterVal as any).walkscore[type]} />;
           })}
       </Box>
     </>
