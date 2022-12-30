@@ -1,4 +1,4 @@
-export default async(req: {address: string, location: any}) => {
+export default async function WalkScoreListApi(req: {address: string, location: any}) {
     const {address, location} = req;
     const res = await fetch('/api/walkscore/', {
         method:"POST",

@@ -2,7 +2,7 @@ import GLOBAL_SETTINGS from "../../../globals/GLOBAL_SETTINGS";
 
 const { METERS_TO_MILES, SECONDS_TO_MINUTES } = GLOBAL_SETTINGS;
 
-export default async (request: {origin: any, destination: any}) => {
+export default async function loadDirectionsApi(request: {origin: any, destination: any}) {
     const { origin, destination } = request;
     
     const getLegs = (r: any) => {

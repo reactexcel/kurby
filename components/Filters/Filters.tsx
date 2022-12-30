@@ -149,7 +149,7 @@ export default function Filters() {
     };
 
     getNearbyState();
-  }, [filterVal.mapCenter, typeOfPlace]);
+  }, [filterVal.mapCenter, typeOfPlace, filterVal?.selectedPlace]);
 
   useEffect(() => {
     //* This use effect runs on component render
@@ -186,7 +186,7 @@ export default function Filters() {
         };
       });
     });
-  }, []);
+  }, [AUTOCOMPLETE_OPTIONS, setFilterVal]);
 
 
   return (
