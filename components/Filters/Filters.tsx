@@ -219,29 +219,7 @@ export default function Filters() {
         </div>
 
         <div className={styles.filterBlock}>
-          <div className={styles.blockDistance}>
-            <div className={styles.row}>
-              <div className={styles.label}>Distance Range</div>
-              <div className={styles.chosenMiles}>
-                <div> Miles</div>
-              </div>
-            </div>
-            <div className={styles.row} style={{ marginTop: "16px" }}>
-              <div className={styles.milesBoundries}>2 miles</div>
-              <Slider
-                color="secondary"
-                className={styles.matSlider}
-                aria-label="Miles"
-                defaultValue={2}
-                valueLabelDisplay="auto"
-                step={1}
-                marks
-                min={2}
-                max={20}
-              />
-              <div className={styles.milesBoundries}>20 miles</div>
-            </div>
-          </div>
+          
           <div className={styles.typeOfPlace}>
             <div className={styles.row}>
               <div className={styles.label}>Places of interest</div>
