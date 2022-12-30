@@ -6,9 +6,9 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<any>
 ) {
-    const { location, radius, type } = req.body;
+    const { location, address } = req.body;
 
-    const r = await fetch(createAPIUrl(location, radius), {
+    const r = await fetch(createAPIUrl(location, address), {
         method:"GET",
         headers: {
             'Content-Type': 'application/json',
