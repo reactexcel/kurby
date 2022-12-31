@@ -57,6 +57,7 @@ export default function NearbyPlaceCard({ place }: any) {
       <Box style={{ display: "flex", justifyContent: "space-between" }}>
         <Box style={{ display: "flex" }}>
           {getPhoto(photos?.[0]?.photo_reference) &&
+          // @next/next/no-img-element
             <img
               style={{
                 backgroundSize: "cover",

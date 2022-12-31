@@ -4,6 +4,7 @@ import NearbyPlaceCard from "./NearbyPlaceCard";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useEffect, useState } from "react";
 import loadDirectionsApi from "./loadDirectionsApi";
+import loadDetailsApi from "./loadDetailsApi";
 
 
 
@@ -21,14 +22,7 @@ async function prepareLoadedPlaces(places: any[], currentCenter: {lat: number, l
 }
 
 async function loadAdditionalData(place: any): Promise<{ website: string }> {
-  const service = new google.maps.places.PlacesService(document.createElement('div'));
-  // TODO: add reject handling
-  const rPromise = new Promise((resolve, reject) => {
-    service.getDetails({ placeId: place.place_id, fields: ['website'] }, (resp) => {
-      resolve(resp);
-    });
-  });
-  const response: any = await rPromise;
+  const response = await loadDetailsApi({place_id: place.place_id, fields: ['website']});
   return { website: response?.website };
 }
 

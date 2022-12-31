@@ -8,6 +8,8 @@ import filterContext from "../../context/filterContext";
 import StreetView from "./StreetView";
 import Nearby from "./Nearby/Nearby";
 import InfoIcon from '@mui/icons-material/Info';
+import WalkscoreList from "./Walkscore/WalkscoreList";
+
 /**
  * FilterResults
  * @description: Displays right side of the home page. Will show home information and nearby places
@@ -160,6 +162,9 @@ export default function FilterResults() {
                         ) : (
                         <Typography>{explainedLikeAlocal}</Typography>
                       )}
+                      <Box style={{marginTop: '10px'}}>
+                        <WalkscoreList></WalkscoreList>
+                      </Box>
                     </Box>
                   </Box>
                   <Box style={{ marginTop: "24px" }}>

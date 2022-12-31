@@ -1,6 +1,7 @@
 import {
     atom,
 } from "recoil";
+import { Walkscore } from "../interfaces/walkscore";
 
 /**
  * Filter Contect
@@ -18,7 +19,8 @@ interface FilterContext {
         nearbyPlaces: any[],
         loadedNearbyPlaces: [],
         selectedPlace: any | null,
-        mapCenter: {lat: number, lng: number} | null
+        mapCenter: {lat: number, lng: number} | null,
+        walkscore: Walkscore | null
     }
 }
 
@@ -31,7 +33,8 @@ const filterContext: FilterContext  = {
         nearbyPlaces: [],
         loadedNearbyPlaces: [],
         selectedPlace: null,
-        mapCenter: null
+        mapCenter: null,
+        walkscore: null
     }, // default value (aka initial value)
   }
 
