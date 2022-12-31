@@ -129,7 +129,6 @@ export default function Filters() {
     }else{
       setTypeOfPlace([]);
     }
-    console.log('toggle me! is select all', isSelectAll)
   }
 
   useEffect(() => {

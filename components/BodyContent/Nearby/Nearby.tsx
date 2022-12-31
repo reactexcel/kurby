@@ -5,6 +5,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useEffect, useState } from "react";
 import loadDirectionsApi from "./loadDirectionsApi";
 import loadDetailsApi from "./loadDetailsApi";
+import { Typography } from "@mui/material";
 
 
 
@@ -86,6 +87,8 @@ export default function Nearby() {
 
   return (
     <>
+      {filterVal.nearbyPlaces.length ? 
+      
       <InfiniteScroll
         dataLength={loadedNearbyPlaces.length} //This is important field to render the next data
         // Pass setFilterV as an argument to loadMore
@@ -98,7 +101,8 @@ export default function Nearby() {
           loadedNearbyPlaces.map((place: any) => {
             return <NearbyPlaceCard key={`placecard_${place.place_id}`} place={place} />;
           })}
-      </InfiniteScroll>
+      </InfiniteScroll> : <Typography>Please select a place of interest.</Typography>
+      }
 
     </>
   );
