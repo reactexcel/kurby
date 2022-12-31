@@ -175,6 +175,7 @@ export default function Filters() {
         lng: place.geometry.location.lng(),
       }
       const walkscore = await getScore(place.formatted_address, location)
+      console.log('walkschore', walkscore)
       setFilterVal((prevVal: any) => {
         return {
           ...prevVal,
