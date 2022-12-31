@@ -1,5 +1,5 @@
-export default async (req: {place_id: string, fields: string[]}) => {
-    if(!req.place_id) {
+export default async function loadDetailsApi(req: { place_id: string; fields: string[]; }) {
+    if (!req.place_id) {
         return false;
     }
 
@@ -14,5 +14,5 @@ export default async (req: {place_id: string, fields: string[]}) => {
     if (res.ok) {
         return parsedResult.result;
     }
-    console.error(`Retreiving details for place ${req.place_id} failed with error "${parsedResult.error_message}"`)
+    console.error(`Retreiving details for place ${req.place_id} failed with error "${parsedResult.error_message}"`);
 }

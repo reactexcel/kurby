@@ -15,6 +15,7 @@ import GLOBAL_SETTINGS from "../../globals/GLOBAL_SETTINGS";
 import searchNearbyApi from "./searchNearbyApi";
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
+import WalkscoreListApi from "../BodyContent/Walkscore/WalkscoreListApi";
 
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
@@ -148,7 +149,7 @@ export default function Filters() {
     };
 
     getNearbyState();
-  }, [filterVal.mapCenter, typeOfPlace]);
+  }, [filterVal.mapCenter, typeOfPlace, filterVal?.selectedPlace]);
 
   useEffect(() => {
     //* This use effect runs on component render
@@ -166,22 +167,26 @@ export default function Filters() {
     autoCompleteRef.current.addListener("place_changed", async function () {
       //TODO handle error and display it to the client
       const place = await autoCompleteRef.current.getPlace();
+      const getScore = (address: string, location: any) => WalkscoreListApi({ address, location });
 
       //TODO save all of place variable to state instead of destructuring it.
+      const location = {
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng(),
+      }
+      const walkscore = await getScore(place.formatted_address, location)
       setFilterVal((prevVal: any) => {
         return {
           ...prevVal,
           latlong: place.geometry.location,
           address: place.formatted_address,
           selectedPlace: place,
-          mapCenter: {
-            lat: place.geometry.location.lat(),
-            lng: place.geometry.location.lng(),
-          },
+          mapCenter: location,
+          walkscore
         };
       });
     });
-  }, []);
+  }, [AUTOCOMPLETE_OPTIONS, setFilterVal]);
 
 
   return (
@@ -214,29 +219,7 @@ export default function Filters() {
         </div>
 
         <div className={styles.filterBlock}>
-          <div className={styles.blockDistance}>
-            <div className={styles.row}>
-              <div className={styles.label}>Distance Range</div>
-              <div className={styles.chosenMiles}>
-                <div> Miles</div>
-              </div>
-            </div>
-            <div className={styles.row} style={{ marginTop: "16px" }}>
-              <div className={styles.milesBoundries}>2 miles</div>
-              <Slider
-                color="secondary"
-                className={styles.matSlider}
-                aria-label="Miles"
-                defaultValue={2}
-                valueLabelDisplay="auto"
-                step={1}
-                marks
-                min={2}
-                max={20}
-              />
-              <div className={styles.milesBoundries}>20 miles</div>
-            </div>
-          </div>
+          
           <div className={styles.typeOfPlace}>
             <div className={styles.row}>
               <div className={styles.label}>Places of interest</div>

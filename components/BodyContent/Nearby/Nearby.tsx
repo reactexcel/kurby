@@ -17,6 +17,7 @@ async function prepareLoadedPlaces(places: any[], currentCenter: {lat: number, l
       ...(await loadDirections(place, currentCenter))
     }
   }))
+
   return resolved;
 }
 
@@ -47,7 +48,24 @@ export default function Nearby() {
   const [loadedNearbyPlaces, setLoadedNearbyPlaces] = useState([])
   const fetchMoreData = () => {
     setTimeout(async () => {
-      const newPlaces = filterVal.nearbyPlaces.slice(loadedNearbyPlaces.length, loadedNearbyPlaces.length + PAGE_SIZE);
+      //* remove duplciates
+      const noDups = filterVal.nearbyPlaces.filter((place: {reference: string}, index, array)=>{
+        return index === array.findIndex(x=> place.reference === x.reference)
+      })
+
+      //*filter out certain data / incorrect info
+      const goodPlaceListings = noDups.filter(place=>{
+        const operational = "OPERATIONAL"
+
+        const isNotLocality = !place.types.includes('locality');
+        const isOpen = place.business_status === operational;
+        const hasRating = !!place.rating;
+
+        return isNotLocality && isOpen && hasRating
+      })
+
+
+      const newPlaces = goodPlaceListings.slice(loadedNearbyPlaces.length, loadedNearbyPlaces.length + PAGE_SIZE);
       const updatedPlaces: any = await prepareLoadedPlaces(newPlaces, filterVal.mapCenter);
       
       setLoadedNearbyPlaces(
