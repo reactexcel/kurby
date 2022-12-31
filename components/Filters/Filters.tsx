@@ -104,6 +104,22 @@ export default function Filters() {
         },
       }
       const nearbyLocations = await searchNearbyApi(searchNearbyPayload)
+      
+      //* remove duplciates
+      const noDups = nearbyLocations.filter((place: {reference: string}, index:any, array:any)=>{
+        return index === array.findIndex((x:any)=> place.reference === x.reference)
+      })
+
+      //*filter out certain data / incorrect info
+      const goodPlaceListings = noDups.filter((place:any)=>{
+        const operational = "OPERATIONAL"
+
+        const isNotLocality = !place.types.includes('locality');
+        const isOpen = place.business_status === operational;
+        const hasRating = !!place.rating;
+
+        return isNotLocality && isOpen && hasRating
+      })
 
       setFilterVal((prevVal: any) => {
         //TODO save old nearby locations to prevent repeat requests
@@ -111,7 +127,7 @@ export default function Filters() {
         return {
           ...prevVal,
 
-          nearbyPlaces: nearbyLocations,
+          nearbyPlaces: goodPlaceListings,
         };
       });
     } catch (error) {

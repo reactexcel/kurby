@@ -49,24 +49,8 @@ export default function Nearby() {
   const [loadedNearbyPlaces, setLoadedNearbyPlaces] = useState([])
   const fetchMoreData = () => {
     setTimeout(async () => {
-      //* remove duplciates
-      const noDups = filterVal.nearbyPlaces.filter((place: {reference: string}, index, array)=>{
-        return index === array.findIndex(x=> place.reference === x.reference)
-      })
 
-      //*filter out certain data / incorrect info
-      const goodPlaceListings = noDups.filter(place=>{
-        const operational = "OPERATIONAL"
-
-        const isNotLocality = !place.types.includes('locality');
-        const isOpen = place.business_status === operational;
-        const hasRating = !!place.rating;
-
-        return isNotLocality && isOpen && hasRating
-      })
-
-
-      const newPlaces = goodPlaceListings.slice(loadedNearbyPlaces.length, loadedNearbyPlaces.length + PAGE_SIZE);
+      const newPlaces = filterVal.nearbyPlaces.slice(loadedNearbyPlaces.length, loadedNearbyPlaces.length + PAGE_SIZE);
       const updatedPlaces: any = await prepareLoadedPlaces(newPlaces, filterVal.mapCenter);
       
       setLoadedNearbyPlaces(
@@ -93,9 +77,14 @@ export default function Nearby() {
         dataLength={loadedNearbyPlaces.length} //This is important field to render the next data
         // Pass setFilterV as an argument to loadMore
         next={fetchMoreData}
-        hasMore={filterVal.nearbyPlaces.length - loadedNearbyPlaces.length !== 0}
+        hasMore={filterVal.nearbyPlaces.length - loadedNearbyPlaces.length !== 0 }
         loader={<h4>Loading...</h4>}
         height="56vh"
+        endMessage={
+          <p style={{ textAlign: 'center' }}>
+            <b>Yay! You have seen it all</b>
+          </p>
+        }
       >
         {
           loadedNearbyPlaces.map((place: any) => {

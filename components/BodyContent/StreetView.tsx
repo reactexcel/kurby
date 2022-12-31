@@ -20,6 +20,7 @@ export default React.memo(function StreetView({position}: any) {
             location: position,
             radius: 200
         });
+
         const point = panorama.data.location?.latLng as google.maps.LatLng;
         const marker_position = google.maps.geometry.spherical.computeOffset(position, 10, 0);
         const heading = google.maps.geometry.spherical.computeHeading(point, marker_position);
