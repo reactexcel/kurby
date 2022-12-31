@@ -9,17 +9,22 @@ export default async function handler(
     const { location, address } = req.body;
 
     const r = await fetch(createAPIUrl(location, address), {
-        method:"GET",
+        method: "GET",
         headers: {
             'Content-Type': 'application/json',
-          },
-      });
+        },
+    });
 
-    const response = await r.json();
-    //TODO map responses to error codes?
-    
-    res.status(200).json(response)
-    
+    const parsedResponse = await r.json();
+    if (r.status === 200 && parsedResponse.status === 1) {
+        res.status(200).json(parsedResponse);
+        return;
+    }
+    if (errorMapping[parsedResponse.status]) {
+        res.status(400).json({error: errorMapping[parsedResponse.status] as string});
+        return
+    }
+    res.status(500).json(parsedResponse);
 }
 
 const createAPIUrl = (location: any, address: string) => {
@@ -27,5 +32,13 @@ const createAPIUrl = (location: any, address: string) => {
     const a = new URLSearchParams(address).toString()
 
     return `https://api.walkscore.com/score?format=json&address=${a}&lat=${location.lat}&lon=${location.lng}&transit=1&bike=1&wsapikey=${API_KEY}`;
+}
 
+const errorMapping: Record<number, string> = {
+    2: 'Score is being calculated and is not currently available',
+    30: 'Invalid latitude/longitude',
+    31: 'Walk Score API internal error',
+    40: 'Your WSAPIKEY is invalid',
+    41: 'Your daily API quota has been exceeded',
+    42: 'Your IP address has been blocked'
 }
