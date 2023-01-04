@@ -44,7 +44,7 @@ export default function Filters() {
   const [isSelectAll, setSelectAll] = useState<boolean>(true);
 
   //* State for the place select element
-  const [typeOfPlace, setTypeOfPlace] = useState<any[]>(PLACE_TYPES);
+  const [typesOfPlace, setTypesOfPlace] = useState<any[]>(PLACE_TYPES);
 
   //* Refs to html elements - used for google autocomplete
   //TODO add correct typeface
@@ -72,15 +72,12 @@ export default function Filters() {
   //GLOBAL_SETTINGS.PLACE_TYPES
 
   //* Handle the change of the select element
-  const handleSelectChange = (event: SelectChangeEvent<typeof typeOfPlace>) => {
+  const handleSelectChange = (event: SelectChangeEvent<typeof typesOfPlace>) => {
     const {
       target: { value },
     } = event;
 
-    setTypeOfPlace(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
+    setTypesOfPlace(value as any[]);
 
     //* If not all are selected show the 'select all' option
     const allItemsSelected = value.length == PLACE_TYPES.length;
@@ -89,12 +86,13 @@ export default function Filters() {
   };
 
   const getNearby = async ({ lat, lng }: { lat: number; lng: number }) => {
+    console.log(typesOfPlace);
     try {
       //Verify that we have a latlong value before trying to search api
       if (!lat) return;
 
       const searchNearbyPayload = {
-        typeOfPlace,
+        typesOfPlace,
         request: {
           location: {
             lat,
@@ -141,9 +139,9 @@ export default function Filters() {
     setSelectAll(!isSelectAll)
 
     if(!isSelectAll){
-      setTypeOfPlace(PLACE_TYPES);
+      setTypesOfPlace(PLACE_TYPES);
     }else{
-      setTypeOfPlace([]);
+      setTypesOfPlace([]);
     }
   }
 
@@ -164,7 +162,7 @@ export default function Filters() {
     };
 
     getNearbyState();
-  }, [filterVal.mapCenter, typeOfPlace, filterVal?.selectedPlace]);
+  }, [filterVal.mapCenter, typesOfPlace, filterVal?.selectedPlace]);
 
   useEffect(() => {
     //* This use effect runs on component render
@@ -248,7 +246,7 @@ export default function Filters() {
                     id="demo-multiple-checkbox"
                     multiple
                  
-                    value={typeOfPlace}
+                    value={typesOfPlace}
                     onChange={handleSelectChange}
                     renderValue={(selected) => `Places of Interest (${selected.length})`}
                     MenuProps={MenuProps}
@@ -268,7 +266,7 @@ export default function Filters() {
                     </MenuItem>
                     {PLACE_TYPES.map((name) => (
                       <MenuItem key={name} value={name} style={{ padding: "0px" }}>
-                        <Checkbox checked={typeOfPlace.indexOf(name) > -1} />
+                        <Checkbox checked={typesOfPlace.indexOf(name) > -1} />
                         <ListItemText primary={name} />
                       </MenuItem>
                     ))}

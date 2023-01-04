@@ -3,7 +3,7 @@ const { MILES_TO_METERS, MAP_ZOOM_MILES, PLACE_TYPES } = GLOBAL_SETTINGS
 //TODO make this file typesafe
 
 interface searchNearbyParams {
-  typeOfPlace: any[];
+  typesOfPlace: any[];
   request: {
     location: {
       lat: number;
@@ -13,27 +13,26 @@ interface searchNearbyParams {
   };
 }
 
-export default async ({ request, typeOfPlace }: searchNearbyParams) => {
+export default async ({ request, typesOfPlace }: searchNearbyParams) => {
   const { location } = request;
-  
-  if(!typeOfPlace.length) return[];
 
-  const getNearbyPlace = async (nearbySearchRequest: any) => {
-    const response = await (await fetch(`/api/nearby/`, {
+  if (!typesOfPlace.length) return [];
+  console.log(request);
+
+  const getNearbyPlace = async (req: any) => {
+    const response = await (await fetch(`/api/nearby`, {
       method: "POST",
-      body: JSON.stringify({ ...nearbySearchRequest }),
+      body: JSON.stringify({ ...req }),
       headers: {
         'Content-Type': 'application/json',
       },
     }));
-
     if (response.status === 200) {
-      const places = (await response.json()).results;
+      const places = await response.json();
       const withType = places.map((r: any) => {
         //* Add the request type that was used so we can see if they are correct
         return {
           ...r,
-          _type: nearbySearchRequest.type,
         };
       });
       return withType
@@ -42,20 +41,13 @@ export default async ({ request, typeOfPlace }: searchNearbyParams) => {
       return ([]);
     }
   }
+  const req = {
+    location,
+    radius: MILES_TO_METERS(MAP_ZOOM_MILES),
+    types: typesOfPlace.map(t => t.toLowerCase().replace(" ", "_")),
+  };
+  const result = await getNearbyPlace(req);
 
-  let allResults: any = [];
-  for (const searchType of typeOfPlace) {
-    //* setup place request payload
-    const request: google.maps.places.PlaceSearchRequest = {
-      location,
-      radius: MILES_TO_METERS(MAP_ZOOM_MILES),
-      type: searchType.toLowerCase().replace(" ", "_"),
-    };
-    const placeResults: any = await getNearbyPlace(request);
-
-    allResults.push(...placeResults);
-  }
-
-  return allResults;
+  return result;
 
 };

@@ -6,12 +6,7 @@ export default async function handler(
     res: NextApiResponse<any>
 ) {
     const { place_id, fields } = req.body;
-    const r = await fetch(createAPIUrl(place_id, fields), {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
+    const r = await getDetails(place_id, fields);
     const response = await r.json();
     if(response.status === 'INVALID_REQUEST') {
         res.status(400).json(response);
@@ -19,6 +14,15 @@ export default async function handler(
     }
     res.status(200).json(response)
 
+}
+
+export async function getDetails(place_id: string, fields: string[]) {
+    return await fetch(createAPIUrl(place_id, fields), {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
 }
 
 const createAPIUrl = (place_id: string, fields: string[]) => {
