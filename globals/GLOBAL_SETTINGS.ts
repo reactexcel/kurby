@@ -25,7 +25,7 @@ export default {
         "Hospital",
         "Shopping mall",
         "Tourist Attraction",
-        "Restaurants",
+        "Restaurant",
         "Supermarket"
       ]
 }

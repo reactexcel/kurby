@@ -4,7 +4,6 @@ import NearbyPlaceCard from "./NearbyPlaceCard";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useEffect, useState } from "react";
 import loadDirectionsApi from "./loadDirectionsApi";
-import loadDetailsApi from "./loadDetailsApi";
 import { Typography } from "@mui/material";
 
 
@@ -14,17 +13,12 @@ async function prepareLoadedPlaces(places: any[], currentCenter: {lat: number, l
   const resolved = await Promise.all(places.map(async place => {
     return {
       ...place,
-      ...(await loadAdditionalData(place)),
+
       ...(await loadDirections(place, currentCenter))
     }
   }))
 
   return resolved;
-}
-
-async function loadAdditionalData(place: any): Promise<{ website: string }> {
-  const response = await loadDetailsApi({place_id: place.place_id, fields: ['website']});
-  return { website: response?.website };
 }
 
 async function loadDirections(place: any, origin: any): Promise<{walking: any, driving: any, biclycling: any}> {
