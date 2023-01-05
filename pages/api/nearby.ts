@@ -15,9 +15,9 @@ export default async function handler(
         places.push(...resultWithType)
     });
     const placesWithDetails = await Promise.all(addDetailsToPlaces(places, ['website']));
-    const preparedPlaces = getValuablePlaces(placesWithDetails, types);
+    // const preparedPlaces = getValuablePlaces(placesWithDetails, types); // See getValuablePlaces fn
 
-    res.status(200).json(preparedPlaces)
+    res.status(200).json(placesWithDetails)
 }
 
 function addDetailsToPlaces(places: any[], fields: string[]) {
@@ -42,7 +42,9 @@ function getPlacesByTypes(types: string[], radius: any, location: any): Promise<
         };
     })
 }
-
+/**
+ * This is not being intentionally used for now
+ */
 function getValuablePlaces(places: any, types: string[]) {
     let result: any[] = [];
     if (types.length === 0) {
