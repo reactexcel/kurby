@@ -1,8 +1,51 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import Script from "next/script";
+import Topbar from "../components/Topbar/Topbar";
+import {
+  useState, 
+  useEffect
+} from 'react';
 
 export default function App({ Component, pageProps }: AppProps) {
+  const [mobile, setMobile] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(0);
+
+  const handleResize = () => {
+    if(typeof window == 'undefined') return;
+
+    // const width = window.innerWidth;
+    const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+
+    setWindowWidth(vw);
+    vw <= 960 ? (setMobile(true)) : (setMobile(false));
+  }
+
+  useEffect(() => {
+    if(typeof window !== 'undefined'){
+      window.addEventListener('resize', handleResize);
+      handleResize();
+    }
+  }, [])
+
+  useEffect(() => {
+    if(mobile){
+      const dispatchResize = () => {
+        const event = new Event('resize');
+        window.dispatchEvent(event);
+      }
+
+
+      const interval = setInterval(dispatchResize, 50);
+
+      setTimeout(() => {
+        clearInterval(interval);
+      }, 1500)
+      
+      return () => clearInterval(interval);
+    }
+  }, [mobile])
+
   return (
     <>
     {/* @next/next/no-before-interactive-script-outside-document */}
@@ -15,7 +58,14 @@ export default function App({ Component, pageProps }: AppProps) {
         })(window,document,'script','dataLayer','GTM-P4C8M7L');
       `}
       </Script>
-      <Component {...pageProps} />
+      <Topbar>
+        <div style={{
+          position: 'relative', 
+          width: windowWidth ? `${windowWidth}px` : '100%'
+        }}>
+          <Component mobile={mobile} {...pageProps} />
+        </div>
+      </Topbar>
     </>
   );
 }
