@@ -130,10 +130,10 @@ export default function FilterResults() {
         onChange={handleTabChange}
         aria-label="Platform"
       >
-        <ToggleButton style={{ width: "220px" }} value="home">
-          Home
+        <ToggleButton style={{ width: "220px", textTransform: 'initial' }} value="home">
+          Location
         </ToggleButton>
-        <ToggleButton style={{ width: "220px" }} value="nearby">
+        <ToggleButton style={{ width: "220px", textTransform: 'initial' }} value="nearby">
           Nearby Places
         </ToggleButton>
       </ToggleButtonGroup>

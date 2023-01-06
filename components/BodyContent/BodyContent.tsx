@@ -7,12 +7,15 @@ import FilterResults from "./FilterResults"
  * @description: Displays everything below the filters
  */
 export default function BodyContent() {
-    return (
-        
-      <Box style={{display:"flex", justifyContent:"space-evenly"}}>
-       <Gmap />
-       <FilterResults />
+  return (
+
+    <Box style={{ display: "flex" }}>
+      <Box style={{ width: "35%" }}>
+        <Gmap />
       </Box>
-    )
-  }
-  
+      <Box style={{ width: "65%" }}>
+        <FilterResults />
+      </Box>
+    </Box>
+  )
+}

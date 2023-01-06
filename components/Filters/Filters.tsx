@@ -231,13 +231,13 @@ export default function Filters() {
           </form>
         </div>
 
-        <div className={styles.filterBlock}>
+        <div className={styles.searchBlock}>
           
           <div className={styles.typeOfPlace}>
             <div className={styles.row}>
               <div className={styles.label}>Places of interest</div>
             </div>
-            <div className={styles.row} style={{ marginTop: "12px"}}>
+            <div className={styles.row} style={{ marginTop: "6px"}}>
               <form style={{ width: "100%" }}>
                 <FormControl fullWidth >
                   <InputLabel id="demo-simple-select-label">

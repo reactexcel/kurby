@@ -27,7 +27,7 @@
 .searchRow {
     display: flex;
     flex-direction: row;
-    width: 100%;
+    width: 75%;
 }
 
 .input{
@@ -42,11 +42,11 @@
     box-sizing: border-box;
 }
 
-.filterBlock {
+.searchBlock {
     display: flex;
-    padding: 0px 20px;
-    width: 50%;
+    width: 25%;
     border-radius: 10px;
+    margin-bottom: 14px;
 }
 
 .blockDistance {
@@ -65,7 +65,6 @@
 
 .label{
     font-weight: 700;
-    height: 30px;
 }
 
 .chosenMiles{
@@ -92,9 +91,7 @@
 }
 
 .typeOfPlace{
-    width: 40%;
-    padding-left: 22px;
-    /* display: flex; */
+    width: 100%;
     align-items: center;
 }
 
