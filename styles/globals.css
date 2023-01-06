@@ -33,6 +33,10 @@ body {
     font-family: 'FilsonPro';
 }
 
+* {
+    font-family: "Filson Pro", Filson Pro;
+}
+
 body {
     margin: 0;
 }

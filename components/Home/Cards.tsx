@@ -5,7 +5,7 @@ import { styled } from "@mui/material/styles";
 const Header = styled('h3')(() => ({
     marginBottom: '44px',
     color: '#061A23',
-    // fontFamily: '"Filson Pro", Filson Pro',
+    fontFamily: '"Filson Pro", Filson Pro',
     fontSize: '32px',
     fontWeight: '500',
     textTransform: 'uppercase',
@@ -16,7 +16,7 @@ const Header = styled('h3')(() => ({
 
 const Body = styled('p')(() => ({
     color: '#868686',
-    // fontFamily: '"Filson Pro", Filson Pro',
+    fontFamily: '"Filson Pro", Filson Pro',
     fontSize: '24px',
     fontWeight: '300',
     lineHeight: '28px',
@@ -27,7 +27,7 @@ const Body = styled('p')(() => ({
 
 const CustomButton = styled(Button)<ButtonProps>(() => ({
     marginTop: '20px',
-    // fontFamily: '"Filson Pro", Filson Pro',
+    fontFamily: '"Filson Pro", Filson Pro',
     fontWeight: '500',
     backgroundColor: '#21C25E',
     borderStyle: 'solid',

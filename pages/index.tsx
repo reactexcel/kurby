@@ -14,6 +14,8 @@ import Cards from '../components/Home/Cards';
 import HomeFooter from "../components/Home/HomeFooter";
 import Footer from "../components/Footer/Footer";
 import AnimatedHeader from '../components/Home/AnimatedHeader';
+import styles from '../components/Home/Home.module.css';
+import SearchIcon from "@mui/icons-material/Search";
 
 const CustomBody = styled(Container)<ContainerProps>(() => ({
   backgroundImage:
@@ -79,6 +81,18 @@ export default function Home({mobile}: any) {
               Kurby uses location data to estimate property value like never
               before.
             </h2>
+          </div>
+
+          <div className={styles.formWrapper}>
+            <div className={styles.formContainer}>
+              <input
+                className={styles.input}
+                placeholder="Search a property address"
+              ></input>
+              <button className={styles.searchButton}>
+                <SearchIcon className={styles.searchIcon} />
+              </button>
+            </div>
           </div>
         </CustomContainer>
       </CustomBody>

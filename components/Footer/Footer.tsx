@@ -71,7 +71,7 @@ const Footer = () => {
             margin: "50px 0px",
           }}
         >
-          <span style={{ width: "33%", margin: "0" }}>© 2022 Kurby.</span>
+          <span style={{ width: "33%", margin: "0" }}>© 2023 Kurby.</span>
           <div
             style={{
               width: "33%",

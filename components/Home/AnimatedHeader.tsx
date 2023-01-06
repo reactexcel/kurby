@@ -84,8 +84,8 @@ const AnimatedHeader = ({mobile}: any) => {
           fontSize: mobile ? "30px" : "43px",
           margin: "20px 0px",
           display: 'flex', 
-          flexDirection: 'row'
-          // fontFamily: '"Filson Pro", Filson Pro'
+          flexDirection: 'row',
+          fontFamily: '"Filson Pro", Filson Pro'
         }}
       >
         <span>Buying Your</span>
