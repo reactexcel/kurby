@@ -69,7 +69,7 @@ const AnimatedHeader = ({mobile}: any) => {
     useEffect(() => {
         const timeout = setTimeout(() => {
             changeAnimation(activeLabel);
-        }, 3000)
+        }, 2700)
     }, [activeLabel])
 
     const labelStyle = {
