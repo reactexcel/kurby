@@ -16,6 +16,7 @@ import Footer from "../components/Footer/Footer";
 import AnimatedHeader from '../components/Home/AnimatedHeader';
 import styles from '../components/Home/Home.module.css';
 import SearchIcon from "@mui/icons-material/Search";
+import GoogleAddressInput from "../components/GoogleAddressInput";
 
 const CustomBody = styled(Container)<ContainerProps>(() => ({
   backgroundImage:
@@ -85,10 +86,40 @@ export default function Home({mobile}: any) {
 
           <div className={styles.formWrapper}>
             <div className={styles.formContainer}>
-              <input
+              <GoogleAddressInput 
+                label=""
+                inputProps={{
+                  sx: {
+                    height: '50px', 
+                    fontSize: '20px', 
+                  },
+                  autocomplete: "off"
+                }}
+                InputProps={{
+                  sx: {
+                    minWidth: '450px', 
+                    textDecoration: 'none', 
+                    height: '50px', 
+                    borderBottom: 'none !important', 
+                    marginTop: '5px',
+                    '&::before': {
+                      borderBottom: 'none !important', 
+                    }, 
+                    '&::after': {
+                      borderBottom: 'none !important', 
+                    }
+                  }
+                }}
                 className={styles.input}
                 placeholder="Search a property address"
-              ></input>
+                handleSelectedAddress={() => {
+                  console.log('address selected');
+                }}
+              />
+              {/* <input
+                className={styles.input}
+                placeholder="Search a property address"
+              ></input> */}
               <button className={styles.searchButton}>
                 <SearchIcon className={styles.searchIcon} />
               </button>

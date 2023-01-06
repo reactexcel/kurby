@@ -58,6 +58,10 @@ export default function App({ Component, pageProps }: AppProps) {
         })(window,document,'script','dataLayer','GTM-P4C8M7L');
       `}
       </Script>
+      <Script
+        strategy="beforeInteractive"
+        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
+      />
       <Topbar>
         <div style={{
           position: 'relative', 

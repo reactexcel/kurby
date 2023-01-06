@@ -18,10 +18,6 @@ export default function Places() {
   return (
     <>
       <RecoilRoot>
-        <Script
-          strategy="beforeInteractive"
-          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
-        />
         <ThemeProvider theme={theme}>
           <Navbar />
           <Box style={{ padding: "32px" }}>
