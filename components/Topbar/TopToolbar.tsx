@@ -5,6 +5,8 @@ import { styled } from "@mui/material/styles";
 import { useRouter } from "next/router";
 import SearchIcon from "@mui/icons-material/Search";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
+import darkLogo from "../../public/images/logo-dark.png"
+import Image from 'next/image'
 
 const CustomButton = styled(Button)<ButtonProps>(() => ({
   color: "#79889e",
@@ -39,11 +41,13 @@ const TopToolbar = () => {
   };
   return (
     <Toolbar>
-      <img
-        src="https://kurby.ai/wp-content/uploads/2022/10/kurby_main_logo.png"
+      <Image
+        src={darkLogo}
+        alt="logo"
         style={{
           cursor: "pointer",
-          width: "120px",
+          width: "140px",
+          height:"44px"
         }}
         onClick={() => router.push("/")}
       />

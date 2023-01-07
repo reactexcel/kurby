@@ -1,6 +1,10 @@
 import styles from "./Cards.module.css";
 import { Button, ButtonProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import Image from 'next/image'
+import homeIcon from "../../public/icons/home.png"
+import homeHands from "../../public/icons/homehands.png"
+import homePeople from "../../public/icons/homepeople.png"
 
 const Header = styled('h3')(() => ({
     marginBottom: '44px',
@@ -48,7 +52,7 @@ const Cards = () => {
   return (
     <div className={styles['card-container']}>
       <div className={styles.card}>
-        <img src="https://kurby.ai/wp-content/uploads/elementor/thumbs/icon1-py4s4q8mdmbukzegvx41ydtzevq9p26c8t6mdeqr58.png" />
+        <Image src={homeIcon} alt="home icon" />
         <Header>What's Nearby</Header>
         <Body>
           Kurby analyzes location data in an unprecedented way to find the best
@@ -57,7 +61,8 @@ const Cards = () => {
         <CustomButton>Find What's nearby</CustomButton>
       </div>
       <div className={styles.card}>
-        <img src="https://kurby.ai/wp-content/uploads/elementor/thumbs/icon2-py4rzi8wer6i2yzjdnuo3p9sltguxlg0uypie2hhpo.png" />
+        <Image src={homeHands} alt="home hands icon" />
+        
         <Header>LOCATION SCORE</Header>
         <Body>
           Our proprietary location score makes it easy to find the most
@@ -66,7 +71,7 @@ const Cards = () => {
         <CustomButton>Calculate location score</CustomButton>
       </div>
       <div className={styles.card}>
-        <img src="https://kurby.ai/wp-content/uploads/elementor/thumbs/icon3-py4rrdx3da2bs8s5snhp291fuzhpfq7i2rti50ixgs.png" />
+        <Image src={homePeople} alt="home people icon" />
         <Header sx={{
             marginBottom: '8px'
         }}>EXPLAIN IT LIKE A LOCAL</Header>
