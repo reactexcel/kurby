@@ -16,8 +16,8 @@ import searchNearbyApi from "./searchNearbyApi";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import WalkscoreListApi from "../BodyContent/Walkscore/WalkscoreListApi";
-import { syncEffect } from "recoil-sync";
-import { string } from "@recoiljs/refine";
+import snackbarContext from "../../context/snackbarContext";
+
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
 const { MILES_TO_METERS, MAP_ZOOM_MILES, PLACE_TYPES } = GLOBAL_SETTINGS;
@@ -42,7 +42,9 @@ export default function Filters() {
   const [filterVal, setFilterVal] = useRecoilState(filterState);
 
   const [address, setAddress] = useRecoilState(addressState);
-
+  
+  const [snackbar, setSnackbar] = useRecoilState(snackbarContext);
+  
   const [isSelectAll, setSelectAll] = useState<boolean>(true);
 
   //* State for the place select element
@@ -184,6 +186,34 @@ export default function Filters() {
       //TODO handle error and display it to the client
       const place = await autoCompleteRef.current.getPlace();
       handleAddressChange(place);
+      const getScore = (address: string, location: any) => WalkscoreListApi({ address, location });
+
+      //TODO save all of place variable to state instead of destructuring it.
+      const location = {
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng(),
+      }
+      const walkscore = await getScore(place.formatted_address, location);
+      setSnackbar((prevVal: any) => {
+        return {
+          ...prevVal,
+          ...(walkscore ? walkscore : {
+            open: true,
+              message: 'Walkscore error',
+              variant: 'error'
+          })
+        }
+      })
+      setFilterVal((prevVal: any) => {
+        return {
+          ...prevVal,
+          latlong: place.geometry.location,
+          address: place.formatted_address,
+          selectedPlace: place,
+          mapCenter: location,
+          walkscore
+        };
+      });
     });
   }, [AUTOCOMPLETE_OPTIONS, setFilterVal]);
 
