@@ -39,7 +39,7 @@ function MyComponent() {
   const googleMapOptions = {
     zoomControl: false,
     minZoom: 13,
-    disableDefaultUI: true
+    fullscreenControl: false
   }
   
   //* On map load
