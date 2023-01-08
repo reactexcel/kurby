@@ -114,9 +114,8 @@ export default function Filters() {
 
         const isNotLocality = !place.types.includes('locality');
         const isOpen = place.business_status === operational;
-        const hasRating = !!place.rating;
 
-        return isNotLocality && isOpen && hasRating
+        return isNotLocality && isOpen
       })
 
       setFilterVal((prevVal: any) => {
