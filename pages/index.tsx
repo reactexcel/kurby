@@ -24,7 +24,7 @@ export default function Home() {
         />
         <ThemeProvider theme={theme}>
           <Navbar />
-          <Box style={{ padding: "32px", height: "92vh", display: "flex", flexDirection: "column", boxSizing: "border-box" }}>
+          <Box style={{ padding: "32px", paddingBottom: "0px", height: "92vh", display: "flex", flexDirection: "column", boxSizing: "border-box", }}>
             <Filters />
             <BodyContent />
           </Box>

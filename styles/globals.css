@@ -28,7 +28,6 @@ select {
 .container{
     display: flex;
     padding: 32px;
-    padding-bottom: 0px;
 }
 
 .infinite-scroll-component  {
