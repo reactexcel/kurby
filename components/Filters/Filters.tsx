@@ -206,10 +206,9 @@ export default function Filters() {
     <>
       <Box
         sx={{
-          height: "100%",
           backgroundColor: "#f1f4f6",
           borderRadius: "14px",
-          padding: "22px",
+          padding: "14px 22px",
           display: "flex",
           alignItems: "center",
           width: "100%",

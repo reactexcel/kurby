@@ -9,7 +9,7 @@ import FilterResults from "./FilterResults"
 export default function BodyContent() {
   return (
 
-    <Box style={{ display: "flex" }}>
+    <Box style={{ display: "flex", height: "100%" }}>
       <Box style={{ width: "35%" }}>
         <Gmap />
       </Box>
