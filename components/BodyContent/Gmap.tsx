@@ -19,7 +19,9 @@ const googleMapContainerStyle: React.CSSProperties = {
   height: "100%",
   position: "relative",
   overflow: "hidden",
-  borderRadius: "14px"
+  borderRadius: "14px",
+  borderBottomRightRadius: "0px",
+  borderBottomLeftRadius: "0px"
 };
 
 //TODO where should this start?

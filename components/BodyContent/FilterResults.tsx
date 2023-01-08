@@ -118,6 +118,8 @@ export default function FilterResults() {
     border: "1px solid rgba(38,75,92,.2)",
     boxShadow: "0 4px 4px #00000040",
     borderRadius: "14px",
+    borderBottomRightRadius: "0px",
+    borderBottomLeftRadius: "0px",
     marginTop: "25px",
     display: "flex",
     height: "100%",
