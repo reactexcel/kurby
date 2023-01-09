@@ -6,9 +6,11 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<any>
 ) {
+    console.log('req body', req.body)
     const { location, radius, types } = req.body;
 
     let placesWithType = await Promise.all(getPlacesByTypes(types, radius, location));
+    console.log('placesWithType', placesWithType)
     const places: any[] = [];
     placesWithType.map(p => {
         const resultWithType = p.results.map((place: any) => { return { ...place, _type: p._type } })
@@ -16,7 +18,7 @@ export default async function handler(
     });
     const placesWithDetails = await Promise.all(addDetailsToPlaces(places, ['website']));
     const preparedPlaces = getValuablePlaces(placesWithDetails, types);
-
+    console.log('preparedPlaces', preparedPlaces)
     res.status(200).json(preparedPlaces)
 }
 
