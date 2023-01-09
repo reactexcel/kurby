@@ -17,7 +17,7 @@ interface Props {
   inputProps?: any;
   placeholder?: string;
   value?: any;
-  handleSelectedAddress: () => void;
+  handleSelectedAddress: (e:any) => void;
 }
 
 const GoogleAddressInput = (params: Props) => {
@@ -62,7 +62,10 @@ const GoogleAddressInput = (params: Props) => {
       AUTOCOMPLETE_OPTIONS
     );
 
-    const Listener = autoCompleteRef.current.addListener("place_changed", handleSelectedAddress);
+    const Listener = autoCompleteRef.current.addListener("place_changed", async()=>{
+      const place = await autoCompleteRef.current.getPlace();
+      handleSelectedAddress(place);
+    });
 
     return () => {
       Listener.remove();

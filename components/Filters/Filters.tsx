@@ -44,7 +44,6 @@ export default function Filters() {
   const [filterVal, setFilterVal] = useRecoilState(filterState);
 
   const [address, setAddress] = useRecoilState(addressState)
-  const [inputAddress, setInputAddress] = useState<string>("")
   
   const [isSelectAll, setSelectAll] = useState<boolean>(true);
 

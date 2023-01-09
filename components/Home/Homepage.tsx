@@ -9,7 +9,7 @@ import styles from './Home.module.css';
 import SearchIcon from "@mui/icons-material/Search";
 import GoogleAddressInput from "../GoogleAddressInput";
 import { useRecoilState } from "recoil";
-import {filterState} from "../../context/filterContext";
+import {addressState, filterState} from "../../context/filterContext";
 
 const CustomContainer = styled("div")(() => ({
   position: "relative",
@@ -43,7 +43,7 @@ const CustomBody = styled(Container)<ContainerProps>(() => ({
 
 export default function Home({mobile, setHomepage}: any) {
   const [filterVal, setFilterVal] = useRecoilState(filterState);
-  
+  const [address, setAddress] = useRecoilState(addressState)
   return (
     <>
     <div
@@ -102,8 +102,9 @@ export default function Home({mobile, setHomepage}: any) {
               }}
               className={styles.input}
               placeholder="Search a property address"
-              handleSelectedAddress={() => {
-                setHomepage(false)
+              handleSelectedAddress={(address:any) => {
+                setAddress(address.formatted_address);
+                //setHomepage(false);
               }}
             />
             {/* <input
