@@ -42,7 +42,7 @@ export default function NearbyPlaceCard({ place }: any) {
     border: "1px solid rgba(38,75,92,.2)",
     boxShadow: "0 4px 4px #00000040",
     borderRadius: "14px",
-    marginTop: "25px",
+    marginBottom: "25px",
   };
 
   const distanceText = (directionObj: { time: string, distance: string }) => {

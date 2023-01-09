@@ -16,9 +16,12 @@ import GLOBAL_SETTINGS from "../../globals/GLOBAL_SETTINGS";
 //TODO add to stylesheet
 const googleMapContainerStyle: React.CSSProperties = {
   width: "100%",
-  height: "62vh",
+  height: "100%",
   position: "relative",
   overflow: "hidden",
+  borderRadius: "14px",
+  borderBottomRightRadius: "0px",
+  borderBottomLeftRadius: "0px"
 };
 
 //TODO where should this start?

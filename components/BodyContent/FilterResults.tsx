@@ -118,11 +118,15 @@ export default function FilterResults() {
     border: "1px solid rgba(38,75,92,.2)",
     boxShadow: "0 4px 4px #00000040",
     borderRadius: "14px",
+    borderBottomRightRadius: "0px",
+    borderBottomLeftRadius: "0px",
     marginTop: "25px",
     display: "flex",
-  };
+    height: "100%",
+    boxSizing: "border-box"
+  } as any;
   return (
-    <Box style={{ width: "100%", marginLeft: "12.5px" }}>
+    <Box style={{ width: "100%", marginLeft: "12.5px", height: "100%", boxSizing: "border-box", display: "flex", flexDirection: "column" }}>
       <ToggleButtonGroup
         color="primary"
         value={isHomeTab ? "home" : "nearby"}
@@ -130,20 +134,20 @@ export default function FilterResults() {
         onChange={handleTabChange}
         aria-label="Platform"
       >
-        <ToggleButton style={{ width: "220px" }} value="home">
-          Home
+        <ToggleButton style={{ width: "220px", textTransform: 'initial' }} value="home">
+          Location
         </ToggleButton>
-        <ToggleButton style={{ width: "220px" }} value="nearby">
+        <ToggleButton style={{ width: "220px", textTransform: 'initial' }} value="nearby">
           Nearby Places
         </ToggleButton>
       </ToggleButtonGroup>
 
       {filterVal.address && (
-        <Box>
+        <Box style={{height: "100%", marginBottom: "24px"}}>
           {isHomeTab ? (
             <>
               <Box style={resultsContentStyle}>
-                <Box>
+                <Box style={{overflow: "auto", height: "100%", width: "100%", position: "relative"}}>
                   <Box style={{ display: "flex" }}>
                     <StreetView position={filterVal.latlong} />
                     <Box>
@@ -167,7 +171,7 @@ export default function FilterResults() {
                       </Box>
                     </Box>
                   </Box>
-                  <Box style={{ marginTop: "24px" }}>
+                  <Box style={{ marginTop: "24px", position: "absolute", width: "100%" }}>
                     <Flags
                      color="Green"
                      flagsArr={greenFlags}
