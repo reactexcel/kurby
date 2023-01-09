@@ -1,8 +1,10 @@
 import {
     atom,
+    
 } from "recoil";
 import { Walkscore } from "../interfaces/walkscore";
-
+import { syncEffect } from "recoil-sync";
+import { string } from '@recoiljs/refine'
 /**
  * Filter Contect
  * @description: Global state management system
@@ -21,7 +23,7 @@ interface FilterContext {
         selectedPlace: any | null,
         mapCenter: {lat: number, lng: number} | null,
         walkscore: Walkscore | null
-    }
+    },
 }
 
 const filterContext: FilterContext  = {
@@ -34,8 +36,19 @@ const filterContext: FilterContext  = {
         loadedNearbyPlaces: [],
         selectedPlace: null,
         mapCenter: null,
-        walkscore: null
-    }, // default value (aka initial value)
+        walkscore: null,
+       
+    },
+    
+     // default value (aka initial value)
   }
 
-export default atom(filterContext);
+
+export const addressState = atom<string>({
+    key: "address",
+    default: "",
+    effects: [syncEffect({ storeKey: 'url-json-store', refine: string() })],
+})
+
+export const filterState = atom(filterContext);
+

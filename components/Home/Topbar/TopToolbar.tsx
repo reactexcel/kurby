@@ -5,7 +5,7 @@ import { styled } from "@mui/material/styles";
 import { useRouter } from "next/router";
 import SearchIcon from "@mui/icons-material/Search";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
-import darkLogo from "../../public/images/logo-dark.png"
+import darkLogo from "../../../public/images/logo-dark.png"
 import Image from 'next/image'
 
 const CustomButton = styled(Button)<ButtonProps>(() => ({

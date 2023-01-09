@@ -4,7 +4,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import filterContext from "../../context/filterContext";
+import {filterState} from "../../context/filterContext";
 import StreetView from "./StreetView";
 import Nearby from "./Nearby/Nearby";
 import InfoIcon from '@mui/icons-material/Info';
@@ -22,7 +22,7 @@ export default function FilterResults() {
   const [redFlags, setRedFlags] = useState<any[]>([]);
   const [loading, isLoading] = useState(false);
 
-  const [filterVal] = useRecoilState(filterContext);
+  const [filterVal] = useRecoilState(filterState);
 
   const handleTabChange = () => setIsHomeTab(!isHomeTab);
 
