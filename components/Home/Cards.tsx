@@ -20,7 +20,7 @@ const Header = styled('h3')(() => ({
 
 const Body = styled('p')(() => ({
     color: '#868686',
-    fontFamily: '"Filson Pro", Filson Pro',
+    fontFamily: 'Filson Pro", Filson Pro',
     fontSize: '24px',
     fontWeight: '300',
     lineHeight: '28px',
@@ -58,7 +58,7 @@ const Cards = () => {
           Kurby analyzes location data in an unprecedented way to find the best
           place for you to live.
         </Body>
-        <CustomButton>Find What's nearby</CustomButton>
+        <CustomButton>{"Find What's nearby"}</CustomButton>
       </div>
       <div className={styles.card}>
         <Image src={homeHands} alt="home hands icon" />

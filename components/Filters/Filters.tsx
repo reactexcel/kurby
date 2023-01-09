@@ -120,9 +120,8 @@ export default function Filters() {
 
         const isNotLocality = !place.types.includes('locality');
         const isOpen = place.business_status === operational;
-        const hasRating = !!place.rating;
 
-        return isNotLocality && isOpen && hasRating
+        return isNotLocality && isOpen
       })
 
       setFilterVal((prevVal: any) => {
@@ -250,10 +249,9 @@ export default function Filters() {
     <>
       <Box
         sx={{
-          height: "100%",
           backgroundColor: "#f1f4f6",
           borderRadius: "14px",
-          padding: "22px",
+          padding: "14px 22px",
           display: "flex",
           alignItems: "center",
           width: "100%",
@@ -276,13 +274,13 @@ export default function Filters() {
           </form>
         </div>
 
-        <div className={styles.filterBlock}>
+        <div className={styles.searchBlock}>
           
           <div className={styles.typeOfPlace}>
             <div className={styles.row}>
               <div className={styles.label}>Places of interest</div>
             </div>
-            <div className={styles.row} style={{ marginTop: "12px"}}>
+            <div className={styles.row} style={{ marginTop: "6px"}}>
               <form style={{ width: "100%" }}>
                 <FormControl fullWidth >
                   <InputLabel id="demo-simple-select-label">

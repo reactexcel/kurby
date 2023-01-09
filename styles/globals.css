@@ -53,3 +53,7 @@ select {
     display: flex;
     padding: 32px;
 }
+
+.infinite-scroll-component  {
+    width: 100%;
+}

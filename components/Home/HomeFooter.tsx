@@ -3,9 +3,7 @@ import { useRouter } from "next/router";
 import {
     IconButton, 
     IconButtonProps, 
-    Button
 } from '@mui/material';
-// import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import {
@@ -90,7 +88,6 @@ const LinkElem = ({ linkText, link }: Props) => {
           color: "#21C25E",
         }}
       >
-        //{" "}
       </span>
       {linkText}
     </Link>
