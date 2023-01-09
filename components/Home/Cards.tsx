@@ -53,7 +53,7 @@ const Cards = () => {
     <div className={styles['card-container']}>
       <div className={styles.card}>
         <Image src={homeIcon} alt="home icon" />
-        <Header>What's Nearby</Header>
+        <Header>{"What's Nearby"}</Header>
         <Body>
           Kurby analyzes location data in an unprecedented way to find the best
           place for you to live.
