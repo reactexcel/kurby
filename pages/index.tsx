@@ -30,20 +30,36 @@ export default function Home() {
   }, [recoilAddress]);
 
   return (
-    <>
-      <RecoilRoot>
-        <Script
-          strategy="beforeInteractive"
-          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
-        />
-        <ThemeProvider theme={theme}>
-          <Navbar />
-          <Box style={{ padding: "32px", paddingBottom: "0px", height: "92vh", display: "flex", flexDirection: "column", boxSizing: "border-box", }}>
-            <Filters />
-            <BodyContent />
-          </Box>
-        </ThemeProvider>
-      </RecoilRoot>
+<>
+      <Script
+        strategy="beforeInteractive"
+        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
+      />
+      <ThemeProvider theme={theme}>
+        {isLoading ? (
+          <></>
+        ) : isHomepage ? (
+          <Homepage setHomepage={setHomepage} />
+        ) : (
+          <>
+          
+            <Navbar />
+            <Box 
+              style={{ 
+                padding: '32px',
+                paddingBottom: '0px',
+                height: '92vh',
+                display: 'flex',
+                flexDirection: 'column',
+                boxSizing: 'border-box',
+              }}
+            >
+              <Filters />
+              <BodyContent />
+            </Box>
+          </>
+        )}
+      </ThemeProvider>
     </>
   );
 }
