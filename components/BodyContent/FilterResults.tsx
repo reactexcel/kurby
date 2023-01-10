@@ -190,7 +190,7 @@ export default function FilterResults() {
             <Nearby />
           )}
         </Box>
-      )}
+      )} 
     </Box>
   );
 }
