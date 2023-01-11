@@ -11,6 +11,7 @@ import BicycleIcon from "../../../public/images/bicycle.svg";
 import CarIcon from "../../../public/images/car.svg";
 import styles from "./NearbyPlace.module.css";
 import StreetView from "../StreetView";
+import LocationSvg from "../../../public/icons/location.svg";
 
 /**
  * NearbyPlaceCard
@@ -78,18 +79,21 @@ export default function NearbyPlaceCard({ place }: any) {
             <StreetView position={position}/>
           }
           <Box>
-            {website ?
-              <Typography variant="h6">
-                <a href={website} target="_blank" rel="noreferrer">{placeName}</a>
-              </Typography> :
-              <Typography variant="h6">{placeName}</Typography>
-            }
-            <Typography>{vicinity}</Typography>
-
+            
+              {website ?
+                <Typography variant="h6">
+                  <a href={website} target="_blank" rel="noreferrer">{placeName}</a>
+                </Typography> :
+                <Typography variant="h6">{placeName}</Typography>
+              }
+            <Box style={{ display: "flex", alignItems: "center", paddingTop: "2px" }}>
+              <LocationSvg style={{ marginRight: "8px" }} />
+              <Typography>{vicinity}</Typography>
+            </Box>
             {
               //* only show rating box, if the item has a rating
               rating && (
-                <Box style={{ display: "flex" }}>
+                <Box style={{ display: "flex", paddingTop: "12px", paddingBottom: "6px" }}>
                   <Rating
                     fillColor="#7ed321"
                     initialValue={rating}
