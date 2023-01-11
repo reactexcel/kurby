@@ -1,21 +1,43 @@
+.body {
+    height: 100vh;
+    width: 100%;
+}
+
+#__next {
+    height: 100vh;
+    width: 100%;
+}
+
 @font-face {
-    font-family: "FilsonPro";   /*Can be any text*/
+    font-family: "FilsonProLight";
     font-style: normal;
     font-weight: 400;
     src: local("FilsonProLight"),
-      url("../public/fonts/FilsonProLight/FilsonProLight.woff") format("truetype");
+        url("/fonts/FilsonProLight/FilsonProLight.woff") format("truetype");
 }
 
 @font-face {
-    font-family: "FilsonPro";   /*Can be any text*/
+    font-family: "FilsonPro";
     font-style: normal;
     font-weight: 500;
     src: local("FilsonProRegular"),
-      url("../public/fonts/FilsonProRegular/FilsonProRegular.woff") format("truetype");
+        url("/fonts/FilsonProRegular/FilsonProRegular.woff") format("truetype");
 }
 
-html, body { height: 100%; font-family: 'FilsonPro'; }
-body { margin: 0;  }
+html,
+body {
+    height: 100vh;
+    width: 100%;
+    font-family: FilsonPro;
+}
+
+* {
+    font-family: "Filson Pro", FilsonPro;
+}
+
+body {
+    margin: 0;
+}
 
 select {
     outline: none;
@@ -25,7 +47,7 @@ select {
     border-right: 6px solid transparent;
 }
 
-.container{
+.container {
     display: flex;
     padding: 32px;
 }

@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import filterContext from "../../../context/filterContext";
+import {filterState} from "../../../context/filterContext";
 import NearbyPlaceCard from "./NearbyPlaceCard";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useEffect, useState } from "react";
@@ -39,7 +39,7 @@ const PAGE_SIZE = 5;
 */
 
 export default function Nearby() {
-  const [filterVal] = useRecoilState(filterContext);
+  const [filterVal] = useRecoilState(filterState);
   const [loadedNearbyPlaces, setLoadedNearbyPlaces] = useState([])
   const fetchMoreData = () => {
     setTimeout(async () => {

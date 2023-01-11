@@ -21,7 +21,7 @@
 .matIcon {
     border-right: 1px solid rgb(135, 135, 135, 0.5);
     padding: 0px 14px;
-    color: #00A13D;
+    min-width: 55px;
 }
 
 .searchRow {

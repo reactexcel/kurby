@@ -1,0 +1,19 @@
+.card-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 1120px;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+
+@media (min-width: 768px) {
+    .card {
+        width: 33%
+    }
+}

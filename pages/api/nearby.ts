@@ -9,15 +9,15 @@ export default async function handler(
     const { location, radius, types } = req.body;
 
     let placesWithType = await Promise.all(getPlacesByTypes(types, radius, location));
+
     const places: any[] = [];
     placesWithType.map(p => {
         const resultWithType = p.results.map((place: any) => { return { ...place, _type: p._type } })
         places.push(...resultWithType)
     });
     const placesWithDetails = await Promise.all(addDetailsToPlaces(places, ['website']));
-    // const preparedPlaces = getValuablePlaces(placesWithDetails, types); // See getValuablePlaces fn
-
-    res.status(200).json(placesWithDetails)
+    const preparedPlaces = getValuablePlaces(placesWithDetails, types);
+    res.status(200).json(preparedPlaces)
 }
 
 function addDetailsToPlaces(places: any[], fields: string[]) {

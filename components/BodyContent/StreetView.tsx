@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react"
 import { useRecoilState } from "recoil";
-import filterContext from "../../context/filterContext";
 
 /**
  * Street View
@@ -9,7 +8,6 @@ import filterContext from "../../context/filterContext";
 
 export default React.memo(function StreetView({position}: any) {
   const streetViewMap = useRef(null)  
-  // const [filterVal] = useRecoilState(filterContext);
   useEffect(() => {
     const getStreetViewData = async () => {
       const streetViewService = new google.maps.StreetViewService();

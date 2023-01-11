@@ -4,7 +4,7 @@ import {
   MarkerF,
   useJsApiLoader,
 } from "@react-google-maps/api";
-import filterContext from "../../context/filterContext";
+import {filterState} from "../../context/filterContext";
 import { useRecoilState } from "recoil";
 import GLOBAL_SETTINGS from "../../globals/GLOBAL_SETTINGS";
 
@@ -35,7 +35,7 @@ function MyComponent() {
   });
 
   const [map, setMap] = React.useState(null) as any;
-  const [filterVal, setFilterVal] = useRecoilState(filterContext);
+  const [filterVal, setFilterVal] = useRecoilState(filterState);
 
   //* Google maps options 
   //* SEE https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions

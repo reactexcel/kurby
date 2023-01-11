@@ -7,8 +7,8 @@ import MenuItem from "@mui/material/MenuItem";
 import { useState, useRef, useEffect } from "react";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import { useRecoilState } from "recoil";
-import filterContext from "../../context/filterContext";
+import { atom, useRecoilState } from "recoil";
+import { addressState, filterState } from "../../context/filterContext";
 import Checkbox from "@mui/material/Checkbox";
 import { ListItemText, OutlinedInput, Radio } from "@mui/material";
 import GLOBAL_SETTINGS from "../../globals/GLOBAL_SETTINGS";
@@ -16,7 +16,8 @@ import searchNearbyApi from "./searchNearbyApi";
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import WalkscoreListApi from "../BodyContent/Walkscore/WalkscoreListApi";
-
+import { syncEffect } from "recoil-sync";
+import { string } from '@recoiljs/refine'
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
 const { MILES_TO_METERS, MAP_ZOOM_MILES, PLACE_TYPES } = GLOBAL_SETTINGS;
@@ -37,9 +38,12 @@ const MenuProps = {
  * @description: Displays filter bar at the top of the screen
 */
 
+
 export default function Filters() {
   //* Use global state management
-  const [filterVal, setFilterVal] = useRecoilState(filterContext);
+  const [filterVal, setFilterVal] = useRecoilState(filterState);
+
+  const [address, setAddress] = useRecoilState(addressState)
   
   const [isSelectAll, setSelectAll] = useState<boolean>(true);
 
@@ -84,6 +88,8 @@ export default function Filters() {
     setSelectAll(allItemsSelected);
     
   };
+
+ 
 
   const getNearby = async ({ lat, lng }: { lat: number; lng: number }) => {
     console.log(typesOfPlace);
@@ -163,6 +169,30 @@ export default function Filters() {
     getNearbyState();
   }, [filterVal.mapCenter, typesOfPlace, filterVal?.selectedPlace]);
 
+  const handleAddressChange = async (place: any)=>{
+    console.log('place',place)
+    const getScore = (address: string, location: any) => WalkscoreListApi({ address, location });
+
+    //TODO save all of place variable to state instead of destructuring it.
+    const location = {
+      lat: place.geometry.location.lat(),
+      lng: place.geometry.location.lng(),
+    }
+    const walkscore = await getScore(place.formatted_address, location)
+   
+    setAddress(place.formatted_address)
+    setFilterVal((prevVal: any) => {
+      return {
+        ...prevVal,
+        latlong: place.geometry.location,
+        address: place.formatted_address,
+        selectedPlace: place,
+        mapCenter: location,
+        walkscore
+      };
+    });
+  }
+
   useEffect(() => {
     //* This use effect runs on component render
 
@@ -175,31 +205,45 @@ export default function Filters() {
       AUTOCOMPLETE_OPTIONS
     );
 
+    
+
     //* When the location changes, update the state
     autoCompleteRef.current.addListener("place_changed", async function () {
+      
       //TODO handle error and display it to the client
       const place = await autoCompleteRef.current.getPlace();
-      const getScore = (address: string, location: any) => WalkscoreListApi({ address, location });
-
-      //TODO save all of place variable to state instead of destructuring it.
-      const location = {
-        lat: place.geometry.location.lat(),
-        lng: place.geometry.location.lng(),
-      }
-      const walkscore = await getScore(place.formatted_address, location)
-      setFilterVal((prevVal: any) => {
-        return {
-          ...prevVal,
-          latlong: place.geometry.location,
-          address: place.formatted_address,
-          selectedPlace: place,
-          mapCenter: location,
-          walkscore
-        };
-      });
+      handleAddressChange(place)
     });
   }, [AUTOCOMPLETE_OPTIONS, setFilterVal]);
 
+  useEffect(()=>{
+    let queryString = window.location.search;
+    let urlParams = new URLSearchParams(queryString);
+    let address = urlParams.get('address')
+
+    if(address && inputRef.current){
+      const addressFormattted = address.replaceAll('"', "")
+      inputRef.current.value = addressFormattted
+      
+      const getData = async()=>{
+        
+        const service = new google.maps.places.PlacesService(document.createElement('div'));
+
+        const placeReq = {
+          query: addressFormattted,
+          fields: ["name", "geometry","formatted_address",],
+        }
+        service.findPlaceFromQuery(placeReq, (results, status) => {
+          if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+            console.log('results', results)
+            handleAddressChange(results[0])
+          }
+        });
+      }
+      getData()
+     
+    }
+  }, [])
 
   return (
     <>
@@ -225,6 +269,7 @@ export default function Filters() {
               className={styles.input}
               type="text"
               ref={inputRef}
+              
             />
           </form>
         </div>
@@ -278,3 +323,5 @@ export default function Filters() {
     </>
   );
 }
+
+
