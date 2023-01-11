@@ -75,6 +75,13 @@ function MyComponent() {
     
   }
 
+  const onCenterChanged = () => {
+    if (!map) {
+      return;
+    }
+    map.getStreetView().setVisible(false);
+  }
+
   //* When the marker loads
   const onMarkerLoad = (marker: any) => {
     //console.log("marker: ", marker);
@@ -126,6 +133,7 @@ function MyComponent() {
       onUnmount={onUnmount}
       options={googleMapOptions}
       onDragEnd={handleMapDrag}
+      onCenterChanged={onCenterChanged}
     >
       {/* Child components, such as markers, info windows, etc. */}
       <>
