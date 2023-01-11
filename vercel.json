@@ -2,10 +2,7 @@
   "rewrites": [
       {
         "source": "/blog",
-        "destination": "https://kurby.ai/blog/blog-posts"
-      },{
-        "source": "/blog/:match*",
-        "destination": "https://kurby.ai/blog/blog-posts/:match*/"
+        "destination": "https://kurby.ai/blog"
       }
     ]
   
