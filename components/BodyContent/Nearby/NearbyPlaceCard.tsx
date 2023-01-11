@@ -115,7 +115,7 @@ export default function NearbyPlaceCard({ place }: any) {
           style={{
             backgroundColor: "#bebebe1a",
             minWidth: "190px",
-            maxWidth: "190px",
+            
             borderRadius: "10px",
             padding: "12px",
           }}
