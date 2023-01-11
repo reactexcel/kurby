@@ -18,6 +18,7 @@ export default {
     },
     MAP_ZOOM_DEFAULT: 14,
     PLACE_TYPES: [
+        "School",
         "Primary School",
         "Secondary School",
         "University",
