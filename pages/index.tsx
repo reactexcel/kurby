@@ -9,6 +9,7 @@ import { RecoilRoot, useRecoilState } from "recoil";
 import { useEffect, useState } from "react";
 import Homepage from "../components/Home/Homepage";
 import { addressState } from "../context/filterContext";
+import { NextSeo } from 'next-seo';
 /**
  * Home
  * @description: Landing page
@@ -31,6 +32,11 @@ export default function Home() {
 
   return (
 <>
+      <NextSeo
+          title={recoilAddress || "Kurby.ai"}
+          description="Kurby uses location data to estimate property value like never before."
+        />
+   
       <Script
         strategy="beforeInteractive"
         src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}

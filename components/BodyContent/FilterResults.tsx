@@ -11,6 +11,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import WalkscoreList from "./Walkscore/WalkscoreList";
 import LocationSvg from "../../public/icons/location.svg";
 import QuestionTooltipSvg from "../../public/icons/question-tooltip.svg";
+import { NextSeo } from "next-seo";
 
 
 /**
@@ -129,6 +130,10 @@ export default function FilterResults() {
     boxSizing: "border-box"
   } as any;
   return (
+    <>
+    <NextSeo
+        description={explainedLikeAlocal.split(".")[0] || "Kurby uses location data to estimate property value like never before."}
+    />
     <Box style={{ width: "100%", marginLeft: "12.5px", height: "100%", boxSizing: "border-box", display: "flex", flexDirection: "column" }}>
       <ToggleButtonGroup
         color="primary"
@@ -198,5 +203,6 @@ export default function FilterResults() {
         </Box>
       )} 
     </Box>
+    </>
   );
 }
