@@ -155,8 +155,8 @@ export default function FilterResults() {
                     <StreetView position={filterVal.latlong} />
                     <Box>
                       <Box style={{ display: "flex", alignItems: "center" }}>
-                        <LocationSvg style={{ marginRight: "8px" }} />
                         <Typography variant="h5" component="h5">
+                        <LocationSvg style={{ marginRight: "8px" }} />
                           {filterVal.address}
                         </Typography>
                       </Box>
