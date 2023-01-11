@@ -6,7 +6,7 @@ import { FaTiktok, FaTwitter, FaLinkedin, FaYoutube } from "react-icons/fa";
 const CustomLinkedIn = styled(FaLinkedin)(() => ({
   color: "#203656",
   fontSize: "18px",
-  cursor: 'pointer',
+  cursor: "pointer",
   margin: "0px 5px",
   "&:hover": {
     color: "#01A13B",
@@ -16,7 +16,7 @@ const CustomLinkedIn = styled(FaLinkedin)(() => ({
 const CustomTwitter = styled(FaTwitter)(() => ({
   color: "#203656",
   fontSize: "18px",
-  cursor: 'pointer',
+  cursor: "pointer",
   margin: "0px 5px",
   "&:hover": {
     color: "#01A13B",
@@ -26,7 +26,7 @@ const CustomTwitter = styled(FaTwitter)(() => ({
 const CustomTikTok = styled(FaTiktok)(() => ({
   color: "#203656",
   fontSize: "18px",
-  cursor: 'pointer',  
+  cursor: "pointer",
   margin: "0px 5px",
   "&:hover": {
     color: "#01A13B",
@@ -36,7 +36,7 @@ const CustomTikTok = styled(FaTiktok)(() => ({
 const CustomYouTube = styled(FaYoutube)(() => ({
   color: "#203656",
   fontSize: "18px",
-  cursor: 'pointer',  
+  cursor: "pointer",
   margin: "0px 5px",
   "&:hover": {
     color: "#01A13B",
@@ -81,16 +81,38 @@ const Footer = () => {
               alignItems: "center",
             }}
           >
-            <CustomLinkedIn />
-            <CustomTwitter />
-            <CustomTikTok />
-            <CustomYouTube />
+            <a
+              href="https://www.linkedin.com/company/kurby/"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              <CustomLinkedIn />
+            </a>
+            <a
+              href="https://twitter.com/kurbyai"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+                <CustomTwitter />
+            </a>
+          
+              <CustomTikTok />
+            <a
+              href="https://www.youtube.com/@kurbyai"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              <CustomYouTube />
+            </a>
+          
+         
+            
           </div>
           <div
             style={{
               width: "33%",
-              display: 'flex', 
-              justifyContent: 'flex-end'
+              display: "flex",
+              justifyContent: "flex-end",
             }}
           >
             <Button
@@ -111,12 +133,12 @@ const Footer = () => {
                 },
               }}
               onClick={() => {
-                if(typeof window !== 'undefined'){
-                    window.scrollTo({
-                        top: 0, 
-                        left: 0, 
-                        behavior: 'smooth'
-                    })
+                if (typeof window !== "undefined") {
+                  window.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: "smooth",
+                  });
                 }
               }}
             >

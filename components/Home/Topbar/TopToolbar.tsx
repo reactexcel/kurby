@@ -57,7 +57,6 @@ const TopToolbar = () => {
           width: "45vw",
         }}
       >
-        <CustomButton>App</CustomButton>
         <CustomButton>Blog</CustomButton>
       </Box>
       <Box>
