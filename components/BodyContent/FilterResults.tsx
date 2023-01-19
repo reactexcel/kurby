@@ -1,4 +1,4 @@
-import { Box, IconButton, Skeleton, Tooltip, Typography } from "@mui/material";
+import { Box, IconButton, Skeleton, Tooltip, Typography, Button } from "@mui/material";
 import styles from "./BodyContent.module.css";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
@@ -12,6 +12,53 @@ import WalkscoreList from "./Walkscore/WalkscoreList";
 import LocationSvg from "../../public/icons/location.svg";
 import QuestionTooltipSvg from "../../public/icons/question-tooltip.svg";
 import { NextSeo } from "next-seo";
+import getFloodData from "./Neighborhood/floodData";
+import FactCard from "./Neighborhood/FactCard";
+import FloodIcon from "@mui/icons-material/Flood";
+import { styled } from "@mui/material/styles";
+import FloodZoneModal from "./Neighborhood/FloodZoneModal";
+import WaterDamageIcon from "@mui/icons-material/WaterDamage";
+import WarningIcon from "@mui/icons-material/Warning";
+
+const floodRiskMap: { [key: string]: string } = {
+  A: "Medium",
+  A1: "Unknown",
+  A99: "Medium",
+  AE: "Unknown",
+  AH: "Medium",
+  AO: "Medium",
+  AR: "High",
+  B: "Medium",
+  X: "Low",
+  C: "Low",
+  D: "Medium",
+  V: "Medium",
+  VE: "Medium",
+  V1: "Medium",
+};
+
+const convertFloodZoneToRisk = (floodZone: string) => {
+  if (!floodZone) return "Unknown";
+
+  const formattedFloodZone = floodZone.trim();
+  let zoneNumber: string | number = parseInt(formattedFloodZone.replace(/[^0-9]/g, ""));
+  const zoneLetter = formattedFloodZone.replace(/[\d\.]/g, "").replace(/ /g, "");
+
+  if (!isNaN(zoneNumber) && zoneNumber) {
+    if (zoneNumber <= 30) zoneNumber = 1;
+  } else {
+    zoneNumber = "";
+  }
+
+  const finalFloodZone = `${zoneLetter}${zoneNumber}`;
+  return floodRiskMap[finalFloodZone] || "Unknown";
+};
+
+const FactCardContainer = styled("div")(() => ({
+  display: "flex",
+  flexWrap: "wrap",
+  width: "100%",
+}));
 
 /**
  * FilterResults
@@ -24,13 +71,17 @@ export default function FilterResults() {
   const [greenFlags, setGreenFlags] = useState<any[]>([]);
   const [redFlags, setRedFlags] = useState<any[]>([]);
   const [loading, isLoading] = useState(false);
+  const [selectedZipCode, setSelectedZipCode] = useState("");
+  const [openFloodZoneMap, setOpenFloodZoneMap] = useState(false);
+  const [floodData, setFloodData] = useState<any[]>([]);
+
+  const handleCloseFloodZoneModal = () => {
+    setOpenFloodZoneMap(false);
+  };
 
   const [filterVal] = useRecoilState(filterState);
 
-  const handleTabChange = (
-    event: React.MouseEvent<HTMLElement>,
-    newTab: string | null
-  ) => {
+  const handleTabChange = (event: React.MouseEvent<HTMLElement>, newTab: string | null) => {
     setActiveTab(newTab);
   };
 
@@ -57,7 +108,27 @@ export default function FilterResults() {
     };
 
     getOpenAiData();
+
+    const retrieveFloodData = async () => {
+      if (!filterVal.selectedPlace) return;
+
+      const addressComponents = filterVal.selectedPlace.address_components;
+
+      const zipData = addressComponents.filter((component: any) => component.types.includes("postal_code"));
+      const zipCode = zipData[0].long_name;
+      setSelectedZipCode(zipCode);
+      const dt = await getFloodData(zipCode);
+      setFloodData(dt);
+    };
+
+    (async () => {
+      await retrieveFloodData();
+    })();
   }, [filterVal.address, filterVal.selectedPlace]);
+
+  useEffect(() => {
+    console.log("filterVal", filterVal);
+  }, [filterVal]);
 
   const AIWarningToolTip = () => (
     <Tooltip title="The information provided by AI is never 100% accurate and should only be used as a starting point for further research. AI cannot replace human judgment, and no AI system can guarantee the accuracy of its conclusions. As such, any decisions made based on the results of AI should be carefully evaluated and independently verified.">
@@ -104,16 +175,8 @@ export default function FilterResults() {
   const ParagraphSkeleton = () => {
     return (
       <>
-        <Skeleton
-          variant="rectangular"
-          height={10}
-          style={{ marginBottom: 6 }}
-        />
-        <Skeleton
-          variant="rectangular"
-          height={10}
-          style={{ marginBottom: 6 }}
-        />
+        <Skeleton variant="rectangular" height={10} style={{ marginBottom: 6 }} />
+        <Skeleton variant="rectangular" height={10} style={{ marginBottom: 6 }} />
         <Skeleton variant="rectangular" height={10} />
       </>
     );
@@ -134,12 +197,7 @@ export default function FilterResults() {
   } as any;
   return (
     <>
-      <NextSeo
-        description={
-          explainedLikeAlocal.split(".")[0] ||
-          "Kurby uses location data to estimate property value like never before."
-        }
-      />
+      <NextSeo description={explainedLikeAlocal.split(".")[0] || "Kurby uses location data to estimate property value like never before."} />
       <Box
         style={{
           width: "100%",
@@ -150,29 +208,14 @@ export default function FilterResults() {
           flexDirection: "column",
         }}
       >
-        <ToggleButtonGroup
-          color="primary"
-          value={activeTab}
-          exclusive
-          onChange={handleTabChange}
-          aria-label="Platform"
-        >
-          <ToggleButton
-            style={{ width: "220px", textTransform: "initial" }}
-            value="home"
-          >
+        <ToggleButtonGroup color="primary" value={activeTab} exclusive onChange={handleTabChange} aria-label="Platform">
+          <ToggleButton style={{ width: "220px", textTransform: "initial" }} value="home">
             Location
           </ToggleButton>
-          <ToggleButton
-            style={{ width: "220px", textTransform: "initial" }}
-            value="nearby"
-          >
+          <ToggleButton style={{ width: "220px", textTransform: "initial" }} value="nearby">
             Nearby Places
           </ToggleButton>
-          <ToggleButton
-            style={{ width: "220px", textTransform: "initial" }}
-            value="neighborhood"
-          >
+          <ToggleButton style={{ width: "220px", textTransform: "initial" }} value="neighborhood">
             Neighborhood
           </ToggleButton>
         </ToggleButtonGroup>
@@ -198,18 +241,11 @@ export default function FilterResults() {
                           {filterVal.address}
                         </Typography>
                       </Box>
-                      <Typography
-                        style={{ marginTop: "10px" }}
-                        variant="subtitle2"
-                      >
+                      <Typography style={{ marginTop: "10px" }} variant="subtitle2">
                         Explain it like a local:
                         <AIWarningToolTip />
                       </Typography>
-                      {loading ? (
-                        <ParagraphSkeleton />
-                      ) : (
-                        <Typography>{explainedLikeAlocal}</Typography>
-                      )}
+                      {loading ? <ParagraphSkeleton /> : <Typography>{explainedLikeAlocal}</Typography>}
                       <Box style={{ marginTop: "10px" }}>
                         <WalkscoreList></WalkscoreList>
                       </Box>
@@ -241,6 +277,71 @@ export default function FilterResults() {
                   }}
                 >
                   <h1>Neighborhood</h1>
+                  {floodData.length ? (
+                    <FactCardContainer>
+                      <FactCard
+                        label="Flood Risk"
+                        value={convertFloodZoneToRisk(floodData[0]?.floodZone || "")}
+                        icon={
+                          <WarningIcon
+                            sx={{
+                              color: "green",
+                              fontSize: "50px",
+                            }}
+                          />
+                        }
+                      />
+                      <FactCard
+                        label="Flood Zone"
+                        value={floodData[0]?.floodZone || "Unknown"}
+                        icon={
+                          <FloodIcon
+                            sx={{
+                              color: "green",
+                              fontSize: "50px",
+                            }}
+                          />
+                        }
+                      >
+                        <Button
+                          variant="text"
+                          onClick={() => {
+                            setOpenFloodZoneMap(true);
+                          }}
+                        >
+                          See More
+                        </Button>
+                      </FactCard>
+                      <FactCard
+                        label="Flood Claims"
+                        value={floodData.length >= 1000 ? "1000+" : floodData.length.toString()}
+                        icon={
+                          <WaterDamageIcon
+                            sx={{
+                              color: "green",
+                              fontSize: "50px",
+                            }}
+                          />
+                        }
+                      />
+                      <FloodZoneModal open={openFloodZoneMap} handleClose={handleCloseFloodZoneModal}>
+                        <FactCard
+                          label="Flood Zone"
+                          value={floodData[0]?.floodZone || "Unknown"}
+                          icon={
+                            <FloodIcon
+                              sx={{
+                                color: "green",
+                                fontSize: "50px",
+                              }}
+                            />
+                          }
+                        ></FactCard>
+                      </FloodZoneModal>
+                    </FactCardContainer>
+                  ) : (
+                    <h3>No Flood Data</h3>
+                  )}
                 </Box>
               </Box>
             )}
