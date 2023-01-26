@@ -1,5 +1,5 @@
 import GLOBAL_SETTINGS from "../../globals/GLOBAL_SETTINGS";
-const { MILES_TO_METERS, MAP_ZOOM_MILES, PLACE_TYPES } = GLOBAL_SETTINGS
+const { MILES_TO_METERS, MAP_ZOOM_MILES, PLACE_TYPES } = GLOBAL_SETTINGS;
 //TODO make this file typesafe
 
 interface searchNearbyParams {
@@ -20,13 +20,13 @@ export default async ({ request, typesOfPlace }: searchNearbyParams) => {
   console.log(request);
 
   const getNearbyPlace = async (req: any) => {
-    const response = await (await fetch(`/api/nearby`, {
+    const response = await await fetch(`/api/nearby`, {
       method: "POST",
       body: JSON.stringify({ ...req }),
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-    }));
+    });
     if (response.status === 200) {
       const places = await response.json();
       const withType = places.map((r: any) => {
@@ -35,19 +35,18 @@ export default async ({ request, typesOfPlace }: searchNearbyParams) => {
           ...r,
         };
       });
-      return withType
+      return withType;
     } else {
       console.error("error getting nearby places", response.status);
-      return ([]);
+      return [];
     }
-  }
+  };
   const req = {
     location,
     radius: MILES_TO_METERS(MAP_ZOOM_MILES),
-    types: typesOfPlace.map(t => t.toLowerCase().replace(" ", "_")),
+    types: typesOfPlace.map((t) => t.toLowerCase().replace(" ", "_")),
   };
   const result = await getNearbyPlace(req);
 
   return result;
-
 };

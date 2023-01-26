@@ -13,11 +13,11 @@ import Checkbox from "@mui/material/Checkbox";
 import { ListItemText, OutlinedInput, Radio } from "@mui/material";
 import GLOBAL_SETTINGS from "../../globals/GLOBAL_SETTINGS";
 import searchNearbyApi from "./searchNearbyApi";
-import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
-import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import WalkscoreListApi from "../BodyContent/Walkscore/WalkscoreListApi";
 import { syncEffect } from "recoil-sync";
-import { string } from '@recoiljs/refine'
+import { string } from "@recoiljs/refine";
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
 const { MILES_TO_METERS, MAP_ZOOM_MILES, PLACE_TYPES } = GLOBAL_SETTINGS;
@@ -29,22 +29,20 @@ const MenuProps = {
       maxHeight: SELECT_INPUT_DROPDOWN_HEIGHT * 4.5 + ITEM_PADDING_TOP,
       width: 250,
     },
-  }
- 
+  },
 };
 
 /**
  * Filters
  * @description: Displays filter bar at the top of the screen
-*/
-
+ */
 
 export default function Filters() {
   //* Use global state management
   const [filterVal, setFilterVal] = useRecoilState(filterState);
 
-  const [address, setAddress] = useRecoilState(addressState)
-  
+  const [address, setAddress] = useRecoilState(addressState);
+
   const [isSelectAll, setSelectAll] = useState<boolean>(true);
 
   //* State for the place select element
@@ -60,15 +58,7 @@ export default function Filters() {
   //* SEE: https://developers.google.com/maps/documentation/javascript/place-data-fields
 
   const AUTOCOMPLETE_OPTIONS = {
-    fields: [
-      "photo",
-      "vicinity",
-      "address_components",
-      "geometry",
-      "icon",
-      "name",
-      "formatted_address",
-    ],
+    fields: ["photo", "vicinity", "address_components", "geometry", "icon", "name", "formatted_address"],
   };
 
   //* All the types that the select element can be
@@ -86,10 +76,7 @@ export default function Filters() {
     //* If not all are selected show the 'select all' option
     const allItemsSelected = value.length == PLACE_TYPES.length;
     setSelectAll(allItemsSelected);
-    
   };
-
- 
 
   const getNearby = async ({ lat, lng }: { lat: number; lng: number }) => {
     console.log(typesOfPlace);
@@ -106,23 +93,23 @@ export default function Filters() {
           },
           radius: MILES_TO_METERS(MAP_ZOOM_MILES),
         },
-      }
-      const nearbyLocations = await searchNearbyApi(searchNearbyPayload)
-      
+      };
+      const nearbyLocations = await searchNearbyApi(searchNearbyPayload);
+
       //* remove duplciates
-      const noDups = nearbyLocations.filter((place: {reference: string}, index:any, array:any)=>{
-        return index === array.findIndex((x:any)=> place.reference === x.reference)
-      })
+      const noDups = nearbyLocations.filter((place: { reference: string }, index: any, array: any) => {
+        return index === array.findIndex((x: any) => place.reference === x.reference);
+      });
 
       //*filter out certain data / incorrect info
-      const goodPlaceListings = noDups.filter((place:any)=>{
-        const operational = "OPERATIONAL"
+      const goodPlaceListings = noDups.filter((place: any) => {
+        const operational = "OPERATIONAL";
 
-        const isNotLocality = !place.types.includes('locality');
+        const isNotLocality = !place.types.includes("locality");
         const isOpen = place.business_status === operational;
 
-        return isNotLocality && isOpen
-      })
+        return isNotLocality && isOpen;
+      });
 
       setFilterVal((prevVal: any) => {
         //TODO save old nearby locations to prevent repeat requests
@@ -134,28 +121,25 @@ export default function Filters() {
         };
       });
     } catch (error) {
-
       //TODO error handling - errors should be displayed to end user
       console.error(error);
     }
   };
 
-  const handleToggleAll = ()=>{
-    setSelectAll(!isSelectAll)
+  const handleToggleAll = () => {
+    setSelectAll(!isSelectAll);
 
-    if(!isSelectAll){
+    if (!isSelectAll) {
       setTypesOfPlace(PLACE_TYPES);
-    }else{
+    } else {
       setTypesOfPlace([]);
     }
-  }
+  };
 
   useEffect(() => {
     //* this use effect only runs when the map center or type of place changes
     //* Searching a different place will change map center
-
     if (!filterVal?.selectedPlace) return;
-
     const getNearbyState = async () => {
       if (!filterVal.mapCenter) return;
       //* Retreive all of the nearby places
@@ -163,24 +147,20 @@ export default function Filters() {
         lat: filterVal.mapCenter.lat,
         lng: filterVal.mapCenter.lng,
       });
-
     };
-
     getNearbyState();
   }, [filterVal.mapCenter, typesOfPlace, filterVal?.selectedPlace]);
 
-  const handleAddressChange = async (place: any)=>{
-    console.log('place',place)
+  const handleAddressChange = async (place: any) => {
+    console.log("place", place);
     const getScore = (address: string, location: any) => WalkscoreListApi({ address, location });
-
     //TODO save all of place variable to state instead of destructuring it.
     const location = {
       lat: place.geometry.location.lat(),
       lng: place.geometry.location.lng(),
-    }
-    const walkscore = await getScore(place.formatted_address, location)
-   
-    setAddress(place.formatted_address)
+    };
+    const walkscore = await getScore(place.formatted_address, location);
+    setAddress(place.formatted_address);
     setFilterVal((prevVal: any) => {
       return {
         ...prevVal,
@@ -188,62 +168,58 @@ export default function Filters() {
         address: place.formatted_address,
         selectedPlace: place,
         mapCenter: location,
-        walkscore
+        walkscore,
       };
     });
-  }
+  };
 
   useEffect(() => {
     //* This use effect runs on component render
-
     //* Check that input ref exists before proceeding
     if (!inputRef.current) return;
-
     //* init the autocomplete for searching addresses
-    autoCompleteRef.current = new window.google.maps.places.Autocomplete(
-      inputRef.current,
-      AUTOCOMPLETE_OPTIONS
-    );
-
-    
-
+    autoCompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current, AUTOCOMPLETE_OPTIONS);
     //* When the location changes, update the state
     autoCompleteRef.current.addListener("place_changed", async function () {
-      
       //TODO handle error and display it to the client
       const place = await autoCompleteRef.current.getPlace();
-      handleAddressChange(place)
+      handleAddressChange(place);
     });
   }, [AUTOCOMPLETE_OPTIONS, setFilterVal]);
 
-  useEffect(()=>{
+  useEffect(() => {
     let queryString = window.location.search;
     let urlParams = new URLSearchParams(queryString);
-    let address = urlParams.get('address')
-
-    if(address && inputRef.current){
-      const addressFormattted = address.replaceAll('"', "")
-      inputRef.current.value = addressFormattted
-      
-      const getData = async()=>{
-        
-        const service = new google.maps.places.PlacesService(document.createElement('div'));
-
+    let address = urlParams.get("address");
+    if (address && inputRef.current) {
+      const addressFormattted = address.replaceAll('"', "");
+      inputRef.current.value = addressFormattted;
+      const getData = async () => {
+        const service = new google.maps.places.PlacesService(document.createElement("div"));
         const placeReq = {
           query: addressFormattted,
-          fields: ["name", "geometry","formatted_address",],
-        }
+          fields: ["place_id"],
+        };
         service.findPlaceFromQuery(placeReq, (results, status) => {
           if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-            console.log('results', results)
-            handleAddressChange(results[0])
+            const placeId = results[0]?.place_id;
+            if (!placeId) return;
+
+            const detailsRequest = {
+              placeId,
+              fields: ["name", "geometry", "formatted_address", "address_components"],
+            };
+            service.getDetails(detailsRequest, (result, status) => {
+              if (status === google.maps.places.PlacesServiceStatus.OK && result) {
+                handleAddressChange(result);
+              }
+            });
           }
         });
-      }
-      getData()
-     
+      };
+      getData();
     }
-  }, [])
+  }, []);
 
   return (
     <>
@@ -256,7 +232,7 @@ export default function Filters() {
           alignItems: "center",
           width: "100%",
           marginBottom: "25px",
-          boxSizing: "border-box"
+          boxSizing: "border-box",
         }}
       >
         <div className={styles.searchRow}>
@@ -264,31 +240,22 @@ export default function Filters() {
             <Illustration className={styles.matIcon} />
           </div>
           <form style={{ width: "-webkit-fill-available" }}>
-            <input
-              placeholder="Search Property Here"
-              className={styles.input}
-              type="text"
-              ref={inputRef}
-              
-            />
+            <input placeholder="Search Property Here" className={styles.input} type="text" ref={inputRef} />
           </form>
         </div>
 
         <div className={styles.searchBlock}>
-          
           <div className={styles.typeOfPlace}>
             <div className={styles.row}>
               <div className={styles.label}>Places of interest</div>
             </div>
-            <div className={styles.row} style={{ marginTop: "6px"}}>
+            <div className={styles.row} style={{ marginTop: "6px" }}>
               <form style={{ width: "100%" }}>
-                <FormControl fullWidth >
-                  <InputLabel id="demo-simple-select-label">
-                  </InputLabel>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label"></InputLabel>
                   <Select
                     id="demo-multiple-checkbox"
                     multiple
-                 
                     value={typesOfPlace}
                     onChange={handleSelectChange}
                     renderValue={(selected) => `Places of Interest (${selected.length})`}
@@ -296,16 +263,10 @@ export default function Filters() {
                     style={{ fontSize: "16px" }}
                     autoWidth={true}
                     label=""
-                   
                   >
                     <MenuItem key="toggleAll" style={{ padding: "0px" }} onClick={handleToggleAll}>
-                    <Checkbox
-                      icon={<RadioButtonUncheckedIcon />}
-                      checkedIcon={<RadioButtonCheckedIcon />}
-                      onChange={handleToggleAll}
-                      checked={isSelectAll}
-                    />
-                      <ListItemText primary={isSelectAll ? 'Deselect All' : 'Select All'} />
+                      <Checkbox icon={<RadioButtonUncheckedIcon />} checkedIcon={<RadioButtonCheckedIcon />} onChange={handleToggleAll} checked={isSelectAll} />
+                      <ListItemText primary={isSelectAll ? "Deselect All" : "Select All"} />
                     </MenuItem>
                     {PLACE_TYPES.map((name) => (
                       <MenuItem key={name} value={name} style={{ padding: "0px" }}>
@@ -323,5 +284,3 @@ export default function Filters() {
     </>
   );
 }
-
-

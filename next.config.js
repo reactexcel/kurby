@@ -2,13 +2,11 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   images: {
-    domains: [
-      'lh3.googleusercontent.com',
-      'lh3.ggpht.com',
-      'maps.googleapis.com',
-      'app.kurby.ai'
-    ],
+    domains: ["lh3.googleusercontent.com", "lh3.ggpht.com", "maps.googleapis.com", "app.kurby.ai"],
     unoptimized: true,
     remotePatterns: [
       {
@@ -22,18 +20,18 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "lh3.ggpht.com",
-      }
+      },
     ],
   },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/i,
       issuer: /\.[jt]sx?$/,
-      use: ['@svgr/webpack'],
-    })
+      use: ["@svgr/webpack"],
+    });
 
-    return config
+    return config;
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
