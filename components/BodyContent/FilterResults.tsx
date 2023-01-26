@@ -276,7 +276,6 @@ export default function FilterResults() {
                     position: "relative",
                   }}
                 >
-                  <h1>Neighborhood</h1>
                   {floodData.length ? (
                     <FactCardContainer>
                       <FactCard
@@ -308,22 +307,13 @@ export default function FilterResults() {
                           onClick={() => {
                             setOpenFloodZoneMap(true);
                           }}
+                          sx={{
+                            fontSize: "12px",
+                          }}
                         >
                           See More
                         </Button>
                       </FactCard>
-                      <FactCard
-                        label="Flood Claims"
-                        value={floodData.length >= 1000 ? "1000+" : floodData.length.toString()}
-                        icon={
-                          <WaterDamageIcon
-                            sx={{
-                              color: "green",
-                              fontSize: "50px",
-                            }}
-                          />
-                        }
-                      />
                       <FloodZoneModal open={openFloodZoneMap} handleClose={handleCloseFloodZoneModal}>
                         <FactCard
                           label="Flood Zone"

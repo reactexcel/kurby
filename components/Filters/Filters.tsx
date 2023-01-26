@@ -198,12 +198,22 @@ export default function Filters() {
         const service = new google.maps.places.PlacesService(document.createElement("div"));
         const placeReq = {
           query: addressFormattted,
-          fields: ["name", "geometry", "formatted_address", "address_components"],
+          fields: ["place_id"],
         };
         service.findPlaceFromQuery(placeReq, (results, status) => {
           if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-            console.log("results", results);
-            handleAddressChange(results[0]);
+            const placeId = results[0]?.place_id;
+            if (!placeId) return;
+
+            const detailsRequest = {
+              placeId,
+              fields: ["name", "geometry", "formatted_address", "address_components"],
+            };
+            service.getDetails(detailsRequest, (result, status) => {
+              if (status === google.maps.places.PlacesServiceStatus.OK && result) {
+                handleAddressChange(result);
+              }
+            });
           }
         });
       };

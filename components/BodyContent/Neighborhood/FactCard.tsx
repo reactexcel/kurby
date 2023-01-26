@@ -5,7 +5,7 @@ const IconContainer = styled("div")(() => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  padding: "10px",
+  padding: "5px",
   background: "#F1F4F6",
   borderRadius: "10px",
   marginRight: "25px",
@@ -20,13 +20,13 @@ interface Props {
 
 const FactCard = ({ icon, label, value, children }: Props) => {
   return (
-    <Card style={{ minWidth: 275, width: "24%", maxWidth: 350, border: "1px solid lightgray", boxShadow: "none", borderRadius: "10px", margin: "5px" }}>
+    <Card style={{ minWidth: 200, width: "24%", maxWidth: 250, border: "1px solid lightgray", boxShadow: "none", borderRadius: "10px", margin: "5px", overflow: "visible" }}>
       <CardContent
         sx={{
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
-          padding: "10px 20px !important",
+          padding: "5px 15px !important",
           height: "100%",
         }}
       >
@@ -39,10 +39,10 @@ const FactCard = ({ icon, label, value, children }: Props) => {
             justifyContent: "center",
           }}
         >
-          <Typography variant="body1" style={{ fontSize: "18px" }}>
+          <Typography variant="body1" style={{ fontSize: "14px" }}>
             {label}
           </Typography>
-          <Typography sx={{ fontSize: "32px", fontWeight: "bold" }}>{value}</Typography>
+          <Typography sx={{ fontSize: "24px", fontWeight: "bold" }}>{value}</Typography>
           {children}
         </Box>
       </CardContent>
