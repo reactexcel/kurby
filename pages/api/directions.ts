@@ -14,13 +14,13 @@ export default async function handler(
         return `https://maps.googleapis.com/maps/api/directions/json?origin=${o}&destination=${d}&mode=${travelMode.toLocaleLowerCase()}&key=${API_KEY}`;
     }
 
-    const r = await fetch(createAPIUrl(origin, destination, travelMode), {
-        method:"GET",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-    const directionResponse = await r.json();
+    // const r = await fetch(createAPIUrl(origin, destination, travelMode), {
+    //     method:"GET",
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //   });
+    const directionResponse = await {status: 'ZERO_RESULTS'};
 
     //TODO map responses to error codes?
     if (directionResponse.status === "ZERO_RESULTS") {
