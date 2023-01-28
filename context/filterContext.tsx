@@ -22,7 +22,7 @@ interface FilterContext {
         loadedNearbyPlaces: [],
         selectedPlace: any | null,
         mapCenter: {lat: number, lng: number} | null,
-        walkscore: Walkscore | null
+        walkscore: Walkscore | null,
     },
 }
 
@@ -37,7 +37,6 @@ const filterContext: FilterContext  = {
         selectedPlace: null,
         mapCenter: null,
         walkscore: null,
-       
     },
     
      // default value (aka initial value)
