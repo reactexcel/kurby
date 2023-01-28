@@ -17,6 +17,7 @@ import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import WalkscoreListApi from "../BodyContent/Walkscore/WalkscoreListApi";
 import snackbarContext from "../../context/snackbarContext";
+import { activeTabState } from "context/activeTab";
 
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
@@ -40,12 +41,10 @@ const MenuProps = {
 export default function Filters() {
   //* Use global state management
   const [filterVal, setFilterVal] = useRecoilState(filterState);
-
   const [address, setAddress] = useRecoilState(addressState);
-  
   const [snackbar, setSnackbar] = useRecoilState(snackbarContext);
-  
   const [isSelectAll, setSelectAll] = useState<boolean>(true);
+  const [activeTab, setActiveTab] = useRecoilState(activeTabState)
 
   //* State for the place select element
   const [typesOfPlace, setTypesOfPlace] = useState<any[]>(PLACE_TYPES);
@@ -153,6 +152,7 @@ export default function Filters() {
 
   const handleAddressChange = async (place: any) => {
     const getScore = (address: string, location: any) => WalkscoreListApi({ address, location });
+
     //TODO save all of place variable to state instead of destructuring it.
     const location = {
       lat: place.geometry.location.lat(),
@@ -190,6 +190,7 @@ export default function Filters() {
     autoCompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current, AUTOCOMPLETE_OPTIONS);
     //* When the location changes, update the state
     autoCompleteRef.current.addListener("place_changed", async function () {
+      console.log('place_changed');
       //TODO handle error and display it to the client
       const place = await autoCompleteRef.current.getPlace();
       handleAddressChange(place);
