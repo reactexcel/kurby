@@ -1,7 +1,7 @@
 import { Box } from "@mui/system";
 import { useRecoilState } from "recoil";
 import {filterState} from "../../../context/filterContext";
-
+import MessageBar, { MessageType } from "../../../services/MessageBar";
 import Walkscore from "./Walkscore";
 
 
@@ -11,6 +11,7 @@ export default function WalkscoreList() {
   if (!filterVal.walkscore) {
     return null
   }
+
   return (
     <>
       <Box style={{ display: "flex" }}>

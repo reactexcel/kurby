@@ -13,7 +13,6 @@ async function prepareLoadedPlaces(places: any[], currentCenter: { lat: number, 
   const resolved = await Promise.all(places.map(async place => {
     return {
       ...place,
-
       ...(await loadDirections(place, currentCenter))
     }
   }))
@@ -21,14 +20,19 @@ async function prepareLoadedPlaces(places: any[], currentCenter: { lat: number, 
   return resolved;
 }
 
-async function loadDirections(place: any, origin: any): Promise<{ walking: any, driving: any, biclycling: any }> {
-  return await loadDirectionsApi({
-    origin,
-    destination: {
-      lat: place.geometry.location.lat,
-      lng: place.geometry.location.lng
-    }
-  })
+async function loadDirections(place: any, origin: any): Promise<{walking: any, driving: any, biclycling: any}> {
+  try {
+    return await loadDirectionsApi({
+      origin,
+      destination: {
+        lat: place.geometry.location.lat,
+        lng: place.geometry.location.lng
+      }
+    })
+  } catch(e) {
+    console.error(e);
+    return {walking: null, driving: null, biclycling: null};
+  }
 }
 
 const PAGE_SIZE = 5;
