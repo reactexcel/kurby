@@ -20,6 +20,7 @@ import FloodZoneModal from "./Neighborhood/FloodZoneModal";
 import WaterDamageIcon from "@mui/icons-material/WaterDamage";
 import WarningIcon from "@mui/icons-material/Warning";
 import Census from "components/Census/Census";
+import { activeTabState, Tab } from "context/activeTab";
 
 const floodRiskMap: { [key: string]: string } = {
   A: "Medium",
@@ -67,7 +68,7 @@ const FactCardContainer = styled("div")(() => ({
  */
 
 export default function FilterResults() {
-  const [activeTab, setActiveTab] = useState<string | null>("home");
+  const [activeTab, setActiveTab] = useRecoilState(activeTabState)
   const [explainedLikeAlocal, setExplainedLikeAlocal] = useState("");
   const [greenFlags, setGreenFlags] = useState<any[]>([]);
   const [redFlags, setRedFlags] = useState<any[]>([]);
@@ -82,7 +83,7 @@ export default function FilterResults() {
 
   const [filterVal] = useRecoilState(filterState);
 
-  const handleTabChange = (event: React.MouseEvent<HTMLElement>, newTab: string | null) => {
+  const handleTabChange = (event: React.MouseEvent<HTMLElement>, newTab: Tab | null) => {
     setActiveTab(newTab);
   };
 
@@ -116,7 +117,7 @@ export default function FilterResults() {
       const addressComponents = filterVal.selectedPlace.address_components;
 
       const zipData = addressComponents.filter((component: any) => component.types.includes("postal_code"));
-      const zipCode = zipData[0].long_name;
+      const zipCode = zipData[0]?.long_name;
       setSelectedZipCode(zipCode);
       const dt = await getFloodData(zipCode);
       setFloodData(dt);
@@ -224,7 +225,7 @@ export default function FilterResults() {
           </ToggleButton>
         </ToggleButtonGroup>
 
-        {filterVal.address && (
+        {/* filterVal.address */ true && (
           <Box style={{ height: "100%", marginBottom: "24px" }}>
             {activeTab == "home" && (
               <Box style={resultsContentStyle}>

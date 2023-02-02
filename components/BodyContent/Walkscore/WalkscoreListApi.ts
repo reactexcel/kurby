@@ -2,7 +2,7 @@ export default async function WalkScoreListApi(req: {address: string, location: 
     const {address, location} = req;
 
     try {
-        const res = await fetch('/api/walkscore/', {
+        const res = await fetch('/api/walkscore', {
             method:"POST",
             body: JSON.stringify({address, location}),
             headers: {

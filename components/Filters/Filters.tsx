@@ -17,6 +17,7 @@ import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import WalkscoreListApi from "../BodyContent/Walkscore/WalkscoreListApi";
 import snackbarContext from "../../context/snackbarContext";
+import { activeTabState } from "context/activeTab";
 
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
@@ -40,12 +41,10 @@ const MenuProps = {
 export default function Filters() {
   //* Use global state management
   const [filterVal, setFilterVal] = useRecoilState(filterState);
-
   const [address, setAddress] = useRecoilState(addressState);
-  
   const [snackbar, setSnackbar] = useRecoilState(snackbarContext);
-  
   const [isSelectAll, setSelectAll] = useState<boolean>(true);
+  const [activeTab, setActiveTab] = useRecoilState(activeTabState)
 
   //* State for the place select element
   const [typesOfPlace, setTypesOfPlace] = useState<any[]>(PLACE_TYPES);
@@ -81,7 +80,6 @@ export default function Filters() {
   };
 
   const getNearby = async ({ lat, lng }: { lat: number; lng: number }) => {
-    console.log(typesOfPlace);
     try {
       //Verify that we have a latlong value before trying to search api
       if (!lat) return;
@@ -142,6 +140,7 @@ export default function Filters() {
     //* this use effect only runs when the map center or type of place changes
     //* Searching a different place will change map center
     if (!filterVal?.selectedPlace) return;
+    if (activeTab !== 'nearby') return;
     const getNearbyState = async () => {
       if (!filterVal.mapCenter) return;
       //* Retreive all of the nearby places
@@ -151,17 +150,27 @@ export default function Filters() {
       });
     };
     getNearbyState();
-  }, [filterVal.mapCenter, typesOfPlace, filterVal?.selectedPlace]);
+  }, [filterVal.mapCenter, typesOfPlace, filterVal?.selectedPlace, activeTab]);
 
   const handleAddressChange = async (place: any) => {
-    console.log("place", place);
     const getScore = (address: string, location: any) => WalkscoreListApi({ address, location });
+
     //TODO save all of place variable to state instead of destructuring it.
     const location = {
       lat: place.geometry.location.lat(),
       lng: place.geometry.location.lng(),
     };
     const walkscore = await getScore(place.formatted_address, location);
+    setSnackbar((prevVal: any) => {
+      return {
+        ...prevVal,
+        ...(walkscore ? walkscore : {
+          open: true,
+            message: 'Walkscore error',
+            variant: 'error'
+        })
+      }
+    })
     setAddress(place.formatted_address);
     setFilterVal((prevVal: any) => {
       return {
@@ -183,37 +192,10 @@ export default function Filters() {
     autoCompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current, AUTOCOMPLETE_OPTIONS);
     //* When the location changes, update the state
     autoCompleteRef.current.addListener("place_changed", async function () {
+      console.log('place_changed');
       //TODO handle error and display it to the client
       const place = await autoCompleteRef.current.getPlace();
       handleAddressChange(place);
-      const getScore = (address: string, location: any) => WalkscoreListApi({ address, location });
-
-      //TODO save all of place variable to state instead of destructuring it.
-      const location = {
-        lat: place.geometry.location.lat(),
-        lng: place.geometry.location.lng(),
-      }
-      const walkscore = await getScore(place.formatted_address, location);
-      setSnackbar((prevVal: any) => {
-        return {
-          ...prevVal,
-          ...(walkscore ? walkscore : {
-            open: true,
-              message: 'Walkscore error',
-              variant: 'error'
-          })
-        }
-      })
-      setFilterVal((prevVal: any) => {
-        return {
-          ...prevVal,
-          latlong: place.geometry.location,
-          address: place.formatted_address,
-          selectedPlace: place,
-          mapCenter: location,
-          walkscore
-        };
-      });
     });
   }, [AUTOCOMPLETE_OPTIONS, setFilterVal]);
 

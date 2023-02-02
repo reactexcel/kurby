@@ -4,13 +4,22 @@ import { createRef, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { filterState } from "context/filterContext";
 
+
+
 export default function Census() {
   const [censusKey, setCensusKey] = useState<string | null>(null);
+  const [dataInfo, setDatainfo] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
   const [filterVal] = useRecoilState(filterState);
-  const handleClick = () => {
-    console.log("click", censusKey);
-    if (!filterVal.latlong || !censusKey) return;
-    getAcs5data(filterVal.latlong, censusKey);
+
+  const handleClick = async () => {
+    console.log("filterVal", filterVal);
+    setLoading(true);
+    if (!filterVal.mapCenter || !censusKey) return;
+    const response = await getAcs5data(filterVal.mapCenter, censusKey);
+    console.log("response", response);
+    setDatainfo(response);
+    setLoading(false);
   };
 
   return (
@@ -22,6 +31,23 @@ export default function Census() {
           Search
         </Button>
       </Box>
+      {loading && <p>Loading...</p>}
+
+      {censusKey && !loading && (
+        <div>
+          <ul>
+            <li>Concept: {dataInfo?.varData?.concept || ""}</li>
+            <li>label: {dataInfo?.varData?.label || ""}</li>
+            <li>Tract: {dataInfo?.censusRespons?.tract || ""}</li>
+            <li>Value: {dataInfo?.censusRespons?.[censusKey] || ""}</li>
+            <li>
+              Developer String: &#123;
+              {censusKey}:&#123; label: {dataInfo?.devString || ""}
+              &#125; &#125;
+            </li>
+          </ul>
+        </div>
+      )}
     </>
   );
 }
@@ -31,27 +57,45 @@ interface LatLong {
   lng: number;
 }
 //* GET Age/Sex/income DATA
-function getAcs5data(latlng: LatLong, censusKey: string) {
+async function getAcs5data(latlng: LatLong, censusKey: string) {
   //https://api.census.gov/data/2021/acs/acs5/variables.html
 
-  census(
-    {
-      vintage: 2021, // required
-      geoHierarchy: {
-        // required
-        tract: {
-          ...latlng,
+  return new Promise((resolve, rej) => {
+    census(
+      {
+        vintage: 2021, // required
+        geoHierarchy: {
+          // required
+          tract: {
+            ...latlng,
+          },
         },
+        sourcePath: ["acs", "acs5"],
+        values: [censusKey],
+        //geoResolution: '500k', // required
+        //values: [], // required
       },
-      sourcePath: ["acs", "acs5"],
-      values: [censusKey],
-      //geoResolution: '500k', // required
-      //values: [], // required
-    },
-    (err: any, res: any[]) => {
-      let response = res[0];
+      async (err: any, res: any[]) => {
+        let keyData = res[0];
 
-      console.log("response", response);
-    },
-  );
+        const dataLookup = async () => {
+          const url = "https://api.census.gov/data/2021/acs/acs5/variables.json";
+          const req = await fetch(url);
+          const res = await req.json();
+
+          let newString = `${res.variables[censusKey].concept.toUpperCase()}_${res.variables[censusKey].label.toUpperCase()}`;
+          newString = newString.replaceAll(" ", "_");
+          newString = newString.replace(/[^a-zA-Z ]/g, "_");
+
+          console.log(newString);
+          resolve({
+            varData: res.variables[censusKey],
+            censusRespons: keyData,
+            devString: newString,
+          });
+        };
+        dataLookup();
+      },
+    );
+  });
 }
