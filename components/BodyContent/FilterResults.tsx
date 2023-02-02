@@ -19,6 +19,7 @@ import { styled } from "@mui/material/styles";
 import FloodZoneModal from "./Neighborhood/FloodZoneModal";
 import WaterDamageIcon from "@mui/icons-material/WaterDamage";
 import WarningIcon from "@mui/icons-material/Warning";
+import Census from "components/Census/Census";
 
 const floodRiskMap: { [key: string]: string } = {
   A: "Medium",
@@ -218,6 +219,9 @@ export default function FilterResults() {
           <ToggleButton style={{ width: "220px", textTransform: "initial" }} value="neighborhood">
             Neighborhood
           </ToggleButton>
+          <ToggleButton style={{ width: "220px", textTransform: "initial" }} value="utility">
+            Utility
+          </ToggleButton>
         </ToggleButtonGroup>
 
         {filterVal.address && (
@@ -333,6 +337,12 @@ export default function FilterResults() {
                     <h3>No Flood Data</h3>
                   )}
                 </Box>
+              </Box>
+            )}
+
+            {activeTab == "utility" && (
+              <Box style={resultsContentStyle}>
+                <Census></Census>
               </Box>
             )}
           </Box>
