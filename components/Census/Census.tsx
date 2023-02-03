@@ -26,7 +26,7 @@ export default function Census() {
     <>
       <Box>
         <h3>Census Checker</h3>
-        <TextField onChange={(e) => setCensusKey(e.target.value)} id="outlined-basic" label="Census Key" variant="outlined" />
+        <TextField onChange={(e) => setCensusKey(e.target.value.trim())} id="outlined-basic" label="Census Key" variant="outlined" />
         <Button onClick={handleClick} variant="contained">
           Search
         </Button>
@@ -41,9 +41,8 @@ export default function Census() {
             <li>Tract: {dataInfo?.censusRespons?.tract || ""}</li>
             <li>Value: {dataInfo?.censusRespons?.[censusKey] || ""}</li>
             <li>
-              Developer String: &#123;
-              {censusKey}:&#123; label: {dataInfo?.devString || ""}
-              &#125; &#125;
+              Developer String:
+              {censusKey}:&#123; label: "{dataInfo?.devString || ""}" &#125;,
             </li>
           </ul>
         </div>
@@ -76,6 +75,7 @@ async function getAcs5data(latlng: LatLong, censusKey: string) {
         //values: [], // required
       },
       async (err: any, res: any[]) => {
+        console.log({ res, censusKey });
         let keyData = res[0];
 
         const dataLookup = async () => {
@@ -85,7 +85,7 @@ async function getAcs5data(latlng: LatLong, censusKey: string) {
 
           let newString = `${res.variables[censusKey].concept.toUpperCase()}_${res.variables[censusKey].label.toUpperCase()}`;
           newString = newString.replaceAll(" ", "_");
-          newString = newString.replace(/[^a-zA-Z ]/g, "_");
+          newString = newString.replace(/[^a-zA-Z0-9 ]/g, "_");
 
           console.log(newString);
           resolve({

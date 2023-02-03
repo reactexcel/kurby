@@ -12,55 +12,9 @@ import WalkscoreList from "./Walkscore/WalkscoreList";
 import LocationSvg from "../../public/icons/location.svg";
 import QuestionTooltipSvg from "../../public/icons/question-tooltip.svg";
 import { NextSeo } from "next-seo";
-import getFloodData from "./Neighborhood/floodData";
-import FactCard from "./Neighborhood/FactCard";
-import FloodIcon from "@mui/icons-material/Flood";
-import { styled } from "@mui/material/styles";
-import FloodZoneModal from "./Neighborhood/FloodZoneModal";
-import WaterDamageIcon from "@mui/icons-material/WaterDamage";
-import WarningIcon from "@mui/icons-material/Warning";
-import Census from "components/Census/Census";
 import { activeTabState, Tab } from "context/activeTab";
-
-const floodRiskMap: { [key: string]: string } = {
-  A: "Medium",
-  A1: "Unknown",
-  A99: "Medium",
-  AE: "Unknown",
-  AH: "Medium",
-  AO: "Medium",
-  AR: "High",
-  B: "Medium",
-  X: "Low",
-  C: "Low",
-  D: "Medium",
-  V: "Medium",
-  VE: "Medium",
-  V1: "Medium",
-};
-
-const convertFloodZoneToRisk = (floodZone: string) => {
-  if (!floodZone) return "Unknown";
-
-  const formattedFloodZone = floodZone.trim();
-  let zoneNumber: string | number = parseInt(formattedFloodZone.replace(/[^0-9]/g, ""));
-  const zoneLetter = formattedFloodZone.replace(/[\d\.]/g, "").replace(/ /g, "");
-
-  if (!isNaN(zoneNumber) && zoneNumber) {
-    if (zoneNumber <= 30) zoneNumber = 1;
-  } else {
-    zoneNumber = "";
-  }
-
-  const finalFloodZone = `${zoneLetter}${zoneNumber}`;
-  return floodRiskMap[finalFloodZone] || "Unknown";
-};
-
-const FactCardContainer = styled("div")(() => ({
-  display: "flex",
-  flexWrap: "wrap",
-  width: "100%",
-}));
+import Neighborhood from "./Neighborhood/Neighborhood";
+import Census from "components/Census/Census";
 
 /**
  * FilterResults
@@ -68,18 +22,11 @@ const FactCardContainer = styled("div")(() => ({
  */
 
 export default function FilterResults() {
-  const [activeTab, setActiveTab] = useRecoilState(activeTabState)
+  const [activeTab, setActiveTab] = useRecoilState(activeTabState);
   const [explainedLikeAlocal, setExplainedLikeAlocal] = useState("");
   const [greenFlags, setGreenFlags] = useState<any[]>([]);
   const [redFlags, setRedFlags] = useState<any[]>([]);
   const [loading, isLoading] = useState(false);
-  const [selectedZipCode, setSelectedZipCode] = useState("");
-  const [openFloodZoneMap, setOpenFloodZoneMap] = useState(false);
-  const [floodData, setFloodData] = useState<any[]>([]);
-
-  const handleCloseFloodZoneModal = () => {
-    setOpenFloodZoneMap(false);
-  };
 
   const [filterVal] = useRecoilState(filterState);
 
@@ -110,22 +57,6 @@ export default function FilterResults() {
     };
 
     getOpenAiData();
-
-    const retrieveFloodData = async () => {
-      if (!filterVal.selectedPlace) return;
-
-      const addressComponents = filterVal.selectedPlace.address_components;
-
-      const zipData = addressComponents.filter((component: any) => component.types.includes("postal_code"));
-      const zipCode = zipData[0]?.long_name;
-      setSelectedZipCode(zipCode);
-      const dt = await getFloodData(zipCode);
-      setFloodData(dt);
-    };
-
-    (async () => {
-      await retrieveFloodData();
-    })();
   }, [filterVal.address, filterVal.selectedPlace]);
 
   useEffect(() => {
@@ -225,129 +156,63 @@ export default function FilterResults() {
           </ToggleButton>
         </ToggleButtonGroup>
 
-        {/* filterVal.address */ true && (
-          <Box style={{ height: "100%", marginBottom: "24px" }}>
-            {activeTab == "home" && (
-              <Box style={resultsContentStyle}>
-                <Box
-                  style={{
-                    overflow: "auto",
-                    height: "100%",
-                    width: "100%",
-                    position: "relative",
-                  }}
-                >
-                  <Box style={{ display: "flex" }}>
-                    <StreetView position={filterVal.latlong} />
-                    <Box>
-                      <Box style={{ display: "flex", alignItems: "center" }}>
-                        <Typography variant="h5" component="h5">
-                          <LocationSvg style={{ marginRight: "8px" }} />
-                          {filterVal.address}
-                        </Typography>
-                      </Box>
-                      <Typography style={{ marginTop: "10px" }} variant="subtitle2">
-                        Explain it like a local:
-                        <AIWarningToolTip />
-                      </Typography>
-                      {loading ? <ParagraphSkeleton /> : <Typography>{explainedLikeAlocal}</Typography>}
-                      <Box style={{ marginTop: "10px" }}>
-                        <WalkscoreList></WalkscoreList>
-                      </Box>
-                    </Box>
-                  </Box>
+        {
+          /* filterVal.address */ true && (
+            <Box style={{ height: "100%", marginBottom: "24px" }}>
+              {activeTab == "home" && (
+                <Box style={resultsContentStyle}>
                   <Box
                     style={{
-                      marginTop: "24px",
-                      position: "absolute",
+                      overflow: "auto",
+                      height: "100%",
                       width: "100%",
+                      position: "relative",
                     }}
                   >
-                    <Flags color="Green" flagsArr={greenFlags} />
+                    <Box style={{ display: "flex" }}>
+                      <StreetView position={filterVal.latlong} />
+                      <Box>
+                        <Box style={{ display: "flex", alignItems: "center" }}>
+                          <Typography variant="h5" component="h5">
+                            <LocationSvg style={{ marginRight: "8px" }} />
+                            {filterVal.address}
+                          </Typography>
+                        </Box>
+                        <Typography style={{ marginTop: "10px" }} variant="subtitle2">
+                          Explain it like a local:
+                          <AIWarningToolTip />
+                        </Typography>
+                        {loading ? <ParagraphSkeleton /> : <Typography>{explainedLikeAlocal}</Typography>}
+                        <Box style={{ marginTop: "10px" }}>
+                          <WalkscoreList></WalkscoreList>
+                        </Box>
+                      </Box>
+                    </Box>
+                    <Box
+                      style={{
+                        marginTop: "24px",
+                        position: "absolute",
+                        width: "100%",
+                      }}
+                    >
+                      <Flags color="Green" flagsArr={greenFlags} />
 
-                    <Flags color="Red" flagsArr={redFlags} />
+                      <Flags color="Red" flagsArr={redFlags} />
+                    </Box>
                   </Box>
                 </Box>
-              </Box>
-            )}
-            {activeTab == "nearby" && <Nearby />}
-            {activeTab == "neighborhood" && (
-              <Box style={resultsContentStyle}>
-                <Box
-                  style={{
-                    overflow: "auto",
-                    height: "100%",
-                    width: "100%",
-                    position: "relative",
-                  }}
-                >
-                  {floodData.length ? (
-                    <FactCardContainer>
-                      <FactCard
-                        label="Flood Risk"
-                        value={convertFloodZoneToRisk(floodData[0]?.floodZone || "")}
-                        icon={
-                          <WarningIcon
-                            sx={{
-                              color: "green",
-                              fontSize: "50px",
-                            }}
-                          />
-                        }
-                      />
-                      <FactCard
-                        label="Flood Zone"
-                        value={floodData[0]?.floodZone || "Unknown"}
-                        icon={
-                          <FloodIcon
-                            sx={{
-                              color: "green",
-                              fontSize: "50px",
-                            }}
-                          />
-                        }
-                      >
-                        <Button
-                          variant="text"
-                          onClick={() => {
-                            setOpenFloodZoneMap(true);
-                          }}
-                          sx={{
-                            fontSize: "12px",
-                          }}
-                        >
-                          See More
-                        </Button>
-                      </FactCard>
-                      <FloodZoneModal open={openFloodZoneMap} handleClose={handleCloseFloodZoneModal}>
-                        <FactCard
-                          label="Flood Zone"
-                          value={floodData[0]?.floodZone || "Unknown"}
-                          icon={
-                            <FloodIcon
-                              sx={{
-                                color: "green",
-                                fontSize: "50px",
-                              }}
-                            />
-                          }
-                        ></FactCard>
-                      </FloodZoneModal>
-                    </FactCardContainer>
-                  ) : (
-                    <h3>No Flood Data</h3>
-                  )}
-                </Box>
-              </Box>
-            )}
+              )}
+              {activeTab == "nearby" && <Nearby />}
+              {activeTab == "neighborhood" && <Neighborhood filterVal={filterVal} />}
 
-            {activeTab == "utility" && (
-              <Box style={resultsContentStyle}>
-                <Census></Census>
-              </Box>
-            )}
-          </Box>
-        )}
+              {activeTab == "utility" && (
+                <Box style={resultsContentStyle}>
+                  <Census></Census>
+                </Box>
+              )}
+            </Box>
+          )
+        }
       </Box>
     </>
   );
