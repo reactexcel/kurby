@@ -10,16 +10,16 @@ export default async function WalkScoreListApi(req: {address: string, location: 
             }
         })
         const parsedResult = await res.json();
-        if (!res.ok) {
-            throw Error(parsedResult.error)
+        if (!res.ok || parsedResult.error) {
+            throw parsedResult.error;
         }
         return {
             walk: parsedResult.walkscore,
             bike: parsedResult.bike?.score,
             transit: parsedResult.transit?.score
         };
-    } catch (error) {
-        console.error(`Retreiving details for address ${req.address} failed with error "${JSON.stringify(error)}"`)
-        return false;
+    } catch (error: any) {
+        console.error(`Retreiving details for address ${req.address} failed with error "${JSON.stringify(error.message)}"`)
+        return {error};
     }
 }

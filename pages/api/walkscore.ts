@@ -21,7 +21,12 @@ export default async function handler(
         return;
     }
     if (errorMapping[parsedResponse.status]) {
-        res.status(400).json({error: errorMapping[parsedResponse.status] as string});
+        res.status(400).json({
+            error: {
+                message: errorMapping[parsedResponse.status],
+                code: parsedResponse.status
+            }
+        });
         return
     }
     res.status(500).json(parsedResponse);

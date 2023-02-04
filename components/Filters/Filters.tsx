@@ -163,11 +163,11 @@ export default function Filters() {
     setSnackbar((prevVal: any) => {
       return {
         ...prevVal,
-        ...(walkscore ? walkscore : {
+        ...(walkscore.error ? {
           open: true,
             message: 'Walkscore error',
             variant: 'error'
-        })
+        } : {open: false})
       }
     })
     setFilterVal((prevVal: any) => {
