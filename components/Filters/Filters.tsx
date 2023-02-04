@@ -81,7 +81,6 @@ export default function Filters() {
   };
 
   const getNearby = async ({ lat, lng }: { lat: number; lng: number }) => {
-    console.log(typesOfPlace);
     try {
       //Verify that we have a latlong value before trying to search api
       if (!lat) return;
@@ -141,20 +140,18 @@ export default function Filters() {
   useEffect(() => {
     //* this use effect only runs when the map center or type of place changes
     //* Searching a different place will change map center
-    if (!filterVal?.selectedPlace) return;
-    const getNearbyState = async () => {
+    (async () => {
       if (!filterVal.mapCenter) return;
       //* Retreive all of the nearby places
       await getNearby({
         lat: filterVal.mapCenter.lat,
         lng: filterVal.mapCenter.lng,
       });
-    };
-    getNearbyState();
-  }, [filterVal.mapCenter, typesOfPlace, filterVal?.selectedPlace]);
+    
+    })()
+  }, [filterVal.mapCenter, typesOfPlace]);
 
   const handleAddressChange = async (place: any) => {
-    console.log("place", place);
     const getScore = (address: string, location: any) => WalkscoreListApi({ address, location });
     //TODO save all of place variable to state instead of destructuring it.
     const location = {
@@ -163,6 +160,16 @@ export default function Filters() {
     };
     const walkscore = await getScore(place.formatted_address, location);
     setAddress(place.formatted_address);
+    setSnackbar((prevVal: any) => {
+      return {
+        ...prevVal,
+        ...(walkscore ? walkscore : {
+          open: true,
+            message: 'Walkscore error',
+            variant: 'error'
+        })
+      }
+    })
     setFilterVal((prevVal: any) => {
       return {
         ...prevVal,
@@ -186,36 +193,8 @@ export default function Filters() {
       //TODO handle error and display it to the client
       const place = await autoCompleteRef.current.getPlace();
       handleAddressChange(place);
-      const getScore = (address: string, location: any) => WalkscoreListApi({ address, location });
-
-      //TODO save all of place variable to state instead of destructuring it.
-      const location = {
-        lat: place.geometry.location.lat(),
-        lng: place.geometry.location.lng(),
-      }
-      const walkscore = await getScore(place.formatted_address, location);
-      setSnackbar((prevVal: any) => {
-        return {
-          ...prevVal,
-          ...(walkscore ? walkscore : {
-            open: true,
-              message: 'Walkscore error',
-              variant: 'error'
-          })
-        }
-      })
-      setFilterVal((prevVal: any) => {
-        return {
-          ...prevVal,
-          latlong: place.geometry.location,
-          address: place.formatted_address,
-          selectedPlace: place,
-          mapCenter: location,
-          walkscore
-        };
-      });
     });
-  }, [AUTOCOMPLETE_OPTIONS, setFilterVal]);
+  }, []);
 
   useEffect(() => {
     let queryString = window.location.search;
