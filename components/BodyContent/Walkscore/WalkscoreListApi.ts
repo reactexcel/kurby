@@ -14,9 +14,12 @@ export default async function WalkScoreListApi(req: {address: string, location: 
             throw parsedResult.error;
         }
         return {
-            walk: parsedResult.walkscore,
-            bike: parsedResult.bike?.score,
-            transit: parsedResult.transit?.score
+            types: {
+                walk: parsedResult.walkscore,
+                bike: parsedResult.bike?.score,
+                transit: parsedResult.transit?.score,
+            },
+            isUSOrCanada: parsedResult.isUSOrCanada
         };
     } catch (error: any) {
         console.error(`Retreiving details for address ${req.address} failed with error "${JSON.stringify(error.message)}"`)
