@@ -19,6 +19,7 @@ import { styled } from "@mui/material/styles";
 import FloodZoneModal from "./Neighborhood/FloodZoneModal";
 import WaterDamageIcon from "@mui/icons-material/WaterDamage";
 import WarningIcon from "@mui/icons-material/Warning";
+import { activeTabState, Tab } from "context/activeTab";
 
 const floodRiskMap: { [key: string]: string } = {
   A: "Medium",
@@ -66,7 +67,7 @@ const FactCardContainer = styled("div")(() => ({
  */
 
 export default function FilterResults() {
-  const [activeTab, setActiveTab] = useState<string | null>("home");
+  const [activeTab, setActiveTab] = useRecoilState(activeTabState)
   const [explainedLikeAlocal, setExplainedLikeAlocal] = useState("");
   const [greenFlags, setGreenFlags] = useState<any[]>([]);
   const [redFlags, setRedFlags] = useState<any[]>([]);
@@ -81,7 +82,7 @@ export default function FilterResults() {
 
   const [filterVal] = useRecoilState(filterState);
 
-  const handleTabChange = (event: React.MouseEvent<HTMLElement>, newTab: string | null) => {
+  const handleTabChange = (event: React.MouseEvent<HTMLElement>, newTab: Tab | null) => {
     setActiveTab(newTab);
   };
 
