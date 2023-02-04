@@ -89,25 +89,19 @@ function MyComponent() {
 
  
   //* Get the place markers and icons for them
-  const placesMarkers = (): any[] => {
+  const placesMarkers = React.useMemo((): any[] => {
+    if(!filterVal.nearbyPlaces?.length) return [];
 
-    //* See if state has any nearby places
-    if(!filterVal.nearbyPlaces?.length ) return [];
+    return filterVal.nearbyPlaces.reduce((a, place) => {
+      if (!place || !place?.geometry || !place.geometry.location) return a;
 
-    return filterVal.nearbyPlaces.reduce((a: any, place: any) => {
-      //* Short circiut if there's no place or geometry info
-      if (!place || !place?.geometry || !place.geometry.location)
-        return a;
-
-      //* Handle the icon
       const icon = {
         url: place.icon,
         scaledSize: new google.maps.Size(20, 20),
         origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(0, 0), // anchor
+        anchor: new google.maps.Point(0, 0),
       };
 
-      //Create the marker instance
       const marker = {
         position: {
           lat: place.geometry.location.lat,
@@ -117,12 +111,10 @@ function MyComponent() {
         place,
       };
 
-      //Add all markers to accumulator
       a.push(marker);
-
       return a;
     }, []);
-  };
+  }, [filterVal.nearbyPlaces]);
 
   return isLoaded ? (
     <GoogleMap
@@ -143,7 +135,7 @@ function MyComponent() {
           <>
             <MarkerF position={filterVal.latlong} onLoad={onMarkerLoad} key={"addressMarker"}/>
             {
-            placesMarkers().map(place=>
+            placesMarkers.map(place=>
               <MarkerF key={place.place_id} position={place.position} options={place.options} />
             )
             }

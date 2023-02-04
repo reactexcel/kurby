@@ -115,7 +115,7 @@ export default function FilterResults() {
       const addressComponents = filterVal.selectedPlace.address_components;
 
       const zipData = addressComponents.filter((component: any) => component.types.includes("postal_code"));
-      const zipCode = zipData[0].long_name;
+      const zipCode = zipData[0]?.long_name;
       setSelectedZipCode(zipCode);
       const dt = await getFloodData(zipCode);
       setFloodData(dt);
