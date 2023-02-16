@@ -5,7 +5,7 @@ import getFloodData from "./floodData";
 import WarningIcon from "@mui/icons-material/Warning";
 import FloodIcon from "@mui/icons-material/Flood";
 import FloodZoneModal from "./FloodZoneModal";
-import getCensusData from "components/Census/getCensusData";
+import getCensusData, { CensusData } from "components/Census/getCensusData";
 import RaceBreakdown from "./RaceBreakdown";
 
 const floodRiskMap: { [key: string]: string } = {
@@ -74,36 +74,15 @@ interface Props {
 }
 
 export default function Neighborhood({ filterVal }: Props) {
-  interface CensusData {
-    percentOfAdultsWithBatchlorsDegree: number;
-    percentageOfHomesWithMarriedCouples: number;
-    percentUnderPoverty: number;
-    nonCitizens: number;
-    dominantRace: string;
-    averageSalary: number;
-    vacantHomes: number;
-    vacantUnitsForRent: number;
-    medianAge: number;
-    owners: number;
-    renters: number;
-    raceData: {
-      totalWhite: number;
-      totalBlack: number;
-      totalAsian: number;
-      totalIndianAlaskanNative: number;
-      totalIslander: number;
-      totalOther: number;
-    };
-  }
-
   const [openFloodZoneMap, setOpenFloodZoneMap] = useState(false);
   const [openRaceBreakdown, setOpenRaceBreakdown] = useState(false);
   const [floodData, setFloodData] = useState<any[]>([]);
   const [censusData, setCensusData] = useState<CensusData | null>(null);
 
   useEffect(() => {
+    console.log("filterVal", filterVal);
     const retrieveFloodData = async () => {
-      if (!filterVal.selectedPlace) return;
+      if (!filterVal.selectedPlace || !filterVal.selectedPlace.formatted_address.includes("USA")) return;
 
       const addressComponents = filterVal.selectedPlace.address_components;
 
@@ -116,6 +95,7 @@ export default function Neighborhood({ filterVal }: Props) {
       if (!filterVal.mapCenter) return;
       const censusDt = await getCensusData(filterVal.mapCenter);
       console.log("censusDt", censusDt);
+
       setCensusData(censusDt);
     };
 
@@ -148,10 +128,11 @@ export default function Neighborhood({ filterVal }: Props) {
           position: "relative",
         }}
       >
-        {floodData.length ? (
+        {filterVal.selectedPlace.formatted_address.includes("USA") ? (
           <FactCardContainer>
             <FactCard
               label="Flood Risk"
+              type="string"
               value={convertFloodZoneToRisk(floodData[0]?.floodZone || "")}
               icon={
                 <WarningIcon
@@ -164,6 +145,7 @@ export default function Neighborhood({ filterVal }: Props) {
             />
             <FactCard
               label="Flood Zone"
+              type="string"
               value={floodData[0]?.floodZone || "Unknown"}
               icon={
                 <FloodIcon
@@ -188,7 +170,8 @@ export default function Neighborhood({ filterVal }: Props) {
             </FactCard>
             <FactCard
               label="Adults with a bachlors degree"
-              value={(censusData && `${censusData.percentOfAdultsWithBatchlorsDegree}%`) || ""}
+              type="percent"
+              value={censusData?.percentOfAdultsWithBatchlorsDegree}
               icon={
                 <WarningIcon
                   sx={{
@@ -200,7 +183,8 @@ export default function Neighborhood({ filterVal }: Props) {
             />
             <FactCard
               label="Homes with married-couple families"
-              value={(censusData && `${censusData.percentageOfHomesWithMarriedCouples}%`) || ""}
+              type="percent"
+              value={censusData && censusData.percentageOfHomesWithMarriedCouples}
               icon={
                 <WarningIcon
                   sx={{
@@ -212,7 +196,8 @@ export default function Neighborhood({ filterVal }: Props) {
             />
             <FactCard
               label="Average Salary"
-              value={(censusData && `${typeof censusData.averageSalary != "string" && formatter.format(censusData.averageSalary)}`) || ""}
+              type="string"
+              value={censusData?.averageSalary && formatter.format(censusData.averageSalary)}
               icon={
                 <WarningIcon
                   sx={{
@@ -224,7 +209,8 @@ export default function Neighborhood({ filterVal }: Props) {
             />
             <FactCard
               label="Percent Under Poverty"
-              value={(censusData && `${censusData.percentUnderPoverty}%`) || ""}
+              type="percent"
+              value={censusData && censusData.percentUnderPoverty}
               icon={
                 <WarningIcon
                   sx={{
@@ -236,7 +222,8 @@ export default function Neighborhood({ filterVal }: Props) {
             />
             <FactCard
               label="Percent not US citizens"
-              value={(censusData && `${censusData.nonCitizens}%`) || ""}
+              type="percent"
+              value={censusData && censusData.nonCitizens}
               icon={
                 <WarningIcon
                   sx={{
@@ -248,7 +235,8 @@ export default function Neighborhood({ filterVal }: Props) {
             />
             <FactCard
               label="Dominant Race"
-              value={(censusData && `${capitalize(censusData.dominantRace)}`) || ""}
+              type="string"
+              value={censusData && `${capitalize(censusData.dominantRace)}`}
               icon={
                 <WarningIcon
                   sx={{
@@ -270,11 +258,66 @@ export default function Neighborhood({ filterVal }: Props) {
                 See Breakdown
               </Button>
             </FactCard>
+
+            <FactCard
+              label="Unemployment Rate"
+              type="string"
+              value={censusData && censusData.unemploymentRate}
+              icon={
+                <WarningIcon
+                  sx={{
+                    color: "green",
+                    fontSize: "50px",
+                  }}
+                />
+              }
+            />
+            <FactCard
+              label="Owner morgage ≥ 30% household income"
+              type="string"
+              value={censusData && censusData.morgageGreaterThan30Percent}
+              icon={
+                <WarningIcon
+                  sx={{
+                    color: "green",
+                    fontSize: "50px",
+                  }}
+                />
+              }
+            />
+            <FactCard
+              label="Rent ≥ 30% household income"
+              type="string"
+              value={censusData && censusData.rentGreaterThan30Percent}
+              icon={
+                <WarningIcon
+                  sx={{
+                    color: "green",
+                    fontSize: "50px",
+                  }}
+                />
+              }
+            />
+            <FactCard
+              label="Owners without morgages"
+              type="percent"
+              value={censusData && censusData.percentOwnersNoMorgage}
+              icon={
+                <WarningIcon
+                  sx={{
+                    color: "green",
+                    fontSize: "50px",
+                  }}
+                />
+              }
+            />
+
             <RaceBreakdown open={openRaceBreakdown} handleClose={handleCloseModals} raceData={censusData?.raceData} />
 
             <FloodZoneModal open={openFloodZoneMap} handleClose={handleCloseModals}>
               <FactCard
                 label="Flood Zone"
+                type="string"
                 value={floodData[0]?.floodZone || "Unknown"}
                 icon={
                   <FloodIcon
@@ -288,7 +331,7 @@ export default function Neighborhood({ filterVal }: Props) {
             </FloodZoneModal>
           </FactCardContainer>
         ) : (
-          <h3>No Flood Data</h3>
+          <h3>No Neighborhood Data</h3>
         )}
       </Box>
     </Box>

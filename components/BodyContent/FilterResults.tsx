@@ -148,6 +148,7 @@ export default function FilterResults() {
           <ToggleButton style={{ width: "220px", textTransform: "initial" }} value="nearby">
             Nearby Places
           </ToggleButton>
+
           <ToggleButton style={{ width: "220px", textTransform: "initial" }} value="neighborhood">
             Neighborhood
           </ToggleButton>

@@ -14,11 +14,15 @@ const IconContainer = styled("div")(() => ({
 interface Props {
   icon: JSX.Element;
   label: string;
-  value: string;
+  value: string | number | null | undefined;
   children?: JSX.Element | JSX.Element[];
+  type: "string" | "percent";
 }
 
-const FactCard = ({ icon, label, value, children }: Props) => {
+const FactCard = ({ icon, label, value, type, children }: Props) => {
+  let formattedValue = type === "percent" ? `${value}%` : value;
+  if (!value) value = "";
+
   return (
     <Card style={{ minWidth: 200, width: "24%", maxWidth: 250, border: "1px solid lightgray", boxShadow: "none", borderRadius: "10px", margin: "5px", overflow: "visible" }}>
       <CardContent
@@ -42,7 +46,7 @@ const FactCard = ({ icon, label, value, children }: Props) => {
           <Typography variant="body1" style={{ fontSize: "14px" }}>
             {label}
           </Typography>
-          <Typography sx={{ fontSize: "24px", fontWeight: "bold" }}>{value}</Typography>
+          <Typography sx={{ fontSize: "24px", fontWeight: "bold" }}>{formattedValue || "N/A"}</Typography>
           {children}
         </Box>
       </CardContent>
