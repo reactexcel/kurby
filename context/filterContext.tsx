@@ -44,10 +44,10 @@ const filterContext: FilterContext  = {
 
 
 export const addressState = atom<string>({
-    key: "address",
-    default: "",
-    effects: [syncEffect({ storeKey: 'url-json-store', refine: string() })],
-})
+  key: "address",
+  default: "",
+  effects: [syncEffect({ storeKey: "url-json-store", refine: string() })],
+});
 
 export const filterState = atom(filterContext);
 
