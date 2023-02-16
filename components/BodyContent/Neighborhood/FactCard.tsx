@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography, Box } from "@mui/material";
+import { Card, CardContent, Typography, Box, CircularProgress } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 const IconContainer = styled("div")(() => ({
@@ -13,13 +13,14 @@ const IconContainer = styled("div")(() => ({
 
 interface Props {
   icon: JSX.Element;
+  loading: boolean;
   label: string;
   value: string | number | null | undefined;
   children?: JSX.Element | JSX.Element[];
   type: "string" | "percent";
 }
 
-const FactCard = ({ icon, label, value, type, children }: Props) => {
+const FactCard = ({ icon, label, value, type, children, loading }: Props) => {
   let formattedValue = type === "percent" ? `${value}%` : value;
   if (!value) value = "";
 
@@ -41,13 +42,20 @@ const FactCard = ({ icon, label, value, type, children }: Props) => {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
+            overflow: "hidden",
           }}
         >
           <Typography variant="body1" style={{ fontSize: "14px" }}>
             {label}
           </Typography>
-          <Typography sx={{ fontSize: "24px", fontWeight: "bold" }}>{formattedValue || "N/A"}</Typography>
-          {children}
+          {loading ? (
+            <CircularProgress />
+          ) : (
+            <>
+              <Typography sx={{ fontSize: "24px", fontWeight: "bold" }}>{formattedValue || "N/A"}</Typography>
+              {children}
+            </>
+          )}
         </Box>
       </CardContent>
     </Card>
