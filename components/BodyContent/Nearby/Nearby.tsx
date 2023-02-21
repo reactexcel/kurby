@@ -70,30 +70,28 @@ export default function Nearby() {
   return (
     <>
       <Box style={{ height: "100%", width: "100%", position: "relative", marginTop: "24px" }}>
-        {filterVal.nearbyPlaces.length ?
-          
-            <InfiniteScroll
-              style={{ overflow: "auto", height: "100%", width: "100", position: "absolute" }}
-              dataLength={loadedNearbyPlaces.length} //This is important field to render the next data
-              // Pass setFilterV as an argument to loadMore
-              next={fetchMoreData}
-              hasMore={filterVal.nearbyPlaces.length - loadedNearbyPlaces.length !== 0}
-              loader={<h4>Loading...</h4>}
-              height="100%"
-              endMessage={
-                <p style={{ textAlign: 'center' }}>
-                  <b>Yay! You have seen it all</b>
-                </p>
-              }
-            >
-              
-              {
-                loadedNearbyPlaces.map((place: any) => {
-                  return <NearbyPlaceCard key={`placecard_${place.place_id}`} place={place} />;
-                })}
-              
-            </InfiniteScroll> : <Typography>Please select a place of interest.</Typography>
-        }
+        {filterVal.nearbyPlaces.length ? (
+          <InfiniteScroll
+            style={{ overflow: "auto", height: "100%", width: "100", position: "absolute" }}
+            dataLength={loadedNearbyPlaces.length || []} //This is important field to render the next data
+            // Pass setFilterV as an argument to loadMore
+            next={fetchMoreData}
+            hasMore={filterVal.nearbyPlaces.length - loadedNearbyPlaces.length !== 0}
+            loader={<h4>Loading...</h4>}
+            height="100%"
+            endMessage={
+              <p style={{ textAlign: "center" }}>
+                <b>Yay! You have seen it all</b>
+              </p>
+            }
+          >
+            {loadedNearbyPlaces.map((place: any) => {
+              return <NearbyPlaceCard key={`placecard_${place.place_id}`} place={place} />;
+            })}
+          </InfiniteScroll>
+        ) : (
+          <Typography>Please select a place of interest.</Typography>
+        )}
       </Box>
     </>
   );
