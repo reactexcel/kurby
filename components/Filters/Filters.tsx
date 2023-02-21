@@ -44,7 +44,7 @@ export default function Filters() {
   const [address, setAddress] = useRecoilState(addressState);
   const [snackbar, setSnackbar] = useRecoilState(snackbarContext);
   const [isSelectAll, setSelectAll] = useState<boolean>(true);
-  const [activeTab, setActiveTab] = useRecoilState(activeTabState)
+  const [activeTab, setActiveTab] = useRecoilState(activeTabState);
 
   //* State for the place select element
   const [typesOfPlace, setTypesOfPlace] = useState<any[]>(PLACE_TYPES);
@@ -139,18 +139,15 @@ export default function Filters() {
   useEffect(() => {
     //* this use effect only runs when the map center or type of place changes
     //* Searching a different place will change map center
-    if (!filterVal?.selectedPlace) return;
-    if (activeTab !== 'nearby') return;
-    const getNearbyState = async () => {
+    (async () => {
       if (!filterVal.mapCenter) return;
       //* Retreive all of the nearby places
       await getNearby({
         lat: filterVal.mapCenter.lat,
         lng: filterVal.mapCenter.lng,
       });
-    };
-    getNearbyState();
-  }, [filterVal.mapCenter, typesOfPlace, filterVal?.selectedPlace, activeTab]);
+    })();
+  }, [filterVal.mapCenter, typesOfPlace]);
 
   const handleAddressChange = async (place: any) => {
     const getScore = (address: string, location: any) => WalkscoreListApi({ address, location });
@@ -161,17 +158,19 @@ export default function Filters() {
       lng: place.geometry.location.lng(),
     };
     const walkscore = await getScore(place.formatted_address, location);
+    setAddress(place.formatted_address);
     setSnackbar((prevVal: any) => {
       return {
         ...prevVal,
-        ...(walkscore ? walkscore : {
-          open: true,
-            message: 'Walkscore error',
-            variant: 'error'
-        })
-      }
-    })
-    setAddress(place.formatted_address);
+        ...(walkscore
+          ? walkscore
+          : {
+              open: true,
+              message: "Walkscore error",
+              variant: "error",
+            }),
+      };
+    });
     setFilterVal((prevVal: any) => {
       return {
         ...prevVal,
@@ -192,12 +191,12 @@ export default function Filters() {
     autoCompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current, AUTOCOMPLETE_OPTIONS);
     //* When the location changes, update the state
     autoCompleteRef.current.addListener("place_changed", async function () {
-      console.log('place_changed');
+      console.log("place_changed");
       //TODO handle error and display it to the client
       const place = await autoCompleteRef.current.getPlace();
       handleAddressChange(place);
     });
-  }, [AUTOCOMPLETE_OPTIONS, setFilterVal]);
+  }, []);
 
   useEffect(() => {
     let queryString = window.location.search;
