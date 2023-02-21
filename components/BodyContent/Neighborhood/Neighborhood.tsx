@@ -7,6 +7,13 @@ import FloodIcon from "@mui/icons-material/Flood";
 import FloodZoneModal from "./FloodZoneModal";
 import getCensusData, { CensusData } from "components/Census/getCensusData";
 import RaceBreakdown from "./RaceBreakdown";
+import Hunger from "../../../public/icons/hunger.svg";
+import Unemployment from "../../../public/icons/unemployment.svg";
+import Graduation from "../../../public/icons/graduation.svg";
+import Married from "../../../public/icons/married.svg";
+import Home from "../../../public/icons/home.svg";
+import Population from "../../../public/icons/population.svg";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
 const floodRiskMap: { [key: string]: string } = {
   A: "Medium",
@@ -140,7 +147,7 @@ export default function Neighborhood({ filterVal }: Props) {
                 <WarningIcon
                   sx={{
                     color: "green",
-                    fontSize: "50px",
+                    fontSize: "40px",
                   }}
                 />
               }
@@ -154,7 +161,7 @@ export default function Neighborhood({ filterVal }: Props) {
                 <FloodIcon
                   sx={{
                     color: "green",
-                    fontSize: "50px",
+                    fontSize: "40px",
                   }}
                 />
               }
@@ -177,10 +184,10 @@ export default function Neighborhood({ filterVal }: Props) {
               type="percent"
               value={censusData?.percentOfAdultsWithBatchlorsDegree}
               icon={
-                <WarningIcon
+                <Graduation
                   sx={{
                     color: "green",
-                    fontSize: "50px",
+                    fontSize: "40px",
                   }}
                 />
               }
@@ -191,10 +198,9 @@ export default function Neighborhood({ filterVal }: Props) {
               type="percent"
               value={censusData && censusData.percentageOfHomesWithMarriedCouples}
               icon={
-                <WarningIcon
+                <Married
                   sx={{
                     color: "green",
-                    fontSize: "50px",
                   }}
                 />
               }
@@ -205,10 +211,10 @@ export default function Neighborhood({ filterVal }: Props) {
               type="string"
               value={censusData?.averageSalary && formatter.format(censusData.averageSalary)}
               icon={
-                <WarningIcon
+                <AttachMoneyIcon
                   sx={{
                     color: "green",
-                    fontSize: "50px",
+                    fontSize: "40px",
                   }}
                 />
               }
@@ -219,10 +225,10 @@ export default function Neighborhood({ filterVal }: Props) {
               type="percent"
               value={censusData && censusData.percentUnderPoverty}
               icon={
-                <WarningIcon
+                <Hunger
                   sx={{
                     color: "green",
-                    fontSize: "50px",
+                    fontSize: "40px",
                   }}
                 />
               }
@@ -233,10 +239,10 @@ export default function Neighborhood({ filterVal }: Props) {
               type="percent"
               value={censusData && censusData.nonCitizens}
               icon={
-                <WarningIcon
+                <Population
                   sx={{
                     color: "green",
-                    fontSize: "50px",
+                    fontSize: "40px",
                   }}
                 />
               }
@@ -247,10 +253,10 @@ export default function Neighborhood({ filterVal }: Props) {
               type="string"
               value={censusData && `${capitalize(censusData.dominantRace)}`}
               icon={
-                <WarningIcon
+                <Population
                   sx={{
                     color: "green",
-                    fontSize: "50px",
+                    fontSize: "40px",
                   }}
                 />
               }
@@ -271,13 +277,13 @@ export default function Neighborhood({ filterVal }: Props) {
             <FactCard
               loading={loading}
               label="Unemployment Rate"
-              type="string"
+              type="percent"
               value={censusData && censusData.unemploymentRate}
               icon={
-                <WarningIcon
-                  sx={{
+                <Unemployment
+                  style={{
                     color: "green",
-                    fontSize: "50px",
+                    width: "40px",
                   }}
                 />
               }
@@ -285,13 +291,13 @@ export default function Neighborhood({ filterVal }: Props) {
             <FactCard
               loading={loading}
               label="Owner morgage ≥ 30% household income"
-              type="string"
+              type="percent"
               value={censusData && censusData.morgageGreaterThan30Percent}
               icon={
-                <WarningIcon
+                <Home
                   sx={{
                     color: "green",
-                    fontSize: "50px",
+                    fontSize: "40px",
                   }}
                 />
               }
@@ -302,10 +308,10 @@ export default function Neighborhood({ filterVal }: Props) {
               type="string"
               value={censusData && censusData.rentGreaterThan30Percent}
               icon={
-                <WarningIcon
+                <Home
                   sx={{
                     color: "green",
-                    fontSize: "50px",
+                    fontSize: "40px",
                   }}
                 />
               }
@@ -316,10 +322,10 @@ export default function Neighborhood({ filterVal }: Props) {
               type="percent"
               value={censusData && censusData.percentOwnersNoMorgage}
               icon={
-                <WarningIcon
+                <Home
                   sx={{
                     color: "green",
-                    fontSize: "50px",
+                    fontSize: "40px",
                   }}
                 />
               }
@@ -337,7 +343,7 @@ export default function Neighborhood({ filterVal }: Props) {
                   <FloodIcon
                     sx={{
                       color: "green",
-                      fontSize: "50px",
+                      fontSize: "40px",
                     }}
                   />
                 }

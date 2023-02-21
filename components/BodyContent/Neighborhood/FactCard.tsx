@@ -5,10 +5,14 @@ const IconContainer = styled("div")(() => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  padding: "5px",
   background: "#F1F4F6",
   borderRadius: "10px",
   marginRight: "25px",
+  minWidth: "64px",
+  width: "64px",
+  height: "64px",
+  maxHeight: "64px",
+  maxWidth: "64px",
 }));
 
 interface Props {
@@ -25,7 +29,7 @@ const FactCard = ({ icon, label, value, type, children, loading }: Props) => {
   if (!value) value = "";
 
   return (
-    <Card style={{ minWidth: 200, width: "24%", maxWidth: 250, border: "1px solid lightgray", boxShadow: "none", borderRadius: "10px", margin: "5px", overflow: "visible" }}>
+    <Card style={{ minWidth: 215, width: "24%", maxWidth: 250, border: "1px solid lightgray", boxShadow: "none", borderRadius: "10px", margin: "5px", overflow: "visible" }}>
       <CardContent
         sx={{
           display: "flex",
@@ -42,17 +46,16 @@ const FactCard = ({ icon, label, value, type, children, loading }: Props) => {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            overflow: "hidden",
           }}
         >
-          <Typography variant="body1" style={{ fontSize: "14px" }}>
+          <Typography variant="body1" style={{ fontSize: "14px", wordWrap: "break-word" }}>
             {label}
           </Typography>
           {loading ? (
             <CircularProgress />
           ) : (
             <>
-              <Typography sx={{ fontSize: "24px", fontWeight: "bold" }}>{formattedValue || "N/A"}</Typography>
+              <Typography sx={{ fontSize: "24px", fontWeight: "bold", minWidth: "100%" }}>{formattedValue || "N/A"}</Typography>
               {children}
             </>
           )}
