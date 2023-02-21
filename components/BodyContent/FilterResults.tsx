@@ -95,7 +95,8 @@ export default function FilterResults() {
 
         <Box className={styles.box}>
           <ul>
-            {flagsArr.length &&
+            {flagsArr &&
+              flagsArr.length &&
               flagsArr.map((flagContent: string, index: number) => {
                 return <li key={index}>{flagContent}</li>;
               })}
