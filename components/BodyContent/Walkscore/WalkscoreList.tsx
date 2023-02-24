@@ -14,10 +14,20 @@ export default function WalkscoreList() {
   return (
     <>
       <Box style={{ display: "flex" }}>
-        {
+        {filterVal.walkscore?.types &&
           Object.keys(filterVal.walkscore.types).map((type: string) => {
-            if (!filterVal.walkscore || !(filterVal.walkscore as any).types[type]) { return }
-            return <Walkscore key={type} type={type} score={(filterVal.walkscore as any).types[type]} error={filterVal.walkscore.error} isUSOrCanada={filterVal.walkscore.isUSOrCanada} />;
+            if (!filterVal.walkscore || !(filterVal.walkscore as any).types[type]) {
+              return;
+            }
+            return (
+              <Walkscore
+                key={type}
+                type={type}
+                score={(filterVal.walkscore as any).types[type]}
+                error={filterVal.walkscore.error}
+                isUSOrCanada={filterVal.walkscore.isUSOrCanada}
+              />
+            );
           })}
       </Box>
     </>
