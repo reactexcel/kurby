@@ -155,9 +155,9 @@ export default function FilterResults() {
           <ToggleButton style={{ width: "220px", textTransform: "initial" }} value="neighborhood">
             Neighborhood
           </ToggleButton>
-          <ToggleButton style={{ width: "220px", textTransform: "initial" }} value="utility">
+          {/* <ToggleButton style={{ width: "220px", textTransform: "initial" }} value="utility">
             Utility
-          </ToggleButton>
+          </ToggleButton> */}
         </ToggleButtonGroup>
 
         {
@@ -209,11 +209,11 @@ export default function FilterResults() {
               {activeTab == "nearby" && <Nearby />}
               {activeTab == "neighborhood" && <Neighborhood filterVal={filterVal} />}
 
-              {activeTab == "utility" && (
+              {/* activeTab == "utility" && (
                 <Box style={resultsContentStyle}>
                   <Census></Census>
                 </Box>
-              )}
+              ) */}
             </Box>
           )
         }
