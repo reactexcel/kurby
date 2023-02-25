@@ -190,7 +190,6 @@ export default function Filters() {
     autoCompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current, AUTOCOMPLETE_OPTIONS);
     //* When the location changes, update the state
     autoCompleteRef.current.addListener("place_changed", async function () {
-      console.log('place_changed');
       //TODO handle error and display it to the client
       const place = await autoCompleteRef.current.getPlace();
       handleAddressChange(place);

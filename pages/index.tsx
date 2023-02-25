@@ -11,6 +11,7 @@ import Homepage from "../components/Home/Homepage";
 import { addressState } from "../context/filterContext";
 import { NextSeo } from 'next-seo';
 import MessageBar from "services/MessageBar";
+import Resultspage from "components/Resultspage/Resultspage";
 /**
  * Home
  * @description: Landing page
@@ -32,41 +33,13 @@ export default function Home() {
   }, [recoilAddress]);
 
   return (
-<>
-      <NextSeo
-          title={recoilAddress || "Kurby.ai"}
-          description="Kurby uses location data to estimate property value like never before."
-        />
-   
-      <Script
-        strategy="beforeInteractive"
-        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
-      />
-      
+    <>
+      <NextSeo title={recoilAddress || "Kurby.ai"} description="Kurby uses location data to estimate property value like never before." />
+
+      <Script strategy="beforeInteractive" src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`} />
+
       <ThemeProvider theme={theme}>
-        {isLoading ? (
-          <></>
-        ) : isHomepage ? (
-          <Homepage setHomepage={setHomepage} />
-        ) : (
-          <>
-          
-            <Navbar />
-            <Box 
-              style={{ 
-                padding: '32px',
-                paddingBottom: '0px',
-                height: '92vh',
-                display: 'flex',
-                flexDirection: 'column',
-                boxSizing: 'border-box',
-              }}
-            >
-              <Filters />
-              <BodyContent />
-            </Box>
-          </>
-        )}
+        {isLoading ? <></> : isHomepage ? <Homepage setHomepage={setHomepage} /> : <Resultspage />}
         <MessageBar></MessageBar>
       </ThemeProvider>
     </>
