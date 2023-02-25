@@ -44,7 +44,7 @@ export default function Filters() {
   const [address, setAddress] = useRecoilState(addressState);
   const [snackbar, setSnackbar] = useRecoilState(snackbarContext);
   const [isSelectAll, setSelectAll] = useState<boolean>(true);
-  const [activeTab, setActiveTab] = useRecoilState(activeTabState);
+  const [activeTab, setActiveTab] = useRecoilState(activeTabState)
 
   //* State for the place select element
   const [typesOfPlace, setTypesOfPlace] = useState<any[]>(PLACE_TYPES);
@@ -146,7 +146,8 @@ export default function Filters() {
         lat: filterVal.mapCenter.lat,
         lng: filterVal.mapCenter.lng,
       });
-    })();
+    
+    })()
   }, [filterVal.mapCenter, typesOfPlace]);
 
   const handleAddressChange = async (place: any) => {
@@ -162,15 +163,13 @@ export default function Filters() {
     setSnackbar((prevVal: any) => {
       return {
         ...prevVal,
-        ...(walkscore
-          ? walkscore
-          : {
-              open: true,
-              message: "Walkscore error",
-              variant: "error",
-            }),
-      };
-    });
+        ...(walkscore.error ? {
+          open: true,
+            message: 'Walkscore error',
+            variant: 'error'
+        } : {open: false})
+      }
+    })
     setFilterVal((prevVal: any) => {
       return {
         ...prevVal,
@@ -191,7 +190,6 @@ export default function Filters() {
     autoCompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current, AUTOCOMPLETE_OPTIONS);
     //* When the location changes, update the state
     autoCompleteRef.current.addListener("place_changed", async function () {
-      console.log("place_changed");
       //TODO handle error and display it to the client
       const place = await autoCompleteRef.current.getPlace();
       handleAddressChange(place);
