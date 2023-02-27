@@ -33,7 +33,7 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 - **Chart.js**: A library for creating charts and graphs in your web app. It provides a flexible and easy-to-use API for creating a wide variety of charts, including line charts, bar charts, pie charts, and more. [Documentation](https://www.chartjs.org/docs/latest/)
 
 
-### Enviroment Variables
+### Environment Variables
 The project requires certain environment variables to be set for proper configuration. An example .env file is included in the project repository titled `env-example.txt`, which you can use as a template to create your own environment variables file. To set up your own environment variables, create a file named .env.local in the root directory of the project and add your variables there. Contact the project owner for information on the required variables.
 
 ### Deployment
