@@ -256,7 +256,7 @@ export default function Filters() {
           </form>
         </div>
 
-        <div className={styles.searchBlock}>
+        {/* <div className={styles.searchBlock}>
           <div className={styles.typeOfPlace}>
             <div className={styles.row}>
               <div className={styles.label}>Places of interest</div>
@@ -291,7 +291,7 @@ export default function Filters() {
               </form>
             </div>
           </div>
-        </div>
+        </div> */}
       </Box>
     </>
   );
