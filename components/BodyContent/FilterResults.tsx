@@ -148,9 +148,9 @@ export default function FilterResults() {
           <ToggleButton style={{ width: "220px", textTransform: "initial" }} value="home">
             Location
           </ToggleButton>
-          <ToggleButton style={{ width: "220px", textTransform: "initial" }} value="nearby">
+          {/* <ToggleButton style={{ width: "220px", textTransform: "initial" }} value="nearby">
             Nearby Places
-          </ToggleButton>
+          </ToggleButton> */}
 
           <ToggleButton style={{ width: "220px", textTransform: "initial" }} value="neighborhood">
             Neighborhood

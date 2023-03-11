@@ -44,7 +44,7 @@ export default function Filters() {
   const [address, setAddress] = useRecoilState(addressState);
   const [snackbar, setSnackbar] = useRecoilState(snackbarContext);
   const [isSelectAll, setSelectAll] = useState<boolean>(true);
-  const [activeTab, setActiveTab] = useRecoilState(activeTabState)
+  const [activeTab, setActiveTab] = useRecoilState(activeTabState);
 
   //* State for the place select element
   const [typesOfPlace, setTypesOfPlace] = useState<any[]>(PLACE_TYPES);
@@ -136,19 +136,20 @@ export default function Filters() {
     }
   };
 
-  useEffect(() => {
-    //* this use effect only runs when the map center or type of place changes
-    //* Searching a different place will change map center
-    (async () => {
-      if (!filterVal.mapCenter) return;
-      //* Retreive all of the nearby places
-      await getNearby({
-        lat: filterVal.mapCenter.lat,
-        lng: filterVal.mapCenter.lng,
-      });
-    
-    })()
-  }, [filterVal.mapCenter, typesOfPlace]);
+  // Commented "Nearby places"
+  // useEffect(() => {
+  //   //* this use effect only runs when the map center or type of place changes
+  //   //* Searching a different place will change map center
+  //   (async () => {
+  //     if (!filterVal.mapCenter) return;
+  //     //* Retreive all of the nearby places
+  //     await getNearby({
+  //       lat: filterVal.mapCenter.lat,
+  //       lng: filterVal.mapCenter.lng,
+  //     });
+
+  //   })()
+  // }, [filterVal.mapCenter, typesOfPlace]);
 
   const handleAddressChange = async (place: any) => {
     const getScore = (address: string, location: any) => WalkscoreListApi({ address, location });
@@ -163,13 +164,15 @@ export default function Filters() {
     setSnackbar((prevVal: any) => {
       return {
         ...prevVal,
-        ...(walkscore.error ? {
-          open: true,
-            message: 'Walkscore error',
-            variant: 'error'
-        } : {open: false})
-      }
-    })
+        ...(walkscore.error
+          ? {
+              open: true,
+              message: "Walkscore error",
+              variant: "error",
+            }
+          : { open: false }),
+      };
+    });
     setFilterVal((prevVal: any) => {
       return {
         ...prevVal,
