@@ -27,12 +27,12 @@
 .searchRow {
     display: flex;
     flex-direction: row;
-    width: 75%;
+    width: 100%;
 }
 
 .input{
     width: -webkit-fill-available;
-    margin-right: 32px;
+    /* margin-right: 32px; */
     height: 50px;
     background-color: #9e9e9e1a;
     border: none;
