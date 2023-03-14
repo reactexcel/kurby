@@ -8,8 +8,6 @@ import AnimatedHeader from './AnimatedHeader';
 import styles from './Home.module.css';
 import SearchIcon from "@mui/icons-material/Search";
 import GoogleAddressInput from "../GoogleAddressInput";
-import { useRecoilState } from "recoil";
-import {addressState, filterState} from "../../context/filterContext";
 import { useRouter } from "next/router";
 import { addressToUrl } from "utils/address";
 
@@ -44,8 +42,6 @@ const CustomBody = styled(Container)<ContainerProps>(() => ({
 }));
 
 export default function Home({mobile, setHomepage}: any) {
-  const [filterVal, setFilterVal] = useRecoilState(filterState);
-  // const [address, setAddress] = useRecoilState(addressState)
   const router = useRouter();
   return (
     <>

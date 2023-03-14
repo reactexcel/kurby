@@ -4,7 +4,6 @@ import Script from "next/script";
 import Topbar from "../components/Home/Topbar/Topbar";
 import { useState, useEffect } from "react";
 import { RecoilRoot } from "recoil";
-import { RecoilURLSyncJSONNext } from "recoil-sync-next";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [mobile, setMobile] = useState(false);
