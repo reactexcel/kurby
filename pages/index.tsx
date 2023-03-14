@@ -21,16 +21,16 @@ export default function Home() {
   const [isHomepage, setHomepage] = useState(true);
   const [isLoading, setLoading] = useState(true);
 
-  useEffect(() => {
-    setTimeout(() => {
-      console.log("address change", recoilAddress);
-      const queryString = window.location.search;
-      const urlParams = new URLSearchParams(queryString);
-      const address = urlParams.get("address");
-      if (address) setHomepage(false);
-      setLoading(false);
-    }, 500);
-  }, [recoilAddress]);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     console.log("address change", recoilAddress);
+  //     const queryString = window.location.search;
+  //     const urlParams = new URLSearchParams(queryString);
+  //     const address = urlParams.get("address");
+  //     if (address) setHomepage(false);
+  //     setLoading(false);
+  //   }, 500);
+  // }, [recoilAddress]);
 
   return (
     <>

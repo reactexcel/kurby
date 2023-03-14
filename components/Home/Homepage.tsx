@@ -10,6 +10,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import GoogleAddressInput from "../GoogleAddressInput";
 import { useRecoilState } from "recoil";
 import {addressState, filterState} from "../../context/filterContext";
+import { useRouter } from "next/router";
 
 const CustomContainer = styled("div")(() => ({
   position: "relative",
@@ -43,7 +44,8 @@ const CustomBody = styled(Container)<ContainerProps>(() => ({
 
 export default function Home({mobile, setHomepage}: any) {
   const [filterVal, setFilterVal] = useRecoilState(filterState);
-  const [address, setAddress] = useRecoilState(addressState)
+  // const [address, setAddress] = useRecoilState(addressState)
+  const router = useRouter();
   return (
     <>
     <div
@@ -103,7 +105,11 @@ export default function Home({mobile, setHomepage}: any) {
               className={styles.input}
               placeholder="Search a property address"
               handleSelectedAddress={(address:any) => {
-                setAddress(address.formatted_address);
+                console.log("searhced address =>>> ", address)
+                const encodedAddress = address.formatted_address.replace(/, /g, '_').replace(/ /g, '-');
+                console.log({encodedAddress})
+                router.push(`app/${encodedAddress}`)
+                // setAddress(address.formatted_address);
                 //setHomepage(false);
               }}
             />
