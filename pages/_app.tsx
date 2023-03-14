@@ -71,12 +71,7 @@ export default function App({ Component, pageProps }: AppProps) {
           }}
         >
           <RecoilRoot>
-            <RecoilURLSyncJSONNext
-              storeKey="url-json-store"
-              location={{ part: "queryParams" }}
-            >
               <Component mobile={mobile} {...pageProps} />
-            </RecoilURLSyncJSONNext>
           </RecoilRoot>
         </div>
       </Topbar>

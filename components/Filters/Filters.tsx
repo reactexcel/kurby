@@ -18,6 +18,8 @@ import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import WalkscoreListApi from "../BodyContent/Walkscore/WalkscoreListApi";
 import snackbarContext from "../../context/snackbarContext";
 import { activeTabState } from "context/activeTab";
+import { useRouter } from "next/router";
+import { addressToUrl } from "utils/address";
 
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
@@ -48,6 +50,9 @@ export default function Filters() {
 
   //* State for the place select element
   const [typesOfPlace, setTypesOfPlace] = useState<any[]>(PLACE_TYPES);
+
+  const router = useRouter();
+
 
   //* Refs to html elements - used for google autocomplete
   //TODO add correct typeface
@@ -166,10 +171,10 @@ export default function Filters() {
         ...prevVal,
         ...(walkscore.error
           ? {
-              open: true,
-              message: "Walkscore error",
-              variant: "error",
-            }
+            open: true,
+            message: "Walkscore error",
+            variant: "error",
+          }
           : { open: false }),
       };
     });
@@ -195,14 +200,12 @@ export default function Filters() {
     autoCompleteRef.current.addListener("place_changed", async function () {
       //TODO handle error and display it to the client
       const place = await autoCompleteRef.current.getPlace();
-      handleAddressChange(place);
+      const encodedAddress = addressToUrl(place.formatted_address);
+      router.push(`/app/${encodedAddress}`)
     });
   }, []);
 
   useEffect(() => {
-    let queryString = window.location.search;
-    let urlParams = new URLSearchParams(queryString);
-    let address = urlParams.get("address");
     if (address && inputRef.current) {
       const addressFormattted = address.replaceAll('"', "");
       inputRef.current.value = addressFormattted;
@@ -231,7 +234,7 @@ export default function Filters() {
       };
       getData();
     }
-  }, []);
+  }, [address]);
 
   return (
     <>

@@ -11,6 +11,7 @@ import GoogleAddressInput from "../GoogleAddressInput";
 import { useRecoilState } from "recoil";
 import {addressState, filterState} from "../../context/filterContext";
 import { useRouter } from "next/router";
+import { addressToUrl } from "utils/address";
 
 const CustomContainer = styled("div")(() => ({
   position: "relative",
@@ -105,12 +106,8 @@ export default function Home({mobile, setHomepage}: any) {
               className={styles.input}
               placeholder="Search a property address"
               handleSelectedAddress={(address:any) => {
-                console.log("searhced address =>>> ", address)
-                const encodedAddress = address.formatted_address.replace(/, /g, '_').replace(/ /g, '-');
-                console.log({encodedAddress})
-                router.push(`app/${encodedAddress}`)
-                // setAddress(address.formatted_address);
-                //setHomepage(false);
+                const encodedAddress = addressToUrl(address.formatted_address);
+                router.push(`/app/${encodedAddress}`)
               }}
             />
             {/* <input

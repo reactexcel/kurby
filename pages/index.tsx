@@ -19,18 +19,7 @@ import Resultspage from "components/Resultspage/Resultspage";
 export default function Home() {
   const [recoilAddress] = useRecoilState(addressState);
   const [isHomepage, setHomepage] = useState(true);
-  const [isLoading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     console.log("address change", recoilAddress);
-  //     const queryString = window.location.search;
-  //     const urlParams = new URLSearchParams(queryString);
-  //     const address = urlParams.get("address");
-  //     if (address) setHomepage(false);
-  //     setLoading(false);
-  //   }, 500);
-  // }, [recoilAddress]);
 
   return (
     <>
@@ -39,7 +28,7 @@ export default function Home() {
       <Script strategy="beforeInteractive" src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`} />
 
       <ThemeProvider theme={theme}>
-        {isLoading ? <></> : isHomepage ? <Homepage setHomepage={setHomepage} /> : <Resultspage />}
+        <Homepage setHomepage={setHomepage} />
         <MessageBar></MessageBar>
       </ThemeProvider>
     </>
