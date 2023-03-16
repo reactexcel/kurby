@@ -8,8 +8,8 @@ import AnimatedHeader from './AnimatedHeader';
 import styles from './Home.module.css';
 import SearchIcon from "@mui/icons-material/Search";
 import GoogleAddressInput from "../GoogleAddressInput";
-import { useRecoilState } from "recoil";
-import {addressState, filterState} from "../../context/filterContext";
+import { useRouter } from "next/router";
+import { addressToUrl } from "utils/address";
 
 const CustomContainer = styled("div")(() => ({
   position: "relative",
@@ -41,122 +41,121 @@ const CustomBody = styled(Container)<ContainerProps>(() => ({
   marginTop: "-125px !important",
 }));
 
-export default function Home({mobile, setHomepage}: any) {
-  const [filterVal, setFilterVal] = useRecoilState(filterState);
-  const [address, setAddress] = useRecoilState(addressState)
+export default function Home({ mobile, setHomepage }: any) {
+  const router = useRouter();
   return (
     <>
-    <div
-      style={{
-        position: "relative",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "30px 0px",
-      }}
-    >
-      <TopToolbar />
-    </div>
-    <CustomBody>
-      <CustomContainer>
-        <AnimatedHeader mobile={mobile} />
-        <div>
-          <h2
-            style={{
-              fontWeight: "300",
-              fontSize: "30px",
-              color: "#868686",
-              textAlign: 'center'
-            }}
-          >
-            Kurby uses location data to estimate property value like never
-            before.
-          </h2>
-        </div>
+      <div
+        style={{
+          position: "relative",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "30px 0px",
+        }}
+      >
+        <TopToolbar />
+      </div>
+      <CustomBody>
+        <CustomContainer>
+          <AnimatedHeader mobile={mobile} />
+          <div>
+            <h2
+              style={{
+                fontWeight: "300",
+                fontSize: "30px",
+                color: "#868686",
+                textAlign: 'center'
+              }}
+            >
+              Kurby uses location data to estimate property value like never
+              before.
+            </h2>
+          </div>
 
-        <div className={styles.formWrapper}>
-          <div className={styles.formContainer}>
-            <GoogleAddressInput 
-              label=""
-              inputProps={{
-                sx: {
-                  height: '50px', 
-                  fontSize: '20px', 
-                },
-                autocomplete: "off"
-              }}
-              InputProps={{
-                sx: {
-                  minWidth: '450px', 
-                  textDecoration: 'none', 
-                  height: '50px', 
-                  borderBottom: 'none !important', 
-                  marginTop: '5px',
-                  '&::before': {
-                    borderBottom: 'none !important', 
-                  }, 
-                  '&::after': {
-                    borderBottom: 'none !important', 
+          <div className={styles.formWrapper}>
+            <div className={styles.formContainer}>
+              <GoogleAddressInput
+                label=""
+                inputProps={{
+                  sx: {
+                    height: '50px',
+                    fontSize: '20px',
+                  },
+                  autoComplete: "off"
+                }}
+                InputProps={{
+                  sx: {
+                    minWidth: '450px',
+                    textDecoration: 'none',
+                    height: '50px',
+                    borderBottom: 'none !important',
+                    marginTop: '5px',
+                    '&::before': {
+                      borderBottom: 'none !important',
+                    },
+                    '&::after': {
+                      borderBottom: 'none !important',
+                    }
                   }
-                }
-              }}
-              className={styles.input}
-              placeholder="Search a property address"
-              handleSelectedAddress={(address:any) => {
-                setAddress(address.formatted_address);
-                //setHomepage(false);
-              }}
-            />
-            {/* <input
+                }}
+                className={styles.input}
+                placeholder="Search a property address"
+                handleSelectedAddress={(address:any) => {
+                  const encodedAddress = addressToUrl(address.formatted_address);
+                  router.push(`/app/${encodedAddress}`)
+                }}
+              />
+              {/* <input
               className={styles.input}
               placeholder="Search a property address"
             ></input> */}
-            <button className={styles.searchButton}>
-              <SearchIcon className={styles.searchIcon} />
-            </button>
+              <button className={styles.searchButton}>
+                <SearchIcon className={styles.searchIcon} />
+              </button>
+            </div>
           </div>
-        </div>
-      </CustomContainer>
-    </CustomBody>
-    <section
-      style={{
-        padding: '0'
-      }}
-    >
-      <div
+        </CustomContainer>
+      </CustomBody>
+      <section
         style={{
-          maxWidth: "1140px",
-          marginLeft: "auto",
-          marginRight: "auto",
-          display: "flex",
-          flexDirection: "column",
+          padding: '0'
         }}
       >
-        <h2
+        <div
           style={{
-            fontSize: "40px",
-            fontWeight: "500",
-            textTransform: "uppercase",
-            textAlign: 'center'
+            maxWidth: "1140px",
+            marginLeft: "auto",
+            marginRight: "auto",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
-          How Kurby Improves The Home-Buying Process
-        </h2>
-        <Cards />
-        <h2
-          style={{
-            fontSize: "40px",
-            fontWeight: "500",
-            textTransform: "uppercase",
-            textAlign: 'center'
-          }}
-        >
-          Explore Neighborhoods on Kurby
-        </h2>
-      </div>
-    </section>
-    <HomeFooter mobile={mobile} />
-    <Footer />
-  </>
+          <h2
+            style={{
+              fontSize: "40px",
+              fontWeight: "500",
+              textTransform: "uppercase",
+              textAlign: 'center'
+            }}
+          >
+            How Kurby Improves The Home-Buying Process
+          </h2>
+          <Cards />
+          <h2
+            style={{
+              fontSize: "40px",
+              fontWeight: "500",
+              textTransform: "uppercase",
+              textAlign: 'center'
+            }}
+          >
+            Explore Neighborhoods on Kurby
+          </h2>
+        </div>
+      </section>
+      <HomeFooter mobile={mobile} />
+      <Footer />
+    </>
   )
 }

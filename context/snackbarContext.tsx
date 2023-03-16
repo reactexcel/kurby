@@ -20,7 +20,7 @@ interface SnackbarContext {
 }
 
 const snackbarContext: SnackbarContext  = {
-    key: 'filterContext', // unique ID (with respect to other atoms/selectors)
+    key: 'snackbarContext', // unique ID (with respect to other atoms/selectors)
     default: {
         message: '',
         variant: null,

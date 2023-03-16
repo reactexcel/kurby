@@ -4,7 +4,10 @@ import Script from "next/script";
 import Topbar from "../components/Home/Topbar/Topbar";
 import { useState, useEffect } from "react";
 import { RecoilRoot } from "recoil";
-import { RecoilURLSyncJSONNext } from "recoil-sync-next";
+
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "../styles/theme";
+
 
 export default function App({ Component, pageProps }: AppProps) {
   const [mobile, setMobile] = useState(false);
@@ -71,12 +74,9 @@ export default function App({ Component, pageProps }: AppProps) {
           }}
         >
           <RecoilRoot>
-            <RecoilURLSyncJSONNext
-              storeKey="url-json-store"
-              location={{ part: "queryParams" }}
-            >
+            <ThemeProvider theme={theme}>
               <Component mobile={mobile} {...pageProps} />
-            </RecoilURLSyncJSONNext>
+            </ThemeProvider>
           </RecoilRoot>
         </div>
       </Topbar>
