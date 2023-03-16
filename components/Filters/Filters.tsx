@@ -165,7 +165,6 @@ export default function Filters() {
       lng: place.geometry.location.lng(),
     };
     const walkscore = await getScore(place.formatted_address, location);
-    setAddress(place.formatted_address);
     setSnackbar((prevVal: any) => {
       return {
         ...prevVal,
@@ -213,7 +212,7 @@ export default function Filters() {
         const service = new google.maps.places.PlacesService(document.createElement("div"));
         const placeReq = {
           query: addressFormattted,
-          fields: ["place_id"],
+              fields: ["place_id"],
         };
         service.findPlaceFromQuery(placeReq, (results, status) => {
           if (status === google.maps.places.PlacesServiceStatus.OK && results) {

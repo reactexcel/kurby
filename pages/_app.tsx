@@ -5,6 +5,10 @@ import Topbar from "../components/Home/Topbar/Topbar";
 import { useState, useEffect } from "react";
 import { RecoilRoot } from "recoil";
 
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "../styles/theme";
+
+
 export default function App({ Component, pageProps }: AppProps) {
   const [mobile, setMobile] = useState(false);
   const [windowWidth, setWindowWidth] = useState(0);
@@ -70,7 +74,9 @@ export default function App({ Component, pageProps }: AppProps) {
           }}
         >
           <RecoilRoot>
+            <ThemeProvider theme={theme}>
               <Component mobile={mobile} {...pageProps} />
+            </ThemeProvider>
           </RecoilRoot>
         </div>
       </Topbar>

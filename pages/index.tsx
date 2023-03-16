@@ -1,8 +1,6 @@
 import Filters from "../components/Filters/Filters";
 import Navbar from "../components/Navbar/Navbar";
 import BodyContent from "../components/BodyContent/BodyContent";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "../styles/theme";
 import { Box } from "@mui/material";
 import Script from "next/script";
 import { RecoilRoot, useRecoilState } from "recoil";
@@ -25,12 +23,8 @@ export default function Home() {
     <>
       <NextSeo title={recoilAddress || "Kurby.ai"} description="Kurby uses location data to estimate property value like never before." />
 
-      <Script strategy="beforeInteractive" src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`} />
-
-      <ThemeProvider theme={theme}>
-        <Homepage setHomepage={setHomepage} />
-        <MessageBar></MessageBar>
-      </ThemeProvider>
+      <Homepage setHomepage={setHomepage} />
+      <MessageBar></MessageBar>
     </>
   );
 }
