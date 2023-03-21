@@ -30,7 +30,7 @@ export default function FilterResults() {
   const [greenFlags, setGreenFlags] = useState<any[]>([]);
   const [redFlags, setRedFlags] = useState<any[]>([]);
   const [loading, isLoading] = useState(false);
-  const [crimeInfo, setCrimeInfo] = useState<CrimeInfoType | null>({})
+  const [crimeInfo, setCrimeInfo] = useState<CrimeInfoType | null>(null)
 
   const [filterVal] = useRecoilState(filterState);
 
