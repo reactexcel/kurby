@@ -388,7 +388,6 @@ export default function Neighborhood({ filterVal, crimeInfo }: Props) {
                 />
               }
             />
-            {console.log("overallCrimeInfo =>> ,", overallCrimeInfo)}
             <FactCard
               loading={loading}
               label="Violent Crime Rate"
