@@ -2,7 +2,6 @@ import { Dialog, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { OverallCrimeInfo } from "types/address";
 import CrimeDetailCard from "./CrimeDetailCard";
-import MapDetailCard from "./MapDetailCard";
 
 const CardContainer = styled("div")(() => ({
   display: "flex",
@@ -45,11 +44,11 @@ const CrimeModal = ({ open, handleClose, overallCrimeInfo, crimeType, children }
             value={crimeType === 'violent' ? overallCrimeInfo?.violentIncidents : overallCrimeInfo?.propertyIncidents}
           />
           <CrimeDetailCard
-            label={overallCrimeInfo?.localInfo.state + " /100k"}
+            label={overallCrimeInfo?.localInfo?.state + " /100k"}
             value={crimeType === 'violent' ? overallCrimeInfo?.violentStateRate : overallCrimeInfo?.propertyStateRate}
           />
           <CrimeDetailCard
-            label={overallCrimeInfo?.localInfo.area + " /100k"}
+            label={overallCrimeInfo?.localInfo?.area + " /100k"}
             value={crimeType === 'violent' ? overallCrimeInfo?.violentAreaRate : overallCrimeInfo?.propertyAreaRate}
           />
           <CrimeDetailCard

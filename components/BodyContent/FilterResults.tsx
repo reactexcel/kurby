@@ -41,8 +41,8 @@ export default function FilterResults() {
   const getCrimeFBIInfo = async () => {
     try {
       const nationalCrimeData = await axios.get(`${process.env.NEXT_PUBLIC_CRIME_FBI_URL}/estimate/national?year=${process.env.NEXT_PUBLIC_CRIME_FBI_YEAR}&API_KEY=${process.env.NEXT_PUBLIC_CRIME_FBI_KEY}`);
-      
-      
+
+
       const stateComponent = filterVal.selectedPlace?.address_components?.find((item: AddressComponentType) => item?.types?.includes("administrative_area_level_1"));
       const areaComponent = filterVal.selectedPlace?.address_components?.find((item: AddressComponentType) => item?.types?.includes("locality"));
 
@@ -50,7 +50,7 @@ export default function FilterResults() {
       let areaViolent = 0, areaProperty = 0;
       const areaPopulation = 100 * 1000;
 
-      let agencyFBI: AgencyFBI | null = null;
+      let agencyFBI: AgencyFBI | undefined;
 
       if (stateComponent?.short_name) {
         const stateCrimeData = await axios.get(`${process.env.NEXT_PUBLIC_CRIME_FBI_URL}/estimate/state/${stateComponent.short_name}?year=${process.env.NEXT_PUBLIC_CRIME_FBI_YEAR}&API_KEY=${process.env.NEXT_PUBLIC_CRIME_FBI_KEY}`);
@@ -71,10 +71,12 @@ export default function FilterResults() {
           }
         })
 
-        const areaViolentCrimeData = await axios.get(`${process.env.NEXT_PUBLIC_CRIME_FBI_URL}/summarized/agency/${agencyFBI.ori}/violent-crime?from=${process.env.NEXT_PUBLIC_CRIME_FBI_YEAR}&to=${process.env.NEXT_PUBLIC_CRIME_FBI_YEAR}&API_KEY=${process.env.NEXT_PUBLIC_CRIME_FBI_KEY}`);
+        const agencyOri = agencyFBI ? agencyFBI.ori : '';
+
+        const areaViolentCrimeData = await axios.get(`${process.env.NEXT_PUBLIC_CRIME_FBI_URL}/summarized/agency/${agencyOri}/violent-crime?from=${process.env.NEXT_PUBLIC_CRIME_FBI_YEAR}&to=${process.env.NEXT_PUBLIC_CRIME_FBI_YEAR}&API_KEY=${process.env.NEXT_PUBLIC_CRIME_FBI_KEY}`);
         areaViolent = areaViolentCrimeData.data[0].actual + areaViolentCrimeData.data[0].cleared;
 
-        const areaPropertyCrimeData = await axios.get(`${process.env.NEXT_PUBLIC_CRIME_FBI_URL}/summarized/agency/${agencyFBI.ori}/property-crime?from=${process.env.NEXT_PUBLIC_CRIME_FBI_YEAR}&to=${process.env.NEXT_PUBLIC_CRIME_FBI_YEAR}&API_KEY=${process.env.NEXT_PUBLIC_CRIME_FBI_KEY}`);
+        const areaPropertyCrimeData = await axios.get(`${process.env.NEXT_PUBLIC_CRIME_FBI_URL}/summarized/agency/${agencyOri}/property-crime?from=${process.env.NEXT_PUBLIC_CRIME_FBI_YEAR}&to=${process.env.NEXT_PUBLIC_CRIME_FBI_YEAR}&API_KEY=${process.env.NEXT_PUBLIC_CRIME_FBI_KEY}`);
         areaProperty = areaPropertyCrimeData.data[0].actual + areaPropertyCrimeData.data[0].cleared;
       }
 

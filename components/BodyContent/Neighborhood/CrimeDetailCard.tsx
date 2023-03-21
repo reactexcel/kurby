@@ -2,7 +2,7 @@ import { Card, CardContent, Typography, Box } from "@mui/material";
 
 interface Props {
   label?: string;
-  value?: string;
+  value?: string | number;
 }
 
 const CrimeDetailCard = ({ label, value }: Props) => {
@@ -27,7 +27,7 @@ const CrimeDetailCard = ({ label, value }: Props) => {
           <Typography variant="body1" style={{ fontSize: "18px", fontWeight: "bold" }}>
             {label}
           </Typography>
-          <Typography sx={{ fontSize: "24px", fontWeight: "bold" }}>{Math.round(value)}</Typography>
+          <Typography sx={{ fontSize: "24px", fontWeight: "bold" }}>{Math.round(Number(value || 0))}</Typography>
         </Box>
       </CardContent>
     </Card>

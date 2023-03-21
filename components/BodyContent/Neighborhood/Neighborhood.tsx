@@ -388,11 +388,12 @@ export default function Neighborhood({ filterVal, crimeInfo }: Props) {
                 />
               }
             />
+            {console.log("overallCrimeInfo =>> ,", overallCrimeInfo)}
             <FactCard
               loading={loading}
               label="Violent Crime Rate"
               type="string"
-              value={Math.round(overallCrimeInfo?.violentAreaPerNational) + "%" || "Unknown"}
+              value={Math.round(overallCrimeInfo?.violentAreaPerNational || 0) + "%" || "Unknown"}
               icon={
                 <Handcuff
                   sx={{
@@ -418,7 +419,7 @@ export default function Neighborhood({ filterVal, crimeInfo }: Props) {
               loading={loading}
               label="Property Crime Rate"
               type="string"
-              value={Math.round(overallCrimeInfo?.propertyAreaPerNational) + "%" || "Unknown"}
+              value={Math.round(overallCrimeInfo?.propertyAreaPerNational || 0) + "%" || "Unknown"}
               icon={
                 <Handcuff
                   sx={{
@@ -446,7 +447,7 @@ export default function Neighborhood({ filterVal, crimeInfo }: Props) {
                 loading={false}
                 label={`${crimeModal.charAt(0).toUpperCase() + crimeModal.slice(1)} Crime Info`}
                 type="string"
-                value={crimeModal === "violent" ? Math.round(overallCrimeInfo?.propertyAreaPerNational) + "%" : Math.round(overallCrimeInfo?.propertyAreaPerNational) + "%" || "Unknown"}
+                value={crimeModal === "violent" ? Math.round(overallCrimeInfo?.propertyAreaPerNational || 0) + "%" : Math.round(overallCrimeInfo?.propertyAreaPerNational || 0) + "%" || "Unknown"}
                 icon={
                   <Handcuff
                     sx={{
