@@ -14,6 +14,9 @@ import Married from "../../../public/icons/married.svg";
 import Home from "../../../public/icons/home.svg";
 import Population from "../../../public/icons/population.svg";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import { CrimeInfoType, OverallCrimeInfo } from "types/address";
+import Handcuff from "../../../public/images/handcuff.svg";
+import CrimeModal from "./CrimeModal";
 
 const floodRiskMap: { [key: string]: string } = {
   A: "Medium",
@@ -78,14 +81,21 @@ interface Props {
     selectedPlace: any | null;
     mapCenter: { lat: number; lng: number } | null;
   };
+  crimeInfo: CrimeInfoType | null
 }
 
-export default function Neighborhood({ filterVal }: Props) {
+export default function Neighborhood({ filterVal, crimeInfo }: Props) {
   const [openFloodZoneMap, setOpenFloodZoneMap] = useState(false);
+  const [openCrimeViolentMap, setOpenCrimeViolentMap] = useState(false);
+  const [openCrimePropertyMap, setOpenCrimePropertyMap] = useState(false);
   const [openRaceBreakdown, setOpenRaceBreakdown] = useState(false);
   const [floodData, setFloodData] = useState<any[]>([]);
   const [censusData, setCensusData] = useState<CensusData | null>(null);
   const [loading, setLoading] = useState(false);
+
+
+  const [crimeModal, setCrimeModal] = useState<string>("")
+  const [overallCrimeInfo, setOverallCrimeInfo] = useState<OverallCrimeInfo | null>(null);
 
   useEffect(() => {
     const retrieveFloodData = async () => {
@@ -110,6 +120,7 @@ export default function Neighborhood({ filterVal }: Props) {
     (async () => {
       await retrieveFloodData();
     })();
+    crimeSummaryInfo();
   }, []);
 
   const formatter = new Intl.NumberFormat("en-US", {
@@ -126,6 +137,53 @@ export default function Neighborhood({ filterVal }: Props) {
     setOpenFloodZoneMap(false);
     setOpenRaceBreakdown(false);
   };
+
+  const crimeSummaryInfo = () => {
+    let violentNationalRate = 0;
+    let propertyNationalRate = 0;
+    let violentStateRate = 0;
+    let propertyStateRate = 0;
+    let violentAreaRate = 0;
+    let propertyAreaRate = 0;
+    let violentAreaPerNational = 0;
+    let propertyAreaPerNational = 0;
+    if (crimeInfo?.national && crimeInfo?.state && crimeInfo?.area) {
+      violentNationalRate = crimeInfo.national.violent_crime * 100 * 1000 / crimeInfo.national.population
+      violentStateRate = crimeInfo.state.violent_crime * 100 * 1000 / crimeInfo.state.population
+      violentAreaRate = crimeInfo.area.violent_crime * 100 * 1000 / crimeInfo.area.population
+      propertyNationalRate = crimeInfo.national.property_crime * 100 * 1000 / crimeInfo.national.population
+      propertyStateRate = crimeInfo.state.property_crime * 100 * 1000 / crimeInfo.state.population
+      propertyAreaRate = crimeInfo.area.property_crime * 100 * 1000 / crimeInfo.area.population
+
+      violentAreaPerNational = (violentAreaRate - violentNationalRate) * 100 / violentNationalRate;
+      propertyAreaPerNational = (propertyAreaRate - propertyNationalRate) * 100 / propertyNationalRate;
+
+      setOverallCrimeInfo({
+        violentIncidents: crimeInfo.area.violent_crime,
+        violentNationalRate: violentNationalRate,
+        violentStateRate: violentStateRate,
+        violentAreaRate: violentAreaRate,
+        propertyIncidents: crimeInfo.area.property_crime,
+        propertyNationalRate: propertyNationalRate,
+        propertyStateRate: propertyStateRate,
+        propertyAreaRate: propertyAreaRate,
+        violentAreaPerNational: violentAreaPerNational,
+        propertyAreaPerNational: propertyAreaPerNational,
+        localInfo: crimeInfo?.localInfo
+      })
+    }
+
+    // const areaPerNational = (areaRate - nationalRate) * 100 / nationalRate;
+    // return {
+    //   number: Math.round(Math.abs(areaPerNational)),
+    //   status: Math.sign(areaPerNational)
+    // };
+  }
+
+  const handleCloseCrimModal = () => {
+    setCrimeModal("")
+  }
+
   return (
     <Box style={resultsContentStyle}>
       <Box
@@ -330,6 +388,75 @@ export default function Neighborhood({ filterVal }: Props) {
                 />
               }
             />
+            <FactCard
+              loading={loading}
+              label="Violent Crime Rate"
+              type="string"
+              value={Math.round(overallCrimeInfo?.violentAreaPerNational) + "%" || "Unknown"}
+              icon={
+                <Handcuff
+                  sx={{
+                    color: "green",
+                    fontSize: "40px",
+                  }}
+                />
+              }
+            >
+              <Button
+                variant="text"
+                onClick={() => {
+                  setCrimeModal("violent")
+                }}
+                sx={{
+                  fontSize: "12px",
+                }}
+              >
+                See More
+              </Button>
+            </FactCard>
+            <FactCard
+              loading={loading}
+              label="Property Crime Rate"
+              type="string"
+              value={Math.round(overallCrimeInfo?.propertyAreaPerNational) + "%" || "Unknown"}
+              icon={
+                <Handcuff
+                  sx={{
+                    color: "green",
+                    fontSize: "40px",
+                  }}
+                />
+              }
+            >
+              <Button
+                variant="text"
+                onClick={() => {
+                  setCrimeModal("property")
+                }}
+                sx={{
+                  fontSize: "12px",
+                }}
+              >
+                See More
+              </Button>
+            </FactCard>
+
+            <CrimeModal open={!!crimeModal} handleClose={handleCloseCrimModal} overallCrimeInfo={overallCrimeInfo} crimeType={crimeModal}>
+              <FactCard
+                loading={false}
+                label={`${crimeModal.charAt(0).toUpperCase() + crimeModal.slice(1)} Crime Info`}
+                type="string"
+                value={crimeModal === "violent" ? Math.round(overallCrimeInfo?.propertyAreaPerNational) + "%" : Math.round(overallCrimeInfo?.propertyAreaPerNational) + "%" || "Unknown"}
+                icon={
+                  <Handcuff
+                    sx={{
+                      color: "green",
+                      fontSize: "40px",
+                    }}
+                  />
+                }
+              ></FactCard>
+            </CrimeModal>
 
             <RaceBreakdown open={openRaceBreakdown} handleClose={handleCloseModals} raceData={censusData?.raceData} />
 
