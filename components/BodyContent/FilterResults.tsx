@@ -32,16 +32,68 @@ export default function FilterResults() {
   const [loading, isLoading] = useState(false);
   const [crimeInfo, setCrimeInfo] = useState<CrimeInfoType | null>(null)
 
+
   const [filterVal] = useRecoilState(filterState);
 
   const handleTabChange = (event: React.MouseEvent<HTMLElement>, newTab: Tab | null) => {
     setActiveTab(newTab);
   };
 
+  const getNearestAgency = async (agencyList: AgencyFBI[],) => {
+    let agencyOri = "";
+    let areaViolent = 0, areaProperty = 0;
+
+    const lat1 = filterVal.selectedPlace.geometry.location.lat();
+    const lng1 = filterVal.selectedPlace.geometry.location.lng();
+
+    let minDistance = Number.POSITIVE_INFINITY;
+    const agencyIgnoreList: string[] = [];
+
+
+    while (areaViolent === 0 || areaProperty === 0) {
+
+      console.log("agencyIgnoreList =>>>", agencyIgnoreList)
+
+      agencyList.map((agency: AgencyFBI) => {
+        const distance = distanceBetweenTwoPlaces(Number(lat1), Number(lng1), Number(agency.latitude), Number(agency.longitude));
+        if (distance < minDistance && !agencyIgnoreList.includes(agency.ori)) {
+          minDistance = distance;
+          agencyOri = agency.ori;
+        }
+      })
+
+
+      const areaViolentCrimeData = await axios.get(`${process.env.NEXT_PUBLIC_CRIME_FBI_URL}/summarized/agency/${agencyOri}/violent-crime?from=${process.env.NEXT_PUBLIC_CRIME_FBI_YEAR}&to=${process.env.NEXT_PUBLIC_CRIME_FBI_YEAR}&API_KEY=${process.env.NEXT_PUBLIC_CRIME_FBI_KEY}`);
+      if (areaViolentCrimeData.data.length > 0) {
+        areaViolent = Number(areaViolentCrimeData.data[0].actual);
+      }
+
+      const areaPropertyCrimeData = await axios.get(`${process.env.NEXT_PUBLIC_CRIME_FBI_URL}/summarized/agency/${agencyOri}/property-crime?from=${process.env.NEXT_PUBLIC_CRIME_FBI_YEAR}&to=${process.env.NEXT_PUBLIC_CRIME_FBI_YEAR}&API_KEY=${process.env.NEXT_PUBLIC_CRIME_FBI_KEY}`);
+      if (areaPropertyCrimeData.data.length > 0) {
+        areaProperty = Number(areaPropertyCrimeData.data[0].actual);
+      }
+
+      if (areaViolent === 0 || areaProperty === 0) {
+        agencyIgnoreList.push(agencyOri)
+        minDistance = Number.POSITIVE_INFINITY
+      }
+
+
+    }
+
+
+    console.log("FBI agencyOri =>>>", agencyOri)
+
+    return {
+      areaViolent,
+      areaProperty
+    }
+
+  }
+
   const getCrimeFBIInfo = async () => {
     try {
       const nationalCrimeData = await axios.get(`${process.env.NEXT_PUBLIC_CRIME_FBI_URL}/estimate/national?year=${process.env.NEXT_PUBLIC_CRIME_FBI_YEAR}&API_KEY=${process.env.NEXT_PUBLIC_CRIME_FBI_KEY}`);
-
 
       const stateComponent = filterVal.selectedPlace?.address_components?.find((item: AddressComponentType) => item?.types?.includes("administrative_area_level_1"));
       const areaComponent = filterVal.selectedPlace?.address_components?.find((item: AddressComponentType) => item?.types?.includes("locality"));
@@ -50,7 +102,6 @@ export default function FilterResults() {
       let areaViolent = 0, areaProperty = 0;
       const areaPopulation = 100 * 1000;
 
-      let agencyFBI: AgencyFBI | undefined;
 
       if (stateComponent?.short_name) {
         const stateCrimeData = await axios.get(`${process.env.NEXT_PUBLIC_CRIME_FBI_URL}/estimate/state/${stateComponent.short_name}?year=${process.env.NEXT_PUBLIC_CRIME_FBI_YEAR}&API_KEY=${process.env.NEXT_PUBLIC_CRIME_FBI_KEY}`);
@@ -59,27 +110,12 @@ export default function FilterResults() {
         const agencyListData = await axios.get(`${process.env.NEXT_PUBLIC_CRIME_FBI_URL}/agency/byStateAbbr/${stateComponent.short_name}?API_KEY=${process.env.NEXT_PUBLIC_CRIME_FBI_KEY}`);
         const agencyList = agencyListData.data;
 
-        const lat1 = filterVal.selectedPlace.geometry.location.lat();
-        const lng1 = filterVal.selectedPlace.geometry.location.lng();
 
-        let minDistance = Number.POSITIVE_INFINITY;
-        agencyList.map((agency: AgencyFBI) => {
-          const distance = distanceBetweenTwoPlaces(Number(lat1), Number(lng1), Number(agency.latitude), Number(agency.longitude));
-          if (distance < minDistance) {
-            minDistance = distance;
-            agencyFBI = agency;
-          }
-        })
 
-        const agencyOri = agencyFBI ? agencyFBI.ori : '';
-
-        const areaViolentCrimeData = await axios.get(`${process.env.NEXT_PUBLIC_CRIME_FBI_URL}/summarized/agency/${agencyOri}/violent-crime?from=${process.env.NEXT_PUBLIC_CRIME_FBI_YEAR}&to=${process.env.NEXT_PUBLIC_CRIME_FBI_YEAR}&API_KEY=${process.env.NEXT_PUBLIC_CRIME_FBI_KEY}`);
-        areaViolent = areaViolentCrimeData.data[0].actual + areaViolentCrimeData.data[0].cleared;
-
-        const areaPropertyCrimeData = await axios.get(`${process.env.NEXT_PUBLIC_CRIME_FBI_URL}/summarized/agency/${agencyOri}/property-crime?from=${process.env.NEXT_PUBLIC_CRIME_FBI_YEAR}&to=${process.env.NEXT_PUBLIC_CRIME_FBI_YEAR}&API_KEY=${process.env.NEXT_PUBLIC_CRIME_FBI_KEY}`);
-        areaProperty = areaPropertyCrimeData.data[0].actual + areaPropertyCrimeData.data[0].cleared;
+        const areaInfo = await getNearestAgency(agencyList);
+        areaViolent = areaInfo.areaViolent;
+        areaProperty = areaInfo.areaProperty;
       }
-
 
       setCrimeInfo({
         national: {
@@ -132,6 +168,10 @@ export default function FilterResults() {
     getOpenAiData();
     getCrimeFBIInfo();
   }, [filterVal.address, filterVal.selectedPlace]);
+
+  // useEffect(() => {
+  //   getCrimeFBIInfo();
+  // })
 
   const AIWarningToolTip = () => (
     <Tooltip title="The information provided by AI is never 100% accurate and should only be used as a starting point for further research. AI cannot replace human judgment, and no AI system can guarantee the accuracy of its conclusions. As such, any decisions made based on the results of AI should be carefully evaluated and independently verified.">

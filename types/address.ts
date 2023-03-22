@@ -18,6 +18,7 @@ export type AgencyFBI = {
     county_name: string
     region_desc: string
     division_name: string
+    agency_name: string
 }
 
 export type CrimeInfoType = {

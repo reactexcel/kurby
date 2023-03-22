@@ -441,12 +441,12 @@ export default function Neighborhood({ filterVal, crimeInfo }: Props) {
               </Button>
             </FactCard>
 
-            <CrimeModal open={!!crimeModal} handleClose={handleCloseCrimModal} overallCrimeInfo={overallCrimeInfo} crimeType={crimeModal}>
+            <CrimeModal open={['violent', 'property'].includes(crimeModal)} handleClose={handleCloseCrimModal} overallCrimeInfo={overallCrimeInfo} crimeType={crimeModal}>
               <FactCard
                 loading={false}
                 label={`${crimeModal.charAt(0).toUpperCase() + crimeModal.slice(1)} Crime Info`}
                 type="string"
-                value={crimeModal === "violent" ? Math.round(overallCrimeInfo?.propertyAreaPerNational || 0) + "%" : Math.round(overallCrimeInfo?.propertyAreaPerNational || 0) + "%" || "Unknown"}
+                value={crimeModal === "violent" ? Math.round(overallCrimeInfo?.violentAreaPerNational || 0) + "%" : Math.round(overallCrimeInfo?.propertyAreaPerNational || 0) + "%" || "Unknown"}
                 icon={
                   <Handcuff
                     sx={{
@@ -457,6 +457,7 @@ export default function Neighborhood({ filterVal, crimeInfo }: Props) {
                 }
               ></FactCard>
             </CrimeModal>
+
 
             <RaceBreakdown open={openRaceBreakdown} handleClose={handleCloseModals} raceData={censusData?.raceData} />
 

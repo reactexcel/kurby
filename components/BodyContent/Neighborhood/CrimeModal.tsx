@@ -22,6 +22,9 @@ interface Props {
 }
 
 const CrimeModal = ({ open, handleClose, overallCrimeInfo, crimeType, children }: Props) => {
+  if(!crimeType){
+    return <></>
+  }
   return (
     <Dialog
       open={open}
