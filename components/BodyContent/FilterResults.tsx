@@ -14,10 +14,7 @@ import QuestionTooltipSvg from "../../public/icons/question-tooltip.svg";
 import { NextSeo } from "next-seo";
 import { activeTabState, Tab } from "context/activeTab";
 import Neighborhood from "./Neighborhood/Neighborhood";
-import Census from "components/Census/Census";
-import axios from "axios";
-import { AddressComponentType, AgencyFBI, CrimeInfoType } from "types/address";
-import { distanceBetweenTwoPlaces } from "utils/address";
+import Property from "./Property/Property";
 
 /**
  * FilterResults
@@ -152,6 +149,10 @@ export default function FilterResults() {
             Nearby Places
           </ToggleButton> */}
 
+          <ToggleButton style={{ width: "220px", textTransform: "initial" }} value="property">
+            Home
+          </ToggleButton>
+
           <ToggleButton style={{ width: "220px", textTransform: "initial" }} value="neighborhood">
             Neighborhood
           </ToggleButton>
@@ -207,6 +208,8 @@ export default function FilterResults() {
                 </Box>
               )}
               {activeTab == "nearby" && <Nearby />}
+              {activeTab == "property" && <Property />}
+              
               {activeTab == "neighborhood" && <Neighborhood filterVal={filterVal} />}
 
               {/* activeTab == "utility" && (

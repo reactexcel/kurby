@@ -221,10 +221,11 @@ export default function Filters() {
 
             const detailsRequest = {
               placeId,
-              fields: ["name", "geometry", "formatted_address", "address_components"],
+              fields: ["name", "geometry", "formatted_address", "address_components", "place_id"],
             };
             service.getDetails(detailsRequest, (result, status) => {
               if (status === google.maps.places.PlacesServiceStatus.OK && result) {
+                console.log("result =>>>", result)
                 handleAddressChange(result);
               }
             });

@@ -10,7 +10,7 @@ export default createTheme({
         },
       },
     typography: {
-      'fontFamily': "FilsonPro"
+      'fontFamily': "FilsonPro !important"
     },
     components: {
       MuiSelect: {

@@ -5,7 +5,6 @@ import Navbar from "components/Navbar/Navbar";
 import { useEffect } from "react";
 
 export default function Resultspage() {
-  
   return (
     <>
       <Navbar />
