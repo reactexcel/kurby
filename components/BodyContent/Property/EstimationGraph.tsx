@@ -33,45 +33,17 @@ export const options = {
         title: {
             display: true,
             text: 'Property Value Estimates',
-        },
+            font: {
+                family: 'FilsonProLight',
+                size: 20,
+                weight: 'bold',
+                lineHeight: 1.2,
 
-        scales: {
-            yAxes: [{
-                gridLines: {
-                    drawBorder: false,
-                },
-            }]
+            },
+            padding: { top: 20, left: 0, right: 0, bottom: 0 }
         },
     },
-
 };
-
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
-export const data = {
-    labels,
-    datasets: [
-        {
-            label: 'High Estimate',
-            data: labels.map(() => Math.random() * 1000),
-            backgroundColor: KBColor.DRAK_GREEN,
-            borderRadius: 8,
-        },
-        {
-            label: 'Low Estimate',
-            data: labels.map(() => Math.random() * 1000),
-            backgroundColor: KBColor.ORANGE,
-            borderRadius: 8,
-        },
-        {
-            label: 'Estimate',
-            data: labels.map(() => Math.random() * 1000),
-            backgroundColor: KBColor.YELLOW,
-            borderRadius: 8,
-        },
-    ],
-};
-
 
 export default function EstimationGraph({ market }: { market: any }) {
     const classes = useStyles

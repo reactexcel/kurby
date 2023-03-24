@@ -29,7 +29,7 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<Data | Error>
 ) {
-    const isTesting = true;
+    const isTesting = false;
     if (!isTesting) {
         try {
             const rapidKey = process.env.RAPID_API_KEY;

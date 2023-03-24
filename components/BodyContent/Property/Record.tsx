@@ -135,7 +135,7 @@ export default function Record({ propertyInfo }: { propertyInfo: PropertyType | 
                         Last Sold Price:
                     </Typography>
                     <Typography variant="h6" component="h6">
-                        $385000
+                        $38,5000
                     </Typography>
                 </Box>
             </Box>
