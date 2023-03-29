@@ -33,9 +33,9 @@ const saleListFields: TableFieldType[] = [
 
 const rentalEstimateFields: TableFieldType[] = [
     { label: 'Bedrooms', key: 'bedrooms' },
-    { label: 'High Estimate', key: 'highEstimate' },
-    { label: 'Low Estimate', key: 'lowEstimate' },
-    { label: 'Estimate', key: 'estimate' },
+    { label: 'High Estimate', key: 'maxRent' },
+    { label: 'Low Estimate', key: 'minRent' },
+    { label: 'Estimate', key: 'averageRent' },
 ]
 
 const taxHistoryFields: TableFieldType[] = [
@@ -50,10 +50,10 @@ type SoldType = {
 }
 
 type MarketType = {
-    bedrooms: number
-    maxRent: number
-    minRent: number
-    averageRent: number
+    bedrooms: number | string
+    maxRent: number | string
+    minRent: number | string
+    averageRent: number | string
 }
 
 export default function Record({ propertyInfo, description }: { propertyInfo: PropertyType | null, description: string }) {
@@ -86,20 +86,22 @@ export default function Record({ propertyInfo, description }: { propertyInfo: Pr
     }
 
     const createRentalEstimate = (rentEstimate: any) => {
-        console.log("rentalData =>>> ", rentEstimate)
         const rentalData = rentEstimate?.rentalData;
-        const result = [{
+        if (!rentalData) {
+            return [];
+        }
+        const result: any[] = [{
             bedrooms: "Median Price",
-            highEstimate: `$${convertUSNumberFormat(rentalData?.maxRent)}`,
-            lowEstimate: `$${convertUSNumberFormat(rentalData?.minRent)}`,
-            estimate: `$${convertUSNumberFormat(rentalData?.averageRent)}`,
+            maxRent: `$${convertUSNumberFormat(rentalData?.maxRent)}`,
+            minRent: `$${convertUSNumberFormat(rentalData?.minRent)}`,
+            averageRent: `$${convertUSNumberFormat(rentalData?.averageRent)}`,
         }];
         rentalData.detailed.map((item: MarketType) => {
             result.push({
                 bedrooms: item.bedrooms.toString(),
-                highEstimate: `$${convertUSNumberFormat(item.maxRent)}`,
-                lowEstimate: `$${convertUSNumberFormat(item.minRent)}`,
-                estimate: `$${convertUSNumberFormat(item.averageRent)}`,
+                maxRent: `$${convertUSNumberFormat(item.maxRent)}`,
+                minRent: `$${convertUSNumberFormat(item.minRent)}`,
+                averageRent: `$${convertUSNumberFormat(item.averageRent)}`,
             })
         })
         return result;
