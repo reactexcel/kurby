@@ -6,17 +6,18 @@ import { useRecoilState } from "recoil";
  * @description: Displays the street view instance for the given location
 */
 
-export default React.memo(function StreetView({position}: any) {
-  const streetViewMap = useRef(null)  
+export default React.memo(function StreetView({ position }: any) {
+  const streetViewMap = useRef(null)
   useEffect(() => {
     const getStreetViewData = async () => {
-      const streetViewService = new google.maps.StreetViewService();
-      if(!position) {
-        return;
-      }
+      try {
+        const streetViewService = new google.maps.StreetViewService();
+        if (!position) {
+          return;
+        }
         const panorama = await streetViewService.getPanorama({
-            location: position,
-            radius: 200
+          location: position,
+          radius: 200
         });
 
         const point = panorama.data.location?.latLng as google.maps.LatLng;
@@ -24,21 +25,24 @@ export default React.memo(function StreetView({position}: any) {
         const heading = google.maps.geometry.spherical.computeHeading(point, marker_position);
 
         const panoramaOptions = {
-            position,
-            disableDefaultUI: true,
-            pov: {
-                heading,
-                pitch: 0
-            }
+          position,
+          disableDefaultUI: true,
+          pov: {
+            heading,
+            pitch: 0
+          }
         };
         const r = new google.maps.StreetViewPanorama(streetViewMap.current as any, panoramaOptions);
         return r;
+      } catch (error) {
+        console.log(error)
+      }
     }
     getStreetViewData();
   }, [position])
-  
-  
+
+
   return (
-    <div style={{height:"200px", width:"200px", minWidth:"200px", marginRight:"20px"}} ref={streetViewMap}>StreetView</div>
+    <div style={{ height: "200px", width: "200px", minWidth: "200px", marginRight: "20px" }} ref={streetViewMap}>StreetView</div>
   )
 })

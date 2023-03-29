@@ -74,7 +74,7 @@ export default async function handler(
                 params: { address: formatted_address },
             });
         } catch (error) {
-            console.log({ error })
+            // console.log({ error })
         }
 
 
@@ -87,7 +87,7 @@ export default async function handler(
                 },
             });
         } catch (error) {
-            console.log({ error })
+            // console.log({ error })
 
         }
 
@@ -101,7 +101,7 @@ export default async function handler(
                 },
             });
         } catch (error) {
-            console.log({ error })
+            // console.log({ error })
 
         }
 
@@ -110,43 +110,60 @@ export default async function handler(
             const saleListOptions = {
                 ...baseOption,
                 url: molePropertyBaseUrl + '/saleListings',
-                params: { city: city, state: state, propertyType: 'Single Family', limit: '10' },
+                params: {
+                    address: formatted_address,
+                },
             }
             saleListData = await axios.request(saleListOptions);
         } catch (error) {
-            console.log({ error })
+            // console.log({ error })
 
         }
 
-        const rentailListOption = {
-            ...baseOption,
-            url: molePropertyBaseUrl + '/rentalListings',
-            params: { city: city, state: state, propertyType: 'Single Family', limit: '10' },
+
+        let rentailListOptionData = null;
+        try {
+            const rentailListOption = {
+                ...baseOption,
+                url: molePropertyBaseUrl + '/rentalListings',
+                params: {
+                    address: formatted_address,
+                },
+
+            }
+            rentailListOptionData = await axios.request(rentailListOption);
+        } catch (error) {
+            // console.log({ error })
 
         }
-        const rentailListOptionData = await axios.request(rentailListOption);
 
         let marketData = null;
-        if (zipCode) {
 
-            const marketOption = {
-                ...baseOption,
-                url: molePropertyBaseUrl + '/zipCodes/' + zipCode,
+        if (zipCode) {
+            try {
+                const marketOption = {
+                    ...baseOption,
+                    url: molePropertyBaseUrl + '/zipCodes/' + zipCode,
+                }
+                marketData = await axios.request(marketOption);
+            } catch (error) {
+                // console.log({ error })
             }
-            marketData = await axios.request(marketOption);
         }
+
+        console.log("saleListDatasaleListDatasaleListData", saleListData)
 
 
         res.status(200).json({
             records: recordsData?.data || [],
             valueEstimate: valueEstimateData?.data || [],
             rentEstimate: rentEstimateData?.data || [],
-            saleList: saleListData?.data || [],
-            rentailList: rentailListOptionData?.data || [],
+            saleList: saleListData?.data && Array.isArray(saleListData?.data) ? saleListData?.data : [],
+            rentailList: rentailListOptionData?.data && Array.isArray(rentailListOptionData?.data) ? rentailListOptionData?.data : [],
             market: marketData?.data || [],
         });
     } catch (error) {
-        console.log("error =>>>>>>>", error)
+        console.log(error)
         const errorMsg = new Error(JSON.stringify(error));
         res.status(500).json(errorMsg);
     }

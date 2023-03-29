@@ -23,7 +23,7 @@ export default function ComparableSaleList({ saleList }: { saleList?: any[] }) {
             </Box>
             <Box sx={{ maxHeight: '350px', overflow: 'auto' }}>
                 <Grid container spacing={2} sx={{ marginTop: 1 }}>
-                    {saleList.map(saleInfo => (
+                    {saleList?.map(saleInfo => (
                         <HouseCard cardInfo={saleInfo} key={saleInfo?.id} />
                     ))}
 

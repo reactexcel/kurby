@@ -32,7 +32,7 @@ export default function FilterResults() {
   const [filterVal] = useRecoilState(filterState);
 
   const [showHome, setShowHome] = useState<boolean>(true);
-  
+
 
   const handleTabChange = (event: React.MouseEvent<HTMLElement>, newTab: Tab | null) => {
     setActiveTab(newTab);
@@ -61,21 +61,27 @@ export default function FilterResults() {
       isLoading(true);
       setActiveTab("home");
       //* the entire selected place is sent in so we can validate the address
-      const request = await fetch(`/api/openai/`, {
-        method: "POST",
-        body: JSON.stringify(filterVal.selectedPlace),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const response = await request.json();
+      try {
+        const request = await fetch(`/api/openai/`, {
+          method: "POST",
+          body: JSON.stringify(filterVal.selectedPlace),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const response = await request.json();
 
-      // await getPropertyRecord(filterVal.selectedPlace.formatted_address);
+        // await getPropertyRecord(filterVal.selectedPlace.formatted_address);
 
-      setExplainedLikeAlocal(response.explained_like_a_local);
-      setGreenFlags(response.greenFlags);
-      setRedFlags(response.redFlags);
+        setExplainedLikeAlocal(response.explained_like_a_local);
+        setGreenFlags(response.greenFlags);
+        setRedFlags(response.redFlags);
+        isLoading(false);
+      } catch (error) {
+        console.log({ error })
+      }
       isLoading(false);
+
     };
     getOpenAiData();
   }, [filterVal.address, filterVal.selectedPlace]);

@@ -56,7 +56,7 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
                         sx={{ ...classes.boxStyle, py: '5px' }}
                     >
                         {propertyInfo?.records && propertyInfo?.records.length > 0 && <Record propertyInfo={propertyInfo} description={explainedLikeAlocal} />}
-                        {propertyInfo?.market && <EstimationGraph market={propertyInfo?.market} />}
+                        {propertyInfo?.valueEstimate && <EstimationGraph valueEstimate={propertyInfo?.valueEstimate} />}
                         {propertyInfo?.saleList && propertyInfo?.saleList.length > 0 && <ComparableSaleList saleList={propertyInfo?.saleList} />}
                         {propertyInfo?.rentailList && propertyInfo?.rentailList.length > 0 &&
                             <ComparableRentList rentList={propertyInfo?.rentailList} />

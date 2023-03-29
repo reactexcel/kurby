@@ -37,11 +37,11 @@ export default function HouseCard({ cardInfo }: { cardInfo: any }) {
                         <Box sx={{ display: 'flex' }}>
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                 <BedSvg />
-                                <Typography sx={{ marginLeft: 1 }} fontSize="10px" >3 Bed room</Typography>
+                                <Typography sx={{ marginLeft: 1 }} fontSize="10px" >3 Bedroom</Typography>
                             </Box>
                             <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: 2 }}>
                                 <WashSvg />
-                                <Typography sx={{ marginLeft: 1 }} fontSize="10px" > 2 Wash room</Typography>
+                                <Typography sx={{ marginLeft: 1 }} fontSize="10px" > 2 Bathrooms</Typography>
                             </Box>
                         </Box>
                         <Box>

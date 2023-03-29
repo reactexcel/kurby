@@ -32,7 +32,7 @@ const saleListFields: TableFieldType[] = [
 ]
 
 const rentalEstimateFields: TableFieldType[] = [
-    { label: 'Date', key: 'date' },
+    { label: 'Bedrooms', key: 'bedrooms' },
     { label: 'High Estimate', key: 'highEstimate' },
     { label: 'Low Estimate', key: 'lowEstimate' },
     { label: 'Estimate', key: 'estimate' },
@@ -43,27 +43,66 @@ const taxHistoryFields: TableFieldType[] = [
     { label: 'Price', key: 'price' },
 ]
 
+type SoldType = {
+    event: string
+    date: string
+    price: string
+}
+
+type MarketType = {
+    bedrooms: number
+    maxRent: number
+    minRent: number
+    averageRent: number
+}
+
 export default function Record({ propertyInfo, description }: { propertyInfo: PropertyType | null, description: string }) {
     const [filterVal] = useRecoilState(filterState);
 
     const classes = useStyles;
-    const createSaleTableList = (saleList: any[]) => {
-        return saleList.map((item: any) => (
-            {
+    const createSaleTableList = () => {
+        const saleList = propertyInfo?.saleList;
+
+        const reuslt: SoldType[] = [];
+        console.log("propertyInfo?.records[0] =>> ", propertyInfo?.records[0], propertyInfo?.records[0].lastSaleDate)
+        if (propertyInfo?.records[0].lastSaleDate) {
+            reuslt.push({
                 event: 'Sold',
-                date: item?.createdDate ? moment(item?.createdDate).format("M/D/y") : '',
-                price: `$${convertUSNumberFormat(item?.price)}`,
-            }
-        ))
+                date: propertyInfo?.records[0].lastSaleDate ? moment(propertyInfo?.records[0].lastSaleDate).format("M/D/y") : '',
+                price: `$${convertUSNumberFormat(propertyInfo?.valueEstimate?.price)}`,
+            })
+        }
+
+        saleList.map((item: any) => {
+            reuslt.push(
+                {
+                    event: 'Sold',
+                    date: item?.createdDate ? moment(item?.createdDate).format("M/D/y") : '',
+                    price: `$${convertUSNumberFormat(item?.price)}`,
+                }
+            )
+        })
+        return reuslt;
     }
 
     const createRentalEstimate = (rentEstimate: any) => {
-        return [{
-            date: " ",
-            highEstimate: `$${convertUSNumberFormat(rentEstimate?.rentRangeHigh)}`,
-            lowEstimate: `$${convertUSNumberFormat(rentEstimate?.rentRangeLow)}`,
-            estimate: `$${convertUSNumberFormat(rentEstimate?.rent)}`,
-        }]
+        console.log("rentalData =>>> ", rentEstimate)
+        const rentalData = rentEstimate?.rentalData;
+        const result = [{
+            bedrooms: "Median Price",
+            highEstimate: `$${convertUSNumberFormat(rentalData?.maxRent)}`,
+            lowEstimate: `$${convertUSNumberFormat(rentalData?.minRent)}`,
+            estimate: `$${convertUSNumberFormat(rentalData?.averageRent)}`,
+        }];
+        rentalData.detailed.map((item: MarketType) => {
+            result.push({
+                bedrooms: item.bedrooms.toString(),
+                highEstimate: `$${convertUSNumberFormat(item.maxRent)}`,
+                lowEstimate: `$${convertUSNumberFormat(item.minRent)}`,
+                estimate: `$${convertUSNumberFormat(item.averageRent)}`,
+            })
+        })
+        return result;
     }
 
     const createTaxHistory = (records: any) => {
@@ -105,14 +144,14 @@ export default function Record({ propertyInfo, description }: { propertyInfo: Pr
                         <CircleBox sx={{ marginRight: '10px' }}>
                             <BedSvg />
                         </CircleBox>
-                        <Typography variant="h6" component="h6" sx={classes.flexBetween}>{propertyInfo?.records[0]?.bedrooms} Bed room</Typography>
+                        <Typography variant="h6" component="h6" sx={classes.flexBetween}>{propertyInfo?.records[0]?.bedrooms} Bedrooms</Typography>
                     </Box>
                     <Box sx={{ ...classes.flexBetween, marginRight: '20px' }}>
                         <CircleBox sx={{ marginRight: '10px' }}>
                             <WashSvg />
                         </CircleBox>
                         <Typography variant="h6" component="h6" sx={classes.flexBetween}>
-                            {propertyInfo?.records[0]?.bathrooms} Wash room
+                            {propertyInfo?.records[0]?.bathrooms} Bathrooms
                         </Typography>
                     </Box>
                     {propertyInfo?.records[0]?.lastSaleDate && (
@@ -131,7 +170,7 @@ export default function Record({ propertyInfo, description }: { propertyInfo: Pr
                         Last Sold Price:
                     </Typography>
                     <Typography variant="h6" component="h6">
-                        ${convertUSNumberFormat(propertyInfo?.saleList.at(-1).price)}
+                        {propertyInfo?.saleList.at(-1) && convertUSNumberFormat(propertyInfo?.saleList.at(-1).price)}
                     </Typography>
                 </Box>
             </Box>
@@ -204,7 +243,7 @@ export default function Record({ propertyInfo, description }: { propertyInfo: Pr
                                     <td>
                                         <Box display={'flex'}>
                                             <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                            <Typography>{propertyInfo?.records[0]?.features?.exteriorType || 'Null'}</Typography>
+                                            <Typography>{propertyInfo?.records[0]?.features?.exteriorType || ''}</Typography>
                                         </Box>
 
                                     </td>
@@ -216,7 +255,7 @@ export default function Record({ propertyInfo, description }: { propertyInfo: Pr
                                     <td>
                                         <Box display={'flex'}>
                                             <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                            <Typography>{propertyInfo?.records[0]?.subdivision || 'Null'}</Typography>
+                                            <Typography>{propertyInfo?.records[0]?.subdivision || ''}</Typography>
                                         </Box>
                                     </td>
                                 </tr>
@@ -227,7 +266,7 @@ export default function Record({ propertyInfo, description }: { propertyInfo: Pr
                                     <td>
                                         <Box display={'flex'}>
                                             <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                            <Typography>{propertyInfo?.records[0]?.features?.pool ? 'True' : 'Null'}</Typography>
+                                            <Typography>{propertyInfo?.records[0]?.features?.pool ? 'True' : ''}</Typography>
                                         </Box>
                                     </td>
                                 </tr>
@@ -238,7 +277,7 @@ export default function Record({ propertyInfo, description }: { propertyInfo: Pr
                                     <td>
                                         <Box display={'flex'}>
                                             <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                            <Typography>{propertyInfo?.records[0]?.features?.garage ? 1 : 'Null'}</Typography>
+                                            <Typography>{propertyInfo?.records[0]?.features?.garage ? 1 : ''}</Typography>
                                         </Box>
                                     </td>
                                 </tr>
@@ -271,7 +310,7 @@ export default function Record({ propertyInfo, description }: { propertyInfo: Pr
                                     <td>
                                         <Box display={'flex'}>
                                             <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                            <Typography>{propertyInfo?.records[0]?.features?.garageType || 'Null'}</Typography>
+                                            <Typography>{propertyInfo?.records[0]?.features?.garageType || ''}</Typography>
                                         </Box>
                                     </td>
                                 </tr>
@@ -294,7 +333,7 @@ export default function Record({ propertyInfo, description }: { propertyInfo: Pr
                                     <td>
                                         <Box display={'flex'}>
                                             <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                            <Typography>{propertyInfo?.records[0]?.features?.roofType || 'Null'}</Typography>
+                                            <Typography>{propertyInfo?.records[0]?.features?.roofType || ''}</Typography>
                                         </Box>
                                     </td>
                                 </tr>
@@ -316,7 +355,7 @@ export default function Record({ propertyInfo, description }: { propertyInfo: Pr
                                     <td>
                                         <Box display={'flex'}>
                                             <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                            <Typography>{propertyInfo?.records[0]?.lotSize || 'Null'}</Typography>
+                                            <Typography>{propertyInfo?.records[0]?.lotSize || ''}</Typography>
                                         </Box>
                                     </td>
                                 </tr>
@@ -373,7 +412,7 @@ export default function Record({ propertyInfo, description }: { propertyInfo: Pr
                                     <td>
                                         <Box display={'flex'}>
                                             <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                            <Typography>{propertyInfo?.records[0]?.features?.unitCount || 'Null'}</Typography>
+                                            <Typography>{propertyInfo?.records[0]?.features?.unitCount || ''}</Typography>
                                         </Box>
                                     </td>
                                 </tr>
@@ -384,7 +423,7 @@ export default function Record({ propertyInfo, description }: { propertyInfo: Pr
                                     <td>
                                         <Box display={'flex'}>
                                             <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                            <Typography>{propertyInfo?.records[0]?.features?.coolingType || 'Null'}</Typography>
+                                            <Typography>{propertyInfo?.records[0]?.features?.coolingType || ''}</Typography>
                                         </Box>
                                     </td>
                                 </tr>
@@ -396,7 +435,7 @@ export default function Record({ propertyInfo, description }: { propertyInfo: Pr
                                     <td>
                                         <Box display={'flex'}>
                                             <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                            <Typography>{propertyInfo?.records[0]?.features?.heatingType || 'Null'}</Typography>
+                                            <Typography>{propertyInfo?.records[0]?.features?.heatingType || ''}</Typography>
                                         </Box>
                                     </td>
                                 </tr>
@@ -419,13 +458,13 @@ export default function Record({ propertyInfo, description }: { propertyInfo: Pr
                     <Box>
                         <Typography fontSize="22px">Listing History</Typography>
                         <Box>
-                            <KBTable maxHeight="220px" lineColor={KBColor.LIGHT_GREY} sx={{ background: KBColor.DARK_WHITE }} fields={saleListFields} data={createSaleTableList(propertyInfo?.saleList)} />
+                            <KBTable maxHeight="220px" lineColor={KBColor.LIGHT_GREY} sx={{ background: KBColor.DARK_WHITE }} fields={saleListFields} data={createSaleTableList()} />
                         </Box>
                     </Box>
                     <Box sx={{ marginTop: 2 }}>
                         <Typography fontSize="22px">Rental Estimates</Typography>
                         <Box>
-                            <KBTable maxHeight="220px" lineColor={KBColor.LIGHT_GREY} sx={{ background: KBColor.DARK_WHITE }} fields={rentalEstimateFields} data={createRentalEstimate(propertyInfo?.rentEstimate)} />
+                            <KBTable maxHeight="220px" lineColor={KBColor.LIGHT_GREY} sx={{ background: KBColor.DARK_WHITE }} fields={rentalEstimateFields} data={createRentalEstimate(propertyInfo?.market)} />
                         </Box>
                     </Box>
                     <Box sx={{ marginTop: 2 }}>
@@ -436,10 +475,6 @@ export default function Record({ propertyInfo, description }: { propertyInfo: Pr
                     </Box>
                 </Grid>
             </Grid>
-
-
-
-
         </>
     )
 }
