@@ -49,7 +49,7 @@ export default function EstimationGraph({ market }: { market: any }) {
     const classes = useStyles
 
     const generateGraphData = () => {
-        const marketingHistory = market.rentalData.history;
+        const marketingHistory = market?.rentalData?.history;
 
         const labels = [];
         const highEstimateList = [];
@@ -87,6 +87,10 @@ export default function EstimationGraph({ market }: { market: any }) {
             ],
         }
 
+    }
+
+    if (!market?.rentalData?.history) {
+        return null;
     }
 
     return (
