@@ -110,8 +110,6 @@ export default function Neighborhood({ filterVal }: Props) {
 
     while (areaViolent === 0 || areaProperty === 0) {
 
-      console.log("agencyIgnoreList =>>>", agencyIgnoreList)
-
       agencyList.map((agency: AgencyFBI) => {
         const distance = distanceBetweenTwoPlaces(Number(lat1), Number(lng1), Number(agency.latitude), Number(agency.longitude));
         if (distance < minDistance && !agencyIgnoreList.includes(agency.ori)) {
@@ -139,8 +137,6 @@ export default function Neighborhood({ filterVal }: Props) {
 
     }
 
-
-    console.log("FBI agencyOri =>>>", agencyOri)
 
     return {
       areaViolent,

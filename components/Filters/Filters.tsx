@@ -225,7 +225,6 @@ export default function Filters() {
             };
             service.getDetails(detailsRequest, (result, status) => {
               if (status === google.maps.places.PlacesServiceStatus.OK && result) {
-                console.log("result =>>>", result)
                 handleAddressChange(result);
               }
             });

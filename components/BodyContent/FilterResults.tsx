@@ -31,11 +31,29 @@ export default function FilterResults() {
 
   const [filterVal] = useRecoilState(filterState);
 
+  const [showHome, setShowHome] = useState<boolean>(true);
+
   const handleTabChange = (event: React.MouseEvent<HTMLElement>, newTab: Tab | null) => {
     setActiveTab(newTab);
   };
 
   useEffect(() => {
+    const getPropertyRecord = async (formatted_address: string) => {
+      const request = await fetch(`/api/prorecord/`, {
+        method: "POST",
+        body: JSON.stringify({ formatted_address }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const response = await request.json();
+      if (response.records && response.records.length > 0 && response.records[0].propertyType === "Single Family") {
+        setShowHome(true);
+      } else {
+        setShowHome(false);
+      }
+    }
+
     const getOpenAiData = async () => {
       if (!filterVal.address) return;
 
@@ -50,6 +68,8 @@ export default function FilterResults() {
         },
       });
       const response = await request.json();
+
+      // await getPropertyRecord(filterVal.selectedPlace.formatted_address);
 
       setExplainedLikeAlocal(response.explained_like_a_local);
       setGreenFlags(response.greenFlags);
@@ -149,9 +169,12 @@ export default function FilterResults() {
             Nearby Places
           </ToggleButton> */}
 
-          <ToggleButton style={{ width: "220px", textTransform: "initial" }} value="property">
-            Home
-          </ToggleButton>
+          {showHome && (
+            <ToggleButton style={{ width: "220px", textTransform: "initial" }} value="property">
+              Home
+            </ToggleButton>
+          )}
+
 
           <ToggleButton style={{ width: "220px", textTransform: "initial" }} value="neighborhood">
             Neighborhood
@@ -208,8 +231,8 @@ export default function FilterResults() {
                 </Box>
               )}
               {activeTab == "nearby" && <Nearby />}
-              {activeTab == "property" && <Property />}
-              
+              {activeTab == "property" && showHome && <Property explainedLikeAlocal={explainedLikeAlocal} />}
+
               {activeTab == "neighborhood" && <Neighborhood filterVal={filterVal} />}
 
               {/* activeTab == "utility" && (

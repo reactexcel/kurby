@@ -16,10 +16,11 @@ import ComparableRentList from "./ComparableRentList"
  * Body Content
  * @description: Displays everything below the filters
  */
-export default function Property() {
+export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal: string }) {
     const [filterVal] = useRecoilState(filterState);
     const [propertyInfo, setPropertyInfo] = useState<PropertyType | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
+
 
     useEffect(() => {
         async function getPropertyData() {
@@ -50,16 +51,18 @@ export default function Property() {
                 </Box>
             ) : (
                 <>
-                    {console.log("loading........", loading)}
                     <img src={"https://maps.googleapis.com/maps/api/streetview?size=1600x200&location=" + filterVal.selectedPlace.geometry.location.lat() + "," + filterVal.selectedPlace.geometry.location.lng() + "&fov=50&key=AIzaSyBW6MS6leYzF_KDJcuUVT7M3FAf6QJKxW0"} style={classes.roundImage} />
                     <Box
                         sx={{ ...classes.boxStyle, py: '5px' }}
                     >
-                        <Record propertyInfo={propertyInfo} />
-                        <EstimationGraph market={propertyInfo?.market} />
-                        <ComparableSaleList saleList={propertyInfo?.saleList} />
-                        <ComparableRentList rentList={propertyInfo?.rentailList} />
-                        <Owner owner={propertyInfo?.records[0]?.owner} />
+                        {propertyInfo?.records && propertyInfo?.records.length > 0 && <Record propertyInfo={propertyInfo} description={explainedLikeAlocal} />}
+                        {propertyInfo?.market && propertyInfo?.market.length > 0 && <EstimationGraph market={propertyInfo?.market} />}
+                        {propertyInfo?.saleList && propertyInfo?.saleList.length > 0 && <ComparableSaleList saleList={propertyInfo?.saleList} />}
+                        {propertyInfo?.rentailList && propertyInfo?.rentailList.length > 0 &&
+                            <ComparableRentList rentList={propertyInfo?.rentailList} />
+                        }
+                        {propertyInfo?.records && propertyInfo?.records.length > 0 && <Owner owner={propertyInfo?.records[0]?.owner} />}
+
                     </Box>
                 </>
             )}

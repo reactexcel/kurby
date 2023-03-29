@@ -19,8 +19,12 @@ type Owner = {
 
 export default function Owner({ owner }: { owner: Owner | null }) {
     const classes = useStyles;
+    if (!owner) {
+        return null;
+    }
+
     return (
-        <Box sx={{marginTop: 2}}>
+        <Box sx={{ marginTop: 2 }}>
             <Typography variant="h6" component="h6">
                 Owner
             </Typography>

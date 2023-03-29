@@ -11,7 +11,6 @@ import HouseCard from './HouseCard';
 export default function ComparableRentList({ rentList }: { rentList?: any }) {
 
     const classes = useStyles;
-    console.log("rent list ===>", rentList)
     if (!rentList || rentList.length === 0) {
         return null;
     }
@@ -27,7 +26,7 @@ export default function ComparableRentList({ rentList }: { rentList?: any }) {
                 <Grid container spacing={2} sx={{ marginTop: 1, maxHeight: '350px', overflow: 'auto' }}>
                     {Array.isArray(rentList) ? (
                         rentList.map(rentInfo => (
-                            <HouseCard cardInfo={rentInfo} key={rentInfo.if} />
+                            <HouseCard cardInfo={rentInfo} key={rentInfo.id} />
                         ))
                     ) : (
                         <HouseCard cardInfo={rentList} />

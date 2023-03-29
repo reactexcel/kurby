@@ -20,8 +20,8 @@ export default function KBTable({ sx, fields, data, lineColor, maxHeight }: KBTa
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            {fields.map(field => (
-                                <TableCell sx={{ border: `solid ${lineColor} 1px !important` }}>
+                            {fields.map((field, index) => (
+                                <TableCell key={index} sx={{ border: `solid ${lineColor} 1px !important` }}>
                                     <Typography>{field.label}</Typography>
                                 </TableCell>
                             ))}

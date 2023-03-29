@@ -43,19 +43,15 @@ const taxHistoryFields: TableFieldType[] = [
     { label: 'Price', key: 'price' },
 ]
 
-export default function Record({ propertyInfo }: { propertyInfo: PropertyType | null }) {
+export default function Record({ propertyInfo, description }: { propertyInfo: PropertyType | null, description: string }) {
     const [filterVal] = useRecoilState(filterState);
 
     const classes = useStyles;
-    console.log("propertyInfo =>>> ", propertyInfo)
-
-
     const createSaleTableList = (saleList: any[]) => {
-        console.log("saleListsaleList=>>", saleList)
         return saleList.map((item: any) => (
             {
                 event: 'Sold',
-                date: item?.createdDate ? moment(item?.createdDate).format("m/d/y") : '',
+                date: item?.createdDate ? moment(item?.createdDate).format("M/D/y") : '',
                 price: `$${convertUSNumberFormat(item?.price)}`,
             }
         ))
@@ -135,7 +131,7 @@ export default function Record({ propertyInfo }: { propertyInfo: PropertyType | 
                         Last Sold Price:
                     </Typography>
                     <Typography variant="h6" component="h6">
-                        $38,5000
+                        ${convertUSNumberFormat(propertyInfo?.saleList.at(-1).price)}
                     </Typography>
                 </Box>
             </Box>
@@ -161,7 +157,7 @@ export default function Record({ propertyInfo }: { propertyInfo: PropertyType | 
                         Neighborhood:
                     </Typography>
                     <Typography variant="h6" component="h6" sx={classes.flexBetween}>
-                        
+
                     </Typography>
                 </Box>
                 <Box sx={{ ...classes.flexBetween, marginRight: '20px' }}>
@@ -169,7 +165,7 @@ export default function Record({ propertyInfo }: { propertyInfo: PropertyType | 
                         Noise Score:
                     </Typography>
                     <Typography variant="h6" component="h6" sx={classes.flexBetween}>
-                        
+
                     </Typography>
                 </Box>
             </Box>
@@ -190,7 +186,7 @@ export default function Record({ propertyInfo }: { propertyInfo: PropertyType | 
                         Explain It Like a Local
                     </Typography>
                     <Typography color={KBColor.DRAK_GREY} sx={{ marginRight: 1 }}>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages
+                        {description}
                     </Typography>
                 </Box>
             </Box>
@@ -199,220 +195,223 @@ export default function Record({ propertyInfo }: { propertyInfo: PropertyType | 
                 <Grid item xs={4}>
                     <Card sx={{ backgroundColor: KBColor.DARK }}>
                         <table style={{ borderSpacing: '8px' }}>
-                            <tr>
-                                <td>
-                                    <Typography sx={{ color: KBColor.DRAK_GREY }}>Exterior</Typography>
-                                </td>
-                                <td>
-                                    <Box display={'flex'}>
-                                        <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                        <Typography>{propertyInfo?.records[0]?.features?.exteriorType || 'Null'}</Typography>
-                                    </Box>
+                            <tbody>
 
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <Typography sx={{ color: KBColor.DRAK_GREY }}>Sub Type</Typography>
-                                </td>
-                                <td>
-                                    <Box display={'flex'}>
-                                        <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                        <Typography>{propertyInfo?.records[0]?.subdivision || 'Null'}</Typography>
-                                    </Box>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <Typography sx={{ color: KBColor.DRAK_GREY }}>Pool</Typography>
-                                </td>
-                                <td>
-                                    <Box display={'flex'}>
-                                        <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                        <Typography>{propertyInfo?.records[0]?.features?.pool ? 'True' : 'Null'}</Typography>
-                                    </Box>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <Typography sx={{ color: KBColor.DRAK_GREY }}>Garage</Typography>
-                                </td>
-                                <td>
-                                    <Box display={'flex'}>
-                                        <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                        <Typography>{propertyInfo?.records[0]?.features?.garage ? 1 : 'Null'}</Typography>
-                                    </Box>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <Typography sx={{ color: KBColor.DRAK_GREY }}>Stories</Typography>
-                                </td>
-                                <td>
-                                    <Box display={'flex'}>
-                                        <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                        <Typography></Typography>
-                                    </Box>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <Typography sx={{ color: KBColor.DRAK_GREY }}>Type</Typography>
-                                </td>
-                                <td>
-                                    <Box display={'flex'}>
-                                        <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                        <Typography>{propertyInfo?.records[0]?.propertyType}</Typography>
-                                    </Box>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <Typography sx={{ color: KBColor.DRAK_GREY }}>Garage Type</Typography>
-                                </td>
-                                <td>
-                                    <Box display={'flex'}>
-                                        <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                        <Typography>{propertyInfo?.records[0]?.features?.garageType || 'Null'}</Typography>
-                                    </Box>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <Typography sx={{ color: KBColor.DRAK_GREY }}>Construction</Typography>
-                                </td>
-                                <td>
-                                    <Box display={'flex'}>
-                                        <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                        <Typography></Typography>
-                                    </Box>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>
+                                        <Typography sx={{ color: KBColor.DRAK_GREY }}>Exterior</Typography>
+                                    </td>
+                                    <td>
+                                        <Box display={'flex'}>
+                                            <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
+                                            <Typography>{propertyInfo?.records[0]?.features?.exteriorType || 'Null'}</Typography>
+                                        </Box>
 
-                            <tr>
-                                <td>
-                                    <Typography sx={{ color: KBColor.DRAK_GREY }}>Roofing</Typography>
-                                </td>
-                                <td>
-                                    <Box display={'flex'}>
-                                        <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                        <Typography>{propertyInfo?.records[0]?.features?.roofType || 'Null'}</Typography>
-                                    </Box>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <Typography sx={{ color: KBColor.DRAK_GREY }}>Sqft</Typography>
-                                </td>
-                                <td>
-                                    <Box display={'flex'}>
-                                        <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                        <Typography>{propertyInfo?.records[0]?.squareFootage}</Typography>
-                                    </Box>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <Typography sx={{ color: KBColor.DRAK_GREY }}>Lot Sqft</Typography>
-                                </td>
-                                <td>
-                                    <Box display={'flex'}>
-                                        <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                        <Typography>{propertyInfo?.records[0]?.lotSize || 'Null'}</Typography>
-                                    </Box>
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <Typography sx={{ color: KBColor.DRAK_GREY }}>Sub Type</Typography>
+                                    </td>
+                                    <td>
+                                        <Box display={'flex'}>
+                                            <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
+                                            <Typography>{propertyInfo?.records[0]?.subdivision || 'Null'}</Typography>
+                                        </Box>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <Typography sx={{ color: KBColor.DRAK_GREY }}>Pool</Typography>
+                                    </td>
+                                    <td>
+                                        <Box display={'flex'}>
+                                            <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
+                                            <Typography>{propertyInfo?.records[0]?.features?.pool ? 'True' : 'Null'}</Typography>
+                                        </Box>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <Typography sx={{ color: KBColor.DRAK_GREY }}>Garage</Typography>
+                                    </td>
+                                    <td>
+                                        <Box display={'flex'}>
+                                            <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
+                                            <Typography>{propertyInfo?.records[0]?.features?.garage ? 1 : 'Null'}</Typography>
+                                        </Box>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <Typography sx={{ color: KBColor.DRAK_GREY }}>Stories</Typography>
+                                    </td>
+                                    <td>
+                                        <Box display={'flex'}>
+                                            <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
+                                            <Typography></Typography>
+                                        </Box>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <Typography sx={{ color: KBColor.DRAK_GREY }}>Type</Typography>
+                                    </td>
+                                    <td>
+                                        <Box display={'flex'}>
+                                            <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
+                                            <Typography>{propertyInfo?.records[0]?.propertyType}</Typography>
+                                        </Box>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <Typography sx={{ color: KBColor.DRAK_GREY }}>Garage Type</Typography>
+                                    </td>
+                                    <td>
+                                        <Box display={'flex'}>
+                                            <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
+                                            <Typography>{propertyInfo?.records[0]?.features?.garageType || 'Null'}</Typography>
+                                        </Box>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <Typography sx={{ color: KBColor.DRAK_GREY }}>Construction</Typography>
+                                    </td>
+                                    <td>
+                                        <Box display={'flex'}>
+                                            <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
+                                            <Typography></Typography>
+                                        </Box>
+                                    </td>
+                                </tr>
 
-                            <tr>
-                                <td>
-                                    <Typography sx={{ color: KBColor.DRAK_GREY }}>Zoning</Typography>
-                                </td>
-                                <td>
-                                    <Box display={'flex'}>
-                                        <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                        <Typography>{propertyInfo?.records[0]?.Zoning || ''}</Typography>
-                                    </Box>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <Typography sx={{ color: KBColor.DRAK_GREY }}>Year Renovated</Typography>
-                                </td>
-                                <td>
-                                    <Box display={'flex'}>
-                                        <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                        <Typography></Typography>
-                                    </Box>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <Typography sx={{ color: KBColor.DRAK_GREY }}>Half Baths</Typography>
-                                </td>
-                                <td>
-                                    <Box display={'flex'}>
-                                        <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                        <Typography></Typography>
-                                    </Box>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>
+                                        <Typography sx={{ color: KBColor.DRAK_GREY }}>Roofing</Typography>
+                                    </td>
+                                    <td>
+                                        <Box display={'flex'}>
+                                            <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
+                                            <Typography>{propertyInfo?.records[0]?.features?.roofType || 'Null'}</Typography>
+                                        </Box>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <Typography sx={{ color: KBColor.DRAK_GREY }}>Sqft</Typography>
+                                    </td>
+                                    <td>
+                                        <Box display={'flex'}>
+                                            <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
+                                            <Typography>{propertyInfo?.records[0]?.squareFootage}</Typography>
+                                        </Box>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <Typography sx={{ color: KBColor.DRAK_GREY }}>Lot Sqft</Typography>
+                                    </td>
+                                    <td>
+                                        <Box display={'flex'}>
+                                            <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
+                                            <Typography>{propertyInfo?.records[0]?.lotSize || 'Null'}</Typography>
+                                        </Box>
+                                    </td>
+                                </tr>
 
-                            <tr>
-                                <td>
-                                    <Typography sx={{ color: KBColor.DRAK_GREY }}>Year Built</Typography>
-                                </td>
-                                <td>
-                                    <Box display={'flex'}>
-                                        <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                        <Typography>{propertyInfo?.records[0]?.yearBuilt}</Typography>
-                                    </Box>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <Typography sx={{ color: KBColor.DRAK_GREY }}>Units</Typography>
-                                </td>
-                                <td>
-                                    <Box display={'flex'}>
-                                        <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                        <Typography>{propertyInfo?.records[0]?.features?.unitCount || 'Null'}</Typography>
-                                    </Box>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <Typography sx={{ color: KBColor.DRAK_GREY }}>Cooling</Typography>
-                                </td>
-                                <td>
-                                    <Box display={'flex'}>
-                                        <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                        <Typography>{propertyInfo?.records[0]?.features?.coolingType || 'Null'}</Typography>
-                                    </Box>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>
+                                        <Typography sx={{ color: KBColor.DRAK_GREY }}>Zoning</Typography>
+                                    </td>
+                                    <td>
+                                        <Box display={'flex'}>
+                                            <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
+                                            <Typography>{propertyInfo?.records[0]?.Zoning || ''}</Typography>
+                                        </Box>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <Typography sx={{ color: KBColor.DRAK_GREY }}>Year Renovated</Typography>
+                                    </td>
+                                    <td>
+                                        <Box display={'flex'}>
+                                            <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
+                                            <Typography></Typography>
+                                        </Box>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <Typography sx={{ color: KBColor.DRAK_GREY }}>Half Baths</Typography>
+                                    </td>
+                                    <td>
+                                        <Box display={'flex'}>
+                                            <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
+                                            <Typography></Typography>
+                                        </Box>
+                                    </td>
+                                </tr>
 
-                            <tr>
-                                <td>
-                                    <Typography sx={{ color: KBColor.DRAK_GREY }}>Heating</Typography>
-                                </td>
-                                <td>
-                                    <Box display={'flex'}>
-                                        <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                        <Typography>{propertyInfo?.records[0]?.features?.heatingType || 'Null'}</Typography>
-                                    </Box>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <Typography sx={{ color: KBColor.DRAK_GREY }}>Fireplace</Typography>
-                                </td>
-                                <td>
-                                    <Box display={'flex'}>
-                                        <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
-                                        <Typography></Typography>
-                                    </Box>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>
+                                        <Typography sx={{ color: KBColor.DRAK_GREY }}>Year Built</Typography>
+                                    </td>
+                                    <td>
+                                        <Box display={'flex'}>
+                                            <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
+                                            <Typography>{propertyInfo?.records[0]?.yearBuilt}</Typography>
+                                        </Box>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <Typography sx={{ color: KBColor.DRAK_GREY }}>Units</Typography>
+                                    </td>
+                                    <td>
+                                        <Box display={'flex'}>
+                                            <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
+                                            <Typography>{propertyInfo?.records[0]?.features?.unitCount || 'Null'}</Typography>
+                                        </Box>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <Typography sx={{ color: KBColor.DRAK_GREY }}>Cooling</Typography>
+                                    </td>
+                                    <td>
+                                        <Box display={'flex'}>
+                                            <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
+                                            <Typography>{propertyInfo?.records[0]?.features?.coolingType || 'Null'}</Typography>
+                                        </Box>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <Typography sx={{ color: KBColor.DRAK_GREY }}>Heating</Typography>
+                                    </td>
+                                    <td>
+                                        <Box display={'flex'}>
+                                            <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
+                                            <Typography>{propertyInfo?.records[0]?.features?.heatingType || 'Null'}</Typography>
+                                        </Box>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <Typography sx={{ color: KBColor.DRAK_GREY }}>Fireplace</Typography>
+                                    </td>
+                                    <td>
+                                        <Box display={'flex'}>
+                                            <Typography sx={{ color: KBColor.DRAK_GREY, marginRight: 1 }}>:</Typography>
+                                            <Typography></Typography>
+                                        </Box>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </Card>
                 </Grid>
@@ -438,7 +437,7 @@ export default function Record({ propertyInfo }: { propertyInfo: PropertyType | 
                 </Grid>
             </Grid>
 
-            
+
 
 
         </>

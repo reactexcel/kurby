@@ -17,8 +17,6 @@ export default async ({ request, typesOfPlace }: searchNearbyParams) => {
   const { location } = request;
 
   if (!typesOfPlace.length) return [];
-  console.log(request);
-
   const getNearbyPlace = async (req: any) => {
     const response = await await fetch(`/api/nearby`, {
       method: "POST",
