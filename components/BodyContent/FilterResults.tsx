@@ -32,6 +32,7 @@ export default function FilterResults() {
   const [filterVal] = useRecoilState(filterState);
 
   const [showHome, setShowHome] = useState<boolean>(true);
+  
 
   const handleTabChange = (event: React.MouseEvent<HTMLElement>, newTab: Tab | null) => {
     setActiveTab(newTab);
