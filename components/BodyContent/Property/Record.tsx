@@ -160,16 +160,7 @@ export default function Record({ propertyInfo, description }: { propertyInfo: Pr
                             {propertyInfo?.records[0]?.bathrooms} Bathrooms
                         </Typography>
                     </Box>
-                    {propertyInfo?.records[0]?.lastSaleDate && (
-                        <Box sx={{ ...classes.flexBetween, marginRight: '20px' }}>
-                            <CircleBox sx={{ marginRight: '10px' }}>
-                                <HouseSvg />
-                            </CircleBox>
-                            <Typography variant="h6" component="h6" sx={classes.flexBetween}>
-                                For Sale
-                            </Typography>
-                        </Box>
-                    )}
+                    
                 </Box>
                 <Box sx={classes.flexBetween}>
                     <Typography variant="h6" component="h6" sx={{ marginRight: '5px', color: KBColor.DRAK_GREY }}>
