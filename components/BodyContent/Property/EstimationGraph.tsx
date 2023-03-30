@@ -117,7 +117,7 @@ export default function EstimationGraph({ valueEstimate }: { valueEstimate: any 
 
     return (
         <Box sx={classes.standardCard}>
-            <Typography fontSize="22px">Property Value Estimates</Typography>
+            <Typography component="h5" variant="h5" fontSize="22px">Property Value Estimates</Typography>
             <Box>
                 <KBTable maxHeight="220px" lineColor={KBColor.LIGHT_GREY} sx={{ background: KBColor.DARK_WHITE }} fields={valueEstimatFields} data={generateGraphData()} />
             </Box>

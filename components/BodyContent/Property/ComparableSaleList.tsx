@@ -17,7 +17,7 @@ export default function ComparableSaleList({ saleList }: { saleList?: any[] }) {
     return (
         <Box sx={{ marginTop: '15px' }}>
             <Box>
-                <Typography variant="h6" component="h6">
+                <Typography component="h5" variant="h5" fontSize="22px">
                     Comparable Homes for Sale ({saleList.length} location)
                 </Typography>
             </Box>

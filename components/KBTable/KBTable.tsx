@@ -1,7 +1,8 @@
 import { Theme } from "@emotion/react";
 import { useStyles } from "./style";
-import { Box, SxProps, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
+import { Box, SxProps, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, styled } from "@mui/material"
 import { TableDataType, TableFieldType } from "types/table";
+import { KBColor } from "constants/color";
 
 type KBTableProp = {
     children?: JSX.Element | JSX.Element[],
@@ -11,6 +12,11 @@ type KBTableProp = {
     lineColor?: string
     maxHeight?: string | number
 }
+
+const ProTypography = styled(Typography)({
+    fontFamily: 'FilsonPro !important'
+});
+
 
 export default function KBTable({ sx, fields, data, lineColor, maxHeight }: KBTableProp) {
     const classes = useStyles;
@@ -22,7 +28,7 @@ export default function KBTable({ sx, fields, data, lineColor, maxHeight }: KBTa
                         <TableRow>
                             {fields.map((field, index) => (
                                 <TableCell key={index} sx={{ border: `solid ${lineColor} 1px !important` }}>
-                                    <Typography>{field.label}</Typography>
+                                    <ProTypography>{field.label}</ProTypography>
                                 </TableCell>
                             ))}
                         </TableRow>
@@ -33,8 +39,8 @@ export default function KBTable({ sx, fields, data, lineColor, maxHeight }: KBTa
                                 key={rowKey}
                             >
                                 {fields.map((field: any, fieldKey) => (
-                                    <TableCell key={fieldKey} component="td" sx={{ border: `solid ${lineColor} 1px !important` }}>
-                                        {row[field?.key]}
+                                    <TableCell key={fieldKey} component="td" sx={{ border: `solid ${lineColor} 1px !important`, color: KBColor.DRAK_GREY }}>
+                                        <ProTypography>{row[field?.key]}</ProTypography>
                                     </TableCell>
                                 ))}
                             </TableRow>

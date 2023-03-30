@@ -9,9 +9,9 @@ export default createTheme({
           main: "#fe6907",
         },
       },
-    typography: {
-      'fontFamily': "FilsonPro !important"
-    },
+    // typography: {
+    //   'fontFamily': "FilsonPro !important"
+    // },
     components: {
       MuiSelect: {
         styleOverrides: {

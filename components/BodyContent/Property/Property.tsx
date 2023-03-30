@@ -46,7 +46,7 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
     return (
         <Box sx={{ ...classes.resultsContentStyle, padding: 0 }}>
             {(loading || !propertyInfo) ? (
-                <Box display="flex" justifyContent="center" alignItems="center">
+                <Box display="flex" justifyContent="center" alignItems="center" padding={3}>
                     <CircularProgress />
                 </Box>
             ) : (

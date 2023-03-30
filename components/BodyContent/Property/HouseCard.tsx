@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from '@mui/material'
+import { Box, Grid, Typography, styled } from '@mui/material'
 import React from 'react'
 import { useStyles } from '../styles'
 
@@ -7,6 +7,12 @@ import BedSvg from "../../../public/icons/bed.svg";
 import WashSvg from "../../../public/icons/wash.svg";
 import { convertUSNumberFormat } from 'utils/number';
 import { KBColor } from 'constants/color';
+
+
+const ProTypography = styled(Typography)({
+    fontFamily: 'FilsonPro !important'
+});
+
 
 export default function HouseCard({ cardInfo }: { cardInfo: any }) {
     const classes = useStyles
@@ -26,26 +32,23 @@ export default function HouseCard({ cardInfo }: { cardInfo: any }) {
                     <Typography variant="h6" component="h6">
                         {cardInfo?.addressLine1}
                     </Typography>
-                    <Typography fontSize={'12px'} sx={{ display: 'flex', alignItems: 'center' }}>
+                    <ProTypography fontSize={'12px'} sx={{ display: 'flex', alignItems: 'center' }}>
                         <LocationSvg style={{ marginRight: "8px" }} />
                         {cardInfo?.formattedAddress}
-                    </Typography>
-                    <Typography fontSize={'12px'} color={KBColor.DRAK_GREY} sx={{ marginTop: 1 }}>
-                        Presenting, SB Kokila Paradise - an address that is...
-                    </Typography>
+                    </ProTypography>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 1 }}>
                         <Box sx={{ display: 'flex' }}>
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                 <BedSvg />
-                                <Typography sx={{ marginLeft: 1 }} fontSize="10px" >3 Bedroom</Typography>
+                                <ProTypography sx={{ marginLeft: 1 }} fontSize="10px" >3 Bedroom</ProTypography>
                             </Box>
                             <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: 2 }}>
                                 <WashSvg />
-                                <Typography sx={{ marginLeft: 1 }} fontSize="10px" > 2 Bathrooms</Typography>
+                                <ProTypography sx={{ marginLeft: 1 }} fontSize="10px" > 2 Bathrooms</ProTypography>
                             </Box>
                         </Box>
                         <Box>
-                            <Typography fontSize="12px" color={KBColor.GREEN}>${convertUSNumberFormat(cardInfo?.price)}</Typography>
+                            <ProTypography fontSize="12px" color={KBColor.GREEN}>${convertUSNumberFormat(cardInfo?.price)}</ProTypography>
                         </Box>
                     </Box>
                 </Box>
