@@ -73,7 +73,7 @@ export default function Record({ propertyInfo, description }: { propertyInfo: Pr
             reuslt.push({
                 event: 'Sold',
                 date: propertyInfo?.records[0].lastSaleDate ? moment(propertyInfo?.records[0].lastSaleDate).format("M/D/y") : '',
-                price: `$${convertUSNumberFormat(propertyInfo?.valueEstimate?.price)}`,
+                price: propertyInfo?.records[0].lastSalePrice ? `$${convertUSNumberFormat(propertyInfo?.records[0].lastSalePrice)}` : '-',
             })
         }
 
