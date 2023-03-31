@@ -197,7 +197,7 @@ export default function Record({ propertyInfo, description }: { propertyInfo: Pr
                 </Box>
                 <Box sx={{ ...classes.flexBetween, marginRight: '20px' }}>
                     <ProTypography color={KBColor.DRAK_GREY} sx={{ marginRight: 1 }}>
-                        Neighborhood:
+                        County:
                     </ProTypography>
                     <Typography variant="h6" component="h6" sx={classes.flexBetween}>
                         {propertyInfo?.records[0]?.county}
