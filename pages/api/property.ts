@@ -158,8 +158,8 @@ export default async function handler(
 
         res.status(200).json({
             records: recordsData?.data || [],
-            valueEstimate: valueEstimateData?.data || [],
-            rentEstimate: rentEstimateData?.data || [],
+            valueEstimate: valueEstimateData?.data || null,
+            rentEstimate: rentEstimateData?.data || null,
             saleList: saleListData?.data && Array.isArray(saleListData?.data) ? saleListData?.data : [],
             rentailList: rentailListOptionData?.data && Array.isArray(rentailListOptionData?.data) ? rentailListOptionData?.data : [],
             market: marketData?.data || [],

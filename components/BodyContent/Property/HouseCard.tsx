@@ -29,7 +29,7 @@ export default function HouseCard({ cardInfo, order }: { cardInfo: any, order: n
                     <img src={"https://maps.googleapis.com/maps/api/streetview?size=200x200&location=" + cardInfo?.formattedAddress + "&fov=50&key=AIzaSyBW6MS6leYzF_KDJcuUVT7M3FAf6QJKxW0"} style={classes.roundImage} />
                 </Box>
                 <Box>
-                    <Typography variant="h6" component="h6">
+                    <Typography variant="h6" component="h6" fontSize='1rem'>
                         {cardInfo?.formattedAddress}
                     </Typography>
                     <ProTypography fontSize={'12px'} sx={{ display: 'flex', alignItems: 'center' }}>

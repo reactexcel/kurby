@@ -9,8 +9,9 @@ import { convertUSNumberFormat } from 'utils/number';
 import HouseCard from './HouseCard';
 
 export default function ComparableSaleList({ saleList }: { saleList?: any }) {
+    console.log("sss", saleList)
     const classes = useStyles;
-    if (!saleList) {
+    if (!saleList || !saleList?.listings || saleList?.listings?.length === 0) {
         return null;
     }
 
@@ -18,12 +19,12 @@ export default function ComparableSaleList({ saleList }: { saleList?: any }) {
         <Box sx={{ marginTop: '25px' }}>
             <Box>
                 <Typography component="h5" variant="h5" fontSize="22px">
-                    Comparable Homes for Sale ({saleList.length} location)
+                    Comparable Homes for Sale ({saleList?.listings?.length} location)
                 </Typography>
             </Box>
             <Box sx={{ maxHeight: '350px', overflow: 'auto' }}>
                 <Grid container spacing={2} sx={{ marginTop: 1 }}>
-                    {saleList?.listings.map((saleInfo: any, index: number) => (
+                    {saleList?.listings?.map((saleInfo: any, index: number) => (
                         <HouseCard cardInfo={saleInfo} key={saleInfo?.id} order={index} />
                     ))}
 
