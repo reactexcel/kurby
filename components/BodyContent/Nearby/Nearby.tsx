@@ -47,8 +47,6 @@ export default function Nearby() {
   const [loadedNearbyPlaces, setLoadedNearbyPlaces] = useState([])
   const fetchMoreData = () => {
     setTimeout(async () => {
-      console.log("use effect");
-      console.log("filterVal.nearbyPlaces", filterVal.nearbyPlaces);
       const newPlaces = filterVal.nearbyPlaces.slice(loadedNearbyPlaces.length, loadedNearbyPlaces.length + PAGE_SIZE);
       const updatedPlaces: any = await prepareLoadedPlaces(newPlaces, filterVal.mapCenter);
 

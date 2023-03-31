@@ -13,11 +13,9 @@ export default function Census() {
   const [filterVal] = useRecoilState(filterState);
 
   const handleClick = async () => {
-    console.log("filterVal", filterVal);
     setLoading(true);
     if (!filterVal.mapCenter || !censusKey) return;
     const response = await getAcs5data(filterVal.mapCenter, censusKey);
-    console.log("response", response);
     setDatainfo(response);
     setLoading(false);
   };
@@ -75,7 +73,6 @@ async function getAcs5data(latlng: LatLong, censusKey: string) {
         //values: [], // required
       },
       async (err: any, res: any[]) => {
-        console.log({ res, censusKey });
         let keyData = res[0];
 
         const dataLookup = async () => {
@@ -87,7 +84,6 @@ async function getAcs5data(latlng: LatLong, censusKey: string) {
           newString = newString.replaceAll(" ", "_");
           newString = newString.replace(/[^a-zA-Z0-9 ]/g, "_");
 
-          console.log(newString);
           resolve({
             varData: res.variables[censusKey],
             censusRespons: keyData,

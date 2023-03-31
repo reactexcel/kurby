@@ -1,4 +1,4 @@
-import { Box, Button, styled } from "@mui/material";
+import { Box, Button, Typography, styled } from "@mui/material";
 import { useEffect, useState } from "react";
 import FactCard from "./FactCard";
 import getFloodData from "./floodData";
@@ -14,6 +14,11 @@ import Married from "../../../public/icons/married.svg";
 import Home from "../../../public/icons/home.svg";
 import Population from "../../../public/icons/population.svg";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import { AddressComponentType, AgencyFBI, CrimeInfoType, OverallCrimeInfo } from "types/address";
+import Handcuff from "../../../public/images/handcuff.svg";
+import CrimeModal from "./CrimeModal";
+import { distanceBetweenTwoPlaces } from "utils/address";
+import axios from "axios";
 
 const floodRiskMap: { [key: string]: string } = {
   A: "Medium",
@@ -87,11 +92,150 @@ export default function Neighborhood({ filterVal }: Props) {
   const [censusData, setCensusData] = useState<CensusData | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const [crimeModal, setCrimeModal] = useState<string>("")
+  const [overallCrimeInfo, setOverallCrimeInfo] = useState<OverallCrimeInfo | null>(null);
+
+
+  const getNearestAgency = async (agencyList: AgencyFBI[],) => {
+    let agencyOri = "";
+    let areaViolent = 0, areaProperty = 0;
+
+    const lat1 = filterVal.selectedPlace.geometry.location.lat();
+    const lng1 = filterVal.selectedPlace.geometry.location.lng();
+
+    let minDistance = Number.POSITIVE_INFINITY;
+    const agencyIgnoreList: string[] = [];
+
+
+    while (areaViolent === 0 || areaProperty === 0) {
+
+      agencyList.map((agency: AgencyFBI) => {
+        const distance = distanceBetweenTwoPlaces(Number(lat1), Number(lng1), Number(agency.latitude), Number(agency.longitude));
+        if (distance < minDistance && !agencyIgnoreList.includes(agency.ori)) {
+          minDistance = distance;
+          agencyOri = agency.ori;
+        }
+      })
+
+
+      const areaViolentCrimeData = await axios.get(`${process.env.NEXT_PUBLIC_CRIME_FBI_URL}/summarized/agency/${agencyOri}/violent-crime?from=${process.env.NEXT_PUBLIC_CRIME_FBI_YEAR}&to=${process.env.NEXT_PUBLIC_CRIME_FBI_YEAR}&API_KEY=${process.env.NEXT_PUBLIC_CRIME_FBI_KEY}`);
+      if (areaViolentCrimeData.data.length > 0) {
+        areaViolent = Number(areaViolentCrimeData.data[0].actual);
+      }
+
+      const areaPropertyCrimeData = await axios.get(`${process.env.NEXT_PUBLIC_CRIME_FBI_URL}/summarized/agency/${agencyOri}/property-crime?from=${process.env.NEXT_PUBLIC_CRIME_FBI_YEAR}&to=${process.env.NEXT_PUBLIC_CRIME_FBI_YEAR}&API_KEY=${process.env.NEXT_PUBLIC_CRIME_FBI_KEY}`);
+      if (areaPropertyCrimeData.data.length > 0) {
+        areaProperty = Number(areaPropertyCrimeData.data[0].actual);
+      }
+
+      if (areaViolent === 0 || areaProperty === 0) {
+        agencyIgnoreList.push(agencyOri)
+        minDistance = Number.POSITIVE_INFINITY
+      }
+    }
+
+
+    return {
+      areaViolent,
+      areaProperty
+    }
+
+  }
+
+  const getCrimeFBIInfo = async () => {
+    try {
+      const nationalCrimeData = await axios.get(`${process.env.NEXT_PUBLIC_CRIME_FBI_URL}/estimate/national?year=${process.env.NEXT_PUBLIC_CRIME_FBI_YEAR}&API_KEY=${process.env.NEXT_PUBLIC_CRIME_FBI_KEY}`);
+
+      const stateComponent = filterVal.selectedPlace?.address_components?.find((item: AddressComponentType) => item?.types?.includes("administrative_area_level_1"));
+      const areaComponent = filterVal.selectedPlace?.address_components?.find((item: AddressComponentType) => item?.types?.includes("locality"));
+
+      let stateCrime = [];
+      let areaViolent = 0, areaProperty = 0;
+      const areaPopulation = 100 * 1000;
+
+
+      if (stateComponent?.short_name) {
+        const stateCrimeData = await axios.get(`${process.env.NEXT_PUBLIC_CRIME_FBI_URL}/estimate/state/${stateComponent.short_name}?year=${process.env.NEXT_PUBLIC_CRIME_FBI_YEAR}&API_KEY=${process.env.NEXT_PUBLIC_CRIME_FBI_KEY}`);
+        stateCrime = stateCrimeData.data;
+
+        const agencyListData = await axios.get(`${process.env.NEXT_PUBLIC_CRIME_FBI_URL}/agency/byStateAbbr/${stateComponent.short_name}?API_KEY=${process.env.NEXT_PUBLIC_CRIME_FBI_KEY}`);
+        const agencyList = agencyListData.data;
+
+
+
+        const areaInfo = await getNearestAgency(agencyList);
+        areaViolent = areaInfo.areaViolent;
+        areaProperty = areaInfo.areaProperty;
+      }
+
+      const crimeInfo = {
+        national: {
+          violent_crime: parseInt(nationalCrimeData.data[0].violent_crime),
+          property_crime: parseInt(nationalCrimeData.data[0].property_crime),
+          population: parseInt(nationalCrimeData.data[0].population)
+        },
+        state: {
+          violent_crime: stateCrime.length > 0 ? parseInt(stateCrime[0].violent_crime) : 0,
+          property_crime: stateCrime.length > 0 ? parseInt(stateCrime[0].property_crime) : 0,
+          population: stateCrime.length > 0 ? parseInt(stateCrime[0].population) : 0,
+        },
+        area: {
+          violent_crime: areaViolent,
+          property_crime: areaProperty,
+          population: areaPopulation
+        },
+        localInfo: {
+          state: stateComponent?.long_name || '',
+          area: areaComponent?.long_name || '',
+        }
+      };
+
+
+      let violentNationalRate = 0;
+      let propertyNationalRate = 0;
+      let violentStateRate = 0;
+      let propertyStateRate = 0;
+      let violentAreaRate = 0;
+      let propertyAreaRate = 0;
+      let violentAreaPerNational = 0;
+      let propertyAreaPerNational = 0;
+      if (crimeInfo?.national && crimeInfo?.state && crimeInfo?.area) {
+        violentNationalRate = crimeInfo.national.violent_crime * 100 * 1000 / crimeInfo.national.population
+        violentStateRate = crimeInfo.state.violent_crime * 100 * 1000 / crimeInfo.state.population
+        violentAreaRate = crimeInfo.area.violent_crime * 100 * 1000 / crimeInfo.area.population
+        propertyNationalRate = crimeInfo.national.property_crime * 100 * 1000 / crimeInfo.national.population
+        propertyStateRate = crimeInfo.state.property_crime * 100 * 1000 / crimeInfo.state.population
+        propertyAreaRate = crimeInfo.area.property_crime * 100 * 1000 / crimeInfo.area.population
+
+        violentAreaPerNational = (violentAreaRate - violentNationalRate) * 100 / violentNationalRate;
+        propertyAreaPerNational = (propertyAreaRate - propertyNationalRate) * 100 / propertyNationalRate;
+
+        setOverallCrimeInfo({
+          violentIncidents: crimeInfo.area.violent_crime,
+          violentNationalRate: violentNationalRate,
+          violentStateRate: violentStateRate,
+          violentAreaRate: violentAreaRate,
+          propertyIncidents: crimeInfo.area.property_crime,
+          propertyNationalRate: propertyNationalRate,
+          propertyStateRate: propertyStateRate,
+          propertyAreaRate: propertyAreaRate,
+          violentAreaPerNational: violentAreaPerNational,
+          propertyAreaPerNational: propertyAreaPerNational,
+          localInfo: crimeInfo?.localInfo
+        })
+      }
+
+    } catch (error) {
+      console.log('error =>>', error)
+    }
+
+  }
+
+
   useEffect(() => {
     const retrieveFloodData = async () => {
       if (!filterVal.selectedPlace || !filterVal.selectedPlace.formatted_address.includes("USA")) return;
 
-      setLoading(true);
       const addressComponents = filterVal.selectedPlace.address_components;
 
       const zipData = addressComponents.filter((component: any) => component.types.includes("postal_code"));
@@ -107,9 +251,13 @@ export default function Neighborhood({ filterVal }: Props) {
       setLoading(false);
     };
 
-    (async () => {
-      await retrieveFloodData();
-    })();
+    if(filterVal.selectedPlace.formatted_address.includes("USA")){
+      (async () => {
+        setLoading(true);
+        await getCrimeFBIInfo();
+        await retrieveFloodData();
+      })();
+    }
   }, []);
 
   const formatter = new Intl.NumberFormat("en-US", {
@@ -126,6 +274,11 @@ export default function Neighborhood({ filterVal }: Props) {
     setOpenFloodZoneMap(false);
     setOpenRaceBreakdown(false);
   };
+
+  const handleCloseCrimModal = () => {
+    setCrimeModal("")
+  }
+
   return (
     <Box style={resultsContentStyle}>
       <Box
@@ -330,6 +483,76 @@ export default function Neighborhood({ filterVal }: Props) {
                 />
               }
             />
+            <FactCard
+              loading={loading}
+              label="Violent Crime Rate"
+              type="string"
+              value={Math.round(overallCrimeInfo?.violentAreaPerNational || 0) + "%" || "Unknown"}
+              icon={
+                <Handcuff
+                  sx={{
+                    color: "green",
+                    fontSize: "40px",
+                  }}
+                />
+              }
+            >
+              <Button
+                variant="text"
+                onClick={() => {
+                  setCrimeModal("violent")
+                }}
+                sx={{
+                  fontSize: "12px",
+                }}
+              >
+                See More
+              </Button>
+            </FactCard>
+            <FactCard
+              loading={loading}
+              label="Property Crime Rate"
+              type="string"
+              value={Math.round(overallCrimeInfo?.propertyAreaPerNational || 0) + "%" || "Unknown"}
+              icon={
+                <Handcuff
+                  sx={{
+                    color: "green",
+                    fontSize: "40px",
+                  }}
+                />
+              }
+            >
+              <Button
+                variant="text"
+                onClick={() => {
+                  setCrimeModal("property")
+                }}
+                sx={{
+                  fontSize: "12px",
+                }}
+              >
+                See More
+              </Button>
+            </FactCard>
+
+            <CrimeModal open={['violent', 'property'].includes(crimeModal)} handleClose={handleCloseCrimModal} overallCrimeInfo={overallCrimeInfo} crimeType={crimeModal}>
+              <FactCard
+                loading={false}
+                label={`${crimeModal.charAt(0).toUpperCase() + crimeModal.slice(1)} Crime Info`}
+                type="string"
+                value={crimeModal === "violent" ? Math.round(overallCrimeInfo?.violentAreaPerNational || 0) + "%" : Math.round(overallCrimeInfo?.propertyAreaPerNational || 0) + "%" || "Unknown"}
+                icon={
+                  <Handcuff
+                    sx={{
+                      color: "green",
+                      fontSize: "40px",
+                    }}
+                  />
+                }
+              ></FactCard>
+            </CrimeModal>
+
 
             <RaceBreakdown open={openRaceBreakdown} handleClose={handleCloseModals} raceData={censusData?.raceData} />
 
@@ -351,7 +574,7 @@ export default function Neighborhood({ filterVal }: Props) {
             </FloodZoneModal>
           </FactCardContainer>
         ) : (
-          <h3>No Neighborhood Data</h3>
+          <h3>Neighborhood data is currently only available for properties in the United States</h3>
         )}
       </Box>
     </Box>

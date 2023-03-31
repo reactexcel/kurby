@@ -5,4 +5,4 @@ export const activeTabState = atom<Tab | null>({
     default: 'home'
 })
 
-export type Tab = "home" | "nearby" | "neighborhood" | "utility";
+export type Tab = "home" | "nearby" | "neighborhood" | "utility" | "property";

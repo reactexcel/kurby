@@ -14,7 +14,7 @@ import QuestionTooltipSvg from "../../public/icons/question-tooltip.svg";
 import { NextSeo } from "next-seo";
 import { activeTabState, Tab } from "context/activeTab";
 import Neighborhood from "./Neighborhood/Neighborhood";
-import Census from "components/Census/Census";
+import Property from "./Property/Property";
 
 /**
  * FilterResults
@@ -28,40 +28,66 @@ export default function FilterResults() {
   const [redFlags, setRedFlags] = useState<any[]>([]);
   const [loading, isLoading] = useState(false);
 
+
   const [filterVal] = useRecoilState(filterState);
 
+  const [showHome, setShowHome] = useState<boolean>(true);
+
+
   const handleTabChange = (event: React.MouseEvent<HTMLElement>, newTab: Tab | null) => {
-    setActiveTab(newTab);
+    if(newTab){
+      setActiveTab(newTab);
+    }
   };
 
   useEffect(() => {
+    const getPropertyRecord = async (formatted_address: string) => {
+      const request = await fetch(`/api/prorecord/`, {
+        method: "POST",
+        body: JSON.stringify({ formatted_address }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const response = await request.json();
+      if (response.records && response.records.length > 0 && response.records[0].propertyType === "Single Family") {
+        setShowHome(true);
+      } else {
+        setShowHome(false);
+      }
+    }
+
     const getOpenAiData = async () => {
       if (!filterVal.address) return;
 
       isLoading(true);
       setActiveTab("home");
       //* the entire selected place is sent in so we can validate the address
-      const request = await fetch(`/api/openai/`, {
-        method: "POST",
-        body: JSON.stringify(filterVal.selectedPlace),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const response = await request.json();
+      try {
+        const request = await fetch(`/api/openai/`, {
+          method: "POST",
+          body: JSON.stringify(filterVal.selectedPlace),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const response = await request.json();
 
-      setExplainedLikeAlocal(response.explained_like_a_local);
-      setGreenFlags(response.greenFlags);
-      setRedFlags(response.redFlags);
+        // await getPropertyRecord(filterVal.selectedPlace.formatted_address);
+
+        setExplainedLikeAlocal(response.explained_like_a_local);
+        setGreenFlags(response.greenFlags);
+        setRedFlags(response.redFlags);
+        isLoading(false);
+      } catch (error) {
+        console.log({ error })
+      }
       isLoading(false);
-    };
 
+    };
     getOpenAiData();
   }, [filterVal.address, filterVal.selectedPlace]);
 
-  useEffect(() => {
-    console.log("filterVal", filterVal);
-  }, [filterVal]);
 
   const AIWarningToolTip = () => (
     <Tooltip title="The information provided by AI is never 100% accurate and should only be used as a starting point for further research. AI cannot replace human judgment, and no AI system can guarantee the accuracy of its conclusions. As such, any decisions made based on the results of AI should be carefully evaluated and independently verified.">
@@ -152,6 +178,13 @@ export default function FilterResults() {
             Nearby Places
           </ToggleButton> */}
 
+          {showHome && (
+            <ToggleButton style={{ width: "220px", textTransform: "initial" }} value="property">
+              Home
+            </ToggleButton>
+          )}
+
+
           <ToggleButton style={{ width: "220px", textTransform: "initial" }} value="neighborhood">
             Neighborhood
           </ToggleButton>
@@ -177,7 +210,11 @@ export default function FilterResults() {
                       <StreetView position={filterVal.latlong} />
                       <Box>
                         <Box style={{ display: "flex", alignItems: "center" }}>
-                          <Typography variant="h5" component="h5">
+                          <Typography variant="h1" component="h1" sx={{
+                            fontWeight: 400,
+                            fontSize: '1.5rem',
+                            fontFamily: 'FilsonPro'
+                          }}>
                             <LocationSvg style={{ marginRight: "8px" }} />
                             {filterVal.address}
                           </Typography>
@@ -207,6 +244,8 @@ export default function FilterResults() {
                 </Box>
               )}
               {activeTab == "nearby" && <Nearby />}
+              {activeTab == "property" && showHome && <Property explainedLikeAlocal={explainedLikeAlocal} />}
+
               {activeTab == "neighborhood" && <Neighborhood filterVal={filterVal} />}
 
               {/* activeTab == "utility" && (
