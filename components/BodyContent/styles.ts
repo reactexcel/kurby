@@ -32,7 +32,8 @@ export const useStyles = {
         backgroundColor: KBColor.DARK,
         border: `solid 1px ${KBColor.LIGHT_BLACK}`, 
         borderRadius: '10px', 
-        width: '100%'
+        width: '100%',
+        cursor: 'pointer'
     },
     standardCard: {
         marginTop: '15px', 

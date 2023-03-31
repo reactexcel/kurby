@@ -7,7 +7,8 @@ import BedSvg from "../../../public/icons/bed.svg";
 import WashSvg from "../../../public/icons/wash.svg";
 import { convertUSNumberFormat } from 'utils/number';
 import { KBColor } from 'constants/color';
-
+import { useRouter } from "next/router";
+import { addressToUrl } from 'utils/address';
 
 const ProTypography = styled(Typography)({
     fontFamily: 'FilsonPro !important'
@@ -16,6 +17,7 @@ const ProTypography = styled(Typography)({
 
 export default function HouseCard({ cardInfo, order }: { cardInfo: any, order: number }) {
     const classes = useStyles
+    const router = useRouter();
 
     if (!cardInfo) {
         return null
@@ -24,7 +26,10 @@ export default function HouseCard({ cardInfo, order }: { cardInfo: any, order: n
 
     return (
         <Grid item xs={6} key={cardInfo?.id} paddingTop={(order < 2) ? 0 : '10px'}>
-            <Box padding="10px" sx={{ ...classes.ownerCard }}>
+            <Box padding="10px" sx={{ ...classes.ownerCard }} onClick={() => {
+                const encodedAddress = addressToUrl(cardInfo?.formattedAddress);
+                router.push(`/app/${encodedAddress}`)
+            }}>
                 <Box sx={{ width: '120px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginRight: 2 }}>
                     <img src={"https://maps.googleapis.com/maps/api/streetview?size=200x200&location=" + cardInfo?.formattedAddress + "&fov=50&key=AIzaSyBW6MS6leYzF_KDJcuUVT7M3FAf6QJKxW0"} style={classes.roundImage} />
                 </Box>
