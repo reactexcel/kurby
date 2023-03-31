@@ -125,12 +125,16 @@ export default function Record({ propertyInfo, description }: { propertyInfo: Pr
         return taxHistory;
     }
 
-
-
     return (
         <>
             <Box sx={classes.flexBetween}>
-                <Typography variant="h5" component="h5" fontSize={'18px'} sx={{ display: 'flex', alignItems: 'center' }}>
+                <Typography variant="h1" component="h1" sx={{
+                    fontWeight: 400,
+                    fontSize: '18px',
+                    fontFamily: 'FilsonPro',
+                    display: 'flex',
+                    alignItems: 'center'
+                }}>
                     <LocationSvg style={{ marginRight: "8px" }} />
                     {filterVal.address}
                 </Typography>
@@ -160,7 +164,7 @@ export default function Record({ propertyInfo, description }: { propertyInfo: Pr
                             {propertyInfo?.records[0]?.bathrooms} Bathrooms
                         </Typography>
                     </Box>
-                    
+
                 </Box>
                 <Box sx={classes.flexBetween}>
                     <Typography variant="h6" component="h6" sx={{ marginRight: '5px', color: KBColor.DRAK_GREY }}>
@@ -189,6 +193,14 @@ export default function Record({ propertyInfo, description }: { propertyInfo: Pr
                     </ProTypography>
                     <Typography variant="h6" component="h6" sx={classes.flexBetween}>
                         {propertyInfo?.records[0]?.yearBuilt}
+                    </Typography>
+                </Box>
+                <Box sx={{ ...classes.flexBetween, marginRight: '20px' }}>
+                    <ProTypography color={KBColor.DRAK_GREY} sx={{ marginRight: 1 }}>
+                        Neighborhood:
+                    </ProTypography>
+                    <Typography variant="h6" component="h6" sx={classes.flexBetween}>
+                        {propertyInfo?.records[0]?.county}
                     </Typography>
                 </Box>
             </Box>

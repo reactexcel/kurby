@@ -74,7 +74,7 @@ export default async function handler(
                 params: { address: formatted_address },
             });
         } catch (error) {
-            // console.log({ error })
+            console.log({ error })
         }
 
 
@@ -84,10 +84,12 @@ export default async function handler(
                 url: molePropertyBaseUrl + '/salePrice',
                 params: {
                     address: formatted_address,
+                    propertyType: 'Single Family,Duplex-Triplex',
+                    compCount: 25
                 },
             });
         } catch (error) {
-            // console.log({ error })
+            console.log({ error })
 
         }
 
@@ -98,10 +100,12 @@ export default async function handler(
                 url: molePropertyBaseUrl + '/rentalPrice',
                 params: {
                     address: formatted_address,
+                    propertyType: 'Single Family,Duplex-Triplex',
+                    compCount: 25
                 },
             });
         } catch (error) {
-            // console.log({ error })
+            console.log({ error })
 
         }
 
@@ -116,7 +120,7 @@ export default async function handler(
             }
             saleListData = await axios.request(saleListOptions);
         } catch (error) {
-            // console.log({ error })
+            console.log({ error })
 
         }
 
@@ -133,7 +137,7 @@ export default async function handler(
             }
             rentailListOptionData = await axios.request(rentailListOption);
         } catch (error) {
-            // console.log({ error })
+            console.log({ error })
 
         }
 
@@ -150,8 +154,6 @@ export default async function handler(
                 // console.log({ error })
             }
         }
-
-        console.log("saleListDatasaleListDatasaleListData", saleListData)
 
 
         res.status(200).json({

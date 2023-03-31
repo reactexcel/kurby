@@ -14,7 +14,7 @@ const ProTypography = styled(Typography)({
 });
 
 
-export default function HouseCard({ cardInfo }: { cardInfo: any }) {
+export default function HouseCard({ cardInfo, order }: { cardInfo: any, order: number }) {
     const classes = useStyles
 
     if (!cardInfo) {
@@ -23,14 +23,14 @@ export default function HouseCard({ cardInfo }: { cardInfo: any }) {
 
 
     return (
-        <Grid item xs={6} key={cardInfo?.id}>
-            <Box sx={{ padding: '15px', ...classes.ownerCard }}>
+        <Grid item xs={6} key={cardInfo?.id} paddingTop={(order < 2) ? 0 : '10px'}>
+            <Box padding="10px" sx={{ ...classes.ownerCard }}>
                 <Box sx={{ width: '120px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginRight: 2 }}>
                     <img src={"https://maps.googleapis.com/maps/api/streetview?size=200x200&location=" + cardInfo?.formattedAddress + "&fov=50&key=AIzaSyBW6MS6leYzF_KDJcuUVT7M3FAf6QJKxW0"} style={classes.roundImage} />
                 </Box>
                 <Box>
                     <Typography variant="h6" component="h6">
-                        {cardInfo?.addressLine1}
+                        {cardInfo?.formattedAddress}
                     </Typography>
                     <ProTypography fontSize={'12px'} sx={{ display: 'flex', alignItems: 'center' }}>
                         <LocationSvg style={{ marginRight: "8px" }} />
@@ -40,11 +40,11 @@ export default function HouseCard({ cardInfo }: { cardInfo: any }) {
                         <Box sx={{ display: 'flex' }}>
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                 <BedSvg />
-                                <ProTypography sx={{ marginLeft: 1 }} fontSize="10px" >3 Bedroom</ProTypography>
+                                <ProTypography sx={{ marginLeft: 1 }} fontSize="10px" >{cardInfo?.bedrooms} Bedroom</ProTypography>
                             </Box>
                             <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: 2 }}>
                                 <WashSvg />
-                                <ProTypography sx={{ marginLeft: 1 }} fontSize="10px" > 2 Bathrooms</ProTypography>
+                                <ProTypography sx={{ marginLeft: 1 }} fontSize="10px" > {cardInfo?.bathrooms} Bathrooms</ProTypography>
                             </Box>
                         </Box>
                         <Box>
@@ -53,6 +53,6 @@ export default function HouseCard({ cardInfo }: { cardInfo: any }) {
                     </Box>
                 </Box>
             </Box>
-        </Grid>
+        </Grid >
     )
 }

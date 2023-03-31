@@ -8,14 +8,14 @@ import WashSvg from "../../../public/icons/wash.svg";
 import { convertUSNumberFormat } from 'utils/number';
 import HouseCard from './HouseCard';
 
-export default function ComparableSaleList({ saleList }: { saleList?: any[] }) {
+export default function ComparableSaleList({ saleList }: { saleList?: any }) {
     const classes = useStyles;
     if (!saleList) {
         return null;
     }
 
     return (
-        <Box sx={{ marginTop: '15px' }}>
+        <Box sx={{ marginTop: '25px' }}>
             <Box>
                 <Typography component="h5" variant="h5" fontSize="22px">
                     Comparable Homes for Sale ({saleList.length} location)
@@ -23,8 +23,8 @@ export default function ComparableSaleList({ saleList }: { saleList?: any[] }) {
             </Box>
             <Box sx={{ maxHeight: '350px', overflow: 'auto' }}>
                 <Grid container spacing={2} sx={{ marginTop: 1 }}>
-                    {saleList?.map(saleInfo => (
-                        <HouseCard cardInfo={saleInfo} key={saleInfo?.id} />
+                    {saleList?.listings.map((saleInfo: any, index: number) => (
+                        <HouseCard cardInfo={saleInfo} key={saleInfo?.id} order={index} />
                     ))}
 
                 </Grid>

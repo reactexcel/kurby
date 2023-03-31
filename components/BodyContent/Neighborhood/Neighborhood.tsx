@@ -1,4 +1,4 @@
-import { Box, Button, styled } from "@mui/material";
+import { Box, Button, Typography, styled } from "@mui/material";
 import { useEffect, useState } from "react";
 import FactCard from "./FactCard";
 import getFloodData from "./floodData";
@@ -92,7 +92,6 @@ export default function Neighborhood({ filterVal }: Props) {
   const [censusData, setCensusData] = useState<CensusData | null>(null);
   const [loading, setLoading] = useState(false);
 
-
   const [crimeModal, setCrimeModal] = useState<string>("")
   const [overallCrimeInfo, setOverallCrimeInfo] = useState<OverallCrimeInfo | null>(null);
 
@@ -133,8 +132,6 @@ export default function Neighborhood({ filterVal }: Props) {
         agencyIgnoreList.push(agencyOri)
         minDistance = Number.POSITIVE_INFINITY
       }
-
-
     }
 
 
@@ -254,12 +251,13 @@ export default function Neighborhood({ filterVal }: Props) {
       setLoading(false);
     };
 
-    (async () => {
-      setLoading(true);
-      await getCrimeFBIInfo();
-      await retrieveFloodData();
-    })();
-    
+    if(filterVal.selectedPlace.formatted_address.includes("USA")){
+      (async () => {
+        setLoading(true);
+        await getCrimeFBIInfo();
+        await retrieveFloodData();
+      })();
+    }
   }, []);
 
   const formatter = new Intl.NumberFormat("en-US", {
@@ -576,7 +574,7 @@ export default function Neighborhood({ filterVal }: Props) {
             </FloodZoneModal>
           </FactCardContainer>
         ) : (
-          <h3>No Neighborhood Data</h3>
+          <h3>Neighborhood data is currently only available for properties in the United States</h3>
         )}
       </Box>
     </Box>

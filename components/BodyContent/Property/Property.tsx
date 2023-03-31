@@ -57,9 +57,9 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
                     >
                         {propertyInfo?.records && propertyInfo?.records.length > 0 && <Record propertyInfo={propertyInfo} description={explainedLikeAlocal} />}
                         {propertyInfo?.valueEstimate && <EstimationGraph valueEstimate={propertyInfo?.valueEstimate} />}
-                        {propertyInfo?.saleList && propertyInfo?.saleList.length > 0 && <ComparableSaleList saleList={propertyInfo?.saleList} />}
-                        {propertyInfo?.rentailList && propertyInfo?.rentailList.length > 0 &&
-                            <ComparableRentList rentList={propertyInfo?.rentailList} />
+                        {propertyInfo?.valueEstimate && <ComparableSaleList saleList={propertyInfo?.valueEstimate} />}
+                        {propertyInfo?.rentEstimate &&
+                            <ComparableRentList rentList={propertyInfo?.rentEstimate} />
                         }
                         {propertyInfo?.records && propertyInfo?.records.length > 0 && <Owner owner={propertyInfo?.records[0]?.owner} />}
 

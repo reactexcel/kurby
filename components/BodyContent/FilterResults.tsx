@@ -35,7 +35,9 @@ export default function FilterResults() {
 
 
   const handleTabChange = (event: React.MouseEvent<HTMLElement>, newTab: Tab | null) => {
-    setActiveTab(newTab);
+    if(newTab){
+      setActiveTab(newTab);
+    }
   };
 
   useEffect(() => {
@@ -208,7 +210,11 @@ export default function FilterResults() {
                       <StreetView position={filterVal.latlong} />
                       <Box>
                         <Box style={{ display: "flex", alignItems: "center" }}>
-                          <Typography variant="h5" component="h5">
+                          <Typography variant="h1" component="h1" sx={{
+                            fontWeight: 400,
+                            fontSize: '1.5rem',
+                            fontFamily: 'FilsonPro'
+                          }}>
                             <LocationSvg style={{ marginRight: "8px" }} />
                             {filterVal.address}
                           </Typography>
