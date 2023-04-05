@@ -7,6 +7,7 @@
     align-items: center;
     justify-content: space-between;
 }
+
 .headerContianer{
     max-width: 75%;
     margin-right: auto;
@@ -14,7 +15,6 @@
 }
 
 .input{
-    font-size: 22px;
     font-weight: 300;
     margin: 0;
     border: 0;
@@ -24,40 +24,50 @@
     white-space: normal;
     background: none;
     line-height: 1;
-    min-width: 500px;
     flex-basis: 100%;
-    min-height: 53px;
     padding-left: 10px;
 }
+
+.input input {
+    width: 100%;
+}
+
 .input:focus{
     outline: 0;
 }
 .input::placeholder {
     color: #999999;
 }
+
 .formContainer{
-    background-color: #F1F4F6;
-    border-radius: 80px;
+    background-color: white;
+    border-radius: 1rem;
     display: flex;
     padding-left: 10px;
 }
+
 .formWrapper{
-    margin: 300px 0px 0px 0px;
-    padding: 5px 5px 5px 5px;
-    background-color: #F1F4F6;
-    border-radius: 80px 80px 80px 80px;
-    max-width: 600px;
-    margin-right: auto;
-    margin-left: auto;
+    padding: 5px;
+    background-color: white;
+    border-radius: 0.5rem;
+    width: 30rem;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .searchButton{
-    min-width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     --e-search-form-submit-text-color: #FFFFFF;
     background-color: #21C25E;
     border: none;
-    border-radius: 0 50px 50px 0;
+    border-radius: 0.5rem;
     cursor: pointer;
+    z-index: 1;
+}
+
+.searchButton > svg {
+    margin: 0;
 }
 
 .searchIcon{
