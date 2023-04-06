@@ -103,7 +103,7 @@ export default function Home({ mobile }: any) {
       </CustomBody>
       <FirstSection />
       <SecondSection />
-      <ThirdSection />
+      {/* <ThirdSection /> */}
       <HomeFooter mobile={mobile} />
       <Footer />
     </>

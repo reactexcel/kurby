@@ -38,6 +38,16 @@ const ButtonLogin = styled(Button)<ButtonProps>(() => ({
 const TopToolbar = () => {
   const router = useRouter();
 
+  const scrollToElement = () => {
+    const element = document.getElementById("firstSection");
+    if (element) {
+      window.scrollTo({
+        top: element.offsetTop - 100,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <Toolbar
       style={{
@@ -70,7 +80,7 @@ const TopToolbar = () => {
             marginLeft: "1rem",
           }}
         >
-          <CustomButton>About Us</CustomButton>
+          <CustomButton onClick={() => scrollToElement()}>About Us</CustomButton>
         </Box>
       </Box>
       <Box>
@@ -80,7 +90,7 @@ const TopToolbar = () => {
             gap: "1rem",
           }}
         >
-          <CustomButton>Blog</CustomButton>
+          <CustomButton onClick={() => router.push("https://blog.kurby.ai/")}>Blog</CustomButton>
           <ButtonLogin>Login / Register</ButtonLogin>
         </Box>
       </Box>

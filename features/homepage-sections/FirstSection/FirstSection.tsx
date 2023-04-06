@@ -6,7 +6,7 @@ import { Button } from "@mui/material";
 
 export const FirstSection = () => {
   return (
-    <SectionLayout title="Make informed decisions">
+    <SectionLayout title="Make informed decisions" id="firstSection">
       <div className={styles.container}>
         <div className={styles.textWrapper}>
           <h3 className={styles.info}>Get the most accurate and up-to-date real estate data on any property worldwide with our ai-powered app.</h3>
