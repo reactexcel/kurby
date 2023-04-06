@@ -1,7 +1,6 @@
 import { Container, ContainerProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import TopToolbar from "./Topbar/TopToolbar";
-import Cards from "./Cards";
 import HomeFooter from "./HomeFooter";
 import Footer from "../Footer/Footer";
 import styles from "./Home.module.css";
@@ -9,6 +8,10 @@ import SearchIcon from "@mui/icons-material/Search";
 import GoogleAddressInput from "../GoogleAddressInput";
 import { useRouter } from "next/router";
 import { addressToUrl } from "utils/address";
+import { FirstSection } from "features/homepage-sections/FirstSection/FirstSection";
+import { Paragraph } from "components/Paragraph/Paragraph";
+import { SecondSection } from "features/homepage-sections/SecondSection/SecondSection";
+import { ThirdSection } from "features/homepage-sections/ThirdSection/ThirdSection";
 
 const CustomContainer = styled("div")(() => ({
   position: "relative",
@@ -18,19 +21,19 @@ const CustomContainer = styled("div")(() => ({
   flexDirection: "column",
   gap: "1rem",
   marginTop: "5rem",
-  width: "60%",
+  width: "65%",
 }));
 
 const CustomBody = styled(Container)<ContainerProps>(() => ({
   backgroundImage: 'url("/images/homepage-banner.png")',
-  backgroundPosition: "center center",
+  backgroundPosition: "right 75%",
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
   width: "100%",
   maxWidth: "none !important",
   margin: "0 !important",
   transition: "background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s",
-  height: "70vh",
+  height: "85vh",
   zIndex: "-1",
   top: "0",
   display: "flex",
@@ -53,22 +56,11 @@ export default function Home({ mobile }: any) {
       </div>
       <CustomBody>
         <CustomContainer>
-          <h1
-            style={{
-              margin: "0",
-            }}
-          >
-            UNLOCK THE <span style={{ color: "#21C25E" }}>POWER</span> OF REAL ESTATE INTELLIGENCE
+          <h1 className={styles.header}>
+            UNLOCK THE <span className={styles.coloredText}>POWER</span> OF REAL ESTATE INTELLIGENCE
           </h1>
 
-          <h3
-            style={{
-              color: "#727272",
-              fontWeight: "lighter",
-            }}
-          >
-            Simplify your property search with our AI-powered app.
-          </h3>
+          <Paragraph text="Simplify your property search with our AI-powered app." className={styles.paragraph} />
 
           <div className={styles.formWrapper}>
             <div className={styles.formContainer}>
@@ -77,7 +69,6 @@ export default function Home({ mobile }: any) {
                 inputProps={{
                   sx: {
                     height: "50px",
-                    fontSize: "20px",
                   },
                   autoComplete: "off",
                 }}
@@ -86,7 +77,7 @@ export default function Home({ mobile }: any) {
                     width: "95%",
                     height: "2rem",
                     borderBottom: "none !important",
-                    marginTop: "5px",
+                    margin: "0.25rem 0",
                     "&::before": {
                       borderBottom: "none !important",
                     },
@@ -107,53 +98,12 @@ export default function Home({ mobile }: any) {
               </button>
             </div>
           </div>
-
-          <div
-            style={{
-              color: "#727272",
-            }}
-          >
-            Try it - it's free, forever.
-          </div>
+          <Paragraph text="Try it - it's free, forever." />
         </CustomContainer>
       </CustomBody>
-      <section
-        style={{
-          padding: "0",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: "1140px",
-            marginLeft: "auto",
-            marginRight: "auto",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <h2
-            style={{
-              fontSize: "40px",
-              fontWeight: "500",
-              textTransform: "uppercase",
-              textAlign: "center",
-            }}
-          >
-            How Kurby Improves The Home-Buying Process
-          </h2>
-          <Cards />
-          <h2
-            style={{
-              fontSize: "40px",
-              fontWeight: "500",
-              textTransform: "uppercase",
-              textAlign: "center",
-            }}
-          >
-            Explore Neighborhoods on Kurby
-          </h2>
-        </div>
-      </section>
+      <FirstSection />
+      <SecondSection />
+      <ThirdSection />
       <HomeFooter mobile={mobile} />
       <Footer />
     </>

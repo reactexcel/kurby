@@ -1,64 +1,74 @@
-.body {
-    height: 100vh;
-    width: 100%;
+html {
+  overflow-x: hidden;
+}
+
+body {
+  height: 100vh;
+  margin: 0;
 }
 
 #__next {
-    height: 100vh;
-    width: 100%;
+  height: 100vh;
+  width: 100%;
 }
 
 @font-face {
-    font-family: "FilsonProLight";
-    font-style: normal;
-    font-weight: 400;
-    src: local("FilsonProLight"),
-        url("/fonts/FilsonProLight/FilsonProLight.woff") format("truetype");
+  font-family: "FilsonProLight";
+  font-style: normal;
+  font-weight: 400;
+  src: local("FilsonProLight"), url("/fonts/FilsonProLight/FilsonProLight.woff") format("truetype");
 }
 
 @font-face {
-    font-family: "FilsonPro";
-    font-style: normal;
-    font-weight: 500;
-    src: local("FilsonProRegular"),
-        url("/fonts/FilsonProRegular/FilsonProRegular.woff") format("truetype");
+  font-family: "FilsonPro";
+  font-style: normal;
+  font-weight: 500;
+  src: local("FilsonProRegular"), url("/fonts/FilsonProRegular/FilsonProRegular.woff") format("truetype");
 }
 
 html,
 body {
-    width: 100%;
-    font-family: FilsonPro;
+  width: 100%;
+  font-family: FilsonPro;
 }
 
-p, li{
-    font-family: "Filson Pro Light", FilsonProLight !important;
+p,
+li {
+  font-family: "Filson Pro Light", FilsonProLight !important;
+  font-size: 1.25rem;
 }
 
-h5, h6, button {
-    font-family: FilsonPro !important;
+h5,
+h6,
+button {
+  font-family: FilsonPro !important;
 }
 
 h1 {
-    font-size: 3rem;
+  font-size: 3rem;
 }
 
-body {
-    margin: 0;
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.5rem;
 }
 
 select {
-    outline: none;
-    border: none;
-    border-radius: 8px;
-    padding: 6px;
-    border-right: 6px solid transparent;
+  outline: none;
+  border: none;
+  border-radius: 8px;
+  padding: 6px;
+  border-right: 6px solid transparent;
 }
 
 .container {
-    display: flex;
-    padding: 32px;
+  display: flex;
+  padding: 32px;
 }
 
-.infinite-scroll-component  {
-    width: 100%;
+.infinite-scroll-component {
+  width: 100%;
 }

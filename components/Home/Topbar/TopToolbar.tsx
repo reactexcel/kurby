@@ -45,6 +45,7 @@ const TopToolbar = () => {
         width: "100%",
         display: "flex",
         justifyContent: "space-between",
+        alignItems: "center",
         padding: "0rem 5rem",
       }}
     >
