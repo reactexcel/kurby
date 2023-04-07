@@ -71,7 +71,7 @@ export const Location = ({ explainedLikeAlocal, greenFlags, redFlags }: Location
               Explain it like a local:
               <AIWarningToolTip />
             </Typography>
-            {loading ? <ParagraphSkeleton /> : <Typography>{explainedLikeAlocal}</Typography>}
+            {loading.openai ? <ParagraphSkeleton /> : <Typography>{explainedLikeAlocal}</Typography>}
             <Box style={{ marginTop: "10px" }}>
               <WalkscoreList />
             </Box>
