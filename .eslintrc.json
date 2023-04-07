@@ -4,11 +4,10 @@
   "rules": {
     "react-hooks/exhaustive-deps": "off",
     "react/react-in-jsx-scope": "off",
+    "react/no-unescaped-entities": "off",
     "camelcase": "warn",
-    "spaced-comment": "error",
-    "quotes": ["error", "double"],
     "no-duplicate-imports": "error",
     "no-unused-labels": "error",
-    "no-inline-styles/no-inline-styles": "error"
+    "no-unused-vars": "warn"
   }
 }

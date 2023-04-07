@@ -1,14 +1,9 @@
 import { styled } from "@mui/material/styles";
 import { useRouter } from "next/router";
-import {
-    IconButton, 
-    IconButtonProps, 
-} from '@mui/material';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import {
-    FaFacebookF
-} from 'react-icons/fa';
+import { IconButton, IconButtonProps } from "@mui/material";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import { FaFacebookF } from "react-icons/fa";
 
 const Link = styled("p")(() => ({
   cursor: "pointer",
@@ -41,61 +36,70 @@ const Social = styled("div")(() => ({
   borderStyle: "dashed",
   borderWidth: "1px 0px 0px 0px",
   borderColor: "#86868666",
-  transition:
-    "background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s",
+  transition: "background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s",
   padding: "20px 0px 20px 0px",
 }));
 
 const CustomFacebook = styled(FaFacebookF)(() => ({
-    color: 'white',
-    padding: '3px',
-    fontSize: '28px',
-    '&:hover': { color: '#21C25E'} 
-}))
+  color: "white",
+  padding: "3px",
+  fontSize: "28px",
+  "&:hover": { color: "#21C25E" },
+}));
 
-const HomeValueLink = styled('span')(() => ({
-    color: '#00a13c', 
-    cursor: 'pointer',
-    transition: 'all 0.2s',
-    '&:hover': {
-        color: '#203656'
-    }
+const HomeValueLink = styled("span")(() => ({
+  color: "#00a13c",
+  cursor: "pointer",
+  transition: "all 0.2s",
+  "&:hover": {
+    color: "#203656",
+  },
 }));
 
 const CustomSocialIcon = styled(IconButton)<IconButtonProps>(() => ({
-    border: '1px solid #818A94', 
-    borderRadius: '50%', 
-    transition: 'all 0.3s', 
-    margin: '19px 6px',
-    '&:hover': {
-        transform: 'scale(1.1)', 
-    }
+  border: "1px solid #818A94",
+  borderRadius: "50%",
+  transition: "all 0.3s",
+  margin: "19px 6px",
+  "&:hover": {
+    transform: "scale(1.1)",
+  },
 }));
-
 
 interface Props {
   linkText: string;
-  link: string;
+  link?: string;
+  onClick?: () => void;
 }
 
-const LinkElem = ({ linkText, link }: Props) => {
+const LinkElem = ({ linkText, link, onClick }: Props) => {
   const router = useRouter();
 
   return (
-    <Link onClick={() => link && router.push(link)}>
+    <Link onClick={() => (onClick ? onClick() : link && router.push(link))}>
       <span
         style={{
           color: "#21C25E",
         }}
-      >
-      </span>
+      ></span>
       {linkText}
     </Link>
   );
 };
 
-const HomeFooter = ({mobile}: any) => {
+const HomeFooter = ({ mobile }: any) => {
   const router = useRouter();
+
+  const handleClick = () => {
+    const scrollToElement = document.getElementById("firstSection");
+
+    if (scrollToElement) {
+      window.scrollTo({
+        top: scrollToElement.offsetTop - 40,
+        behavior: "smooth",
+      });
+    }
+  };
 
   return (
     <>
@@ -116,7 +120,7 @@ const HomeFooter = ({mobile}: any) => {
             style={{
               margin: "15px 0px",
               width: "150px",
-              cursor: 'pointer'
+              cursor: "pointer",
             }}
             onClick={() => router.push("/")}
           />
@@ -131,11 +135,10 @@ const HomeFooter = ({mobile}: any) => {
                 fontSize: "20px",
                 fontWeight: "300",
                 lineHeight: "34px",
-                marginTop: '0px'
+                marginTop: "0px",
               }}
             >
-              Find the most livable home in the neighborhood and save time and
-              effort during the home-buying process with Kurby’s
+              Find the most livable home in the neighborhood and save time and effort during the home-buying process with Kurby’s
               <HomeValueLink> home value </HomeValueLink>
               estimator tools.
             </p>
@@ -146,50 +149,50 @@ const HomeFooter = ({mobile}: any) => {
               flexDirection: "row",
               flexWrap: "wrap",
               margin: "20px 0px",
-              justifyContent: 'center'
+              justifyContent: "center",
             }}
           >
-            <LinkElem linkText="Home" link="" />
-            <LinkElem linkText="About Us" link="" />
-            <LinkElem linkText="Blog" link="" />
-            <LinkElem linkText="Contact Us" link="" />
-            <LinkElem linkText="Privacy Policy" link="" />
-            <LinkElem linkText="Terms & Conditions" link="" />
+            <LinkElem linkText="Home" link="/" />
+            <LinkElem linkText="About Us" onClick={() => handleClick()} />
+            <LinkElem linkText="Blog" link="https://blog.kurby.ai/" />
+            <LinkElem linkText="Contact Us" link="https://blog.kurby.ai/contact/" />
+            <LinkElem linkText="Privacy Policy" link="https://blog.kurby.ai/privacy-policy/" />
+            <LinkElem linkText="Terms & Conditions" link="https://blog.kurby.ai/terms-and-conditions/" />
           </div>
         </div>
       </Container>
       <Social>
-        <div 
-            style={{
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center', 
-                flexDirection: 'row'
-            }}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "row",
+          }}
         >
-            <CustomSocialIcon>
-                <TwitterIcon 
-                    sx={{
-                        color: 'white',
-                        padding: '3px',
-                        fontSize: '28px',
-                        '&:hover': { color: '#21C25E'} 
-                    }} 
-                />
-            </CustomSocialIcon>
-            <CustomSocialIcon>
-                <InstagramIcon 
-                    sx={{
-                        color: 'white',
-                        padding: '3px',
-                        fontSize: '28px',
-                        '&:hover': { color: '#21C25E'} 
-                    }} 
-                />
-            </CustomSocialIcon>
-            <CustomSocialIcon>
-                <CustomFacebook />
-            </CustomSocialIcon>
+          <CustomSocialIcon>
+            <TwitterIcon
+              sx={{
+                color: "white",
+                padding: "3px",
+                fontSize: "28px",
+                "&:hover": { color: "#21C25E" },
+              }}
+            />
+          </CustomSocialIcon>
+          <CustomSocialIcon>
+            <InstagramIcon
+              sx={{
+                color: "white",
+                padding: "3px",
+                fontSize: "28px",
+                "&:hover": { color: "#21C25E" },
+              }}
+            />
+          </CustomSocialIcon>
+          <CustomSocialIcon>
+            <CustomFacebook />
+          </CustomSocialIcon>
         </div>
       </Social>
     </>
