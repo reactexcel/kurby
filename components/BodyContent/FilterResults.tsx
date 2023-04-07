@@ -10,6 +10,7 @@ import { activeTabState, Tab } from "context/activeTab";
 import Neighborhood from "./Neighborhood/Neighborhood";
 import Property from "./Property/Property";
 import { Location } from "./Location/Location";
+import { loadingContext } from "context/loadingContext";
 
 /**
  * FilterResults
@@ -21,7 +22,7 @@ export default function FilterResults() {
   const [explainedLikeAlocal, setExplainedLikeAlocal] = useState("");
   const [greenFlags, setGreenFlags] = useState<any[]>([]);
   const [redFlags, setRedFlags] = useState<any[]>([]);
-  const [loading, isLoading] = useState(false);
+  const [, setLoading] = useRecoilState(loadingContext);
 
   const [filterVal] = useRecoilState(filterState);
 
@@ -53,7 +54,6 @@ export default function FilterResults() {
     const getOpenAiData = async () => {
       if (!filterVal.address) return;
 
-      isLoading(true);
       setActiveTab("location");
       //* the entire selected place is sent in so we can validate the address
       try {
@@ -71,11 +71,10 @@ export default function FilterResults() {
         setExplainedLikeAlocal(response.explained_like_a_local);
         setGreenFlags(response.greenFlags);
         setRedFlags(response.redFlags);
-        isLoading(false);
       } catch (error) {
         console.log({ error });
       }
-      isLoading(false);
+      setLoading((prevState) => ({ ...prevState, openai: false }));
     };
     getOpenAiData();
   }, [filterVal.address, filterVal.selectedPlace]);
@@ -111,7 +110,7 @@ export default function FilterResults() {
 
         {
           <Box style={{ height: "100%", marginBottom: "24px" }}>
-            {activeTab === "location" && <Location loading={loading} explainedLikeAlocal={explainedLikeAlocal} greenFlags={greenFlags} redFlags={redFlags} />}
+            {activeTab === "location" && <Location explainedLikeAlocal={explainedLikeAlocal} greenFlags={greenFlags} redFlags={redFlags} />}
             {activeTab == "nearby" && <Nearby />}
             {activeTab == "property" && showHome && <Property explainedLikeAlocal={explainedLikeAlocal} />}
 

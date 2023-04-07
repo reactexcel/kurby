@@ -2,8 +2,12 @@ import { Box, Typography } from "@mui/material";
 import { AIWarningToolTip } from "components/AIWarningTooltip/AIWarningTooltip";
 import { ParagraphSkeleton } from "components/ParagraphSkeleton/ParagraphSkeleton";
 import styles from "./Flags.module.css";
+import { useRecoilState } from "recoil";
+import { loadingContext } from "context/loadingContext";
 
-export const Flags = ({ color, flagsArr, loading }: { color: string; flagsArr: any[]; loading: boolean }) => {
+export const Flags = ({ color, flagsArr }: { color: string; flagsArr: any[] }) => {
+  const [loading] = useRecoilState(loadingContext);
+
   const Title = () => (
     <Box style={{ marginTop: "10px" }}>
       <Typography variant="subtitle2">
@@ -13,7 +17,7 @@ export const Flags = ({ color, flagsArr, loading }: { color: string; flagsArr: a
     </Box>
   );
 
-  if (loading)
+  if (loading.openai)
     return (
       <>
         <Title />

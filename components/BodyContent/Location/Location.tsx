@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, CircularProgress } from "@mui/material";
 import StreetView from "../StreetView";
 import LocationSvg from "../../../public/icons/location.svg";
 import { ParagraphSkeleton } from "components/ParagraphSkeleton/ParagraphSkeleton";
@@ -7,9 +7,9 @@ import { useRecoilState } from "recoil";
 import { filterState } from "../../../context/filterContext";
 import WalkscoreList from "../Walkscore/WalkscoreList";
 import { Flags } from "components/Flags/Flags";
+import { loadingContext } from "context/loadingContext";
 
 interface LocationProps {
-  loading: boolean;
   explainedLikeAlocal: string;
   greenFlags: any;
   redFlags: any;
@@ -28,8 +28,17 @@ const resultsContentStyle = {
   boxSizing: "border-box",
 } as any;
 
-export const Location = ({ loading, explainedLikeAlocal, greenFlags, redFlags }: LocationProps) => {
+export const Location = ({ explainedLikeAlocal, greenFlags, redFlags }: LocationProps) => {
   const [filterVal] = useRecoilState(filterState);
+  const [loading] = useRecoilState(loadingContext);
+
+  if (loading.walkscore) {
+    return (
+      <Box style={resultsContentStyle} display="flex" justifyContent="center" alignItems="center" padding={3}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box style={resultsContentStyle}>
@@ -75,9 +84,9 @@ export const Location = ({ loading, explainedLikeAlocal, greenFlags, redFlags }:
             width: "100%",
           }}
         >
-          <Flags color="Green" loading={loading} flagsArr={greenFlags} />
+          <Flags color="Green" flagsArr={greenFlags} />
 
-          <Flags color="Red" loading={loading} flagsArr={redFlags} />
+          <Flags color="Red" flagsArr={redFlags} />
         </Box>
       </Box>
     </Box>
