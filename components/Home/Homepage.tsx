@@ -40,7 +40,7 @@ const CustomBody = styled(Container)<ContainerProps>(() => ({
   padding: "0rem 5rem !important",
 }));
 
-export default function Home({ mobile }: any) {
+export const Homepage = () => {
   const router = useRouter();
   return (
     <>
@@ -104,8 +104,8 @@ export default function Home({ mobile }: any) {
       <FirstSection />
       <SecondSection />
       {/* <ThirdSection /> */}
-      <HomeFooter mobile={mobile} />
+      <HomeFooter />
       <Footer />
     </>
   );
-}
+};

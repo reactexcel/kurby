@@ -1,25 +1,17 @@
 import styles from "./Filters.module.css";
 import Box from "@mui/material/Box";
 import Illustration from "../../public/icons/search.svg";
-import Slider from "@mui/material/Slider";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
+import { SelectChangeEvent } from "@mui/material/Select";
 import { useState, useRef, useEffect } from "react";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import { atom, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { addressState, filterState } from "../../context/filterContext";
-import Checkbox from "@mui/material/Checkbox";
-import { ListItemText, OutlinedInput, Radio } from "@mui/material";
 import GLOBAL_SETTINGS from "../../globals/GLOBAL_SETTINGS";
 import searchNearbyApi from "./searchNearbyApi";
-import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
-import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import WalkscoreListApi from "../BodyContent/Walkscore/WalkscoreListApi";
 import snackbarContext from "../../context/snackbarContext";
-import { activeTabState } from "context/activeTab";
 import { useRouter } from "next/router";
 import { addressToUrl } from "utils/address";
+import { loadingContext } from "context/loadingContext";
 
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
@@ -42,17 +34,16 @@ const MenuProps = {
 
 export default function Filters() {
   //* Use global state management
-  const [filterVal, setFilterVal] = useRecoilState(filterState);
-  const [address, setAddress] = useRecoilState(addressState);
-  const [snackbar, setSnackbar] = useRecoilState(snackbarContext);
+  const [, setFilterVal] = useRecoilState(filterState);
+  const [address] = useRecoilState(addressState);
+  const [, setSnackbar] = useRecoilState(snackbarContext);
   const [isSelectAll, setSelectAll] = useState<boolean>(true);
-  const [activeTab, setActiveTab] = useRecoilState(activeTabState);
+  const [, setLoading] = useRecoilState(loadingContext);
 
   //* State for the place select element
   const [typesOfPlace, setTypesOfPlace] = useState<any[]>(PLACE_TYPES);
 
   const router = useRouter();
-
 
   //* Refs to html elements - used for google autocomplete
   //TODO add correct typeface
@@ -165,28 +156,25 @@ export default function Filters() {
       lng: place.geometry.location.lng(),
     };
     const walkscore = await getScore(place.formatted_address, location);
-    setSnackbar((prevVal: any) => {
-      return {
-        ...prevVal,
-        ...(walkscore.error
-          ? {
+    setSnackbar((prevVal: any) => ({
+      ...prevVal,
+      ...(walkscore.error
+        ? {
             open: true,
             message: "Walkscore error",
             variant: "error",
           }
-          : { open: false }),
-      };
-    });
-    setFilterVal((prevVal: any) => {
-      return {
-        ...prevVal,
-        latlong: place.geometry.location,
-        address: place.formatted_address,
-        selectedPlace: place,
-        mapCenter: location,
-        walkscore,
-      };
-    });
+        : { open: false }),
+    }));
+    setLoading((prevState) => ({ ...prevState, walkscore: false }));
+    setFilterVal((prevVal: any) => ({
+      ...prevVal,
+      latlong: place.geometry.location,
+      address: place.formatted_address,
+      selectedPlace: place,
+      mapCenter: location,
+      walkscore,
+    }));
   };
 
   useEffect(() => {
@@ -200,7 +188,7 @@ export default function Filters() {
       //TODO handle error and display it to the client
       const place = await autoCompleteRef.current.getPlace();
       const encodedAddress = addressToUrl(place.formatted_address);
-      router.push(`/app/${encodedAddress}`)
+      router.push(`/app/${encodedAddress}`);
     });
   }, []);
 
@@ -212,7 +200,7 @@ export default function Filters() {
         const service = new google.maps.places.PlacesService(document.createElement("div"));
         const placeReq = {
           query: addressFormattted,
-              fields: ["place_id"],
+          fields: ["place_id"],
         };
         service.findPlaceFromQuery(placeReq, (results, status) => {
           if (status === google.maps.places.PlacesServiceStatus.OK && results) {

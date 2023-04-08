@@ -87,7 +87,7 @@ const LinkElem = ({ linkText, link, onClick }: Props) => {
   );
 };
 
-const HomeFooter = ({ mobile }: any) => {
+const HomeFooter = () => {
   const router = useRouter();
 
   const handleClick = () => {
@@ -126,7 +126,7 @@ const HomeFooter = ({ mobile }: any) => {
           />
           <div
             style={{
-              padding: mobile ? "10px 100px 0px 100px" : "10px 180px 0px 180px",
+              padding: "10px 180px 0px 180px",
             }}
           >
             <p

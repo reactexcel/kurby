@@ -1,8 +1,8 @@
 import { atom } from "recoil";
 
 export const activeTabState = atom<Tab | null>({
-    key: 'tab',
-    default: 'home'
-})
+  key: "tab",
+  default: "location",
+});
 
-export type Tab = "home" | "nearby" | "neighborhood" | "utility" | "property";
+export type Tab = "location" | "nearby" | "neighborhood" | "utility" | "property";
