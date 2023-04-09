@@ -1,6 +1,10 @@
 import { KBColor } from "constants/color";
 
 export const useStyles = {
+  roundImage: {
+    borderRadius: "10px",
+    width: "100%",
+  },
   flexBetween: {
     display: "flex",
     justifyContent: "space-between",
