@@ -1,7 +1,7 @@
 import Image from "next/image";
 import styles from "./FirstSection.module.css";
 import { Paragraph } from "components/Paragraph/Paragraph";
-import { SectionLayout } from "../SectionLayout/SectionLayout";
+import { SectionLayout } from "components/layouts/SectionLayout/SectionLayout";
 import { Button } from "@mui/material";
 
 export const FirstSection = () => {

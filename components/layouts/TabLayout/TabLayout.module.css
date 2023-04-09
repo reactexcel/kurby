@@ -1,0 +1,16 @@
+.main {
+  padding: 20px;
+  border: 1px solid rgba(38, 75, 92, 0.2);
+  box-shadow: 0 4px 4px #00000040;
+  border-radius: 14px;
+  margin-top: 25px;
+  display: flex;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

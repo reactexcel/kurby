@@ -1,37 +1,39 @@
 import { useRecoilState } from "recoil";
-import {filterState} from "../../../context/filterContext";
+import { filterState } from "../../../context/filterContext";
 import NearbyPlaceCard from "./NearbyPlaceCard";
-import InfiniteScroll from 'react-infinite-scroll-component';
+import InfiniteScroll from "react-infinite-scroll-component";
 import { useEffect, useState } from "react";
 import loadDirectionsApi from "./loadDirectionsApi";
 import { Box, Typography } from "@mui/material";
 
-
-
-async function prepareLoadedPlaces(places: any[], currentCenter: { lat: number, lng: number } | null): Promise<any[]> {
-  if (!places || !places.length) { return [] }
-  const resolved = await Promise.all(places.map(async place => {
-    return {
-      ...place,
-      ...(await loadDirections(place, currentCenter))
-    }
-  }))
+async function prepareLoadedPlaces(places: any[], currentCenter: { lat: number; lng: number } | null): Promise<any[]> {
+  if (!places || !places.length) {
+    return [];
+  }
+  const resolved = await Promise.all(
+    places.map(async (place) => {
+      return {
+        ...place,
+        ...(await loadDirections(place, currentCenter)),
+      };
+    }),
+  );
 
   return resolved;
 }
 
-async function loadDirections(place: any, origin: any): Promise<{walking: any, driving: any, biclycling: any}> {
+async function loadDirections(place: any, origin: any): Promise<{ walking: any; driving: any; biclycling: any }> {
   try {
     return await loadDirectionsApi({
       origin,
       destination: {
         lat: place.geometry.location.lat,
-        lng: place.geometry.location.lng
-      }
-    })
-  } catch(e) {
+        lng: place.geometry.location.lng,
+      },
+    });
+  } catch (e) {
     console.error(e);
-    return {walking: null, driving: null, biclycling: null};
+    return { walking: null, driving: null, biclycling: null };
   }
 }
 
@@ -39,12 +41,12 @@ const PAGE_SIZE = 5;
 
 /**
  * Nearby
- * @description: Container for the nearby place cards. 
-*/
+ * @description: Container for the nearby place cards.
+ */
 
 export default function Nearby() {
   const [filterVal] = useRecoilState(filterState);
-  const [loadedNearbyPlaces, setLoadedNearbyPlaces] = useState([])
+  const [loadedNearbyPlaces, setLoadedNearbyPlaces] = useState([]);
   const fetchMoreData = () => {
     setTimeout(async () => {
       const newPlaces = filterVal.nearbyPlaces.slice(loadedNearbyPlaces.length, loadedNearbyPlaces.length + PAGE_SIZE);
@@ -92,6 +94,3 @@ export default function Nearby() {
     </>
   );
 }
-
-
-

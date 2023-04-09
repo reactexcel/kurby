@@ -3,13 +3,14 @@ import axios from "axios";
 import { filterState } from "context/filterContext";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { useStyles } from "../styles";
 import Record from "./Record";
 import { PropertyType } from "./types";
 import EstimationGraph from "./EstimationGraph";
 import ComparableSaleList from "./ComparableSaleList";
 import Owner from "./Owner";
 import ComparableRentList from "./ComparableRentList";
+import { TabLayout } from "components/layouts/TabLayout/TabLayout";
+import styles from "./Property.module.css";
 
 /**
  * Body Content
@@ -37,16 +38,13 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
     getPropertyData();
   }, []);
 
-  const classes = useStyles;
-
   return (
-    <Box sx={{ ...classes.resultsContentStyle, padding: 0 }}>
+    <TabLayout className={styles.tabLayout} loading={loading || !propertyInfo}>
       {loading || !propertyInfo ? (
-        <Box display="flex" justifyContent="center" alignItems="center" padding={3}>
-          <CircularProgress />
-        </Box>
+        <CircularProgress />
       ) : (
         <>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={
               "https://maps.googleapis.com/maps/api/streetview?size=1600x200&location=" +
@@ -55,10 +53,10 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
               filterVal.selectedPlace.geometry.location.lng() +
               "&fov=50&key=AIzaSyBW6MS6leYzF_KDJcuUVT7M3FAf6QJKxW0"
             }
-            style={classes.roundImage}
+            className={styles.image}
             alt=""
           />
-          <Box sx={{ ...classes.boxStyle, py: "5px" }}>
+          <Box className={styles.boxStyle}>
             {propertyInfo?.records && propertyInfo?.records.length > 0 && <Record propertyInfo={propertyInfo} description={explainedLikeAlocal} />}
             {propertyInfo?.valueEstimate && <EstimationGraph valueEstimate={propertyInfo?.valueEstimate} />}
             {propertyInfo?.valueEstimate && <ComparableSaleList saleList={propertyInfo?.valueEstimate} />}
@@ -67,6 +65,6 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
           </Box>
         </>
       )}
-    </Box>
+    </TabLayout>
   );
 }

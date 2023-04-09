@@ -1,6 +1,6 @@
-import { Box } from "@mui/material"
-import Gmap from "./Gmap"
-import FilterResults from "./FilterResults"
+import { Box } from "@mui/material";
+import Gmap from "./Gmap";
+import FilterResults from "./FilterResults";
 
 /**
  * Body Content
@@ -8,8 +8,7 @@ import FilterResults from "./FilterResults"
  */
 export default function BodyContent() {
   return (
-
-    <Box style={{ display: "flex", height: "100%" }}>
+    <Box style={{ display: "flex", height: "85%" }}>
       <Box style={{ width: "35%" }}>
         <Gmap />
       </Box>
@@ -17,5 +16,5 @@ export default function BodyContent() {
         <FilterResults />
       </Box>
     </Box>
-  )
+  );
 }
