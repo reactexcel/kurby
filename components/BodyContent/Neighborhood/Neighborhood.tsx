@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
 import FactCard from "./FactCard/FactCard";
 import getFloodData from "./floodData";
@@ -21,6 +21,8 @@ import { distanceBetweenTwoPlaces } from "utils/address";
 import axios from "axios";
 import { TabLayout } from "components/layouts/TabLayout/TabLayout";
 import styles from "./Neighborhood.module.css";
+import { useRecoilState } from "recoil";
+import { loadingContext } from "context/loadingContext";
 
 const floodRiskMap: { [key: string]: string } = {
   A: "Medium",
@@ -73,7 +75,7 @@ export default function Neighborhood({ filterVal }: Props) {
   const [openRaceBreakdown, setOpenRaceBreakdown] = useState(false);
   const [floodData, setFloodData] = useState<any[]>([]);
   const [censusData, setCensusData] = useState<CensusData | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useRecoilState(loadingContext);
 
   const [crimeModal, setCrimeModal] = useState<string>("");
   const [overallCrimeInfo, setOverallCrimeInfo] = useState<OverallCrimeInfo | null>(null);
@@ -216,7 +218,7 @@ export default function Neighborhood({ filterVal }: Props) {
 
   useEffect(() => {
     const retrieveFloodData = async () => {
-      if (!filterVal.selectedPlace || !filterVal.selectedPlace.formatted_address.includes("USA")) return;
+      if (!filterVal.selectedPlace) return;
 
       const addressComponents = filterVal.selectedPlace.address_components;
 
@@ -230,12 +232,14 @@ export default function Neighborhood({ filterVal }: Props) {
       const censusDt = await getCensusData(filterVal.mapCenter);
 
       setCensusData(censusDt);
-      setLoading(false);
+      setLoading((prev) => ({
+        ...prev,
+        neighborhood: false,
+      }));
     };
 
     if (filterVal.selectedPlace.formatted_address.includes("USA")) {
       (async () => {
-        setLoading(true);
         await getCrimeFBIInfo();
         await retrieveFloodData();
       })();
@@ -261,6 +265,14 @@ export default function Neighborhood({ filterVal }: Props) {
     setCrimeModal("");
   };
 
+  if (loading.neighborhood) {
+    return (
+      <TabLayout loading={loading.neighborhood}>
+        <CircularProgress />
+      </TabLayout>
+    );
+  }
+
   return (
     <TabLayout className={styles.tabLayout}>
       <Box
@@ -275,7 +287,6 @@ export default function Neighborhood({ filterVal }: Props) {
         {filterVal.selectedPlace.formatted_address.includes("USA") ? (
           <div className={styles.container}>
             <FactCard
-              loading={loading}
               label="Flood Risk"
               type="string"
               value={convertFloodZoneToRisk(floodData?.[0]?.floodZone)}
@@ -289,7 +300,6 @@ export default function Neighborhood({ filterVal }: Props) {
               }
             />
             <FactCard
-              loading={loading}
               label="Flood Zone"
               type="string"
               value={floodData?.[0]?.floodZone || "Unknown"}
@@ -315,7 +325,6 @@ export default function Neighborhood({ filterVal }: Props) {
               </Button>
             </FactCard>
             <FactCard
-              loading={loading}
               label="Adults with a bachlors degree"
               type="percent"
               value={censusData?.percentOfAdultsWithBatchlorsDegree}
@@ -329,7 +338,6 @@ export default function Neighborhood({ filterVal }: Props) {
               }
             />
             <FactCard
-              loading={loading}
               label="Homes with married-couple families"
               type="percent"
               value={censusData && censusData.percentageOfHomesWithMarriedCouples}
@@ -342,7 +350,6 @@ export default function Neighborhood({ filterVal }: Props) {
               }
             />
             <FactCard
-              loading={loading}
               label="Average Salary"
               type="string"
               value={censusData?.averageSalary && formatter.format(censusData.averageSalary)}
@@ -356,7 +363,6 @@ export default function Neighborhood({ filterVal }: Props) {
               }
             />
             <FactCard
-              loading={loading}
               label="Percent Under Poverty"
               type="percent"
               value={censusData && censusData.percentUnderPoverty}
@@ -370,7 +376,6 @@ export default function Neighborhood({ filterVal }: Props) {
               }
             />
             <FactCard
-              loading={loading}
               label="Percent not US citizens"
               type="percent"
               value={censusData && censusData.nonCitizens}
@@ -384,7 +389,6 @@ export default function Neighborhood({ filterVal }: Props) {
               }
             />
             <FactCard
-              loading={loading}
               label="Dominant Race"
               type="string"
               value={censusData && `${capitalize(censusData.dominantRace)}`}
@@ -411,7 +415,6 @@ export default function Neighborhood({ filterVal }: Props) {
             </FactCard>
 
             <FactCard
-              loading={loading}
               label="Unemployment Rate"
               type="percent"
               value={censusData && censusData.unemploymentRate}
@@ -425,7 +428,6 @@ export default function Neighborhood({ filterVal }: Props) {
               }
             />
             <FactCard
-              loading={loading}
               label="Owner morgage ≥ 30% household income"
               type="percent"
               value={censusData && censusData.morgageGreaterThan30Percent}
@@ -439,7 +441,6 @@ export default function Neighborhood({ filterVal }: Props) {
               }
             />
             <FactCard
-              loading={loading}
               label="Rent ≥ 30% household income"
               type="string"
               value={censusData && censusData.rentGreaterThan30Percent}
@@ -453,7 +454,6 @@ export default function Neighborhood({ filterVal }: Props) {
               }
             />
             <FactCard
-              loading={loading}
               label="Owners without morgages"
               type="percent"
               value={censusData && censusData.percentOwnersNoMorgage}
@@ -467,7 +467,6 @@ export default function Neighborhood({ filterVal }: Props) {
               }
             />
             <FactCard
-              loading={loading}
               label="Violent Crime Rate"
               type="string"
               value={Math.round(overallCrimeInfo?.violentAreaPerNational || 0) + "%" || "Unknown"}
@@ -493,7 +492,6 @@ export default function Neighborhood({ filterVal }: Props) {
               </Button>
             </FactCard>
             <FactCard
-              loading={loading}
               label="Property Crime Rate"
               type="string"
               value={Math.round(overallCrimeInfo?.propertyAreaPerNational || 0) + "%" || "Unknown"}
@@ -521,7 +519,6 @@ export default function Neighborhood({ filterVal }: Props) {
 
             <CrimeModal open={["violent", "property"].includes(crimeModal)} handleClose={handleCloseCrimModal} overallCrimeInfo={overallCrimeInfo} crimeType={crimeModal}>
               <FactCard
-                loading={false}
                 label={`${crimeModal.charAt(0).toUpperCase() + crimeModal.slice(1)} Crime Info`}
                 type="string"
                 value={
@@ -544,7 +541,6 @@ export default function Neighborhood({ filterVal }: Props) {
 
             <FloodZoneModal open={openFloodZoneMap} handleClose={handleCloseModals}>
               <FactCard
-                loading={loading}
                 label="Flood Zone"
                 type="string"
                 value={floodData?.[0]?.floodZone || "Unknown"}
