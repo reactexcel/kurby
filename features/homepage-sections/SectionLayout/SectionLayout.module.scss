@@ -1,0 +1,18 @@
+@import '../../../styles/media.scss';
+
+.main {
+  margin: 3rem 0;
+  padding: 0 5rem;
+
+  @include  mq-tablet-landscape--down {
+    padding: 0 2rem;
+  }
+
+  @include mq-phone-only {
+    padding : 0 1rem;
+  }
+}
+
+.main h2 {
+  margin: 2.5rem 0;
+}

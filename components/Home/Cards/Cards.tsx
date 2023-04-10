@@ -1,4 +1,4 @@
-import styles from "./Cards.module.css";
+import styles from "./Cards.module.scss";
 import { Button, ButtonProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Image from "next/image";

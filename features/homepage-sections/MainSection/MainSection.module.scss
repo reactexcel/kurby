@@ -14,13 +14,10 @@
   max-width: 75%;
   margin-right: auto;
   margin-left: auto;
-}
 
-.main {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include mq-tablet-landscape--down {
+    max-width: 100%;
+  }
 }
 
 .container {
@@ -37,6 +34,16 @@
   top: 0;
   display: flex !important;
   padding: 0rem 5rem !important;
+
+  @include mq-tablet-landscape--down {
+    background-position: 30% bottom;
+    padding: 0rem 2rem !important;
+  }
+
+  @include mq-phone-only {
+    background-position: 50% 50%;
+    padding: 0rem 1rem !important;
+  }
 }
 
 .wrapper {
@@ -48,6 +55,10 @@
   gap: 1rem;
   margin-top: 5rem;
   width: 65%;
+
+  @include mq-tablet-landscape--down {
+    width: 100%;
+  }
 }
 
 .input {
@@ -88,6 +99,14 @@
   border-radius: 0.5rem;
   width: 30rem;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+
+  @include mq-tablet-landscape--down {
+    width: 70%;
+  }
+
+  @include mq-phone-only {
+    width: 100%;
+  }
 }
 
 .searchButton {
