@@ -57,7 +57,7 @@ export default function FilterResults() {
       setActiveTab("location");
       //* the entire selected place is sent in so we can validate the address
       try {
-        const request = await fetch(`/api/openai/`, {
+        const request = await fetch(`/api/openai`, {
           method: "POST",
           body: JSON.stringify(filterVal.selectedPlace),
           headers: {
