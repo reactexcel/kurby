@@ -1,4 +1,4 @@
-@import "../../styles/media.scss";
+@import "../../../styles/media.scss";
 
 .headerDefault {
   padding: 40px 0;
@@ -35,7 +35,7 @@
   height: 85vh;
   z-index: -1;
   top: 0;
-  display: flex;
+  display: flex !important;
   padding: 0rem 5rem !important;
 }
 
@@ -48,10 +48,6 @@
   gap: 1rem;
   margin-top: 5rem;
   width: 65%;
-
-  @include mq-desktop-xl--down {
-    color: red !important;
-  }
 }
 
 .input {

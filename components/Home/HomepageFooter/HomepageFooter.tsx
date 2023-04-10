@@ -87,7 +87,7 @@ const LinkElem = ({ linkText, link, onClick }: Props) => {
   );
 };
 
-const HomeFooter = () => {
+const HomepageFooter = () => {
   const router = useRouter();
 
   const handleClick = () => {
@@ -199,4 +199,4 @@ const HomeFooter = () => {
   );
 };
 
-export default HomeFooter;
+export default HomepageFooter;

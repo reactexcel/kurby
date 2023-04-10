@@ -1,5 +1,6 @@
-html {
-  overflow-x: hidden;
+html,
+body {
+  width: 100%;
 }
 
 body {
@@ -26,9 +27,7 @@ body {
   src: local("FilsonProRegular"), url("/fonts/FilsonProRegular/FilsonProRegular.woff") format("truetype");
 }
 
-html,
-body {
-  width: 100%;
+* {
   font-family: FilsonPro;
 }
 

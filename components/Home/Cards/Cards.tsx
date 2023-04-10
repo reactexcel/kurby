@@ -2,9 +2,9 @@ import styles from "./Cards.module.css";
 import { Button, ButtonProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Image from "next/image";
-import homeIcon from "../../public/icons/home.png";
-import homeHands from "../../public/icons/homehands.png";
-import homePeople from "../../public/icons/homepeople.png";
+import homeIcon from "../../../public/icons/home.png";
+import homeHands from "../../../public/icons/homehands.png";
+import homePeople from "../../../public/icons/homepeople.png";
 
 const Header = styled("h3")(() => ({
   marginBottom: "44px",

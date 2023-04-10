@@ -1,10 +1,9 @@
-import { Container } from "@mui/material";
-import TopToolbar from "./Topbar/TopToolbar";
-import HomeFooter from "./HomeFooter";
-import Footer from "../Footer/Footer";
+import TopToolbar from "../Topbar/TopToolbar";
+import HomeFooter from "../HomepageFooter/HomepageFooter";
+import Footer from "../../Footer/Footer";
 import styles from "./Homepage.module.scss";
 import SearchIcon from "@mui/icons-material/Search";
-import GoogleAddressInput from "../GoogleAddressInput";
+import GoogleAddressInput from "../../GoogleAddressInput";
 import { useRouter } from "next/router";
 import { addressToUrl } from "utils/address";
 import { FirstSection } from "features/homepage-sections/FirstSection/FirstSection";
@@ -19,7 +18,7 @@ export const Homepage = () => {
       <div className={styles.main}>
         <TopToolbar />
       </div>
-      <Container className={styles.container}>
+      <div className={styles.container}>
         <div className={styles.wrapper}>
           <h1 className={styles.header}>
             UNLOCK THE <span className={styles.coloredText}>POWER</span> OF REAL ESTATE INTELLIGENCE
@@ -65,7 +64,7 @@ export const Homepage = () => {
           </div>
           <Paragraph text="Try it - it's free, forever." />
         </div>
-      </Container>
+      </div>
       <FirstSection />
       <SecondSection />
       {/* <ThirdSection /> */}
