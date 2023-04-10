@@ -1,0 +1,40 @@
+@import './breakpoints.scss';
+
+@mixin mq-tablet-portrait--up {
+    @media screen and (min-width: $breakpoint-tablet-portrait) {@content;}
+}
+@mixin mq-tablet-landscape--up {
+    @media screen and (min-width: $breakpoint-tablet-landscape) {@content;}
+}
+@mixin mq-desktop--up {
+    @media screen and (min-width: $breakpoint-desktop) {@content;}
+}
+@mixin mq-desktop-xl--up {
+    @media screen and (min-width: $breakpoint-desktop-xl) {@content;}
+}
+@mixin mq-desktop-xxl--up {
+    @media screen and (min-width: $breakpoint-desktop-xxl) {@content;}
+}
+@mixin mq-desktop-3xl--up {
+    @media screen and (min-width: $breakpoint-desktop-3xl) {@content;}
+}
+
+
+@mixin mq-phone-only {
+    @media screen and (max-width: #{($breakpoint-tablet-portrait - 1)}) {@content;}
+}
+@mixin mq-tablet-landscape--down {
+    @media screen and (max-width: #{($breakpoint-tablet-landscape - 1)}) {@content;}
+}
+@mixin mq-desktop--down {
+    @media screen and (max-width: #{($breakpoint-desktop - 1)}) {@content;}
+}
+@mixin mq-desktop-xl--down {
+    @media screen and (max-width: #{($breakpoint-desktop-xl - 1)}) {@content;}
+}
+@mixin mq-desktop-xxl--down {
+    @media screen and (max-width: #{($breakpoint-desktop-xxl - 1)}) {@content;}
+}
+@mixin mq-desktop-3xl--down {
+    @media screen and (max-width: #{($breakpoint-desktop-3xl - 1)}) {@content;}
+}

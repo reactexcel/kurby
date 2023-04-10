@@ -1,9 +1,8 @@
-import { Container, ContainerProps } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { Container } from "@mui/material";
 import TopToolbar from "./Topbar/TopToolbar";
 import HomeFooter from "./HomeFooter";
 import Footer from "../Footer/Footer";
-import styles from "./Home.module.css";
+import styles from "./Homepage.module.scss";
 import SearchIcon from "@mui/icons-material/Search";
 import GoogleAddressInput from "../GoogleAddressInput";
 import { useRouter } from "next/router";
@@ -13,49 +12,15 @@ import { Paragraph } from "components/Paragraph/Paragraph";
 import { SecondSection } from "features/homepage-sections/SecondSection/SecondSection";
 import { ThirdSection } from "features/homepage-sections/ThirdSection/ThirdSection";
 
-const CustomContainer = styled("div")(() => ({
-  position: "relative",
-  display: "flex",
-  flexWrap: "wrap",
-  alignContent: "flex-start",
-  flexDirection: "column",
-  gap: "1rem",
-  marginTop: "5rem",
-  width: "65%",
-}));
-
-const CustomBody = styled(Container)<ContainerProps>(() => ({
-  backgroundImage: 'url("/images/homepage-banner.png")',
-  backgroundPosition: "right 75%",
-  backgroundRepeat: "no-repeat",
-  backgroundSize: "cover",
-  width: "100%",
-  maxWidth: "none !important",
-  margin: "0 !important",
-  transition: "background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s",
-  height: "85vh",
-  zIndex: "-1",
-  top: "0",
-  display: "flex",
-  padding: "0rem 5rem !important",
-}));
-
 export const Homepage = () => {
   const router = useRouter();
   return (
     <>
-      <div
-        style={{
-          position: "relative",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <div className={styles.main}>
         <TopToolbar />
       </div>
-      <CustomBody>
-        <CustomContainer>
+      <Container className={styles.container}>
+        <div className={styles.wrapper}>
           <h1 className={styles.header}>
             UNLOCK THE <span className={styles.coloredText}>POWER</span> OF REAL ESTATE INTELLIGENCE
           </h1>
@@ -99,8 +64,8 @@ export const Homepage = () => {
             </div>
           </div>
           <Paragraph text="Try it - it's free, forever." />
-        </CustomContainer>
-      </CustomBody>
+        </div>
+      </Container>
       <FirstSection />
       <SecondSection />
       {/* <ThirdSection /> */}
