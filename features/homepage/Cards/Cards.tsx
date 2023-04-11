@@ -6,17 +6,6 @@ import homeHands from "../../../public/icons/homehands.png";
 import homePeople from "../../../public/icons/homepeople.png";
 import { Button } from "components/Button/Button";
 
-const Header = styled("h3")(() => ({
-  marginBottom: "44px",
-  color: "#061A23",
-  fontSize: "32px",
-  fontWeight: "500",
-  textTransform: "uppercase",
-  lineHeight: "38px",
-  textAlign: "center",
-  boxSizing: "border-box",
-}));
-
 const Body = styled("p")(() => ({
   color: "#868686",
   fontSize: "24px",
@@ -32,20 +21,20 @@ const Cards = () => {
     <div className={styles["card-container"]}>
       <div className={styles.card}>
         <Image src={homeIcon} alt="home icon" />
-        <Header>{"What's Nearby"}</Header>
+        <h2 className={styles.cardHeader}>WHAT'S NEARBY</h2>
         <Body>Kurby analyzes location data in an unprecedented way to find the best place for you to live.</Body>
         <Button className={styles.button}>Find What's nearby</Button>
       </div>
       <div className={styles.card}>
         <Image src={homeHands} alt="home hands icon" />
 
-        <Header>LOCATION SCORE</Header>
+        <h2 className={styles.cardHeader}>LOCATION SCORE</h2>
         <Body>Our proprietary location score makes it easy to find the most comfortable, convenient, and livable home for you.</Body>
         <Button className={styles.button}>Calculate location score</Button>
       </div>
       <div className={styles.card}>
         <Image src={homePeople} alt="home people icon" />
-        <Header>EXPLAIN IT LIKE A LOCAL</Header>
+        <h2 className={styles.cardHeader}>EXPLAIN IT LIKE A LOCAL</h2>
         <Body>Get local information on what a particular area is really like before spending any more time evaluating it.</Body>
         <Button className={styles.button}>Get local information</Button>
       </div>
