@@ -1,12 +1,13 @@
 import * as React from "react";
 import Toolbar from "@mui/material/Toolbar";
-import { Button, Box } from "@mui/material";
+import { Box } from "@mui/material";
 import { useRouter } from "next/router";
 import darkLogo from "../../../../public/images/logo-dark.png";
 import Image from "next/image";
 import styles from "./TopToolbar.module.scss";
 import { useWindowSize } from "hooks/use-window-size";
 import HamburgerIcon from "@mui/icons-material/Menu";
+import { Button } from "components/Button/Button";
 
 const TopToolbar = () => {
   const router = useRouter();
@@ -27,7 +28,7 @@ const TopToolbar = () => {
       {isMobile ? (
         <>
           <Image src={darkLogo} alt="logo" className={styles.image} onClick={() => router.push("/")} />
-          <HamburgerIcon />
+          <HamburgerIcon className={styles.icon} />
         </>
       ) : (
         <>
@@ -43,7 +44,7 @@ const TopToolbar = () => {
                 marginLeft: "1rem",
               }}
             >
-              <Button className={styles.button} onClick={() => scrollToElement()}>
+              <Button variant="plain" onClick={() => scrollToElement()}>
                 About Us
               </Button>
             </Box>
@@ -55,10 +56,10 @@ const TopToolbar = () => {
                 gap: "1rem",
               }}
             >
-              <Button className={styles.button} onClick={() => router.push("https://blog.kurby.ai/")}>
+              <Button variant="plain" onClick={() => router.push("https://blog.kurby.ai/")}>
                 Blog
               </Button>
-              <Button className={styles.loginButton}>Login / Register</Button>
+              <Button>Login / Register</Button>
             </Box>
           </Box>
         </>

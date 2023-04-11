@@ -1,4 +1,4 @@
-import Cards from "components/Home/Cards/Cards";
+import Cards from "../../Cards/Cards";
 import { SectionLayout } from "../SectionLayout/SectionLayout";
 
 export const SecondSection = () => {

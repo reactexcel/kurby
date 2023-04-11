@@ -6,7 +6,7 @@ import useScrollTrigger from "@mui/material/useScrollTrigger";
 import { Slide } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import TopToolbar from "./TopToolbar/TopToolbar";
-import styles from "./Topbar.module.css";
+import styles from "./Topbar.module.scss";
 
 const CustomTopBar = styled(AppBar)<AppBarProps>(() => ({
   backgroundColor: "white",

@@ -1,10 +1,10 @@
 import styles from "./Cards.module.scss";
-import { Button, ButtonProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Image from "next/image";
 import homeIcon from "../../../public/icons/home.png";
 import homeHands from "../../../public/icons/homehands.png";
 import homePeople from "../../../public/icons/homepeople.png";
+import { Button } from "components/Button/Button";
 
 const Header = styled("h3")(() => ({
   marginBottom: "44px",
@@ -27,24 +27,6 @@ const Body = styled("p")(() => ({
   textAlign: "center",
 }));
 
-const CustomButton = styled(Button)<ButtonProps>(() => ({
-  marginTop: "20px",
-  fontWeight: "500",
-  backgroundColor: "#21C25E",
-  borderStyle: "solid",
-  borderWidth: "1px 1px 1px 1px",
-  borderColor: "#21C25E",
-  borderRadius: "10px 10px 10px 10px",
-  color: "white",
-  fontSize: "16px",
-  padding: "7px 20px",
-  textTransform: "none",
-  "&:hover": {
-    backgroundColor: "white",
-    color: "#21C25E",
-  },
-}));
-
 const Cards = () => {
   return (
     <div className={styles["card-container"]}>
@@ -52,20 +34,20 @@ const Cards = () => {
         <Image src={homeIcon} alt="home icon" />
         <Header>{"What's Nearby"}</Header>
         <Body>Kurby analyzes location data in an unprecedented way to find the best place for you to live.</Body>
-        <CustomButton>{"Find What's nearby"}</CustomButton>
+        <Button className={styles.button}>Find What's nearby</Button>
       </div>
       <div className={styles.card}>
         <Image src={homeHands} alt="home hands icon" />
 
         <Header>LOCATION SCORE</Header>
         <Body>Our proprietary location score makes it easy to find the most comfortable, convenient, and livable home for you.</Body>
-        <CustomButton>Calculate location score</CustomButton>
+        <Button className={styles.button}>Calculate location score</Button>
       </div>
       <div className={styles.card}>
         <Image src={homePeople} alt="home people icon" />
         <Header>EXPLAIN IT LIKE A LOCAL</Header>
         <Body>Get local information on what a particular area is really like before spending any more time evaluating it.</Body>
-        <CustomButton>Get local information</CustomButton>
+        <Button className={styles.button}>Get local information</Button>
       </div>
     </div>
   );

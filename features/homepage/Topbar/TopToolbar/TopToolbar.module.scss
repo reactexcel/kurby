@@ -1,0 +1,33 @@
+@import "../../../../styles/media.scss";
+
+.toolbar {
+  background-color: white;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0rem 5rem;
+
+  @include mq-tablet-landscape--down {
+    padding: 1rem 2rem;
+  }
+
+  @include mq-phone-only {
+    padding: 1rem 1rem;
+  }
+}
+
+.image {
+  cursor: pointer;
+  width: 100px;
+  height: 30px;
+
+  @include mq-tablet-landscape--down {
+    width: 125px;
+    height: auto;
+  }
+}
+
+.icon {
+  font-size: 2rem;
+}

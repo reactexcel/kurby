@@ -1,7 +1,7 @@
 import "../styles/globals.scss";
 import type { AppProps } from "next/app";
 import Script from "next/script";
-import Topbar from "../components/Home/Topbar/Topbar";
+import Topbar from "../features/homepage/Topbar/Topbar";
 import { RecoilRoot } from "recoil";
 
 export default function App({ Component, pageProps }: AppProps) {

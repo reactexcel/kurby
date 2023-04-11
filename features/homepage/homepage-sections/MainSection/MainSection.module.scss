@@ -1,4 +1,4 @@
-@import "../../../styles/media.scss";
+@import "../../../../styles/media.scss";
 
 .headerDefault {
   padding: 40px 0;
@@ -41,8 +41,9 @@
   }
 
   @include mq-phone-only {
-    background-position: 50% 50%;
+    background-position: 35% 50%;
     padding: 0rem 1rem !important;
+    height: 75vh;
   }
 }
 
@@ -105,7 +106,7 @@
   }
 
   @include mq-phone-only {
-    width: 100%;
+    width: 80%;
   }
 }
 
