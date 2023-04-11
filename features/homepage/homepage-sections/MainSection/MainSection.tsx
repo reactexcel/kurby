@@ -8,6 +8,24 @@ import { useRouter } from "next/router";
 export const MainSection = () => {
   const router = useRouter();
 
+  const handleSelectedAddress = (address: any) => {
+    const encodedAddress = addressToUrl(address.formatted_address);
+    router.push(`/app/${encodedAddress}`);
+  };
+
+  const inputPropsStyle = {
+    width: "95%",
+    height: "2rem",
+    borderBottom: "none !important",
+    margin: "0.25rem 0",
+    "&::before": {
+      borderBottom: "none !important",
+    },
+    "&::after": {
+      borderBottom: "none !important",
+    },
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
@@ -22,31 +40,14 @@ export const MainSection = () => {
             <GoogleAddressInput
               label=""
               inputProps={{
-                sx: {
-                  height: "50px",
-                },
                 autoComplete: "off",
               }}
               InputProps={{
-                sx: {
-                  width: "95%",
-                  height: "2rem",
-                  borderBottom: "none !important",
-                  margin: "0.25rem 0",
-                  "&::before": {
-                    borderBottom: "none !important",
-                  },
-                  "&::after": {
-                    borderBottom: "none !important",
-                  },
-                },
+                sx: inputPropsStyle,
               }}
               className={styles.input}
               placeholder="Search a property address"
-              handleSelectedAddress={(address: any) => {
-                const encodedAddress = addressToUrl(address.formatted_address);
-                router.push(`/app/${encodedAddress}`);
-              }}
+              handleSelectedAddress={handleSelectedAddress}
             />
             <button className={styles.searchButton}>
               <SearchIcon className={styles.searchIcon} />

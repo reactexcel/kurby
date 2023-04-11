@@ -1,0 +1,18 @@
+.logo {
+  width: 128px;
+  height: 40px;
+  background-image: url("../../public/images/logo.png");
+  background-size: contain;
+  cursor: pointer;
+}
+
+.content {
+  background-color: #061a23;
+  height: 8vh;
+  display: flex;
+  display: flex;
+  place-content: center space-between;
+  align-items: center;
+  padding: 16px 50px;
+  box-sizing: border-box;
+}

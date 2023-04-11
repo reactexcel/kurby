@@ -6,21 +6,19 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0rem 5rem;
+  padding: 0rem 5rem !important;
 
   @include mq-tablet-landscape--down {
-    padding: 1rem 2rem;
+    padding: 1rem 2rem !important;
   }
 
   @include mq-phone-only {
-    padding: 1rem 1rem;
+    padding: 1rem 1rem !important;
   }
 }
 
 .image {
   cursor: pointer;
-  width: 100px;
-  height: 30px;
 
   @include mq-tablet-landscape--down {
     width: 125px;

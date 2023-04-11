@@ -7,6 +7,7 @@
   border-radius: 0.5rem;
   border: none;
   font-size: 16px;
+  transition: background-color 0.3s, color 0.3s;
 
   @include mq-phone-only {
     font-size: 12px;
@@ -17,7 +18,6 @@
   background-color: #21c25e;
   border: 1px solid #21c25e;
   color: white;
-  transition: background-color 0.3s, color 0.3s;
   &:hover {
     background-color: white;
     color: #21c25e;
@@ -25,8 +25,9 @@
 }
 
 .outlined {
+  background-color: white;
   border: 1px solid #21c25e;
-  color: white;
+  color: #21c25e;
   &:hover {
     background-color: #21c25e;
     color: white;
