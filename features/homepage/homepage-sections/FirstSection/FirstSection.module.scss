@@ -53,12 +53,13 @@
   img {
     max-width: 600px;
     height: auto;
-  }
 
-  @include mq-tablet-landscape--down {
-    img {
+    @include mq-tablet-landscape--down {
       width: 100%;
-      height: auto;
+    }
+
+    @include mq-desktop--down {
+      max-width: 500px;
     }
   }
 }

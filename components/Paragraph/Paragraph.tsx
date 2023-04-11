@@ -1,5 +1,11 @@
 import styles from "./Paragraph.module.css";
 
-export const Paragraph = ({ text, className }: { text: string; className?: string }) => {
-  return <p className={`${styles.text} ${className || ""}`}>{text}</p>;
+interface ParagraphProps {
+  text?: string;
+  className?: string;
+  children?: React.ReactNode;
+}
+
+export const Paragraph = ({ text, className, children }: ParagraphProps) => {
+  return <p className={`${styles.text} ${className || ""}`}>{text || children}</p>;
 };
