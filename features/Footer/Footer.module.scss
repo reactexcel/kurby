@@ -114,15 +114,15 @@
 .icon {
   color: white;
   padding: 3px;
-  font-size: 28px;
-  transition: color 0.3s;
+  font-size: 28px !important;
+  transition: color 0.3s !important;
 }
 
 .iconWrapper {
-  border: 1px solid #818a94;
-  border-radius: 50%;
-  transition: all 0.3s;
-  margin: 19px 6px;
+  border: 1px solid #818a94 !important;
+  border-radius: 50% !important;
+  transition: all 0.3s !important;
+  margin: 19px 6px !important;
   &:hover {
     transform: scale(1.1);
 
