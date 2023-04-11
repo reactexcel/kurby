@@ -21,6 +21,10 @@
   cursor: pointer;
   width: 125px;
   height: auto;
+
+  @include mq-phone-only {
+    width: 100px;
+  }
 }
 
 .icon {
