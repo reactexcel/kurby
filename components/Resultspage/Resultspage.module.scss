@@ -1,0 +1,17 @@
+@import "../../styles/media.scss";
+
+.main {
+  padding: 2rem;
+  padding-bottom: 0px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+
+  @include mq-tablet-landscape--down {
+    height: auto;
+  }
+
+  @include mq-phone-only {
+    padding: 1rem;
+  }
+}

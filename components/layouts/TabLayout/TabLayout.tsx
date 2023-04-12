@@ -1,4 +1,4 @@
-import styles from "./TabLayout.module.css";
+import styles from "./TabLayout.module.scss";
 
 interface TabLayoutProps {
   children: React.ReactNode;

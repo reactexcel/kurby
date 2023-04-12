@@ -1,0 +1,45 @@
+@import "../../../styles/media.scss";
+
+.main {
+  overflow: auto;
+  height: 100%;
+  width: 100%;
+  position: relative;
+
+  @include mq-tablet-landscape--down {
+    overflow: hidden;
+  }
+}
+
+.wrapper {
+  display: flex;
+
+  @include mq-tablet-landscape--down {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.address {
+  margin: 0;
+  font-weight: 500;
+}
+
+.headerWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  *:first-child {
+    margin-bottom: 0.375rem;
+  }
+}
+
+.margin {
+  margin-top: 0.75rem;
+}
+
+.flags {
+  margin-top: 1.5rem;
+  width: 100%;
+}

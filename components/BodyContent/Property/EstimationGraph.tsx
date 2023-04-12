@@ -1,127 +1,111 @@
-import Card from '../../Card/Card'
-import React from 'react';
-import { useStyles } from '../styles';
-import { Box } from '@mui/material';
+import React from "react";
+import { useStyles } from "../styles";
+import { Box } from "@mui/material";
 
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
-import { KBColor } from 'constants/color';
-import moment from 'moment';
-import KBTable from 'components/KBTable/KBTable';
-import Typography from '@mui/material/Typography';
-import { TableFieldType } from "types/table"
-import { convertUSNumberFormat } from 'utils/number';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
+import { KBColor } from "constants/color";
+import KBTable from "components/KBTable/KBTable";
+import Typography from "@mui/material/Typography";
+import { TableFieldType } from "types/table";
+import { convertUSNumberFormat } from "utils/number";
 
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export const options = {
-    responsive: true,
-    plugins: {
-        legend: {
-            position: 'top' as const,
-        },
-        title: {
-            display: true,
-            text: 'Property Value Estimates',
-            font: {
-                family: 'FilsonProLight',
-                size: 20,
-                weight: 'bold',
-                lineHeight: 1.2,
-
-            },
-            padding: { top: 20, left: 0, right: 0, bottom: 0 }
-        },
+  responsive: true,
+  plugins: {
+    legend: {
+      position: "top" as const,
     },
+    title: {
+      display: true,
+      text: "Property Value Estimates",
+      font: {
+        family: "FilsonProLight",
+        size: 20,
+        weight: "bold",
+        lineHeight: 1.2,
+      },
+      padding: { top: 20, left: 0, right: 0, bottom: 0 },
+    },
+  },
 };
 
 const valueEstimatFields: TableFieldType[] = [
-    { label: 'Price', key: 'price' },
-    { label: 'High Price', key: 'highPrice' },
-    { label: 'Low Price', key: 'lowPrice' },
-]
+  { label: "Price", key: "price" },
+  { label: "High Price", key: "highPrice" },
+  { label: "Low Price", key: "lowPrice" },
+];
 
 export default function EstimationGraph({ valueEstimate }: { valueEstimate: any }) {
-    const classes = useStyles
+  const classes = useStyles;
 
-    const generateGraphData = () => {
-        return [{
-            price: `$${convertUSNumberFormat(valueEstimate.price)}`,
-            highPrice: `$${convertUSNumberFormat(valueEstimate.priceRangeHigh)}`,
-            lowPrice: `$${convertUSNumberFormat(valueEstimate.priceRangeLow)}`,
-        }]
-        // const listings = valueEstimate.listings;
+  const generateGraphData = () => {
+    return [
+      {
+        price: `$${convertUSNumberFormat(valueEstimate.price)}`,
+        highPrice: `$${convertUSNumberFormat(valueEstimate.priceRangeHigh)}`,
+        lowPrice: `$${convertUSNumberFormat(valueEstimate.priceRangeLow)}`,
+      },
+    ];
+    // const listings = valueEstimate.listings;
 
-        // const labels = [moment().format("Y-M-D")];
-        // const highEstimateList = [valueEstimate.priceRangeHigh];
-        // const lowEstimateList = [valueEstimate.priceRangeLow];
-        // const estimateList = [valueEstimate.price];
-        // let count = 0;
-        // listings.map(item => {
-        //     labels.push(moment(item?.publishedDate).format("Y-MM-D"));
-        //     // highEstimateList.push(item?.maxRent)
-        //     // lowEstimateList.push(item?.minRent)
-        //     estimateList.push(item?.price)
-        // })
-        // // for (let item in marketingHistory) {
-        // //     labels.push(item);
-        // //     highEstimateList.push(marketingHistory[item]?.maxRent)
-        // //     lowEstimateList.push(marketingHistory[item]?.minRent)
-        // //     estimateList.push(marketingHistory[item]?.averageRent)
-        // // }
+    // const labels = [moment().format("Y-M-D")];
+    // const highEstimateList = [valueEstimate.priceRangeHigh];
+    // const lowEstimateList = [valueEstimate.priceRangeLow];
+    // const estimateList = [valueEstimate.price];
+    // let count = 0;
+    // listings.map(item => {
+    //     labels.push(moment(item?.publishedDate).format("Y-MM-D"));
+    //     // highEstimateList.push(item?.maxRent)
+    //     // lowEstimateList.push(item?.minRent)
+    //     estimateList.push(item?.price)
+    // })
+    // // for (let item in marketingHistory) {
+    // //     labels.push(item);
+    // //     highEstimateList.push(marketingHistory[item]?.maxRent)
+    // //     lowEstimateList.push(marketingHistory[item]?.minRent)
+    // //     estimateList.push(marketingHistory[item]?.averageRent)
+    // // }
 
-        // return {
-        //     labels: labels.slice(-6),
-        //     datasets: [
-        //         {
-        //             label: 'High Estimate',
-        //             data: highEstimateList.slice(-6),
-        //             backgroundColor: KBColor.DRAK_GREEN,
-        //             borderRadius: 8,
-        //         },
-        //         {
-        //             label: 'Low Estimate',
-        //             data: lowEstimateList.slice(-6),
-        //             backgroundColor: KBColor.ORANGE,
-        //             borderRadius: 8,
-        //         },
-        //         {
-        //             label: 'Estimate',
-        //             data: estimateList.slice(-6),
-        //             backgroundColor: KBColor.YELLOW,
-        //             borderRadius: 8,
-        //         },
-        //     ],
-        // }
+    // return {
+    //     labels: labels.slice(-6),
+    //     datasets: [
+    //         {
+    //             label: 'High Estimate',
+    //             data: highEstimateList.slice(-6),
+    //             backgroundColor: KBColor.DRAK_GREEN,
+    //             borderRadius: 8,
+    //         },
+    //         {
+    //             label: 'Low Estimate',
+    //             data: lowEstimateList.slice(-6),
+    //             backgroundColor: KBColor.ORANGE,
+    //             borderRadius: 8,
+    //         },
+    //         {
+    //             label: 'Estimate',
+    //             data: estimateList.slice(-6),
+    //             backgroundColor: KBColor.YELLOW,
+    //             borderRadius: 8,
+    //         },
+    //     ],
+    // }
+  };
 
-    }
+  if (!valueEstimate || !valueEstimate.price) {
+    return null;
+  }
 
-    if (!valueEstimate || !valueEstimate.price) {
-        return null;
-    }
-
-    return (
-        <Box sx={classes.standardCard}>
-            <Typography component="h5" variant="h5" fontSize="22px">Property Value Estimates</Typography>
-            <Box>
-                <KBTable maxHeight="220px" lineColor={KBColor.LIGHT_GREY} sx={{ background: KBColor.DARK_WHITE }} fields={valueEstimatFields} data={generateGraphData()} />
-            </Box>
-            {/* <Bar options={options} data={generateGraphData()} /> */}
-        </Box>
-    )
+  return (
+    <Box sx={classes.standardCard}>
+      <Typography component="h5" variant="h5" fontSize="22px" marginBottom="0.5rem">
+        Property Value Estimates
+      </Typography>
+      <Box>
+        <KBTable maxHeight="220px" lineColor={KBColor.LIGHT_GREY} sx={{ background: KBColor.DARK_WHITE }} fields={valueEstimatFields} data={generateGraphData()} />
+      </Box>
+      {/* <Bar options={options} data={generateGraphData()} /> */}
+    </Box>
+  );
 }

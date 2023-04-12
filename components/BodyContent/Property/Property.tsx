@@ -6,11 +6,13 @@ import { useRecoilState } from "recoil";
 import Record from "./Record";
 import { PropertyType } from "./types";
 import EstimationGraph from "./EstimationGraph";
-import ComparableSaleList from "./ComparableSaleList";
 import Owner from "./Owner";
-import ComparableRentList from "./ComparableRentList";
 import { TabLayout } from "components/layouts/TabLayout/TabLayout";
-import styles from "./Property.module.css";
+import styles from "./Property.module.scss";
+import { mockedData } from "./mockedData";
+import { HouseList } from "./HouseList/HouseList";
+import { Grid } from "components/Grid/Grid";
+import { GridItem } from "components/Grid/GridItem";
 
 /**
  * Body Content
@@ -18,25 +20,25 @@ import styles from "./Property.module.css";
  */
 export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal: string }) {
   const [filterVal] = useRecoilState(filterState);
-  const [propertyInfo, setPropertyInfo] = useState<PropertyType | null>(null);
+  const [propertyInfo, setPropertyInfo] = useState<PropertyType | null>(mockedData);
   const [loading, setLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    async function getPropertyData() {
-      setLoading(true);
-      const lat = filterVal.selectedPlace.geometry.location.lat();
-      const lng = filterVal.selectedPlace.geometry.location.lng();
+  // useEffect(() => {
+  //   async function getPropertyData() {
+  //     setLoading(true);
+  //     const lat = filterVal.selectedPlace.geometry.location.lat();
+  //     const lng = filterVal.selectedPlace.geometry.location.lng();
 
-      const propertyData = await axios.post("/api/property", {
-        place: filterVal.selectedPlace,
-        latLng: [lat, lng],
-      });
-      console.log("propertyData =>>", propertyData);
-      setPropertyInfo(propertyData.data);
-      setLoading(false);
-    }
-    getPropertyData();
-  }, []);
+  //     const propertyData = await axios.post("/api/property", {
+  //       place: filterVal.selectedPlace,
+  //       latLng: [lat, lng],
+  //     });
+  //     console.log("propertyData =>>", propertyData);
+  //     setPropertyInfo(propertyData.data);
+  //     setLoading(false);
+  //   }
+  //   getPropertyData();
+  // }, []);
 
   return (
     <TabLayout className={styles.tabLayout} loading={loading || !propertyInfo}>
@@ -44,25 +46,38 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
         <CircularProgress />
       ) : (
         <>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={
-              "https://maps.googleapis.com/maps/api/streetview?size=1600x200&location=" +
-              filterVal.selectedPlace.geometry.location.lat() +
-              "," +
-              filterVal.selectedPlace.geometry.location.lng() +
-              "&fov=50&key=AIzaSyBW6MS6leYzF_KDJcuUVT7M3FAf6QJKxW0"
-            }
-            className={styles.image}
-            alt=""
-          />
-          <Box className={styles.boxStyle}>
-            {propertyInfo?.records && propertyInfo?.records.length > 0 && <Record propertyInfo={propertyInfo} description={explainedLikeAlocal} />}
-            {propertyInfo?.valueEstimate && <EstimationGraph valueEstimate={propertyInfo?.valueEstimate} />}
-            {propertyInfo?.valueEstimate && <ComparableSaleList saleList={propertyInfo?.valueEstimate} />}
-            {propertyInfo?.rentEstimate && <ComparableRentList rentList={propertyInfo?.rentEstimate} />}
-            {propertyInfo?.records && propertyInfo?.records.length > 0 && <Owner owner={propertyInfo?.records[0]?.owner} />}
-          </Box>
+          <div className={styles.wrapper}>
+            <img
+              src={
+                "https://maps.googleapis.com/maps/api/streetview?size=1600x200&location=" +
+                filterVal.selectedPlace.geometry.location.lat() +
+                "," +
+                filterVal.selectedPlace.geometry.location.lng() +
+                "&fov=50&key=AIzaSyBW6MS6leYzF_KDJcuUVT7M3FAf6QJKxW0"
+              }
+              className={styles.image}
+              alt=""
+            />
+          </div>
+          <div className={styles.wrapper}>
+            <Grid>
+              <GridItem isEmpty={!(propertyInfo?.records && propertyInfo?.records.length > 0)}>
+                <Record propertyInfo={propertyInfo} description={explainedLikeAlocal} />
+              </GridItem>
+              <GridItem isEmpty={!propertyInfo?.valueEstimate}>
+                <EstimationGraph valueEstimate={propertyInfo?.valueEstimate} />
+              </GridItem>
+              <GridItem isEmpty={!propertyInfo?.valueEstimate}>
+                <HouseList list={propertyInfo?.valueEstimate} variant="sale" />
+              </GridItem>
+              <GridItem isEmpty={!propertyInfo?.rentEstimate}>
+                <HouseList list={propertyInfo?.rentEstimate} />
+              </GridItem>
+              <GridItem isEmpty={!(propertyInfo?.records && propertyInfo?.records.length > 0)}>
+                <Owner owner={propertyInfo?.records[0]?.owner} />
+              </GridItem>
+            </Grid>
+          </div>
         </>
       )}
     </TabLayout>

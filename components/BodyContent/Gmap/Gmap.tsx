@@ -1,8 +1,9 @@
 import React from "react";
 import { GoogleMap, MarkerF, useJsApiLoader } from "@react-google-maps/api";
-import { filterState } from "../../context/filterContext";
+import { filterState } from "../../../context/filterContext";
 import { useRecoilState } from "recoil";
-import GLOBAL_SETTINGS from "../../globals/GLOBAL_SETTINGS";
+import GLOBAL_SETTINGS from "../../../globals/GLOBAL_SETTINGS";
+import styles from "./Gmap.module.scss";
 
 /**
  * Gmap
@@ -10,13 +11,6 @@ import GLOBAL_SETTINGS from "../../globals/GLOBAL_SETTINGS";
  */
 
 //TODO add to stylesheet
-const googleMapContainerStyle: React.CSSProperties = {
-  width: "100%",
-  height: "100%",
-  position: "relative",
-  overflow: "hidden",
-  borderRadius: "14px",
-};
 
 //TODO where should this start?
 const initialCenter = { lat: 38.9987208, lng: -77.2538699 };
@@ -109,7 +103,6 @@ function MyComponent() {
 
   return isLoaded ? (
     <GoogleMap
-      mapContainerStyle={googleMapContainerStyle}
       center={filterVal.latlong || initialCenter}
       zoom={GLOBAL_SETTINGS.MAP_ZOOM_DEFAULT}
       onLoad={onLoad}
@@ -117,6 +110,7 @@ function MyComponent() {
       options={googleMapOptions}
       onDragEnd={handleMapDrag}
       onCenterChanged={onCenterChanged}
+      mapContainerClassName={styles.map}
     >
       {/* Child components, such as markers, info windows, etc. */}
       <>

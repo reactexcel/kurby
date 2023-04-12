@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
-import Gmap from "./Gmap";
-import FilterResults from "./FilterResults";
+import Gmap from "./Gmap/Gmap";
+import { Tabs } from "./Tabs/Tabs";
+import styles from "./BodyContent.module.scss";
 
 /**
  * Body Content
@@ -8,12 +9,12 @@ import FilterResults from "./FilterResults";
  */
 export default function BodyContent() {
   return (
-    <Box style={{ display: "flex", height: "85%" }}>
-      <Box style={{ width: "35%" }}>
+    <Box className={styles.main}>
+      <Box className={styles.map}>
         <Gmap />
       </Box>
-      <Box style={{ width: "65%" }}>
-        <FilterResults />
+      <Box className={styles.tabs}>
+        <Tabs />
       </Box>
     </Box>
   );

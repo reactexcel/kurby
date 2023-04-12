@@ -3,21 +3,17 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { filterState } from "../../context/filterContext";
-import Nearby from "./Nearby/Nearby";
+import { filterState } from "../../../context/filterContext";
+import Nearby from "../Nearby/Nearby";
 import { NextSeo } from "next-seo";
 import { activeTabState, Tab } from "context/activeTab";
-import Neighborhood from "./Neighborhood/Neighborhood";
-import Property from "./Property/Property";
-import { Location } from "./Location/Location";
+import Neighborhood from "../Neighborhood/Neighborhood";
+import Property from "../Property/Property";
+import { Location } from "../Location/Location";
 import { loadingContext } from "context/loadingContext";
+import styles from "./Tabs.module.scss";
 
-/**
- * FilterResults
- * @description: Displays right side of the home page. Will show home information and nearby places
- */
-
-export default function FilterResults() {
+export function Tabs() {
   const [activeTab, setActiveTab] = useRecoilState(activeTabState);
   const [explainedLikeAlocal, setExplainedLikeAlocal] = useState("");
   const [greenFlags, setGreenFlags] = useState<any[]>([]);
@@ -82,33 +78,24 @@ export default function FilterResults() {
   return (
     <>
       <NextSeo description={explainedLikeAlocal.split(".")[0] || "Kurby uses location data to estimate property value like never before."} />
-      <Box
-        style={{
-          width: "100%",
-          marginLeft: "12.5px",
-          height: "100%",
-          boxSizing: "border-box",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <ToggleButtonGroup color="primary" value={activeTab} exclusive onChange={handleTabChange} aria-label="Platform">
-          <ToggleButton style={{ width: "220px", textTransform: "initial" }} value="location">
+      <Box className={styles.main}>
+        <ToggleButtonGroup color="success" value={activeTab} exclusive onChange={handleTabChange} aria-label="Platform">
+          <ToggleButton className={styles.button} value="location">
             Location
           </ToggleButton>
 
           {showHome && (
-            <ToggleButton style={{ width: "220px", textTransform: "initial" }} value="property">
+            <ToggleButton className={styles.button} value="property">
               Home
             </ToggleButton>
           )}
 
-          <ToggleButton style={{ width: "220px", textTransform: "initial" }} value="neighborhood">
+          <ToggleButton className={styles.button} value="neighborhood">
             Neighborhood
           </ToggleButton>
         </ToggleButtonGroup>
 
-        <Box style={{ height: "100%", marginBottom: "24px" }}>
+        <Box className={styles.tabsWrapper}>
           {activeTab === "location" && <Location explainedLikeAlocal={explainedLikeAlocal} greenFlags={greenFlags} redFlags={redFlags} />}
           {activeTab == "nearby" && <Nearby />}
           {activeTab == "property" && showHome && <Property explainedLikeAlocal={explainedLikeAlocal} />}

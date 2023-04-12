@@ -1,0 +1,13 @@
+@import "../../../styles/media.scss";
+
+.main {
+  height: 200px;
+  width: 200px;
+  min-width: 200px;
+  margin-right: 1.25rem;
+
+  @include mq-tablet-landscape--down {
+    width: 100%;
+    border-radius: 0.5rem;
+  }
+}

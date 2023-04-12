@@ -1,0 +1,32 @@
+@import "../../../styles/media.scss";
+
+.main {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+
+  @include mq-tablet-landscape--down {
+    margin-left: 0;
+    height: auto;
+  }
+}
+
+.button {
+  width: 220px;
+  text-transform: initial;
+
+  @include mq-tablet-landscape--down {
+    width: 100%;
+  }
+}
+
+.tabsWrapper {
+  height: 100%;
+  margin-bottom: 24px;
+
+  @include mq-tablet-landscape--down {
+    height: auto;
+  }
+}
