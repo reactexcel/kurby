@@ -1,0 +1,44 @@
+.card {
+  border: 1px solid lightgray;
+  box-shadow: none;
+  border-radius: 10px;
+  overflow: visible;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 5px 15px !important;
+  height: 100%;
+}
+
+.dataContainer {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.iconContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f1f4f6;
+  border-radius: 10px;
+  margin-right: 25px;
+  width: 64px;
+  height: 64px;
+}
+
+.label {
+  color: #868686;
+}
+
+.valueContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.formattedValue {
+  font-size: 1.25rem;
+}

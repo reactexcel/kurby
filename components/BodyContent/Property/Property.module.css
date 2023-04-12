@@ -1,0 +1,25 @@
+.tabLayout {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  min-height: 100%;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image {
+  border-radius: 10px;
+  width: 100%;
+}
+
+.boxStyle {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  padding: 20px;
+}

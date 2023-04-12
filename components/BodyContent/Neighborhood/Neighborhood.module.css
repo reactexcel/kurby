@@ -1,0 +1,17 @@
+.container {
+  width: 100%;
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 1fr;
+}
+
+.header {
+  margin: 0;
+  margin-bottom: 0.5rem;
+  font-weight: 300;
+}
+
+.tabLayout {
+  padding-bottom: 0;
+}

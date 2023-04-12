@@ -5,6 +5,7 @@ interface LoadingState {
   default: {
     walkscore: boolean;
     openai: boolean;
+    neighborhood: boolean;
   };
 }
 
@@ -13,6 +14,7 @@ const loadingState: LoadingState = {
   default: {
     walkscore: true,
     openai: true,
+    neighborhood: true,
   },
 };
 

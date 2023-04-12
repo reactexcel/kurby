@@ -108,15 +108,13 @@ export default function FilterResults() {
           </ToggleButton>
         </ToggleButtonGroup>
 
-        {
-          <Box style={{ height: "100%", marginBottom: "24px" }}>
-            {activeTab === "location" && <Location explainedLikeAlocal={explainedLikeAlocal} greenFlags={greenFlags} redFlags={redFlags} />}
-            {activeTab == "nearby" && <Nearby />}
-            {activeTab == "property" && showHome && <Property explainedLikeAlocal={explainedLikeAlocal} />}
+        <Box style={{ height: "100%", marginBottom: "24px" }}>
+          {activeTab === "location" && <Location explainedLikeAlocal={explainedLikeAlocal} greenFlags={greenFlags} redFlags={redFlags} />}
+          {activeTab == "nearby" && <Nearby />}
+          {activeTab == "property" && showHome && <Property explainedLikeAlocal={explainedLikeAlocal} />}
 
-            {activeTab == "neighborhood" && <Neighborhood filterVal={filterVal} />}
-          </Box>
-        }
+          {activeTab == "neighborhood" && <Neighborhood filterVal={filterVal} />}
+        </Box>
       </Box>
     </>
   );
