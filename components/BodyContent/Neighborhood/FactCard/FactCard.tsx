@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@mui/material";
-import styles from "./FactCard.module.css";
+import styles from "./FactCard.module.scss";
 
 interface Props {
   icon: JSX.Element;

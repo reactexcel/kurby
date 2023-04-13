@@ -1,7 +1,6 @@
 import React from "react";
-import { useStyles } from "../styles";
+import { useStyles } from "../../styles";
 import { Box } from "@mui/material";
-
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { KBColor } from "constants/color";
 import KBTable from "components/KBTable/KBTable";

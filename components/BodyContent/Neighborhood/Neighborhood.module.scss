@@ -1,7 +1,7 @@
 .container {
   width: 100%;
   display: grid;
-  grid-gap: 1rem;
+  grid-gap: 0.75rem;
   grid-template-columns: repeat(3, 1fr);
   grid-auto-rows: 1fr;
 }
@@ -14,4 +14,19 @@
 
 .tabLayout {
   padding-bottom: 0;
+}
+
+.button {
+  color: #21c25e;
+
+  &:hover {
+    background-color: rgba(33, 194, 94, 0.1);
+  }
+
+  font-size: 0.75rem;
+}
+
+.icon {
+  color: #21c25e;
+  font-size: 40px;
 }

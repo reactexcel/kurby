@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import Record from "./Record";
 import { PropertyType } from "./types";
-import EstimationGraph from "./EstimationGraph";
+import EstimationGraph from "./EstimationGraph/EstimationGraph";
 import Owner from "./Owner";
 import { TabLayout } from "components/layouts/TabLayout/TabLayout";
 import styles from "./Property.module.scss";
