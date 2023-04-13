@@ -1,8 +1,7 @@
 .card {
   border: 1px solid lightgray;
-  box-shadow: none;
-  border-radius: 10px;
-  overflow: visible;
+  box-shadow: none !important;
+  border-radius: 0.75rem !important;
 }
 
 .cardContent {

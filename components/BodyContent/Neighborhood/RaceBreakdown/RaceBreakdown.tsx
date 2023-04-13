@@ -1,20 +1,9 @@
 import { useMemo } from "react";
 import { Dialog, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import styles from "./RaceBreakdown.module.scss";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 ChartJS.register(ArcElement, Tooltip, Legend);
-
-const CardContainer = styled("div")(() => ({
-  display: "flex",
-  flexWrap: "wrap",
-  width: "100%",
-  padding: "30px",
-}));
-
-const MapContainer = styled("div")(() => ({
-  width: "100%",
-}));
 
 interface RaceData {
   totalWhite: number;
@@ -78,9 +67,9 @@ const RaceBreakDownModal = ({ open, handleClose, children, raceData }: Props) =>
       }}
     >
       {children}
-      <MapContainer>
+      <div className={styles.cardContainer}>
         <Typography variant="h5">Race Demographics</Typography>
-        <CardContainer>
+        <div className={styles.chartContainer}>
           <Doughnut
             data={data}
             options={{
@@ -93,8 +82,8 @@ const RaceBreakDownModal = ({ open, handleClose, children, raceData }: Props) =>
               },
             }}
           />
-        </CardContainer>
-      </MapContainer>
+        </div>
+      </div>
     </Dialog>
   );
 };
