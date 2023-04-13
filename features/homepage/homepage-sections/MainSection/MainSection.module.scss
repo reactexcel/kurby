@@ -15,6 +15,11 @@
   display: flex !important;
   padding: 0rem 5rem !important;
 
+  @include mq-desktop--down {
+    background-position: 75% bottom;
+    padding: 0rem 3rem !important;
+  }
+
   @include mq-tablet-landscape--down {
     background-position: 30% bottom;
     padding: 0rem 2rem !important;

@@ -284,7 +284,7 @@ export default function Neighborhood({ filterVal }: Props) {
         }}
       >
         <h3 className={styles.header}>Quick Facts</h3>
-        {filterVal.selectedPlace.formatted_address.includes("USA") ? (
+        {filterVal?.selectedPlace?.formatted_address?.includes("USA") ? (
           <div className={styles.container}>
             <FactCard label="Flood Risk" type="string" value={convertFloodZoneToRisk(floodData?.[0]?.floodZone)} icon={<WarningIcon className={styles.icon} />} />
             <FactCard
