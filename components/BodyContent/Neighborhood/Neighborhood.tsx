@@ -23,7 +23,6 @@ import { TabLayout } from "components/layouts/TabLayout/TabLayout";
 import styles from "./Neighborhood.module.scss";
 import { useRecoilState } from "recoil";
 import { loadingContext } from "context/loadingContext";
-import LaunchIcon from "@mui/icons-material/Launch";
 
 const floodRiskMap: { [key: string]: string } = {
   A: "Medium",
@@ -288,11 +287,13 @@ export default function Neighborhood({ filterVal }: Props) {
         {filterVal.selectedPlace.formatted_address.includes("USA") ? (
           <div className={styles.container}>
             <FactCard label="Flood Risk" type="string" value={convertFloodZoneToRisk(floodData?.[0]?.floodZone)} icon={<WarningIcon className={styles.icon} />} />
-            <FactCard label="Flood Zone" type="string" value={floodData?.[0]?.floodZone || "Unknown"} icon={<FloodIcon className={styles.icon} />}>
-              <Button className={styles.button} variant="text">
-                See More
-              </Button>
-            </FactCard>
+            <FactCard
+              label="Flood Zone"
+              type="string"
+              value={floodData?.[0]?.floodZone || "Unknown"}
+              icon={<FloodIcon className={styles.icon} />}
+              seeMoreOnClick={() => setOpenFloodZoneMap(true)}
+            />
             <FactCard
               label="Adults with a bachlors degree"
               type="percent"
@@ -313,18 +314,13 @@ export default function Neighborhood({ filterVal }: Props) {
             />
             <FactCard label="Percent Under Poverty" type="percent" value={censusData && censusData.percentUnderPoverty} icon={<Hunger className={styles.icon} />} />
             <FactCard label="Percent not US citizens" type="percent" value={censusData && censusData.nonCitizens} icon={<Population className={styles.icon} />} />
-            <FactCard label="Dominant Race" type="string" value={censusData && `${capitalize(censusData.dominantRace)}`} icon={<Population className={styles.icon} />}>
-              <Button
-                className={styles.button}
-                variant="text"
-                onClick={() => {
-                  setOpenRaceBreakdown(true);
-                }}
-              >
-                See Breakdown
-              </Button>
-            </FactCard>
-
+            <FactCard
+              label="Dominant Race"
+              type="string"
+              value={censusData && `${capitalize(censusData.dominantRace)}`}
+              icon={<Population className={styles.icon} />}
+              seeMoreOnClick={() => setOpenRaceBreakdown(true)}
+            />
             <FactCard label="Unemployment Rate" type="percent" value={censusData && censusData.unemploymentRate} icon={<Unemployment className={styles.icon} />} />
             <FactCard
               label="Owner morgage ≥ 30% household income"
@@ -339,33 +335,15 @@ export default function Neighborhood({ filterVal }: Props) {
               type="string"
               value={Math.round(overallCrimeInfo?.violentAreaPerNational || 0) + "%" || "Unknown"}
               icon={<Handcuff className={styles.icon} />}
-            >
-              <Button
-                className={styles.button}
-                variant="text"
-                onClick={() => {
-                  setCrimeModal("violent");
-                }}
-              >
-                See More
-              </Button>
-            </FactCard>
+              seeMoreOnClick={() => setCrimeModal("violent")}
+            />
             <FactCard
               label="Property Crime Rate"
               type="string"
               value={Math.round(overallCrimeInfo?.propertyAreaPerNational || 0) + "%" || "Unknown"}
               icon={<Handcuff className={styles.icon} />}
-            >
-              <Button
-                className={styles.button}
-                variant="text"
-                onClick={() => {
-                  setCrimeModal("property");
-                }}
-              >
-                See More
-              </Button>
-            </FactCard>
+              seeMoreOnClick={() => setCrimeModal("property")}
+            />
 
             <CrimeModal open={["violent", "property"].includes(crimeModal)} handleClose={handleCloseCrimModal} overallCrimeInfo={overallCrimeInfo} crimeType={crimeModal}>
               <FactCard

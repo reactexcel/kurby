@@ -1,9 +1,19 @@
+@import "../../../styles/media.scss";
+
 .container {
   width: 100%;
   display: grid;
   grid-gap: 0.75rem;
   grid-template-columns: repeat(3, 1fr);
   grid-auto-rows: 1fr;
+
+  @include mq-desktop-xl--down {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include mq-phone-only {
+    grid-template-columns: 1fr;
+  }
 }
 
 .header {
@@ -14,6 +24,10 @@
 
 .tabLayout {
   padding-bottom: 0;
+
+  @include mq-tablet-landscape--down {
+    padding-bottom: 1.5rem;
+  }
 }
 
 .button {

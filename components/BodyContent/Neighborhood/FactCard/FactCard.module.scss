@@ -11,6 +11,7 @@
   align-items: center;
   padding: 0.75rem !important;
   height: 100%;
+  position: relative;
 }
 
 .dataContainer {
@@ -31,6 +32,8 @@
 }
 
 .label {
+  display: flex;
+  justify-content: space-between;
   color: #868686;
   font-size: 0.875rem;
 }
@@ -42,4 +45,13 @@
 
 .formattedValue {
   font-size: 1.125rem;
+}
+
+.launchIcon {
+  position: absolute;
+  right: 0.75rem;
+  top: 0.75rem;
+  color: #21c25e;
+  font-size: 1.25rem;
+  cursor: pointer;
 }
