@@ -289,12 +289,9 @@ export default function Neighborhood({ filterVal }: Props) {
           <div className={styles.container}>
             <FactCard label="Flood Risk" type="string" value={convertFloodZoneToRisk(floodData?.[0]?.floodZone)} icon={<WarningIcon className={styles.icon} />} />
             <FactCard label="Flood Zone" type="string" value={floodData?.[0]?.floodZone || "Unknown"} icon={<FloodIcon className={styles.icon} />}>
-              <LaunchIcon
-                className={styles.launchIcon}
-                onClick={() => {
-                  setOpenFloodZoneMap(true);
-                }}
-              />
+              <Button className={styles.button} variant="text">
+                See More
+              </Button>
             </FactCard>
             <FactCard
               label="Adults with a bachlors degree"
