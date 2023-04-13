@@ -1,4 +1,4 @@
-import { Box, CircularProgress } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import axios from "axios";
 import { filterState } from "context/filterContext";
 import { useEffect, useState } from "react";
@@ -9,7 +9,6 @@ import EstimationGraph from "./EstimationGraph/EstimationGraph";
 import Owner from "./Owner";
 import { TabLayout } from "components/layouts/TabLayout/TabLayout";
 import styles from "./Property.module.scss";
-import { mockedData } from "./mockedData";
 import { HouseList } from "./HouseList/HouseList";
 import { Grid } from "components/Grid/Grid";
 import { GridItem } from "components/Grid/GridItem";
@@ -20,25 +19,25 @@ import { GridItem } from "components/Grid/GridItem";
  */
 export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal: string }) {
   const [filterVal] = useRecoilState(filterState);
-  const [propertyInfo, setPropertyInfo] = useState<PropertyType | null>(mockedData);
+  const [propertyInfo, setPropertyInfo] = useState<PropertyType | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   async function getPropertyData() {
-  //     setLoading(true);
-  //     const lat = filterVal.selectedPlace.geometry.location.lat();
-  //     const lng = filterVal.selectedPlace.geometry.location.lng();
+  useEffect(() => {
+    async function getPropertyData() {
+      setLoading(true);
+      const lat = filterVal.selectedPlace.geometry.location.lat();
+      const lng = filterVal.selectedPlace.geometry.location.lng();
 
-  //     const propertyData = await axios.post("/api/property", {
-  //       place: filterVal.selectedPlace,
-  //       latLng: [lat, lng],
-  //     });
-  //     console.log("propertyData =>>", propertyData);
-  //     setPropertyInfo(propertyData.data);
-  //     setLoading(false);
-  //   }
-  //   getPropertyData();
-  // }, []);
+      const propertyData = await axios.post("/api/property", {
+        place: filterVal.selectedPlace,
+        latLng: [lat, lng],
+      });
+      console.log("propertyData =>>", propertyData);
+      setPropertyInfo(propertyData.data);
+      setLoading(false);
+    }
+    getPropertyData();
+  }, []);
 
   return (
     <TabLayout className={styles.tabLayout} loading={loading || !propertyInfo}>

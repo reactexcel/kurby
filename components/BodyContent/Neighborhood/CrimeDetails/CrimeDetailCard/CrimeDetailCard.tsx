@@ -1,4 +1,5 @@
 import { Card, CardContent, Typography, Box } from "@mui/material";
+import styles from "./CrimeDetailCard.module.scss";
 
 interface Props {
   label?: string;
@@ -7,23 +8,9 @@ interface Props {
 
 const CrimeDetailCard = ({ label, value }: Props) => {
   return (
-    <Card style={{ minWidth: 275, width: "24%", maxWidth: 350, border: "1px solid lightgray", boxShadow: "none", borderRadius: "10px", margin: "5px" }}>
-      <CardContent
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          padding: "10px 20px !important",
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+    <Card className={styles.card}>
+      <CardContent className={styles.cardContent}>
+        <Box className={styles.wrapper}>
           <Typography variant="body1" style={{ fontSize: "18px", fontWeight: "bold" }}>
             {label}
           </Typography>

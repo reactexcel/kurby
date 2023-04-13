@@ -1,16 +1,6 @@
 import { Dialog, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import MapDetailCard from "./MapDetailCard";
-
-const CardContainer = styled("div")(() => ({
-  display: "flex",
-  flexWrap: "wrap",
-  width: "100%",
-}));
-
-const MapContainer = styled("div")(() => ({
-  width: "100%",
-}));
+import MapDetailCard from "./MapDetailCard/MapDetailCard";
+import styles from "./FloodZoneModal.module.scss";
 
 interface Props {
   open: boolean;
@@ -34,9 +24,9 @@ const FloodZoneModal = ({ open, handleClose, children }: Props) => {
       }}
     >
       {children}
-      <MapContainer>
+      <div className={styles.mapContainer}>
         <Typography variant="h5">Flood Zone Map</Typography>
-        <CardContainer>
+        <div className={styles.container}>
           <MapDetailCard
             label="A"
             value="Areas with a 1% annual chance of flooding and a 26% chance of flooding over the life of a 30‐year mortgage. Because detailed analyses are not performed for such areas; no depths or base flood elevations are shown within these zones."
@@ -79,8 +69,8 @@ const FloodZoneModal = ({ open, handleClose, children }: Props) => {
             label="VE or V1-V30"
             value="Coastal areas with a 1% or greater chance of flooding and an additional hazard associated with storm waves. These areas have a 26% chance of flooding over the life of a 30‐year mortgage. Base flood elevations derived from detailed analyses are shown at selected intervals within these zones."
           />
-        </CardContainer>
-      </MapContainer>
+        </div>
+      </div>
     </Dialog>
   );
 };
