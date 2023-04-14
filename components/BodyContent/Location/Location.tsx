@@ -36,7 +36,7 @@ export const Location = ({ explainedLikeAlocal, greenFlags, redFlags }: Location
           <StreetView position={filterVal.latlong} />
           <Box>
             <div className={styles.headerWrapper}>
-              <LocationSvg />
+              <LocationSvg style={{ minWidth: "17px" }} />
               <h3 className={styles.address}>{filterVal.address}</h3>
             </div>
             <Typography className={styles.margin} variant="subtitle2">
