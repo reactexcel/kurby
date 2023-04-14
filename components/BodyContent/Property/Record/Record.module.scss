@@ -1,11 +1,14 @@
 @import "../../../../styles/media.scss";
 
 .address {
-  font-weight: 400;
-  font-size: 18px;
-  font-family: FilsonPro;
+  font-size: 1.5rem !important;
+  font-family: FilsonPro !important;
   display: flex;
   align-items: center;
+
+  & > div:last-child {
+    margin-top: 0.25rem;
+  }
 }
 
 .houseInfo {

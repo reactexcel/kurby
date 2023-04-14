@@ -169,7 +169,7 @@ export default function Record({ propertyInfo, description }: { propertyInfo: Pr
       <Box className={styles.box}>
         <Typography variant="h1" component="h1" className={styles.address}>
           <LocationSvg style={{ marginRight: "8px", minWidth: "17px" }} />
-          {filterVal.address}
+          <div>{filterVal.address}</div>
         </Typography>
         {!isMobileTablet && <Price />}
       </Box>
