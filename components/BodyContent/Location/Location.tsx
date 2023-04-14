@@ -39,7 +39,7 @@ export const Location = ({ explainedLikeAlocal, greenFlags, redFlags }: Location
               <LocationSvg style={{ minWidth: "17px" }} />
               <h3 className={styles.address}>{filterVal.address}</h3>
             </div>
-            <Typography className={styles.margin} variant="subtitle2">
+            <Typography className={styles.margin} variant="subtitle1">
               Explain it like a local:
               <AIWarningToolTip />
             </Typography>
