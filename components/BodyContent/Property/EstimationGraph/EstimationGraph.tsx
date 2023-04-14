@@ -1,5 +1,4 @@
 import React from "react";
-import { useStyles } from "../../styles";
 import { Box } from "@mui/material";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { KBColor } from "constants/color";
@@ -37,8 +36,6 @@ const valueEstimatFields: TableFieldType[] = [
 ];
 
 export default function EstimationGraph({ valueEstimate }: { valueEstimate: any }) {
-  const classes = useStyles;
-
   const generateGraphData = () => {
     return [
       {
@@ -97,7 +94,7 @@ export default function EstimationGraph({ valueEstimate }: { valueEstimate: any 
   }
 
   return (
-    <Box sx={classes.standardCard}>
+    <Box>
       <Typography component="h5" variant="h5" fontSize="22px" marginBottom="0.5rem">
         Property Value Estimates
       </Typography>

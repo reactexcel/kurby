@@ -3,10 +3,10 @@ import axios from "axios";
 import { filterState } from "context/filterContext";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import Record from "./Record";
+import Record from "./Record/Record";
 import { PropertyType } from "./types";
 import EstimationGraph from "./EstimationGraph/EstimationGraph";
-import Owner from "./Owner";
+import Owner from "./Owner/Owner";
 import { TabLayout } from "components/layouts/TabLayout/TabLayout";
 import styles from "./Property.module.scss";
 import { HouseList } from "./HouseList/HouseList";
@@ -49,9 +49,9 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
             <img
               src={
                 "https://maps.googleapis.com/maps/api/streetview?size=1600x200&location=" +
-                filterVal.selectedPlace.geometry.location.lat() +
+                filterVal?.selectedPlace?.geometry?.location?.lat() +
                 "," +
-                filterVal.selectedPlace.geometry.location.lng() +
+                filterVal?.selectedPlace?.geometry?.location?.lng() +
                 "&fov=50&key=AIzaSyBW6MS6leYzF_KDJcuUVT7M3FAf6QJKxW0"
               }
               className={styles.image}
