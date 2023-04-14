@@ -1,0 +1,26 @@
+@import "../../styles/media.scss";
+
+.logo {
+  width: 128px;
+  height: 40px;
+  background-image: url("../../public/images/logo.png");
+  background-size: contain;
+  cursor: pointer;
+}
+
+.content {
+  background-color: #061a23;
+  height: 8vh;
+  display: flex;
+  align-items: center;
+  padding: 2rem;
+  box-sizing: border-box;
+
+  @include mq-tablet-landscape--down {
+    padding: 1rem 2rem;
+  }
+
+  @include mq-phone-only {
+    padding: 1rem;
+  }
+}

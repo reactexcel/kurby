@@ -1,0 +1,55 @@
+@import "../../../styles/media.scss";
+
+.card-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0 10%;
+
+  @include mq-phone-only {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.75rem;
+  width: 33.33%;
+
+  @include mq-tablet-landscape--down {
+    width: 100%;
+    padding: 1rem 10%;
+
+    &:first-child {
+      padding-top: 0;
+    }
+
+    &:last-child {
+      padding-bottom: 0;
+    }
+  }
+
+  @include mq-phone-only {
+    width: 90%;
+    padding: 1rem 0;
+  }
+}
+
+.button {
+  margin-top: 2rem;
+  padding: 0.75rem 1rem;
+}
+
+.cardHeader {
+  margin: 1rem 0 !important;
+  font-weight: 300;
+  text-align: center;
+}
+
+.paragraph {
+  text-align: center;
+}

@@ -1,0 +1,120 @@
+@import "../../../../styles/media.scss";
+
+.address {
+  font-size: 1.5rem !important;
+  font-family: FilsonPro !important;
+  display: flex;
+  align-items: center;
+
+  & > div:last-child {
+    margin-top: 0.25rem;
+  }
+}
+
+.houseInfo {
+  display: flex;
+  gap: 1rem;
+
+  @include mq-desktop-xl--down {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 0.5rem;
+  }
+
+  @include mq-tablet-landscape--down {
+    width: 100%;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include mq-phone-only {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media screen and (max-width: 470px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  > div {
+    justify-content: flex-start;
+  }
+}
+
+.price {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  > div:nth-child(2) {
+    justify-content: flex-start;
+  }
+}
+
+.box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.moreInfo {
+  display: flex;
+  margin-top: 1rem;
+  gap: 0.5rem;
+
+  @include mq-tablet-landscape--down {
+    margin-top: 0.5rem;
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(3, 1fr);
+
+    > div {
+      justify-content: flex-start;
+    }
+  }
+
+  @include mq-phone-only {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media screen and (max-width: 470px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.font {
+  font-family: FilsonPro !important;
+}
+
+.table {
+  border-spacing: 5px;
+
+  tbody {
+    tr {
+      // border-bottom: 1px solid rgba(0, 0, 0, 1);
+      td {
+        padding: 0.25rem 0;
+
+        @include mq-desktop--down {
+          &:nth-child(2) {
+            width: 2rem;
+          }
+        }
+      }
+    }
+  }
+
+  @include mq-desktop--down {
+    width: 100%;
+  }
+}
+
+.grid {
+  margin-top: 1rem;
+
+  @include mq-desktop--down {
+    > div {
+      flex: 0 0 100% !important;
+      max-width: 100% !important;
+    }
+  }
+}

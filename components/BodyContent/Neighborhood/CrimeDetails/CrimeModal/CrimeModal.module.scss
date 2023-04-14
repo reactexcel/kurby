@@ -1,0 +1,20 @@
+@import "../../../../../styles/media.scss";
+
+.cardContainer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 0.25rem;
+
+  @include mq-desktop--down {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include mq-phone-only {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.mapContainer {
+  width: 100%;
+  margin-top: 1rem;
+}

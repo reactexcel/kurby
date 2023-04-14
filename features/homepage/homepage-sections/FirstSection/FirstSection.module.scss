@@ -1,0 +1,80 @@
+@import "../../../../styles/media.scss";
+
+.container {
+  display: flex;
+
+  @include mq-tablet-landscape--down {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.container > div:first-child,
+.container > div:last-child {
+  width: 50%;
+
+  @include mq-tablet-landscape--down {
+    width: 100%;
+  }
+}
+
+.info {
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.textWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: center;
+
+  @include mq-tablet-landscape--down {
+    gap: 1rem;
+  }
+}
+
+.paragraphWrapper {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  @include mq-tablet-landscape--down {
+    width: 100%;
+  }
+}
+
+.imageWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    max-width: 600px;
+    height: auto;
+
+    @include mq-tablet-landscape--down {
+      width: 100%;
+    }
+
+    @include mq-desktop--down {
+      max-width: 500px;
+    }
+  }
+}
+
+.button {
+  width: fit-content;
+  color: #00a13c;
+  border: 1px solid #00a13c !important;
+  border-radius: 0.5rem;
+  text-transform: none;
+}
+
+.line {
+  background-color: #fe6907;
+  width: 2rem;
+  height: 3px;
+  margin: 0;
+}

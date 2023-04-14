@@ -1,0 +1,36 @@
+@import "../../../../styles/media.scss";
+
+.wrapper {
+  display: flex;
+  background-color: rgba(190, 190, 190, 0.1);
+  border: 1px solid #e0e0e0;
+  width: 100%;
+  cursor: pointer;
+}
+
+.icon {
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.info {
+  padding: 15px;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.address {
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  margin-top: 1px;
+  gap: 0.5rem;
+
+  > div:last-child {
+    margin-top: 0.25rem;
+  }
+}

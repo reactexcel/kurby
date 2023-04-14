@@ -1,0 +1,43 @@
+@import "../../styles/media.scss";
+
+.filled,
+.outlined,
+.plain {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  font-size: 16px;
+  transition: background-color 0.3s, color 0.3s;
+  cursor: pointer;
+}
+
+.filled {
+  background-color: #21c25e;
+  border: 1px solid #21c25e;
+  color: white;
+  &:hover {
+    background-color: white;
+    color: #21c25e;
+  }
+}
+
+.outlined {
+  background-color: white;
+  border: 1px solid #21c25e;
+  color: #21c25e;
+  &:hover {
+    background-color: #21c25e;
+    color: white;
+  }
+}
+
+.plain {
+  display: inline-block;
+  color: #79889e;
+  font-weight: 400;
+  background: none !important;
+  &:hover {
+    background-color: none !important;
+    color: black;
+  }
+}

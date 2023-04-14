@@ -1,55 +1,10 @@
-import "../styles/globals.css";
+import "../styles/globals.scss";
 import type { AppProps } from "next/app";
 import Script from "next/script";
-import Topbar from "../components/Home/Topbar/Topbar";
-import { useState, useEffect } from "react";
+import Topbar from "../features/homepage/Topbar/Topbar";
 import { RecoilRoot } from "recoil";
 
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "../styles/theme";
-
-
 export default function App({ Component, pageProps }: AppProps) {
-  const [mobile, setMobile] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(0);
-
-  const handleResize = () => {
-    if (typeof window == "undefined") return;
-
-    // const width = window.innerWidth;
-    const vw = Math.max(
-      document.documentElement.clientWidth || 0,
-      window.innerWidth || 0
-    );
-
-    setWindowWidth(vw);
-    vw <= 960 ? setMobile(true) : setMobile(false);
-  };
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.addEventListener("resize", handleResize);
-      handleResize();
-    }
-  }, []);
-
-  useEffect(() => {
-    if (mobile) {
-      const dispatchResize = () => {
-        const event = new Event("resize");
-        window.dispatchEvent(event);
-      };
-
-      const interval = setInterval(dispatchResize, 50);
-
-      setTimeout(() => {
-        clearInterval(interval);
-      }, 1500);
-
-      return () => clearInterval(interval);
-    }
-  }, [mobile]);
-
   return (
     <>
       {/* @next/next/no-before-interactive-script-outside-document */}
@@ -62,21 +17,15 @@ export default function App({ Component, pageProps }: AppProps) {
         })(window,document,'script','dataLayer','GTM-P4C8M7L');
       `}
       </Script>
-      <Script
-        strategy="beforeInteractive"
-        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
-      />
+      <Script strategy="beforeInteractive" src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`} />
       <Topbar>
         <div
           style={{
             position: "relative",
-            width: windowWidth ? `${windowWidth}px` : "100%",
           }}
         >
           <RecoilRoot>
-            <ThemeProvider theme={theme}>
-              <Component mobile={mobile} {...pageProps} />
-            </ThemeProvider>
+            <Component {...pageProps} />
           </RecoilRoot>
         </div>
       </Topbar>
