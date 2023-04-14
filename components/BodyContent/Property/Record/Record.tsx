@@ -197,7 +197,7 @@ export default function Record({ propertyInfo, description }: { propertyInfo: Pr
       <Divider sx={{ height: "1.5px", borderColor: KBColor.LIGHT_GREY, marginTop: 1 }} />
 
       {description ? (
-        <Box sx={{ display: "flex", marginTop: "15px" }}>
+        <Box sx={{ display: "flex", marginTop: "1rem", marginBottom: "1rem" }}>
           <Box>
             <Typography variant="h6" component="h6">
               Explain It Like a Local
