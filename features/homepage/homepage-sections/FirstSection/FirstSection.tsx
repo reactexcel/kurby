@@ -23,7 +23,7 @@ export const FirstSection = () => {
           <div className={styles.line} />
           {isMobileTablet && <ImageComponent />}
           <div className={styles.paragraphWrapper}>
-            <Paragraph text="Weather you're a homebuyer or an investor, Kurby offers a complete picture of any property and it's surroundings, including market trends, demographics and location-specific details that can help you make a smart investment decision." />
+            <Paragraph text="Whether you're a homebuyer or an investor, Kurby offers a complete picture of any property and its surroundings, including market trends, demographics and location-specific details that can help you make an intelligent investment decision." />
             <Paragraph text="With Kurby, you can unlock the power of real estate intelligence and simplify your property search like never before. Try it - it's free, forever." />
             <Button variant="outlined" className={styles.button}>
               {"Learn More >>"}
