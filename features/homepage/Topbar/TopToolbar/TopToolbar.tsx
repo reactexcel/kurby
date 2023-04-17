@@ -59,7 +59,7 @@ const TopToolbar = () => {
               <Button variant="plain" onClick={() => router.push("https://blog.kurby.ai/")}>
                 Blog
               </Button>
-              <Button>Login / Register</Button>
+              <Button onClick={() => router.push("https://kurby.outseta.com/auth?widgetMode=register#o-anonymous")}>Login / Register</Button>
             </Box>
           </Box>
         </>

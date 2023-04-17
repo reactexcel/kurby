@@ -17,6 +17,12 @@ export default function App({ Component, pageProps }: AppProps) {
         })(window,document,'script','dataLayer','GTM-P4C8M7L');
       `}
       </Script>
+      {/* <Script id="outseta">
+        {`var o_options = {
+          domain: 'kurby.outseta.com'
+        };`}
+      </Script>
+      <Script src="https://cdn.outseta.com/outseta.min.js" data-options="o_options" id="outseta" /> */}
       <Script strategy="beforeInteractive" src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`} />
       <Topbar>
         <div
