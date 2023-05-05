@@ -7,23 +7,23 @@ import { useRecoilState } from "recoil";
 import { urlToAddress } from "utils/address";
 
 const Address = () => {
-    const router = useRouter();
-    const [address, setAddress] = useRecoilState(addressState)
+  const router = useRouter();
+  const [address, setAddress] = useRecoilState(addressState);
 
-    useEffect(() => {
-        const encodedAddress = router.query.address;
-        if (encodedAddress) {
-            const originalAddress = urlToAddress(encodedAddress.toString());
-            setAddress(originalAddress)
-        }
-    }, [router.query])
+  useEffect(() => {
+    const encodedAddress = router.query.address;
+    if (encodedAddress) {
+      const originalAddress = urlToAddress(encodedAddress.toString());
+      setAddress(originalAddress);
+    }
+  }, [router.query]);
 
-    return (
-        <>
-            <NextSeo title={address || "Kurby.ai"} description="Kurby uses location data to estimate property value like never before." />
-            <Resultspage />
-        </>
-    )
+  return (
+    <>
+      <NextSeo title={address || "AI for Real Estate - Kurby"} description="Kurby uses location data to estimate property value like never before." />
+      <Resultspage />
+    </>
+  );
 };
 
 export default Address;
