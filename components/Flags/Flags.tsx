@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { AIWarningToolTip } from "components/AIWarningTooltip/AIWarningTooltip";
 import { ParagraphSkeleton } from "components/ParagraphSkeleton/ParagraphSkeleton";
-import styles from "./Flags.module.css";
+import styles from "./Flags.module.scss";
 import { useRecoilState } from "recoil";
 import { loadingContext } from "context/loadingContext";
 
@@ -10,7 +10,7 @@ export const Flags = ({ color, flagsArr }: { color: string; flagsArr: any[] }) =
 
   const Title = () => (
     <Box style={{ marginTop: "10px" }}>
-      <Typography variant="subtitle2">
+      <Typography variant="subtitle1">
         {color} Flags
         <AIWarningToolTip />
       </Typography>
@@ -33,7 +33,11 @@ export const Flags = ({ color, flagsArr }: { color: string; flagsArr: any[] }) =
         <ul>
           {flagsArr.length ? (
             flagsArr.map((flagContent: string, index: number) => {
-              return <li key={index}>{flagContent}</li>;
+              return (
+                <li className={styles.li} key={index}>
+                  {flagContent}
+                </li>
+              );
             })
           ) : (
             <></>

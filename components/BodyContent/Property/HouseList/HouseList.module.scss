@@ -1,0 +1,14 @@
+@import "../../../../styles/media.scss";
+
+.wrapper {
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.gi {
+  @include mq-desktop-xl--down {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+}

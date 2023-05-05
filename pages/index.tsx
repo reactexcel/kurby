@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { Homepage } from "../components/Home/Homepage";
+import { Homepage } from "../features/homepage/Homepage/Homepage";
 import { addressState } from "../context/filterContext";
 import { NextSeo } from "next-seo";
 import MessageBar from "services/MessageBar";

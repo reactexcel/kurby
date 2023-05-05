@@ -1,0 +1,19 @@
+.card {
+  border: 1px solid lightgray;
+  box-shadow: none;
+  border-radius: 0.75rem;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 20px !important;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
