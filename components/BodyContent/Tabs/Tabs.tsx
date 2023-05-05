@@ -18,7 +18,7 @@ export function Tabs() {
   const [explainedLikeAlocal, setExplainedLikeAlocal] = useState("");
   const [greenFlags, setGreenFlags] = useState<any[]>([]);
   const [redFlags, setRedFlags] = useState<any[]>([]);
-  const [, setLoading] = useRecoilState(loadingContext);
+  const [loading, setLoading] = useRecoilState(loadingContext);
 
   const [filterVal] = useRecoilState(filterState);
 
@@ -49,6 +49,10 @@ export function Tabs() {
 
     const getOpenAiData = async () => {
       if (!filterVal.address) return;
+
+      if (!loading.openai) {
+        setLoading((prevState) => ({ ...prevState, openai: true }));
+      }
 
       setActiveTab("location");
       //* the entire selected place is sent in so we can validate the address
