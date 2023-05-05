@@ -60,6 +60,7 @@ export const Footer = () => {
             <Link linkText="Terms & Conditions" link="https://blog.kurby.ai/terms-and-conditions/" />
           </div>
         </div>
+        <Paragraph className={styles.mailingAddress}>7969 NW 2nd Street #1185, Miami, FL 33126, United States</Paragraph>
       </div>
       <div className={styles.social}>
         <IconButton className={styles.iconWrapper}>
