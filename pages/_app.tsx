@@ -3,6 +3,7 @@ import type { AppProps } from "next/app";
 import Script from "next/script";
 import Topbar from "../features/homepage/Topbar/Topbar";
 import { RecoilRoot } from "recoil";
+import { AuthProvider } from "providers/AuthProvider";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -17,12 +18,12 @@ export default function App({ Component, pageProps }: AppProps) {
         })(window,document,'script','dataLayer','GTM-P4C8M7L');
       `}
       </Script>
-      {/* <Script id="outseta">
+      <Script id="outseta-options" strategy="beforeInteractive">
         {`var o_options = {
-          domain: 'kurby.outseta.com'
+          domain: 'kurby.outseta.com',
         };`}
       </Script>
-      <Script src="https://cdn.outseta.com/outseta.min.js" data-options="o_options" id="outseta" /> */}
+      <Script src="https://cdn.outseta.com/outseta.min.js" data-options="o_options" id="outsetajs" strategy="beforeInteractive" />
       <Script strategy="beforeInteractive" src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`} />
       <Topbar>
         <div
@@ -30,9 +31,11 @@ export default function App({ Component, pageProps }: AppProps) {
             position: "relative",
           }}
         >
-          <RecoilRoot>
-            <Component {...pageProps} />
-          </RecoilRoot>
+          <AuthProvider>
+            <RecoilRoot>
+              <Component {...pageProps} />
+            </RecoilRoot>
+          </AuthProvider>
         </div>
       </Topbar>
     </>
