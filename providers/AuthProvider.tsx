@@ -1,4 +1,4 @@
-import { useEffect, useState, createContext, useRef } from "react";
+import { useEffect, useState, createContext, useRef, useContext } from "react";
 import { useRouter } from "next/router";
 
 /*
@@ -6,7 +6,20 @@ import { useRouter } from "next/router";
 Setting up an auth context to be used globally
 */
 
-export const AuthContext = createContext({});
+interface AuthContextType {
+  user: any;
+  isLoading: boolean;
+  openLogin: (options?: any) => void;
+  openSignup: (options?: any) => void;
+  openProfile: (options?: any) => void;
+  logout: () => void;
+}
+
+const AuthContext = createContext({} as AuthContextType);
+
+export function useAuth() {
+  return useContext(AuthContext);
+}
 
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -20,8 +33,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const outsetaRef = useRef<any>(null);
 
   useEffect(() => {
-    // Outseta is added to the window by the
-    // Outseta script added to the head in ../public/index.html
     if (window["Outseta" as any]) {
       outsetaRef.current = window["Outseta" as any];
     } else {

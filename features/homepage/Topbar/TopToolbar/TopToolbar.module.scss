@@ -8,6 +8,10 @@
   align-items: center;
   padding: 0rem 5rem !important;
 
+  @include mq-desktop--down {
+    padding: 0rem 3rem !important;
+  }
+
   @include mq-tablet-landscape--down {
     padding: 1rem 2rem !important;
   }
