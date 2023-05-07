@@ -12,7 +12,7 @@ import { useAuth } from "../../../../providers/AuthProvider";
 const TopToolbar = () => {
   const router = useRouter();
   const { isMobile } = useWindowSize();
-  const { openLogin, user, isLoading, logout } = useAuth();
+  const { openLogin, user, isLoading, logout, openProfile } = useAuth();
 
   const scrollToElement = () => {
     const element = document.getElementById("firstSection");
@@ -60,6 +60,7 @@ const TopToolbar = () => {
               <Button variant="plain" onClick={() => router.push("https://blog.kurby.ai/")}>
                 Blog
               </Button>
+              {user && !isLoading && <Button onClick={() => openProfile()}>{user.FullName}</Button>}
               {user && !isLoading && <Button onClick={() => logout()}>Logout</Button>}
               {!user && !isLoading && <Button onClick={() => openLogin()}>Login / Register</Button>}
             </Box>
