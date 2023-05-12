@@ -9,9 +9,8 @@ Setting up an auth context to be used globally
 interface AuthContextType {
   user: any;
   isLoading: boolean;
-  openLogin: (options?: any) => void;
-  openSignup: (options?: any) => void;
-  openProfile: (options?: any) => void;
+  openLoginSignup: () => void;
+  openProfile: () => void;
   logout: () => void;
 }
 
@@ -45,14 +44,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     if (accessToken) {
       outsetaRef.current?.setAccessToken(accessToken);
-      router.replace(router.pathname);
     }
 
     if (outsetaRef.current?.getAccessToken()) {
       updateUser();
-    } else {
-      setStatus("ready");
+      if (router.pathname === "/") {
+        router.push("/app/Miami--FL--USA");
+      }
     }
+
+    setStatus("ready");
 
     return () => {
       handleOutsetaUserEvents(() => {});
@@ -62,7 +63,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const updateUser = async () => {
     const outsetaUser = await outsetaRef.current?.getUser();
     setUser(outsetaUser);
-    setStatus("ready");
   };
 
   const handleOutsetaUserEvents = (onEvent: any) => {
@@ -77,24 +77,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setUser(null);
   };
 
-  const openLogin = (options: any) => {
+  const openLoginSignup = () => {
     outsetaRef.current?.auth.open({
       widgetMode: "login|register",
       authenticationCallbackUrl: window.location.href,
-      ...options,
     });
   };
 
-  const openSignup = (options: any) => {
-    outsetaRef.current?.auth?.open({
-      widgetMode: "register",
-      authenticationCallbackUrl: window.location.href,
-      ...options,
-    });
-  };
-
-  const openProfile = (options: any) => {
-    outsetaRef.current?.profile?.open({ tab: "profile", ...options });
+  const openProfile = () => {
+    outsetaRef.current?.profile?.open({ tab: "profile" });
   };
 
   return (
@@ -103,8 +94,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         user,
         isLoading: status !== "ready",
         logout,
-        openLogin,
-        openSignup,
+        openLoginSignup,
         openProfile,
       }}
     >

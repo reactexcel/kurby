@@ -21,7 +21,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <Script id="outseta" strategy="beforeInteractive">
         {`var o_options = {
           domain: "kurby.outseta.com",
-          tokenStorage: "local"
+          tokenStorage: "local",
         }`}
       </Script>
       <Script src="https://cdn.outseta.com/outseta.min.js" data-options="o_options" strategy="beforeInteractive" />
