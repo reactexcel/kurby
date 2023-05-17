@@ -68,7 +68,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     if (outsetaToken) {
-      const xanoToken = localStorage.getItem("xanoToken");
+      const xanoToken = sessionStorage.getItem("xanoToken");
 
       if (!xanoToken) {
         getXanoToken(outsetaToken);
@@ -86,7 +86,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       token: outsetaToken,
     });
 
-    localStorage.setItem("xanoToken", data.authToken);
+    sessionStorage.setItem("xanoToken", data.authToken);
   };
 
   const handleOutsetaUserEvents = (onEvent: any) => {
@@ -98,7 +98,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const logout = () => {
     outsetaRef.current?.setAccessToken("");
-    localStorage.removeItem("xanoToken");
+    sessionStorage.removeItem("xanoToken");
     setUser(null);
   };
 
