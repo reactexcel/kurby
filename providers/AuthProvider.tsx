@@ -1,5 +1,6 @@
 import { useEffect, useState, createContext, useRef, useContext } from "react";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 /*
 
@@ -29,6 +30,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const searchParams = router.query;
   const [status, setStatus] = useState("init");
   const [user, setUser] = useState<any>();
+  const [outsetaToken, setOutsetaToken] = useState<string>("");
   const outsetaRef = useRef<any>(null);
 
   useEffect(() => {
@@ -46,8 +48,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
       outsetaRef.current?.setAccessToken(accessToken);
     }
 
-    if (outsetaRef.current?.getAccessToken()) {
-      updateUser();
+    const token = outsetaRef.current?.getAccessToken();
+
+    if (token) {
+      setOutsetaToken(token);
+      getUser();
+
       if (router.pathname === "/") {
         router.push("/app/Miami--FL--USA");
       }
@@ -60,9 +66,27 @@ export function AuthProvider({ children }: AuthProviderProps) {
     };
   }, [searchParams]);
 
-  const updateUser = async () => {
+  useEffect(() => {
+    if (outsetaToken) {
+      const xanoToken = localStorage.getItem("xanoToken");
+
+      if (!xanoToken) {
+        getXanoToken(outsetaToken);
+      }
+    }
+  }, [outsetaToken]);
+
+  const getUser = async () => {
     const outsetaUser = await outsetaRef.current?.getUser();
     setUser(outsetaUser);
+  };
+
+  const getXanoToken = async (outsetaToken: string) => {
+    const { data } = await axios.post(`${process.env.NEXT_PUBLIC_XANO_API}/outseta/auth`, {
+      token: outsetaToken,
+    });
+
+    localStorage.setItem("xanoToken", data.authToken);
   };
 
   const handleOutsetaUserEvents = (onEvent: any) => {
@@ -74,6 +98,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const logout = () => {
     outsetaRef.current?.setAccessToken("");
+    localStorage.removeItem("xanoToken");
     setUser(null);
   };
 
@@ -81,6 +106,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
     outsetaRef.current?.auth.open({
       widgetMode: "login|register",
       authenticationCallbackUrl: window.location.href,
+      planUid: "pWrwqamn",
+      planPaymentTerm: "month",
+      skipPlanOptions: true,
     });
   };
 
