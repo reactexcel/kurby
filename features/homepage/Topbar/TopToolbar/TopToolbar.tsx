@@ -1,4 +1,3 @@
-import * as React from "react";
 import Toolbar from "@mui/material/Toolbar";
 import { Box } from "@mui/material";
 import { useRouter } from "next/router";
@@ -8,10 +7,12 @@ import styles from "./TopToolbar.module.scss";
 import { useWindowSize } from "hooks/use-window-size";
 import HamburgerIcon from "@mui/icons-material/Menu";
 import { Button } from "components/Button/Button";
+import { useAuth } from "../../../../providers/AuthProvider";
 
 const TopToolbar = () => {
   const router = useRouter();
   const { isMobile } = useWindowSize();
+  const { openLoginSignup, user, isLoading } = useAuth();
 
   const scrollToElement = () => {
     const element = document.getElementById("firstSection");
@@ -59,7 +60,7 @@ const TopToolbar = () => {
               <Button variant="plain" onClick={() => router.push("https://blog.kurby.ai/")}>
                 Blog
               </Button>
-              <Button>Login / Register</Button>
+              {!user && !isLoading && <Button onClick={() => openLoginSignup()}>Login / Register</Button>}
             </Box>
           </Box>
         </>

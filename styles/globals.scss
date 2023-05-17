@@ -78,3 +78,9 @@ select {
 .infinite-scroll-component {
   width: 100%;
 }
+
+.o--tab-plan,
+.o--tab-billing,
+.o--Account-BillingAddress {
+  display: none;
+}
