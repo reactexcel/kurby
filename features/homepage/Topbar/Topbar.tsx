@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import AppBar, { AppBarProps } from "@mui/material/AppBar";
 import CssBaseline from "@mui/material/CssBaseline";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
@@ -7,6 +6,8 @@ import { Slide } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import TopToolbar from "./TopToolbar/TopToolbar";
 import styles from "./Topbar.module.scss";
+import { useRouter } from "next/router";
+import Navbar from "components/Navbar/Navbar";
 
 const CustomTopBar = styled(AppBar)<AppBarProps>(() => ({
   backgroundColor: "white",
@@ -21,10 +22,13 @@ const CustomTopBar = styled(AppBar)<AppBarProps>(() => ({
 
 export default function Topbar(props: any) {
   const [trigger, setTrigger] = useState(false);
+  const router = useRouter();
 
   const scrollTrigger = useScrollTrigger({
     threshold: 150,
   });
+
+  const isHomepage = useMemo(() => router.pathname === "/", [router.pathname]);
 
   const { children } = props;
 
@@ -40,9 +44,7 @@ export default function Topbar(props: any) {
     >
       <CssBaseline />
       <Slide in={trigger} className={styles.slide}>
-        <CustomTopBar>
-          <TopToolbar />
-        </CustomTopBar>
+        <CustomTopBar>{isHomepage ? <TopToolbar /> : <Navbar />}</CustomTopBar>
       </Slide>
       {children}
     </div>

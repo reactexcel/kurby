@@ -17,6 +17,7 @@
   align-items: center;
   padding: 2rem;
   box-sizing: border-box;
+  width: 100%;
 
   @include mq-tablet-landscape--down {
     padding: 1rem 2rem;
