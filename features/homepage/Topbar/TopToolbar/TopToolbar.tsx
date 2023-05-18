@@ -7,7 +7,7 @@ import styles from "./TopToolbar.module.scss";
 import { useWindowSize } from "hooks/use-window-size";
 import HamburgerIcon from "@mui/icons-material/Menu";
 import { Button } from "components/Button/Button";
-import { useAuth } from "../../../../providers/AuthProvider";
+import { useAuth } from "providers/AuthProvider";
 
 const TopToolbar = () => {
   const router = useRouter();
