@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Toolbar from "@mui/material/Toolbar";
 import { Box } from "@mui/material";
 import { useRouter } from "next/router";
@@ -8,11 +9,13 @@ import { useWindowSize } from "hooks/use-window-size";
 import HamburgerIcon from "@mui/icons-material/Menu";
 import { Button } from "components/Button/Button";
 import { useAuth } from "providers/AuthProvider";
+import { HamburguerMenu } from "components/HamburgerMenu/HamburgerMenu";
 
 const TopToolbar = () => {
   const router = useRouter();
   const { isMobile } = useWindowSize();
   const { openLoginSignup, user, isLoading } = useAuth();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const scrollToElement = () => {
     const element = document.getElementById("firstSection");
@@ -29,7 +32,8 @@ const TopToolbar = () => {
       {isMobile ? (
         <>
           <Image src={darkLogo} alt="logo" className={styles.image} onClick={() => router.push("/")} />
-          <HamburgerIcon className={styles.icon} />
+          <HamburgerIcon className={styles.icon} onClick={() => setIsDrawerOpen(true)} />
+          <HamburguerMenu isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
         </>
       ) : (
         <>

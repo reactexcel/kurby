@@ -1,0 +1,9 @@
+.hamburgerMenuItem {
+  font-size: 1.5rem;
+  padding: 2.5rem 3rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f2f2f2;
+  }
+}
