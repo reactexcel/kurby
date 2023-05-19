@@ -31,19 +31,19 @@ export default function App({ Component, pageProps }: AppProps) {
       </Script>
       <Script src="https://cdn.outseta.com/outseta.min.js" data-options="o_options" strategy="beforeInteractive" />
       <Script strategy="beforeInteractive" src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`} />
-      <Topbar>
-        <div
-          style={{
-            position: "relative",
-          }}
-        >
-          <AuthProvider>
+      <AuthProvider>
+        <Topbar>
+          <div
+            style={{
+              position: "relative",
+            }}
+          >
             <RecoilRoot>
               <Component {...pageProps} />
             </RecoilRoot>
-          </AuthProvider>
-        </div>
-      </Topbar>
+          </div>
+        </Topbar>
+      </AuthProvider>
     </>
   );
 }

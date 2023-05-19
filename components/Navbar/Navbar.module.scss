@@ -17,6 +17,7 @@
   align-items: center;
   padding: 2rem;
   box-sizing: border-box;
+  width: 100%;
 
   @include mq-tablet-landscape--down {
     padding: 1rem 2rem;
@@ -59,6 +60,10 @@
   ul {
     padding: 0;
   }
+
+  @include mq-phone-only {
+    font-size: 1.5rem;
+  }
 }
 
 .menuItem {
@@ -68,5 +73,9 @@
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  @include mq-phone-only {
+    width: 12rem;
   }
 }

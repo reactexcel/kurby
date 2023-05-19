@@ -32,7 +32,6 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
         place: filterVal.selectedPlace,
         latLng: [lat, lng],
       });
-      console.log("propertyData =>>", propertyData);
       setPropertyInfo(propertyData.data);
       setLoading(false);
     }

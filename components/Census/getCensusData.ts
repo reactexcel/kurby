@@ -256,7 +256,6 @@ const getCensusData = (latlng: LatLong): Promise<CensusData> => {
           return a;
         }, {});
 
-        //console.log("mappedValues", mappedValues);
         resolve(deriveCensusData(mappedValues));
       },
     );
