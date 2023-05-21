@@ -1,5 +1,5 @@
 export enum KBColor {
-  GREEN = "#21C25E",
+  GREEN = "#00A13D",
   GREY = "#F1F4F6",
   DRAK_GREY = "#727272",
   LIGHT_GREY = "#E0E6EA",

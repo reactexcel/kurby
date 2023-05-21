@@ -31,7 +31,7 @@ export const Footer = () => {
       <p className={styles.link} onClick={() => (onClick ? onClick() : link && router.push(link))}>
         <span
           style={{
-            color: "#21C25E",
+            color: "#00A13D",
           }}
         />
         {linkText}
