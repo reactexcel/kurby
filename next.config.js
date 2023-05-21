@@ -23,6 +23,12 @@ const nextConfig = {
       },
     ],
   },
+  rewrites: async () => [
+    {
+      source: "/success",
+      destination: "/",
+    },
+  ],
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/i,

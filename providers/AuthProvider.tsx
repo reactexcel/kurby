@@ -2,11 +2,6 @@ import { useEffect, useState, createContext, useRef, useContext } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 
-/*
-
-Setting up an auth context to be used globally
-*/
-
 interface AuthContextType {
   user: any;
   isLoading: boolean;

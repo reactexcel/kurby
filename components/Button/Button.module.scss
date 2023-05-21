@@ -12,21 +12,21 @@
 }
 
 .filled {
-  background-color: #21c25e;
-  border: 1px solid #21c25e;
+  background-color: #00a13d;
+  border: 1px solid #00a13d;
   color: white;
   &:hover {
     background-color: white;
-    color: #21c25e;
+    color: #00a13d;
   }
 }
 
 .outlined {
   background-color: white;
-  border: 1px solid #21c25e;
-  color: #21c25e;
+  border: 1px solid #00a13d;
+  color: #00a13d;
   &:hover {
-    background-color: #21c25e;
+    background-color: #00a13d;
     color: white;
   }
 }
