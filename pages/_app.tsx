@@ -30,7 +30,16 @@ export default function App({ Component, pageProps }: AppProps) {
         }`}
       </Script>
       <Script src="https://cdn.outseta.com/outseta.min.js" data-options="o_options" strategy="beforeInteractive" />
-      <Script strategy="beforeInteractive" src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`} />
+      <Script strategy="beforeInteractive" id="initMap">
+        {`
+        function initMap() {
+          sessionStorage.setItem("googleMapsLoaded", "true");
+        }`}
+      </Script>
+      <Script
+        strategy="beforeInteractive"
+        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places&callback=initMap`}
+      />
       <AuthProvider>
         <Topbar>
           <div

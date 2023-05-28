@@ -1,5 +1,5 @@
-import React from "react";
-import { GoogleMap, MarkerF, useJsApiLoader } from "@react-google-maps/api";
+import React, { useEffect, useState } from "react";
+import { GoogleMap, MarkerF } from "@react-google-maps/api";
 import { filterState } from "../../../context/filterContext";
 import { useRecoilState } from "recoil";
 import GLOBAL_SETTINGS from "../../../globals/GLOBAL_SETTINGS";
@@ -16,13 +16,9 @@ import styles from "./Gmap.module.scss";
 const initialCenter = { lat: 38.9987208, lng: -77.2538699 };
 
 function MyComponent() {
-  const { isLoaded } = useJsApiLoader({
-    id: "google-map-script",
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
-  });
-
   const [map, setMap] = React.useState(null) as any;
   const [filterVal, setFilterVal] = useRecoilState(filterState);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   //* Google maps options
   //* SEE https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions
@@ -40,6 +36,12 @@ function MyComponent() {
   //* On Unmount
   const onUnmount = React.useCallback(function callback(map: any) {
     setMap(null);
+  }, []);
+
+  useEffect(() => {
+    const googleMapsLoaded = sessionStorage.getItem("googleMapsLoaded");
+
+    setIsLoaded(googleMapsLoaded === "true");
   }, []);
 
   //* Handle when the map is dragged. Get center and update global state
@@ -101,7 +103,11 @@ function MyComponent() {
     }, []);
   }, [filterVal.nearbyPlaces]);
 
-  return isLoaded ? (
+  if (!isLoaded) {
+    return <div>Map error</div>;
+  }
+
+  return (
     <GoogleMap
       center={filterVal.latlong || initialCenter}
       zoom={GLOBAL_SETTINGS.MAP_ZOOM_DEFAULT}
@@ -124,8 +130,6 @@ function MyComponent() {
         )}
       </>
     </GoogleMap>
-  ) : (
-    <></>
   );
 }
 

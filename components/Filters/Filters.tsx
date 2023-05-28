@@ -241,9 +241,7 @@ export default function Filters() {
           <div className={styles.iconWrapper}>
             <Illustration className={styles.matIcon} />
           </div>
-          <form style={{ width: "-webkit-fill-available" }}>
-            <input placeholder="Search Property Here" className={styles.input} type="text" ref={inputRef} />
-          </form>
+          <input placeholder="Search Property Here" className={styles.input} type="text" ref={inputRef} />
         </div>
 
         {/* <div className={styles.searchBlock}>
