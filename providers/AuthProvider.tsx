@@ -49,7 +49,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setOutsetaToken(token);
       getUser();
 
-      if (router.pathname === "/") {
+      if (router.pathname === "/" && (accessToken || user)) {
         router.push("/app/Miami--FL--USA");
       }
     }

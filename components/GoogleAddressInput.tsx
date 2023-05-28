@@ -17,28 +17,20 @@ interface Props {
   inputProps?: any;
   placeholder?: string;
   value?: any;
-  handleSelectedAddress: (e:any) => void;
+  handleSelectedAddress: (e: any) => void;
 }
 
 const GoogleAddressInput = (params: Props) => {
   const autoCompleteRef: any = useRef();
   const inputRef = useRef<HTMLInputElement>(null);
   const AUTOCOMPLETE_OPTIONS = {
-    fields: [
-      "photo",
-      "vicinity",
-      "address_components",
-      "geometry",
-      "icon",
-      "name",
-      "formatted_address",
-    ],
+    fields: ["photo", "vicinity", "address_components", "geometry", "icon", "name", "formatted_address"],
   };
 
   const {
     label,
     sx = {},
-    className = '',
+    className = "",
     color = "primary",
     id = "",
     name = "",
@@ -55,14 +47,11 @@ const GoogleAddressInput = (params: Props) => {
   } = params;
 
   useEffect(() => {
-    if(!inputRef.current) return;
+    if (!inputRef.current) return;
 
-    autoCompleteRef.current = new window.google.maps.places.Autocomplete(
-      inputRef.current,
-      AUTOCOMPLETE_OPTIONS
-    );
+    autoCompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current, AUTOCOMPLETE_OPTIONS);
 
-    const Listener = autoCompleteRef.current.addListener("place_changed", async()=>{
+    const Listener = autoCompleteRef.current.addListener("place_changed", async () => {
       const place = await autoCompleteRef.current.getPlace();
       handleSelectedAddress(place);
     });
@@ -70,7 +59,7 @@ const GoogleAddressInput = (params: Props) => {
     return () => {
       Listener.remove();
       autoCompleteRef.current = undefined;
-    }
+    };
   }, []);
 
   return (

@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useRecoilState } from "recoil";
 import { filterState } from "../../../context/filterContext";
 import Nearby from "../Nearby/Nearby";
@@ -12,6 +12,7 @@ import Property from "../Property/Property";
 import { Location } from "../Location/Location";
 import { loadingContext } from "context/loadingContext";
 import styles from "./Tabs.module.scss";
+import { searchContext } from "context/searchCounter";
 
 export function Tabs() {
   const [activeTab, setActiveTab] = useRecoilState(activeTabState);
@@ -19,7 +20,7 @@ export function Tabs() {
   const [greenFlags, setGreenFlags] = useState<any[]>([]);
   const [redFlags, setRedFlags] = useState<any[]>([]);
   const [loading, setLoading] = useRecoilState(loadingContext);
-
+  const [{ count }] = useRecoilState(searchContext);
   const [filterVal] = useRecoilState(filterState);
 
   const [showHome, setShowHome] = useState<boolean>(true);
@@ -29,6 +30,8 @@ export function Tabs() {
       setActiveTab(newTab);
     }
   };
+
+  const searchLimit = useMemo(() => +count > 5, [count]);
 
   useEffect(() => {
     const getPropertyRecord = async (formatted_address: string) => {
@@ -99,13 +102,15 @@ export function Tabs() {
           </ToggleButton>
         </ToggleButtonGroup>
 
-        <Box className={styles.tabsWrapper}>
-          {activeTab === "location" && <Location explainedLikeAlocal={explainedLikeAlocal} greenFlags={greenFlags} redFlags={redFlags} />}
-          {activeTab == "nearby" && <Nearby />}
-          {activeTab == "property" && showHome && <Property explainedLikeAlocal={explainedLikeAlocal} />}
+        {!searchLimit && (
+          <Box className={styles.tabsWrapper}>
+            {activeTab === "location" && <Location explainedLikeAlocal={explainedLikeAlocal} greenFlags={greenFlags} redFlags={redFlags} />}
+            {activeTab == "nearby" && <Nearby />}
+            {activeTab == "property" && showHome && <Property explainedLikeAlocal={explainedLikeAlocal} />}
 
-          {activeTab == "neighborhood" && <Neighborhood filterVal={filterVal} />}
-        </Box>
+            {activeTab == "neighborhood" && <Neighborhood filterVal={filterVal} />}
+          </Box>
+        )}
       </Box>
     </>
   );
