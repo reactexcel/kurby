@@ -269,9 +269,9 @@ export default function Filters() {
         </div> */}
         {searchLimit && (
           <Dialog open className={styles.dialog}>
-            <h2 className={styles.dialogTitle}>Search Limit Reached</h2>
+            <h2 className={styles.dialogTitle}>Daily Search Limit Reached</h2>
             <DialogContent className={styles.dialogContent}>
-              You’ve reached your daily search limit. To get unlimited access forever: Log In or Join Kurby, but you are free to accept or refuse.
+              You’ve reached your daily search limit. To get free unlimited access forever: Log In or Join Kurby, but you are free to accept or refuse.
               <LoginSignupButton />
             </DialogContent>
           </Dialog>

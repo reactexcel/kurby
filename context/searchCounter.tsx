@@ -4,6 +4,7 @@ type SearchCounter = {
   key: string;
   default: {
     count: string;
+    searchLimit: boolean;
   };
 };
 
@@ -11,6 +12,7 @@ const searchCounterState: SearchCounter = {
   key: "searchCounter",
   default: {
     count: "0",
+    searchLimit: false,
   },
 };
 

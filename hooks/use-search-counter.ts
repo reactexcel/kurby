@@ -1,45 +1,71 @@
 import { searchContext } from "context/searchCounter";
 import { useAuth } from "providers/AuthProvider";
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
+
+const initialValues = () => {
+  const date = new Date();
+
+  return { count: "0", date: new Date(date.getTime() - date.getTimezoneOffset() * 60000) };
+};
 
 export const useSearchCounter = () => {
   const { user } = useAuth();
-  const [{ count }, setCounter] = useRecoilState(searchContext);
+  const [{ count, searchLimit }, setCounter] = useRecoilState(searchContext);
+  const [date, setDate] = useState<Date>(new Date());
+
+  const hasDateExpired = (date: Date) => {
+    date.setHours(0, 0, 0, 0);
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    return date.getTime() < today.getTime();
+  };
+
+  const resetCounterStorage = useCallback(() => {
+    window.localStorage.setItem("searchCounter", JSON.stringify(initialValues()));
+  }, []);
+  const setCounterCallback = useCallback((key: "count" | "searchLimit", value: string | boolean) => setCounter((prev) => ({ ...prev, [key]: value })), []);
+  const resetCounter = useCallback(() => setCounter(() => ({ searchLimit: false, count: "0" })), []);
 
   useEffect(() => {
     if (!user) {
-      let searchCounterStorage = window.localStorage.getItem("searchCounter");
+      const item = window.localStorage.getItem("searchCounter");
+      let searchCounterStorage = JSON.parse(item || "null");
 
       if (!searchCounterStorage) {
-        window.localStorage.setItem("searchCounter", "0");
+        resetCounterStorage();
+        searchCounterStorage = initialValues();
       }
 
-      setCounter(() => ({
-        count: searchCounterStorage || "0",
-      }));
+      if (searchCounterStorage?.date && hasDateExpired(new Date(searchCounterStorage.date))) {
+        setDate(new Date());
+        resetCounter();
+        resetCounterStorage();
+      } else {
+        setDate(searchCounterStorage.date);
+        setCounterCallback("count", searchCounterStorage.count || "0");
+      }
     } else {
-      setCounter((prev) => ({
-        ...prev,
-        count: "0",
-      }));
+      resetCounter();
       window.localStorage.removeItem("searchCounter");
     }
   }, [user]);
 
   useEffect(() => {
     if (!user && count !== "0") {
-      window.localStorage.setItem("searchCounter", count);
+      window.localStorage.setItem("searchCounter", JSON.stringify({ count, date }));
+    }
+
+    if (+count > 4 && !searchLimit) {
+      setCounterCallback("searchLimit", true);
+    } else if (+count <= 4 && searchLimit) {
+      setCounterCallback("searchLimit", false);
     }
   }, [count]);
 
-  const incrementCounter = () =>
-    setCounter((prev) => ({
-      ...prev,
-      count: (+prev.count + 1).toString(),
-    }));
-
-  const searchLimit = useMemo(() => count && +count > 4, [count]);
+  const incrementCounter = () => setCounterCallback("count", (+count + 1).toString());
 
   return { searchLimit, incrementCounter };
 };

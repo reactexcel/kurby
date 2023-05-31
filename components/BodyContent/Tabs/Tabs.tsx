@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { filterState } from "../../../context/filterContext";
 import Nearby from "../Nearby/Nearby";
@@ -20,7 +20,7 @@ export function Tabs() {
   const [greenFlags, setGreenFlags] = useState<any[]>([]);
   const [redFlags, setRedFlags] = useState<any[]>([]);
   const [loading, setLoading] = useRecoilState(loadingContext);
-  const [{ count }] = useRecoilState(searchContext);
+  const [{ searchLimit }] = useRecoilState(searchContext);
   const [filterVal] = useRecoilState(filterState);
 
   const [showHome, setShowHome] = useState<boolean>(true);
@@ -30,8 +30,6 @@ export function Tabs() {
       setActiveTab(newTab);
     }
   };
-
-  const searchLimit = useMemo(() => +count > 5, [count]);
 
   useEffect(() => {
     const getPropertyRecord = async (formatted_address: string) => {
