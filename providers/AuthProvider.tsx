@@ -36,6 +36,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }, []);
 
+  const handleLogin = () => {
+    localStorage.removeItem("searchCounter");
+    router.push("/app/Miami--FL--USA");
+  };
+
   useEffect(() => {
     const accessToken = searchParams["access_token"];
 
@@ -48,11 +53,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     if (token) {
       setOutsetaToken(token);
       getUser();
-
-      if (router.pathname === "/" && (accessToken || user)) {
-        localStorage.removeItem("searchCounter");
-        router.push("/app/Miami--FL--USA");
-      }
     }
 
     setStatus("ready");
@@ -61,6 +61,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
       handleOutsetaUserEvents(() => {});
     };
   }, [searchParams]);
+
+  useEffect(() => {
+    if (user && router.pathname === "/") {
+      handleLogin();
+    }
+  }, [user]);
 
   useEffect(() => {
     if (outsetaToken) {

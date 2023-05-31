@@ -39,7 +39,7 @@ export const useSearchCounter = () => {
       count: (+prev.count + 1).toString(),
     }));
 
-  const searchLimit = useMemo(() => count && +count > 5, [count]);
+  const searchLimit = useMemo(() => count && +count > 4, [count]);
 
   return { searchLimit, incrementCounter };
 };
