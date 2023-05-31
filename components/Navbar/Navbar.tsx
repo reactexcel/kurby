@@ -4,6 +4,7 @@ import { useAuth } from "providers/AuthProvider";
 import { Menu } from "@mui/material";
 import { useRef, useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { LoginSignupButton } from "components/LoginSignupButton/LoginSignupButton";
 
 /**
  * Navbar
@@ -19,7 +20,7 @@ export default function Navbar() {
     <>
       <div className={styles.content}>
         <div className={styles.logo} onClick={() => router.push("/")}></div>
-        {user && (
+        {user ? (
           <>
             <div ref={userRef} className={styles.user} onClick={() => setIsOpen(true)}>
               <img className={styles.userImage} src={user?.ProfileImageS3Url || "/images/user.webp"} alt=""></img>
@@ -41,13 +42,14 @@ export default function Navbar() {
                 className={styles.menuItem}
                 onClick={() => {
                   logout();
-                  router.push("/");
                 }}
               >
                 Logout
               </div>
             </Menu>
           </>
+        ) : (
+          <LoginSignupButton />
         )}
       </div>
     </>

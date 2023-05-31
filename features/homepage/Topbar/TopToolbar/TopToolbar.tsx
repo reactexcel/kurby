@@ -10,6 +10,7 @@ import HamburgerIcon from "@mui/icons-material/Menu";
 import { Button } from "components/Button/Button";
 import { useAuth } from "providers/AuthProvider";
 import { HamburguerMenu } from "components/HamburgerMenu/HamburgerMenu";
+import { LoginSignupButton } from "components/LoginSignupButton/LoginSignupButton";
 
 const TopToolbar = () => {
   const router = useRouter();
@@ -64,7 +65,7 @@ const TopToolbar = () => {
               <Button variant="plain" onClick={() => router.push("https://blog.kurby.ai/")}>
                 Blog
               </Button>
-              {!user && !isLoading && <Button onClick={() => openLoginSignup()}>Login / Register</Button>}
+              <LoginSignupButton />
             </Box>
           </Box>
         </>

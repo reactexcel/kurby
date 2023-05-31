@@ -12,6 +12,7 @@ import Property from "../Property/Property";
 import { Location } from "../Location/Location";
 import { loadingContext } from "context/loadingContext";
 import styles from "./Tabs.module.scss";
+import { searchContext } from "context/searchCounter";
 
 export function Tabs() {
   const [activeTab, setActiveTab] = useRecoilState(activeTabState);
@@ -19,7 +20,7 @@ export function Tabs() {
   const [greenFlags, setGreenFlags] = useState<any[]>([]);
   const [redFlags, setRedFlags] = useState<any[]>([]);
   const [loading, setLoading] = useRecoilState(loadingContext);
-
+  const [{ searchLimit }] = useRecoilState(searchContext);
   const [filterVal] = useRecoilState(filterState);
 
   const [showHome, setShowHome] = useState<boolean>(true);
@@ -99,13 +100,15 @@ export function Tabs() {
           </ToggleButton>
         </ToggleButtonGroup>
 
-        <Box className={styles.tabsWrapper}>
-          {activeTab === "location" && <Location explainedLikeAlocal={explainedLikeAlocal} greenFlags={greenFlags} redFlags={redFlags} />}
-          {activeTab == "nearby" && <Nearby />}
-          {activeTab == "property" && showHome && <Property explainedLikeAlocal={explainedLikeAlocal} />}
+        {!searchLimit && (
+          <Box className={styles.tabsWrapper}>
+            {activeTab === "location" && <Location explainedLikeAlocal={explainedLikeAlocal} greenFlags={greenFlags} redFlags={redFlags} />}
+            {activeTab == "nearby" && <Nearby />}
+            {activeTab == "property" && showHome && <Property explainedLikeAlocal={explainedLikeAlocal} />}
 
-          {activeTab == "neighborhood" && <Neighborhood filterVal={filterVal} />}
-        </Box>
+            {activeTab == "neighborhood" && <Neighborhood filterVal={filterVal} />}
+          </Box>
+        )}
       </Box>
     </>
   );
