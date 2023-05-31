@@ -50,6 +50,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       getUser();
 
       if (router.pathname === "/" && (accessToken || user)) {
+        localStorage.removeItem("searchCounter");
         router.push("/app/Miami--FL--USA");
       }
     }
