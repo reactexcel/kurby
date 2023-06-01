@@ -65,7 +65,11 @@ export const useSearchCounter = () => {
     }
   }, [count]);
 
-  const incrementCounter = () => setCounterCallback("count", (+count + 1).toString());
+  const incrementCounter = () => {
+    if (!user) {
+      setCounterCallback("count", (+count + 1).toString());
+    }
+  };
 
   return { searchLimit, incrementCounter };
 };
