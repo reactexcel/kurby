@@ -105,12 +105,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const openLoginSignup = () => {
+    if (!outsetaRef.current?.auth) {
+      router.push("https://kurby.outseta.com/auth");
+      return;
+    }
+
     outsetaRef.current?.auth.open({
       widgetMode: "login|register",
       authenticationCallbackUrl: window.location.href,
-      planUid: "pWrwqamn",
-      planPaymentTerm: "month",
-      skipPlanOptions: true,
     });
   };
 
