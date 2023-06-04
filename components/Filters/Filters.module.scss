@@ -56,20 +56,12 @@
   display: flex;
   width: 25%;
   border-radius: 10px;
-  margin-bottom: 14px;
 }
 
 .blockDistance {
   width: 60%;
   border-right: 1px solid rgba(135, 135, 135, 0.5);
   padding-right: 50px;
-}
-
-.row {
-  display: flex;
-  place-content: center space-between;
-  align-items: center;
-  height: 30px;
 }
 
 .label {

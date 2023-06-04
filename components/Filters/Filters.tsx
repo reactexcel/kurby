@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import { addressToUrl } from "utils/address";
 import { loadingContext } from "context/loadingContext";
 import { useSearchCounter } from "hooks/use-search-counter";
-import { Dialog, DialogContent } from "@mui/material";
+import { Checkbox, Dialog, DialogContent, FormControl, InputLabel, ListItemText, MenuItem, Select } from "@mui/material";
 import { LoginSignupButton } from "components/LoginSignupButton/LoginSignupButton";
 import { mapClicksCounter, visitorStayLimit } from "context/visitorContext";
 import { usePersistentRecoilState } from "hooks/recoil-persist-state";
@@ -21,10 +21,22 @@ import { useAuth } from "providers/AuthProvider";
 import { IAppPlans } from "context/plansContext";
 import { GetStarted } from "components/GetStartedPricing/GetStartedPricing";
 import { usePlanChecker } from "hooks/plans";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
 const { MILES_TO_METERS, MAP_ZOOM_MILES, PLACE_TYPES } = GLOBAL_SETTINGS;
+const SELECT_INPUT_DROPDOWN_HEIGHT = 100;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: SELECT_INPUT_DROPDOWN_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 /**
  * Filters
@@ -33,7 +45,7 @@ const { MILES_TO_METERS, MAP_ZOOM_MILES, PLACE_TYPES } = GLOBAL_SETTINGS;
 
 export default function Filters() {
   //* Use global state management
-  const [, setFilterVal] = useRecoilState(filterState);
+  const [filterVal, setFilterVal] = useRecoilState(filterState);
   const [address] = useRecoilState(addressState);
   const [, setSnackbar] = useRecoilState(snackbarContext);
   const [isSelectAll, setSelectAll] = useState<boolean>(true);
@@ -113,7 +125,6 @@ export default function Filters() {
 
         return {
           ...prevVal,
-
           nearbyPlaces: goodPlaceListings,
         };
       });
@@ -276,15 +287,11 @@ export default function Filters() {
           <input placeholder="Search Property Here" className={styles.input} type="text" ref={inputRef} />
         </div>
 
-        {/* <div className={styles.searchBlock}>
+        <div className={styles.searchBlock}>
           <div className={styles.typeOfPlace}>
             <div className={styles.row}>
-              <div className={styles.label}>Places of interest</div>
-            </div>
-            <div className={styles.row} style={{ marginTop: "6px" }}>
               <form style={{ width: "100%" }}>
                 <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label"></InputLabel>
                   <Select
                     id="demo-multiple-checkbox"
                     multiple
@@ -294,9 +301,8 @@ export default function Filters() {
                     MenuProps={MenuProps}
                     style={{ fontSize: "16px" }}
                     autoWidth={true}
-                    label=""
                   >
-                    <MenuItem key="toggleAll" style={{ padding: "0px" }} onClick={handleToggleAll}>
+                    <MenuItem key="toggleAll" onClick={handleToggleAll}>
                       <Checkbox icon={<RadioButtonUncheckedIcon />} checkedIcon={<RadioButtonCheckedIcon />} onChange={handleToggleAll} checked={isSelectAll} />
                       <ListItemText primary={isSelectAll ? "Deselect All" : "Select All"} />
                     </MenuItem>
@@ -311,7 +317,7 @@ export default function Filters() {
               </form>
             </div>
           </div>
-        </div> */}
+        </div>
         {showDialog && (
           <Dialog open className={styles.dialog}>
             <h2 className={styles.dialogTitle}>Daily {(searchLimit && "Search") || ""} Limit Reached</h2>

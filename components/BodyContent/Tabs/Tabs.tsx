@@ -48,6 +48,10 @@ export function Tabs() {
             Location
           </ToggleButton>
 
+          <ToggleButton className={styles.button} value="nearby">
+            Nearby
+          </ToggleButton>
+
           <ToggleButton className={styles.button} value="property">
             {filterVal.placeCategory === "address" ? "Property data" : "Properties"}
           </ToggleButton>
@@ -57,7 +61,7 @@ export function Tabs() {
           </ToggleButton>
         </ToggleButtonGroup>
 
-        {!searchLimit && (
+        {/* {!searchLimit && (
           <Box className={styles.tabsWrapper}>
             {activeTab === "location" && <Location />}
             {activeTab == "nearby" && <Nearby />}
@@ -65,7 +69,7 @@ export function Tabs() {
 
             {activeTab == "neighborhood" && <Neighborhood filterVal={filterVal} />}
           </Box>
-        )}
+        )} */}
       </Box>
     </>
   );
