@@ -110,7 +110,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       return;
     }
 
-    outsetaRef.current?.auth.open({
+    outsetaRef.current?.auth?.open({
       widgetMode: "login|register",
       authenticationCallbackUrl: window.location.href,
     });
