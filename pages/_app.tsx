@@ -22,11 +22,6 @@ export default function App({ Component, pageProps }: AppProps) {
         {`var o_options = {
           domain: "kurby.outseta.com",
           tokenStorage: "local",
-          auth: {
-            planUid: "pWrwqamn",
-            planPaymentTerm: "month",
-            skipPlanOptions: true,
-          }
         }`}
       </Script>
       <Script src="https://cdn.outseta.com/outseta.min.js" data-options="o_options" strategy="beforeInteractive" />
