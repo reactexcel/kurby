@@ -3,8 +3,10 @@
 .main {
   height: 200px;
   width: 200px;
+  max-width: 200px;
   min-width: 200px;
   margin-right: 1.25rem;
+  border-radius: 10px;
 
   @include mq-tablet-landscape--down {
     width: 100%;

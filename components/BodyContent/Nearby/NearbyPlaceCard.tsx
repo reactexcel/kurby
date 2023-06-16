@@ -4,7 +4,7 @@ import { Rating } from "react-simple-star-rating";
 import PersonIcon from "../../../public/images/person.svg";
 import BicycleIcon from "../../../public/images/bicycle.svg";
 import CarIcon from "../../../public/images/car.svg";
-import styles from "./NearbyPlace.module.css";
+import styles from "./NearbyPlace.module.scss";
 import StreetView from "../StreetView/StreetView";
 import LocationSvg from "../../../public/icons/location.svg";
 
@@ -53,21 +53,7 @@ export default function NearbyPlaceCard({ place }: any) {
         <Box style={{ display: "flex" }}>
           {getPhoto(photos?.[0]?.photo_reference) && (
             // @next/next/no-img-element
-            <img
-              style={{
-                backgroundSize: "cover",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-                borderRadius: "10px",
-                marginRight: "16px",
-                minWidth: "200px",
-                objectFit: "cover",
-              }}
-              src={getPhoto(photos?.[0]?.photo_reference)}
-              alt="Picture of the author"
-              width={200}
-              height={200}
-            />
+            <img className={styles.image} src={getPhoto(photos?.[0]?.photo_reference)} alt="Picture of the author" width={200} height={200} />
           )}
           {!getPhoto(photos?.[0]?.photo_reference) && <StreetView position={position} />}
           <Box>
@@ -104,31 +90,31 @@ export default function NearbyPlaceCard({ place }: any) {
             <Chip disabled={true} style={{ color: "#000000", opacity: "0.8" }} label={formatPlaceType(place._type)} />
           </Box>
         </Box>
-        <Box
-          style={{
-            backgroundColor: "#bebebe1a",
-            minWidth: "190px",
+        {(walking || biclycling || driving) && (
+          <Box className={styles.distance}>
+            <Typography>{Object.keys(driving).length ? `${driving.distance} Miles` : ""}</Typography>
+            <Divider />
 
-            borderRadius: "10px",
-            padding: "12px",
-          }}
-        >
-          <Typography>{Object.keys(driving).length ? `${driving.distance} Miles` : ""}</Typography>
-          <Divider />
-
-          <Box className={styles.nearbyDistanceBox}>
-            <PersonIcon className={styles.nearbyIcon} />
-            <Typography>{distanceText(walking)}</Typography>
+            {walking && (
+              <Box className={styles.nearbyDistanceBox}>
+                <PersonIcon className={styles.nearbyIcon} />
+                <Typography>{distanceText(walking)}</Typography>
+              </Box>
+            )}
+            {driving && (
+              <Box className={styles.nearbyDistanceBox}>
+                <CarIcon className={styles.nearbyIcon} />
+                <Typography>{distanceText(driving)}</Typography>
+              </Box>
+            )}
+            {biclycling && (
+              <Box className={styles.nearbyDistanceBox}>
+                <BicycleIcon className={styles.nearbyIcon} />
+                <Typography>{distanceText(biclycling)}</Typography>
+              </Box>
+            )}
           </Box>
-          <Box className={styles.nearbyDistanceBox}>
-            <CarIcon className={styles.nearbyIcon} />
-            <Typography>{distanceText(driving)}</Typography>
-          </Box>
-          <Box className={styles.nearbyDistanceBox}>
-            <BicycleIcon className={styles.nearbyIcon} />
-            <Typography>{distanceText(biclycling)}</Typography>
-          </Box>
-        </Box>
+        )}
       </Box>
     </Box>
   );

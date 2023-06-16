@@ -6,7 +6,7 @@ import { useState, useRef, useEffect, use } from "react";
 import { useRecoilState } from "recoil";
 import { addressState, filterState } from "../../context/filterContext";
 import GLOBAL_SETTINGS from "../../globals/GLOBAL_SETTINGS";
-import searchNearbyApi from "./searchNearbyApi";
+import { searchNearbyApi } from "./searchNearbyApi";
 import WalkscoreListApi from "../BodyContent/Walkscore/WalkscoreListApi";
 import snackbarContext from "../../context/snackbarContext";
 import { useRouter } from "next/router";
@@ -23,6 +23,7 @@ import { GetStarted } from "components/GetStartedPricing/GetStartedPricing";
 import { usePlanChecker } from "hooks/plans";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
+import { activeTabState } from "context/activeTab";
 
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
@@ -46,12 +47,12 @@ const MenuProps = {
 export default function Filters() {
   //* Use global state management
   const [filterVal, setFilterVal] = useRecoilState(filterState);
+  const [activeTab] = useRecoilState(activeTabState);
   const [address] = useRecoilState(addressState);
   const [, setSnackbar] = useRecoilState(snackbarContext);
   const [isSelectAll, setSelectAll] = useState<boolean>(true);
-  const [, setLoading] = useRecoilState(loadingContext);
-  const { incrementCounter } = useSearchCounter();
-  const { searchLimit } = useSearchCounter();
+  const [loading, setLoading] = useRecoilState(loadingContext);
+  const { searchLimit, incrementCounter } = useSearchCounter();
 
   //* State for the place select element
   const [typesOfPlace, setTypesOfPlace] = useState<any[]>(PLACE_TYPES);
@@ -93,6 +94,13 @@ export default function Filters() {
       //Verify that we have a latlong value before trying to search api
       if (!lat) return;
 
+      if (!loading.nearby) {
+        setLoading((prev) => ({
+          ...prev,
+          nearby: true,
+        }));
+      }
+
       const searchNearbyPayload = {
         typesOfPlace,
         request: {
@@ -132,6 +140,13 @@ export default function Filters() {
       //TODO error handling - errors should be displayed to end user
       console.error(error);
     }
+
+    if (loading.nearby) {
+      setLoading((prev) => ({
+        ...prev,
+        nearby: false,
+      }));
+    }
   };
 
   const handleToggleAll = () => {
@@ -144,20 +159,6 @@ export default function Filters() {
     }
   };
 
-  // Commented "Nearby places"
-  // useEffect(() => {
-  //   //* this use effect only runs when the map center or type of place changes
-  //   //* Searching a different place will change map center
-  //   (async () => {
-  //     if (!filterVal.mapCenter) return;
-  //     //* Retreive all of the nearby places
-  //     await getNearby({
-  //       lat: filterVal.mapCenter.lat,
-  //       lng: filterVal.mapCenter.lng,
-  //     });
-
-  //   })()
-  // }, [filterVal.mapCenter, typesOfPlace]);
   const getPlaceCategory = (addressComponents: any[]) => {
     const hasLocality = addressComponents.some((component) => component.types.includes("locality"));
     const hasStreetNumber = addressComponents.some((component) => component.types.includes("street_number"));
@@ -165,6 +166,20 @@ export default function Filters() {
     if (hasLocality) return "city";
     return "";
   };
+
+  useEffect(() => {
+    //* this use effect only runs when the map center or type of place changes
+    //* Searching a different place will change map center
+    (async () => {
+      if (filterVal.mapCenter && activeTab === "nearby" && !filterVal.nearbyPlaces.length) {
+        //* Retreive all of the nearby places
+        await getNearby({
+          lat: filterVal.mapCenter.lat,
+          lng: filterVal.mapCenter.lng,
+        });
+      }
+    })();
+  }, [filterVal.mapCenter, typesOfPlace, activeTab]);
 
   const handleAddressChange = async (place: any) => {
     const getScore = (address: string, location: any) => WalkscoreListApi({ address, location });
@@ -206,25 +221,25 @@ export default function Filters() {
       mapCenter: location,
       placeCategory,
       walkscore,
+      nearbyPlaces: [],
     }));
   };
 
   useEffect(() => {
     //* This use effect runs on component render
     //* Check that input ref exists before proceeding
-    if (!inputRef.current) {
-      return;
-    }
-    //* init the autocomplete for searching addresses
-    autoCompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current, AUTOCOMPLETE_OPTIONS);
-    //* When the location changes, update the state
+    if (inputRef.current) {
+      //* init the autocomplete for searching addresses
+      autoCompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current, AUTOCOMPLETE_OPTIONS);
+      //* When the location changes, update the state
 
-    autoCompleteRef.current.addListener("place_changed", async function () {
-      //TODO handle error and display it to the client
-      const place = await autoCompleteRef.current.getPlace();
-      const encodedAddress = addressToUrl(place.formatted_address);
-      router.push(`/app/${encodedAddress}`);
-    });
+      autoCompleteRef.current.addListener("place_changed", async function () {
+        //TODO handle error and display it to the client
+        const place = await autoCompleteRef.current?.getPlace();
+        const encodedAddress = addressToUrl(place.formatted_address);
+        router.push(`/app/${encodedAddress}`);
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -291,7 +306,7 @@ export default function Filters() {
           <div className={styles.typeOfPlace}>
             <div className={styles.row}>
               <form style={{ width: "100%" }}>
-                <FormControl fullWidth>
+                <FormControl fullWidth className={styles.formControl}>
                   <Select
                     id="demo-multiple-checkbox"
                     multiple

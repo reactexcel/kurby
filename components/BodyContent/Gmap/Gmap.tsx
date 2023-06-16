@@ -265,7 +265,7 @@ function MyComponent() {
   }, [filterVal.nearbyPlaces]);
 
   if (!isLoaded) {
-    return <div>Map error</div>;
+    return <div>Error</div>;
   }
 
   return (

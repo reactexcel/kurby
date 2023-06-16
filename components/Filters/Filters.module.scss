@@ -133,3 +133,9 @@
 .dialog {
   top: 30% !important;
 }
+
+.formControl {
+  & fieldset {
+    border: none;
+  }
+}

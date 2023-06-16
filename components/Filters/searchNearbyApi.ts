@@ -13,12 +13,12 @@ interface searchNearbyParams {
   };
 }
 
-export default async ({ request, typesOfPlace }: searchNearbyParams) => {
+export const searchNearbyApi = async ({ request, typesOfPlace }: searchNearbyParams) => {
   const { location } = request;
 
   if (!typesOfPlace.length) return [];
   const getNearbyPlace = async (req: any) => {
-    const response = await await fetch(`/api/nearby`, {
+    const response = await fetch(`/api/nearby`, {
       method: "POST",
       body: JSON.stringify({ ...req }),
       headers: {

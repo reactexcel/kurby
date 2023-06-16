@@ -1,0 +1,25 @@
+@import "../../../styles/media.scss";
+
+.main {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  margin-top: 24px;
+}
+
+.infiniteScroll {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  overflow: auto;
+
+  @include mq-tablet-landscape--down {
+    position: relative;
+  }
+}
+
+.loader {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}

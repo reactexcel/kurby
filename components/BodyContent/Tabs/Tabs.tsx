@@ -61,7 +61,7 @@ export function Tabs() {
           </ToggleButton>
         </ToggleButtonGroup>
 
-        {/* {!searchLimit && (
+        {!searchLimit && (
           <Box className={styles.tabsWrapper}>
             {activeTab === "location" && <Location />}
             {activeTab == "nearby" && <Nearby />}
@@ -69,7 +69,7 @@ export function Tabs() {
 
             {activeTab == "neighborhood" && <Neighborhood filterVal={filterVal} />}
           </Box>
-        )} */}
+        )}
       </Box>
     </>
   );
