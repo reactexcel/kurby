@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, createContext } from "react";
 import debounce from "lodash/debounce";
 
 const MOBILE_BREAKPOINT = 600;
@@ -15,16 +15,20 @@ type DataTableInfo = {
   isReady: boolean;
 };
 
-export function useWindowSize(): DataTableInfo {
-  const [windowState, setWindowState] = useState<DataTableInfo>({
-    windowWidth: 9999,
-    isMobile: false,
-    isTablet: false,
-    isMobileTablet: false,
-    isDesktop: false,
-    isDesktopLarge: false,
-    isReady: false,
-  });
+const initialValues = {
+  windowWidth: 9999,
+  isMobile: false,
+  isTablet: false,
+  isMobileTablet: false,
+  isDesktop: false,
+  isDesktopLarge: false,
+  isReady: false,
+};
+
+export const WindowSizeContext = createContext<DataTableInfo>(initialValues);
+
+export function WindowSizeProvider({ children }: { children: React.ReactNode }) {
+  const [windowState, setWindowState] = useState<DataTableInfo>(initialValues);
 
   const setWindowStateCallback = useCallback(() => {
     const iw = window.innerWidth;
@@ -53,5 +57,5 @@ export function useWindowSize(): DataTableInfo {
     };
   }, []);
 
-  return windowState;
+  return <WindowSizeContext.Provider value={windowState}>{children}</WindowSizeContext.Provider>;
 }

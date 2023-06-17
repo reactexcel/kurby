@@ -2,10 +2,11 @@ import styles from "./FirstSection.module.scss";
 import { Paragraph } from "components/Paragraph/Paragraph";
 import { SectionLayout } from "../SectionLayout/SectionLayout";
 import { Button } from "components/Button/Button";
-import { useWindowSize } from "hooks/use-window-size";
+import { useContext } from "react";
+import { WindowSizeContext } from "context/windowSizeContext";
 
 export const FirstSection = () => {
-  const { isMobileTablet } = useWindowSize();
+  const { isMobileTablet } = useContext(WindowSizeContext);
 
   const ImageComponent = () => {
     return (

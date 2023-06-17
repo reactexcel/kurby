@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { filterState } from "context/filterContext";
-import React from "react";
+import React, { useContext } from "react";
 import { useRecoilState } from "recoil";
 import LocationSvg from "../../../../public/icons/location.svg";
 import SqftSvg from "../../../../public/icons/sqft.svg";
@@ -17,11 +17,11 @@ import moment from "moment";
 import { RecordRow } from "./RecordRow/RecordRow";
 import { Paragraph } from "components/Paragraph/Paragraph";
 import styles from "./Record.module.scss";
-import { useWindowSize } from "hooks/use-window-size";
 import { HouseInfoField } from "./HouseInfoField/HouseInfoField";
 import { AdditionalInfoField } from "./AdditionalInfoField/AdditionalInfoField";
 import { Grid } from "components/Grid/Grid";
 import { GridItem } from "components/Grid/GridItem";
+import { WindowSizeContext } from "context/windowSizeContext";
 
 /**
  * Body Content
@@ -61,7 +61,7 @@ type MarketType = {
 
 export default function Record({ propertyInfo, description }: { propertyInfo: PropertyType | null; description: string }) {
   const [filterVal] = useRecoilState(filterState);
-  const { isMobileTablet } = useWindowSize();
+  const { isMobileTablet } = useContext(WindowSizeContext);
 
   const createSaleTableList = () => {
     const saleList = propertyInfo?.saleList;

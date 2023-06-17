@@ -4,6 +4,7 @@ import Script from "next/script";
 import Topbar from "../features/homepage/Topbar/Topbar";
 import { RecoilRoot } from "recoil";
 import { AuthProvider } from "providers/AuthProvider";
+import { WindowSizeProvider } from "context/windowSizeContext";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -35,19 +36,21 @@ export default function App({ Component, pageProps }: AppProps) {
         strategy="beforeInteractive"
         src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places&callback=initMap`}
       />
-      <AuthProvider>
-        <Topbar>
-          <div
-            style={{
-              position: "relative",
-            }}
-          >
-            <RecoilRoot>
-              <Component {...pageProps} />
-            </RecoilRoot>
-          </div>
-        </Topbar>
-      </AuthProvider>
+      <WindowSizeProvider>
+        <AuthProvider>
+          <Topbar>
+            <div
+              style={{
+                position: "relative",
+              }}
+            >
+              <RecoilRoot>
+                <Component {...pageProps} />
+              </RecoilRoot>
+            </div>
+          </Topbar>
+        </AuthProvider>
+      </WindowSizeProvider>
     </>
   );
 }

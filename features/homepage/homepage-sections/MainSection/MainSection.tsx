@@ -4,8 +4,9 @@ import GoogleAddressInput from "components/GoogleAddressInput";
 import { addressToUrl } from "utils/address";
 import { Paragraph } from "components/Paragraph/Paragraph";
 import { useRouter } from "next/router";
-import { useWindowSize } from "hooks/use-window-size";
 import { HomepageVideo } from "features/homepage/Homepage/HomepageVideo/HomepageVideo";
+import { useContext } from "react";
+import { WindowSizeContext } from "context/windowSizeContext";
 
 const inputPropsStyle = {
   width: "95%",
@@ -22,7 +23,7 @@ const inputPropsStyle = {
 
 export const MainSection = () => {
   const router = useRouter();
-  const { isMobileTablet } = useWindowSize();
+  const { isMobileTablet } = useContext(WindowSizeContext);
 
   const handleSelectedAddress = (address: any) => {
     const encodedAddress = addressToUrl(address.formatted_address);
