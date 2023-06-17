@@ -57,5 +57,7 @@ export function WindowSizeProvider({ children }: { children: React.ReactNode }) 
     };
   }, []);
 
+  if (!windowState.isReady) return null;
+
   return <WindowSizeContext.Provider value={windowState}>{children}</WindowSizeContext.Provider>;
 }
