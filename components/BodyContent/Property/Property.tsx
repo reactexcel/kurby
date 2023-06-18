@@ -80,7 +80,7 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
           </div>
         </div>
       ) : (
-        <h3>Neighborhood data is currently only available for properties in the United States</h3>
+        <h3>Home data is currently only available for properties in the United States</h3>
       )}
     </TabLayout>
   );
