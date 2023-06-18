@@ -1,7 +1,7 @@
 import { CircularProgress } from "@mui/material";
 import axios from "axios";
 import { filterState } from "context/filterContext";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
 import Record from "./Record/Record";
 import { PropertyType } from "./types";
@@ -38,12 +38,14 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
     getPropertyData();
   }, []);
 
+  const isAddressInUSA = useMemo(() => filterVal?.selectedPlace?.formatted_address?.includes("USA"), [filterVal?.selectedPlace?.formatted_address]);
+
   return (
-    <TabLayout className={styles.tabLayout} loading={loading || !propertyInfo}>
+    <TabLayout className={`${styles.tabLayout} ${!isAddressInUSA ? styles.note : ""}`} loading={loading || !propertyInfo}>
       {loading || !propertyInfo ? (
         <CircularProgress />
-      ) : (
-        <>
+      ) : isAddressInUSA ? (
+        <div className={styles.main}>
           <div className={styles.wrapper}>
             <img
               src={
@@ -76,7 +78,9 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
               </GridItem>
             </Grid>
           </div>
-        </>
+        </div>
+      ) : (
+        <h3>Neighborhood data is currently only available for properties in the United States</h3>
       )}
     </TabLayout>
   );
