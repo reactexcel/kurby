@@ -17,6 +17,11 @@
   @include mq-tablet-landscape--down {
     flex-direction: column;
     gap: 1rem;
+
+    > * {
+      width: 100%;
+      max-width: none !important;
+    }
   }
 }
 

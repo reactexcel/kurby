@@ -1,12 +1,12 @@
 import { Box, Chip, Typography, Divider } from "@mui/material";
-import React from "react";
+import React, { useMemo } from "react";
 import { Rating } from "react-simple-star-rating";
-import PersonIcon from "../../../public/images/person.svg";
-import BicycleIcon from "../../../public/images/bicycle.svg";
-import CarIcon from "../../../public/images/car.svg";
+import PersonIcon from "/public/images/person.svg";
+import BicycleIcon from "/public/images/bicycle.svg";
+import CarIcon from "/public/images/car.svg";
 import styles from "./NearbyPlace.module.scss";
-import StreetView from "../StreetView/StreetView";
-import LocationSvg from "../../../public/icons/location.svg";
+import StreetView from "../../StreetView/StreetView";
+import LocationSvg from "/public/icons/location.svg";
 
 /**
  * NearbyPlaceCard
@@ -16,7 +16,7 @@ import LocationSvg from "../../../public/icons/location.svg";
 //TODO Get distance info and render it
 
 export default function NearbyPlaceCard({ place }: any) {
-  const { name: placeName, vicinity, user_ratings_total, rating, photos, website, walking, biclycling, driving } = place;
+  const { name: placeName, vicinity, user_ratings_total: userRatingsTotal, rating, photos, website, walking, biclycling, driving } = place;
   const position = {
     lat: place.geometry.location.lat,
     lng: place.geometry.location.lng,
@@ -25,21 +25,16 @@ export default function NearbyPlaceCard({ place }: any) {
     return type && type.charAt(0).toUpperCase() + type.replaceAll("_", " ").slice(1);
   };
 
-  const getPhoto = (photo_reference: string) => {
-    if (!photo_reference) {
+  const getPhoto = (photoRef: string) => {
+    if (!photoRef) {
       return "";
     }
-    return `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photo_reference}&sensor=false&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`;
+    return `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoRef}&sensor=false&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`;
   };
 
-  //Todo add to style sheet
-  const resultsContentStyle = {
-    padding: "20px",
-    border: "1px solid rgba(38,75,92,.2)",
-    boxShadow: "0 4px 4px #00000040",
-    borderRadius: "14px",
-    marginBottom: "25px",
-  };
+  const photo = useMemo(() => {
+    return getPhoto(photos?.[0]?.photo_reference);
+  }, [photos?.[0]?.photo_reference]);
 
   const distanceText = (directionObj: { time: string; distance: string }) => {
     if (directionObj.time) return `${directionObj.time} (${directionObj.distance} Miles)`;
@@ -48,15 +43,11 @@ export default function NearbyPlaceCard({ place }: any) {
   };
 
   return (
-    <Box style={resultsContentStyle}>
+    <div className={styles.main}>
       <Box style={{ display: "flex", justifyContent: "space-between" }}>
-        <Box style={{ display: "flex" }}>
-          {getPhoto(photos?.[0]?.photo_reference) && (
-            // @next/next/no-img-element
-            <img className={styles.image} src={getPhoto(photos?.[0]?.photo_reference)} alt="Picture of the author" width={200} height={200} />
-          )}
-          {!getPhoto(photos?.[0]?.photo_reference) && <StreetView position={position} />}
-          <Box>
+        <div className={styles.container}>
+          {photo ? <img className={styles.image} src={photo} alt="Picture of the author" width={200} height={200} /> : <StreetView position={position} />}
+          <div className={styles.info}>
             {website ? (
               <Typography variant="h6">
                 <a href={website} target="_blank" rel="noreferrer">
@@ -73,23 +64,23 @@ export default function NearbyPlaceCard({ place }: any) {
             {
               //* only show rating box, if the item has a rating
               rating && (
-                <Box style={{ display: "flex", paddingTop: "12px", paddingBottom: "6px" }}>
+                <div className={styles.rating}>
                   <Rating fillColor="#7ed321" initialValue={rating} readonly={true} allowFraction={true} size={20} />
-                  <Typography style={{}}>({rating}/5)</Typography>
+                  <Typography>({rating}/5)</Typography>
                   <Typography
                     style={{
                       fontStyle: "italic",
                       marginLeft: "8px",
                     }}
                   >
-                    {user_ratings_total} reviews
+                    {userRatingsTotal} reviews
                   </Typography>
-                </Box>
+                </div>
               )
             }
             <Chip disabled={true} style={{ color: "#000000", opacity: "0.8" }} label={formatPlaceType(place._type)} />
-          </Box>
-        </Box>
+          </div>
+        </div>
         {(walking || biclycling || driving) && (
           <Box className={styles.distance}>
             <Typography>{Object.keys(driving).length ? `${driving.distance} Miles` : ""}</Typography>
@@ -116,6 +107,6 @@ export default function NearbyPlaceCard({ place }: any) {
           </Box>
         )}
       </Box>
-    </Box>
+    </div>
   );
 }

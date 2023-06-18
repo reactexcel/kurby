@@ -1,13 +1,16 @@
 import { useRecoilState } from "recoil";
 import { filterState } from "../../../context/filterContext";
-import NearbyPlaceCard from "./NearbyPlaceCard";
+import NearbyPlaceCard from "./NearbyPlaceCard/NearbyPlaceCard";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useContext } from "react";
 import loadDirectionsApi from "./loadDirectionsApi";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { CircularProgress, Typography } from "@mui/material";
 import styles from "./Nearby.module.scss";
 import { useAuth } from "providers/AuthProvider";
 import { loadingContext } from "context/loadingContext";
+import { Button } from "components/Button/Button";
+import { useRouter } from "next/router";
+import { WindowSizeContext } from "context/windowSizeContext";
 
 async function prepareLoadedPlaces(places: any[], currentCenter: { lat: number; lng: number } | null): Promise<any[]> {
   if (!places || !places.length) {
@@ -50,6 +53,8 @@ export default function Nearby() {
   const [loadedNearbyPlaces, setLoadedNearbyPlaces] = useState([]);
   const [loading] = useRecoilState(loadingContext);
   const { user } = useAuth();
+  const router = useRouter();
+  const { isMobileTablet } = useContext(WindowSizeContext);
 
   const pageSize = user ? 5 : 1;
 
@@ -82,8 +87,8 @@ export default function Nearby() {
   );
 
   return (
-    <Box className={styles.main}>
-      {loading.nearby ? (
+    <div className={styles.main}>
+      {loading.nearby || !nearbyPlaces.length ? (
         <div className={styles.loader}>
           <CircularProgress />
         </div>
@@ -92,8 +97,7 @@ export default function Nearby() {
           {user ? (
             <InfiniteScroll
               className={styles.infiniteScroll}
-              dataLength={loadedNearbyPlaces.length} //This is important field to render the next data
-              // Pass setFilterV as an argument to loadMore
+              dataLength={loadedNearbyPlaces.length}
               next={fetchMoreData}
               hasMore={filterVal.nearbyPlaces.length - loadedNearbyPlaces.length !== 0}
               loader={
@@ -101,25 +105,29 @@ export default function Nearby() {
                   <CircularProgress />
                 </div>
               }
-              height="100%"
+              height={isMobileTablet ? undefined : "100%"}
               endMessage={
                 <p style={{ textAlign: "center" }}>
                   <b>Yay! You have seen it all</b>
                 </p>
               }
-              scrollThreshold={0.9}
             >
-              {loadedNearbyPlaces.map((place: any) => {
-                return <NearbyPlaceCard key={`placecard_${place.place_id}`} place={place} />;
-              })}
+              {nearbyPlaces}
             </InfiniteScroll>
           ) : (
-            nearbyPlaces
+            <>
+              {nearbyPlaces[0]}
+              <div className={styles.signUpNote}>
+                <h3>Sign Up</h3>
+                <p>Sign Up for a free account to see 60 top-rated schools, hospitals, parks, grocery stores, and attractions within a 2-mile radius</p>
+                <Button onClick={() => router.push("/?openLoginSignup=true")}>Get Started</Button>
+              </div>
+            </>
           )}
         </>
       ) : (
         <Typography>Please select a place of interest.</Typography>
       )}
-    </Box>
+    </div>
   );
 }

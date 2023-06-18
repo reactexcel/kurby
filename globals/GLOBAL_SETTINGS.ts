@@ -1,5 +1,5 @@
 //TODO split this file into multiples each for it's own purpose
-export default {
+const GLOBAL_SETTINGS = {
   MAP_ZOOM_MILES: 1,
   MILES_TO_METERS: (miles: number) => miles * 1609.34,
   SECONDS_TO_MINUTES(seconds: number) {
@@ -19,3 +19,5 @@ export default {
   MAP_ZOOM_DEFAULT: 14,
   PLACE_TYPES: ["School", "Primary School", "Secondary School", "University", "Park", "Hospital", "Shopping mall", "Tourist Attraction", "Restaurant", "Supermarket"],
 };
+
+export default GLOBAL_SETTINGS;
