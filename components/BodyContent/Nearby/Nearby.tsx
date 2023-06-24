@@ -11,6 +11,7 @@ import { loadingContext } from "context/loadingContext";
 import { Button } from "components/Button/Button";
 import { useRouter } from "next/router";
 import { WindowSizeContext } from "context/windowSizeContext";
+import { nearbyContext } from "context/nearbyPlacesContext";
 
 async function prepareLoadedPlaces(places: any[], currentCenter: { lat: number; lng: number } | null): Promise<any[]> {
   if (!places || !places.length) {
@@ -50,33 +51,40 @@ async function loadDirections(place: any, origin: any): Promise<{ walking: any; 
 
 export default function Nearby() {
   const [filterVal] = useRecoilState(filterState);
-  const [loadedNearbyPlaces, setLoadedNearbyPlaces] = useState([]);
   const [loading] = useRecoilState(loadingContext);
   const { user } = useAuth();
   const router = useRouter();
   const { isMobileTablet } = useContext(WindowSizeContext);
+  const [nearby, setNearby] = useRecoilState(nearbyContext);
+  const [loadedNearbyPlaces, setLoadedNearbyPlaces] = useState<any[]>([]);
 
   const pageSize = user ? 5 : 1;
 
-  const fetchMoreData = () => {
+  console.log(nearby.loadedOnScroll);
+
+  const fetchMoreData = (initialCall: boolean) => {
+    const initialLoad = initialCall ? 0 : nearby.loadedOnScroll;
     setTimeout(async () => {
-      const newPlaces = filterVal.nearbyPlaces.slice(loadedNearbyPlaces.length, loadedNearbyPlaces.length + pageSize);
+      const newPlaces = nearby.places.slice(initialLoad, initialLoad + pageSize);
       const updatedPlaces: any = await prepareLoadedPlaces(newPlaces, filterVal.mapCenter);
 
-      setLoadedNearbyPlaces(loadedNearbyPlaces.concat(updatedPlaces));
+      setNearby((prev) => ({
+        ...prev,
+        loadedOnScroll: prev.loadedOnScroll + pageSize,
+      }));
+      setLoadedNearbyPlaces([...loadedNearbyPlaces, ...updatedPlaces]);
     }, 1000);
   };
 
-  //TODO verify that this doesn't run fetchMoreData if there is no places
   useEffect(() => {
-    if (!loadedNearbyPlaces.length) {
-      fetchMoreData();
+    if (nearby.places.length && !loadedNearbyPlaces.length) {
+      fetchMoreData(true);
     }
   }, [loadedNearbyPlaces]);
 
   useEffect(() => {
     setLoadedNearbyPlaces([]);
-  }, [filterVal.nearbyPlaces]);
+  }, [nearby.places]);
 
   const nearbyPlaces = useMemo(
     () =>
@@ -92,14 +100,14 @@ export default function Nearby() {
         <div className={styles.loader}>
           <CircularProgress />
         </div>
-      ) : filterVal.nearbyPlaces.length ? (
+      ) : nearby.places.length ? (
         <>
           {user ? (
             <InfiniteScroll
               className={styles.infiniteScroll}
               dataLength={loadedNearbyPlaces.length}
               next={fetchMoreData}
-              hasMore={filterVal.nearbyPlaces.length - loadedNearbyPlaces.length !== 0}
+              hasMore={nearby.places.length - loadedNearbyPlaces.length !== 0}
               loader={
                 <div className={styles.loader}>
                   <CircularProgress />

@@ -17,7 +17,10 @@ const GLOBAL_SETTINGS = {
     return isNaN(distance) ? "/" : (distance * 0.000621371).toFixed(1);
   },
   MAP_ZOOM_DEFAULT: 14,
-  PLACE_TYPES: ["School", "Primary School", "Secondary School", "University", "Park", "Hospital", "Shopping mall", "Tourist Attraction", "Restaurant", "Supermarket"],
+  PLACE_TYPES: [
+    "School",
+    // "Primary School", "Secondary School", "University", "Park", "Hospital", "Shopping mall", "Tourist Attraction", "Restaurant", "Supermarket"
+  ],
 };
 
 export default GLOBAL_SETTINGS;

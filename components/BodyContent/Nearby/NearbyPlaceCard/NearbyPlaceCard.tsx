@@ -44,7 +44,7 @@ export default function NearbyPlaceCard({ place }: any) {
 
   return (
     <div className={styles.main}>
-      <Box style={{ display: "flex", justifyContent: "space-between" }}>
+      <div className={styles.flex}>
         <div className={styles.container}>
           {photo ? <img className={styles.image} src={photo} alt="Picture of the author" width={200} height={200} /> : <StreetView position={position} />}
           <div className={styles.info}>
@@ -57,56 +57,53 @@ export default function NearbyPlaceCard({ place }: any) {
             ) : (
               <Typography variant="h6">{placeName}</Typography>
             )}
-            <Box style={{ display: "flex", alignItems: "center", paddingTop: "2px" }}>
+            <div style={{ display: "flex", alignItems: "center", paddingTop: "2px" }}>
               <LocationSvg style={{ marginRight: "8px" }} />
               <Typography>{vicinity}</Typography>
-            </Box>
-            {
-              //* only show rating box, if the item has a rating
-              rating && (
-                <div className={styles.rating}>
-                  <Rating fillColor="#7ed321" initialValue={rating} readonly={true} allowFraction={true} size={20} />
-                  <Typography>({rating}/5)</Typography>
-                  <Typography
-                    style={{
-                      fontStyle: "italic",
-                      marginLeft: "8px",
-                    }}
-                  >
-                    {userRatingsTotal} reviews
-                  </Typography>
-                </div>
-              )
-            }
+            </div>
+            {rating && (
+              <div className={styles.rating}>
+                <Rating fillColor="#7ed321" initialValue={rating} readonly={true} allowFraction={true} size={20} />
+                <Typography>({rating}/5)</Typography>
+                <Typography
+                  style={{
+                    fontStyle: "italic",
+                    marginLeft: "8px",
+                  }}
+                >
+                  {userRatingsTotal} reviews
+                </Typography>
+              </div>
+            )}
             <Chip disabled={true} style={{ color: "#000000", opacity: "0.8" }} label={formatPlaceType(place._type)} />
           </div>
         </div>
         {(walking || biclycling || driving) && (
-          <Box className={styles.distance}>
+          <div className={styles.distance}>
             <Typography>{Object.keys(driving).length ? `${driving.distance} Miles` : ""}</Typography>
             <Divider />
 
             {walking && (
-              <Box className={styles.nearbyDistanceBox}>
+              <div className={styles.nearbyDistanceBox}>
                 <PersonIcon className={styles.nearbyIcon} />
                 <Typography>{distanceText(walking)}</Typography>
-              </Box>
+              </div>
             )}
             {driving && (
-              <Box className={styles.nearbyDistanceBox}>
+              <div className={styles.nearbyDistanceBox}>
                 <CarIcon className={styles.nearbyIcon} />
                 <Typography>{distanceText(driving)}</Typography>
-              </Box>
+              </div>
             )}
             {biclycling && (
-              <Box className={styles.nearbyDistanceBox}>
+              <div className={styles.nearbyDistanceBox}>
                 <BicycleIcon className={styles.nearbyIcon} />
                 <Typography>{distanceText(biclycling)}</Typography>
-              </Box>
+              </div>
             )}
-          </Box>
+          </div>
         )}
-      </Box>
+      </div>
     </div>
   );
 }

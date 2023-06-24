@@ -72,7 +72,6 @@ interface Props {
     latlong: google.maps.LatLng | null;
     radius: any | null;
     address: string | null;
-    nearbyPlaces: any[];
     loadedNearbyPlaces: [];
     selectedPlace: any | null;
     mapCenter: { lat: number; lng: number } | null;

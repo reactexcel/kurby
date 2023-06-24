@@ -57,3 +57,13 @@
   padding-top: 12px;
   padding-bottom: 6px;
 }
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+
+  @include mq-tablet-landscape--down {
+    flex-direction: column;
+  }
+}

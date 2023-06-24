@@ -24,6 +24,8 @@ import { usePlanChecker } from "hooks/plans";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import { activeTabState } from "context/activeTab";
+import { nearbyContext } from "context/nearbyPlacesContext";
+import { filter } from "lodash";
 
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
@@ -53,6 +55,7 @@ export default function Filters() {
   const [isSelectAll, setSelectAll] = useState<boolean>(true);
   const [loading, setLoading] = useRecoilState(loadingContext);
   const { searchLimit, incrementCounter } = useSearchCounter();
+  const [nearby, setNearby] = useRecoilState(nearbyContext);
 
   //* State for the place select element
   const [typesOfPlace, setTypesOfPlace] = useState<any[]>(PLACE_TYPES);
@@ -94,12 +97,10 @@ export default function Filters() {
       //Verify that we have a latlong value before trying to search api
       if (!lat) return;
 
-      if (!loading.nearby) {
-        setLoading((prev) => ({
-          ...prev,
-          nearby: true,
-        }));
-      }
+      setLoading((prev) => ({
+        ...prev,
+        nearby: true,
+      }));
 
       const searchNearbyPayload = {
         typesOfPlace,
@@ -128,25 +129,20 @@ export default function Filters() {
         return isNotLocality && isOpen;
       });
 
-      setFilterVal((prevVal: any) => {
-        //TODO save old nearby locations to prevent repeat requests
-
-        return {
-          ...prevVal,
-          nearbyPlaces: goodPlaceListings,
-        };
-      });
+      setNearby((prev) => ({
+        ...prev,
+        address: filterVal.address || "",
+        places: goodPlaceListings,
+      }));
     } catch (error) {
       //TODO error handling - errors should be displayed to end user
       console.error(error);
     }
 
-    if (loading.nearby) {
-      setLoading((prev) => ({
-        ...prev,
-        nearby: false,
-      }));
-    }
+    setLoading((prev) => ({
+      ...prev,
+      nearby: false,
+    }));
   };
 
   const handleToggleAll = () => {
@@ -171,7 +167,7 @@ export default function Filters() {
     //* this use effect only runs when the map center or type of place changes
     //* Searching a different place will change map center
     (async () => {
-      if (filterVal.mapCenter && activeTab === "nearby" && !filterVal.nearbyPlaces.length) {
+      if (filterVal.mapCenter && activeTab === "nearby" && (!nearby.places.length || filterVal.address !== nearby.address)) {
         //* Retreive all of the nearby places
         await getNearby({
           lat: filterVal.mapCenter.lat,
@@ -179,7 +175,7 @@ export default function Filters() {
         });
       }
     })();
-  }, [filterVal.mapCenter, typesOfPlace, activeTab]);
+  }, [filterVal.mapCenter, typesOfPlace, activeTab, nearby.places]);
 
   const handleAddressChange = async (place: any) => {
     const getScore = (address: string, location: any) => WalkscoreListApi({ address, location });
@@ -221,7 +217,6 @@ export default function Filters() {
       mapCenter: location,
       placeCategory,
       walkscore,
-      nearbyPlaces: [],
     }));
   };
 
