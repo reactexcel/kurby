@@ -1,5 +1,5 @@
 import { Box, CircularProgress } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import FactCard from "./FactCard/FactCard";
 import getFloodData from "./floodData";
 import WarningIcon from "@mui/icons-material/Warning";
@@ -79,6 +79,8 @@ export default function Neighborhood({ filterVal }: Props) {
 
   const [crimeModal, setCrimeModal] = useState<string>("");
   const [overallCrimeInfo, setOverallCrimeInfo] = useState<OverallCrimeInfo | null>(null);
+
+  const isUsa = useMemo(() => filterVal?.selectedPlace?.formatted_address?.includes("USA"), [filterVal.selectedPlace]);
 
   const getNearestAgency = async (agencyList: AgencyFBI[]) => {
     let agencyOri = "";
@@ -234,17 +236,24 @@ export default function Neighborhood({ filterVal }: Props) {
       setCensusData(censusDt);
     };
 
-    if (filterVal.selectedPlace.formatted_address.includes("USA")) {
+    if (isUsa) {
       (async () => {
         await getCrimeFBIInfo();
         await retrieveFloodData();
+
+        setLoading((prev) => ({
+          ...prev,
+          neighborhood: false,
+        }));
       })();
     }
 
-    setLoading((prev) => ({
-      ...prev,
-      neighborhood: false,
-    }));
+    return () => {
+      setLoading((prev) => ({
+        ...prev,
+        neighborhood: true,
+      }));
+    };
   }, []);
 
   const formatter = new Intl.NumberFormat("en-US", {
@@ -266,6 +275,10 @@ export default function Neighborhood({ filterVal }: Props) {
     setCrimeModal("");
   };
 
+  if (!isUsa) {
+    return <h3>Neighborhood data is currently only available for properties in the United States</h3>;
+  }
+
   if (loading.neighborhood) {
     return (
       <TabLayout loading={loading.neighborhood}>
@@ -284,92 +297,86 @@ export default function Neighborhood({ filterVal }: Props) {
           position: "relative",
         }}
       >
-        {filterVal?.selectedPlace?.formatted_address?.includes("USA") ? (
-          <>
-            <h3 className={styles.header}>Quick Facts</h3>
-            <div className={styles.container}>
-              <FactCard label="Flood Risk" type="string" value={convertFloodZoneToRisk(floodData?.[0]?.floodZone)} icon={<WarningIcon className={styles.icon} />} />
-              <FactCard
-                label="Flood Zone"
-                type="string"
-                value={floodData?.[0]?.floodZone || "Unknown"}
-                icon={<FloodIcon className={styles.icon} />}
-                seeMoreOnClick={() => setOpenFloodZoneMap(true)}
-              />
-              <FactCard
-                label="Adults with a bachlors degree"
-                type="percent"
-                value={censusData?.percentOfAdultsWithBatchlorsDegree}
-                icon={<Graduation className={styles.icon} />}
-              />
-              <FactCard
-                label="Homes with married-couple families"
-                type="percent"
-                value={censusData && censusData.percentageOfHomesWithMarriedCouples}
-                icon={<Married className={styles.icon} />}
-              />
-              <FactCard
-                label="Average Salary"
-                type="string"
-                value={censusData?.averageSalary && formatter.format(censusData.averageSalary)}
-                icon={<AttachMoneyIcon className={styles.icon} />}
-              />
-              <FactCard label="Percent Under Poverty" type="percent" value={censusData && censusData.percentUnderPoverty} icon={<Hunger className={styles.icon} />} />
-              <FactCard label="Percent not US citizens" type="percent" value={censusData && censusData.nonCitizens} icon={<Population className={styles.icon} />} />
-              <FactCard
-                label="Dominant Race"
-                type="string"
-                value={censusData && `${capitalize(censusData.dominantRace)}`}
-                icon={<Population className={styles.icon} />}
-                seeMoreOnClick={() => setOpenRaceBreakdown(true)}
-              />
-              <FactCard label="Unemployment Rate" type="percent" value={censusData && censusData.unemploymentRate} icon={<Unemployment className={styles.icon} />} />
-              <FactCard
-                label="Owner morgage ≥ 30% household income"
-                type="percent"
-                value={censusData && censusData.morgageGreaterThan30Percent}
-                icon={<Home className={styles.icon} />}
-              />
-              <FactCard label="Rent ≥ 30% household income" type="string" value={censusData && censusData.rentGreaterThan30Percent} icon={<Home className={styles.icon} />} />
-              <FactCard label="Owners without morgages" type="percent" value={censusData && censusData.percentOwnersNoMorgage} icon={<Home className={styles.icon} />} />
-              <FactCard
-                label="Violent Crime Rate"
-                type="string"
-                value={Math.round(overallCrimeInfo?.violentAreaPerNational || 0) + "%" || "Unknown"}
-                icon={<Handcuff className={styles.icon} />}
-                seeMoreOnClick={() => setCrimeModal("violent")}
-              />
-              <FactCard
-                label="Property Crime Rate"
-                type="string"
-                value={Math.round(overallCrimeInfo?.propertyAreaPerNational || 0) + "%" || "Unknown"}
-                icon={<Handcuff className={styles.icon} />}
-                seeMoreOnClick={() => setCrimeModal("property")}
-              />
+        <h3 className={styles.header}>Quick Facts</h3>
+        <div className={styles.container}>
+          <FactCard label="Flood Risk" type="string" value={convertFloodZoneToRisk(floodData?.[0]?.floodZone)} icon={<WarningIcon className={styles.icon} />} />
+          <FactCard
+            label="Flood Zone"
+            type="string"
+            value={floodData?.[0]?.floodZone || "Unknown"}
+            icon={<FloodIcon className={styles.icon} />}
+            seeMoreOnClick={() => setOpenFloodZoneMap(true)}
+          />
+          <FactCard
+            label="Adults with a bachlors degree"
+            type="percent"
+            value={censusData?.percentOfAdultsWithBatchlorsDegree}
+            icon={<Graduation className={styles.icon} />}
+          />
+          <FactCard
+            label="Homes with married-couple families"
+            type="percent"
+            value={censusData && censusData.percentageOfHomesWithMarriedCouples}
+            icon={<Married className={styles.icon} />}
+          />
+          <FactCard
+            label="Average Salary"
+            type="string"
+            value={censusData?.averageSalary && formatter.format(censusData.averageSalary)}
+            icon={<AttachMoneyIcon className={styles.icon} />}
+          />
+          <FactCard label="Percent Under Poverty" type="percent" value={censusData && censusData.percentUnderPoverty} icon={<Hunger className={styles.icon} />} />
+          <FactCard label="Percent not US citizens" type="percent" value={censusData && censusData.nonCitizens} icon={<Population className={styles.icon} />} />
+          <FactCard
+            label="Dominant Race"
+            type="string"
+            value={censusData && `${capitalize(censusData.dominantRace)}`}
+            icon={<Population className={styles.icon} />}
+            seeMoreOnClick={() => setOpenRaceBreakdown(true)}
+          />
+          <FactCard label="Unemployment Rate" type="percent" value={censusData && censusData.unemploymentRate} icon={<Unemployment className={styles.icon} />} />
+          <FactCard
+            label="Owner morgage ≥ 30% household income"
+            type="percent"
+            value={censusData && censusData.morgageGreaterThan30Percent}
+            icon={<Home className={styles.icon} />}
+          />
+          <FactCard label="Rent ≥ 30% household income" type="string" value={censusData && censusData.rentGreaterThan30Percent} icon={<Home className={styles.icon} />} />
+          <FactCard label="Owners without morgages" type="percent" value={censusData && censusData.percentOwnersNoMorgage} icon={<Home className={styles.icon} />} />
+          <FactCard
+            label="Violent Crime Rate"
+            type="string"
+            value={Math.round(overallCrimeInfo?.violentAreaPerNational || 0) + "%" || "Unknown"}
+            icon={<Handcuff className={styles.icon} />}
+            seeMoreOnClick={() => setCrimeModal("violent")}
+          />
+          <FactCard
+            label="Property Crime Rate"
+            type="string"
+            value={Math.round(overallCrimeInfo?.propertyAreaPerNational || 0) + "%" || "Unknown"}
+            icon={<Handcuff className={styles.icon} />}
+            seeMoreOnClick={() => setCrimeModal("property")}
+          />
 
-              <CrimeModal open={["violent", "property"].includes(crimeModal)} handleClose={handleCloseCrimModal} overallCrimeInfo={overallCrimeInfo} crimeType={crimeModal}>
-                <FactCard
-                  label={`${crimeModal.charAt(0).toUpperCase() + crimeModal.slice(1)} Crime Info`}
-                  type="string"
-                  value={
-                    crimeModal === "violent"
-                      ? Math.round(overallCrimeInfo?.violentAreaPerNational || 0) + "%"
-                      : Math.round(overallCrimeInfo?.propertyAreaPerNational || 0) + "%" || "Unknown"
-                  }
-                  icon={<Handcuff className={styles.icon} />}
-                ></FactCard>
-              </CrimeModal>
+          <CrimeModal open={["violent", "property"].includes(crimeModal)} handleClose={handleCloseCrimModal} overallCrimeInfo={overallCrimeInfo} crimeType={crimeModal}>
+            <FactCard
+              label={`${crimeModal.charAt(0).toUpperCase() + crimeModal.slice(1)} Crime Info`}
+              type="string"
+              value={
+                crimeModal === "violent"
+                  ? Math.round(overallCrimeInfo?.violentAreaPerNational || 0) + "%"
+                  : Math.round(overallCrimeInfo?.propertyAreaPerNational || 0) + "%" || "Unknown"
+              }
+              icon={<Handcuff className={styles.icon} />}
+            ></FactCard>
+          </CrimeModal>
 
-              <RaceBreakdown open={openRaceBreakdown} handleClose={handleCloseModals} raceData={censusData?.raceData} />
+          <RaceBreakdown open={openRaceBreakdown} handleClose={handleCloseModals} raceData={censusData?.raceData} />
 
-              <FloodZoneModal open={openFloodZoneMap} handleClose={handleCloseModals}>
-                <FactCard label="Flood Zone" type="string" value={floodData?.[0]?.floodZone || "Unknown"} icon={<FloodIcon className={styles.icon} />}></FactCard>
-              </FloodZoneModal>
-            </div>
-          </>
-        ) : (
-          <h3>Neighborhood data is currently only available for properties in the United States</h3>
-        )}
+          <FloodZoneModal open={openFloodZoneMap} handleClose={handleCloseModals}>
+            <FactCard label="Flood Zone" type="string" value={floodData?.[0]?.floodZone || "Unknown"} icon={<FloodIcon className={styles.icon} />}></FactCard>
+          </FloodZoneModal>
+        </div>
       </Box>
     </TabLayout>
   );

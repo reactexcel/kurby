@@ -12,7 +12,7 @@ interface FactCardProps {
 }
 
 const FactCard = ({ icon, label, value = "", type, seeMoreOnClick }: FactCardProps) => {
-  let formattedValue = type === "percent" ? `${value}%` : value;
+  let formattedValue = type === "percent" ? `${value || 0}%` : value || 0;
 
   return (
     <Card className={styles.card}>
