@@ -1,0 +1,32 @@
+@import "../../../../styles/media.scss";
+
+.card {
+  position: relative;
+}
+
+.modalCard {
+  display: flex;
+  justify-content: center;
+}
+
+.launchIcon {
+  position: absolute;
+  right: 0.75rem;
+  top: 0.75rem;
+  color: #00a13d;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.children {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+  flex-wrap: wrap;
+
+  & > div {
+    flex-grow: 1;
+    text-align: center;
+  }
+}

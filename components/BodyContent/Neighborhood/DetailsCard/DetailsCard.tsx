@@ -1,12 +1,12 @@
 import { Card, CardContent, Typography, Box } from "@mui/material";
-import styles from "./CrimeDetailCard.module.scss";
+import styles from "./DetailsCard.module.scss";
 
-interface Props {
+interface DetailsCardProps {
   label?: string;
   value?: string | number;
 }
 
-const CrimeDetailCard = ({ label, value }: Props) => {
+export const DetailsCard = ({ label, value }: DetailsCardProps) => {
   return (
     <Card className={styles.card}>
       <CardContent className={styles.cardContent}>
@@ -20,5 +20,3 @@ const CrimeDetailCard = ({ label, value }: Props) => {
     </Card>
   );
 };
-
-export default CrimeDetailCard;
