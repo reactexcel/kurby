@@ -1,0 +1,21 @@
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 0.5rem;
+  height: 100%;
+  border: 1px solid lightgray;
+  box-shadow: none !important;
+  border-radius: 0.75rem !important;
+  padding: 1rem;
+}
+
+.sideMain {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  color: #868686;
+  font-size: 0.875rem;
+}

@@ -1,4 +1,4 @@
-import { Box, CircularProgress } from "@mui/material";
+import { Box, CircularProgress, IconButton, Tooltip } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import FactCard from "./FactCard/FactCard";
 import getFloodData from "./floodData";
@@ -13,6 +13,8 @@ import Graduation from "../../../public/icons/graduation.svg";
 import Married from "../../../public/icons/married.svg";
 import Home from "../../../public/icons/home.svg";
 import Population from "../../../public/icons/population.svg";
+import Vacancy from "../../../public/icons/vacancy.svg";
+import QuestionTooltipSvg from "../../../public/icons/question-tooltip.svg";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { AddressComponentType, AgencyFBI, OverallCrimeInfo } from "types/address";
 import Handcuff from "../../../public/images/handcuff.svg";
@@ -24,6 +26,7 @@ import { useRecoilState } from "recoil";
 import { loadingContext } from "context/loadingContext";
 import { DetailsModal } from "./DetailsModal/DetailsModal";
 import { DetailsCard } from "./DetailsCard/DetailsCard";
+import { VersusCard } from "./VersusCard/VersusCard";
 
 const floodRiskMap: { [key: string]: string } = {
   A: "Medium",
@@ -293,21 +296,46 @@ export default function Neighborhood({ filterVal }: Props) {
           position: "relative",
         }}
       >
-        <h3 className={styles.header}>Quick Facts</h3>
+        <h3 className={styles.header}>
+          Quick Facts{" "}
+          <Tooltip title="Please note that the primary data provider for our Neighborhood information is sourced from the 2020 American Community Survey conducted by the U.S. Census. Whenever more recent data is available from subsequent Census surveys, we endeavor to update our platform accordingly. However, there may still be a time lag in data representation, and we advise investors to exercise caution and consider consulting additional sources for the most current information.">
+            <IconButton style={{ marginBottom: "2px" }}>
+              <QuestionTooltipSvg sx={{ fontSize: 20 }} />
+            </IconButton>
+          </Tooltip>
+        </h3>
         <div className={styles.container}>
           <DetailsModal card={<FactCard label="Population" type="string" value={censusData?.population?.total || 0} icon={<Population className={styles.icon} />} />}>
             <DetailsCard label="Median Age of Total Population" value={censusData?.population?.medianAge} />
             <DetailsCard label="Foreign Born Population" value={censusData?.population?.foreginBorn} />
             <DetailsCard label="Foreign Born Population %" value={censusData?.population?.foreginBornPercent} />
           </DetailsModal>
-          <FactCard label="Flood Risk" type="string" value={convertFloodZoneToRisk(floodData?.[0]?.floodZone)} icon={<WarningIcon className={styles.icon} />} />
           <FactCard
-            label="Flood Zone"
+            label="Average Salary"
             type="string"
-            value={floodData?.[0]?.floodZone || "Unknown"}
-            icon={<FloodIcon className={styles.icon} />}
-            seeMoreOnClick={() => setOpenFloodZoneMap(true)}
+            value={censusData?.averageSalary && formatter.format(censusData.averageSalary)}
+            icon={<AttachMoneyIcon className={styles.icon} />}
           />
+          <FactCard
+            label="Median Home Value"
+            type="string"
+            value={censusData?.medianHomeValue && formatter.format(censusData.medianHomeValue)}
+            icon={<Home className={styles.icon} />}
+          />
+          <FactCard
+            label="Median Contract Rent"
+            type="string"
+            value={censusData?.medianContractRent ? formatter.format(censusData.medianContractRent) : "Unknown"}
+            icon={<Home clasName={styles.icon} />}
+          />
+          <DetailsModal
+            card={<FactCard label="Vacant Housing Units %" type="percent" value={censusData?.vacantHousingUnits?.percentage} icon={<Vacancy className={styles.icon} />} />}
+          >
+            <DetailsCard label="Total Housing Units" value={censusData?.vacantHousingUnits?.totalHousingUnits} />
+            <DetailsCard label="Vacant Housing Units" value={censusData?.vacantHousingUnits?.vacantHousingUnits} />
+            <DetailsCard label="Total Occupied Housing Units" value={censusData?.vacantHousingUnits?.totalOccupiedHousingUnits} />
+          </DetailsModal>
+          <FactCard label="Percent Under Poverty" type="percent" value={censusData?.percentUnderPoverty} icon={<Hunger className={styles.icon} />} />
           <FactCard
             label="Adults with a bachlors degree"
             type="percent"
@@ -321,56 +349,14 @@ export default function Neighborhood({ filterVal }: Props) {
             icon={<Married className={styles.icon} />}
           />
           <FactCard
-            label="Average Salary"
-            type="string"
-            value={censusData?.averageSalary && formatter.format(censusData.averageSalary)}
-            icon={<AttachMoneyIcon className={styles.icon} />}
-          />
-          <FactCard label="Percent Under Poverty" type="percent" value={censusData?.percentUnderPoverty} icon={<Hunger className={styles.icon} />} />
-          <FactCard label="Percent not US citizens" type="percent" value={censusData?.nonCitizens} icon={<Population className={styles.icon} />} />
-          <FactCard
             label="Dominant Race"
             type="string"
             value={censusData && `${capitalize(censusData.dominantRace)}`}
             icon={<Population className={styles.icon} />}
             seeMoreOnClick={() => setOpenRaceBreakdown(true)}
           />
+          <RaceBreakdown open={openRaceBreakdown} handleClose={handleCloseModals} raceData={censusData?.raceData} />
           <FactCard label="Unemployment Rate" type="percent" value={censusData?.unemploymentRate} icon={<Unemployment className={styles.icon} />} />
-          <DetailsModal
-            card={<FactCard label="Vacant Housing Units %" type="percent" value={censusData?.vacantHousingUnits?.percentage} icon={<Home className={styles.icon} />} />}
-          >
-            <DetailsCard label="Total Housing Units" value={censusData?.vacantHousingUnits?.totalHousingUnits} />
-            <DetailsCard label="Vacant Housing Units" value={censusData?.vacantHousingUnits?.vacantHousingUnits} />
-            <DetailsCard label="Total Occupied Housing Units" value={censusData?.vacantHousingUnits?.totalOccupiedHousingUnits} />
-          </DetailsModal>
-          <DetailsModal
-            card={
-              <FactCard
-                label="Owner-Occupied Housing Units vs Renter-Occupied Housing Units"
-                type="string"
-                value={`${censusData?.ownerOccupiedVsRenterOccupied.ownerOccupiedPercentage}% vs ${censusData?.ownerOccupiedVsRenterOccupied.renterOccupiedPercentage}%`}
-                icon={<Home className={styles.icon} />}
-              />
-            }
-          >
-            <DetailsCard label="Owner-Occupied Housing Units" value={censusData?.ownerOccupiedVsRenterOccupied?.ownerOccupied} />
-            <DetailsCard label="Renter-Occupied Housing Units" value={censusData?.ownerOccupiedVsRenterOccupied?.renterOccupied} />
-          </DetailsModal>
-          <FactCard
-            label="Median Contract Rent"
-            type="string"
-            value={censusData?.medianContractRent ? formatter.format(censusData.medianContractRent) : "Unknown"}
-            icon={<Home clasName={styles.icon} />}
-          />
-          <FactCard
-            label="Median Home Value"
-            type="string"
-            value={censusData?.medianHomeValue && formatter.format(censusData.medianHomeValue)}
-            icon={<Home className={styles.icon} />}
-          />
-          <FactCard label="Owner morgage ≥ 30% household income" type="percent" value={censusData?.morgageGreaterThan30Percent} icon={<Home className={styles.icon} />} />
-          <FactCard label="Rent ≥ 30% household income" type="string" value={censusData?.rentGreaterThan30Percent} icon={<Home className={styles.icon} />} />
-          <FactCard label="Owners without morgages" type="percent" value={censusData?.percentOwnersNoMorgage} icon={<Home className={styles.icon} />} />
           <DetailsModal
             card={
               <FactCard
@@ -401,9 +387,35 @@ export default function Neighborhood({ filterVal }: Props) {
             <DetailsCard label={overallCrimeInfo?.localInfo?.area + " / 100k"} value={overallCrimeInfo?.propertyAreaRate} />
             <DetailsCard label="National / 100k" value={overallCrimeInfo?.propertyNationalRate} />
           </DetailsModal>
-
-          <RaceBreakdown open={openRaceBreakdown} handleClose={handleCloseModals} raceData={censusData?.raceData} />
-
+          <DetailsModal
+            card={
+              <VersusCard
+                left={{
+                  label: "Owners",
+                  value: censusData?.ownerOccupiedVsRenterOccupied?.ownerOccupiedPercentage,
+                }}
+                right={{
+                  label: "Renters",
+                  value: censusData?.ownerOccupiedVsRenterOccupied?.renterOccupiedPercentage,
+                }}
+              />
+            }
+          >
+            <DetailsCard label="Owner-Occupied Housing Units" value={censusData?.ownerOccupiedVsRenterOccupied?.ownerOccupied} />
+            <DetailsCard label="Renter-Occupied Housing Units" value={censusData?.ownerOccupiedVsRenterOccupied?.renterOccupied} />
+          </DetailsModal>
+          <FactCard label="Owners without morgages" type="percent" value={censusData?.percentOwnersNoMorgage} icon={<Home className={styles.icon} />} />
+          <FactCard label="Owner morgage ≥ 30% household income" type="percent" value={censusData?.morgageGreaterThan30Percent} icon={<Home className={styles.icon} />} />
+          <FactCard label="Rent ≥ 30% household income" type="string" value={censusData?.rentGreaterThan30Percent} icon={<Home className={styles.icon} />} />
+          <FactCard label="Percent not US citizens" type="percent" value={censusData?.nonCitizens} icon={<Population className={styles.icon} />} />
+          <FactCard label="Flood Risk" type="string" value={convertFloodZoneToRisk(floodData?.[0]?.floodZone)} icon={<WarningIcon className={styles.icon} />} />
+          <FactCard
+            label="Flood Zone"
+            type="string"
+            value={floodData?.[0]?.floodZone || "Unknown"}
+            icon={<FloodIcon className={styles.icon} />}
+            seeMoreOnClick={() => setOpenFloodZoneMap(true)}
+          />
           <FloodZoneModal open={openFloodZoneMap} handleClose={handleCloseModals}>
             <FactCard label="Flood Zone" type="string" value={floodData?.[0]?.floodZone || "Unknown"} icon={<FloodIcon className={styles.icon} />}></FactCard>
           </FloodZoneModal>
