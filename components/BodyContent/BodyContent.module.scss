@@ -3,6 +3,7 @@
 .main {
   display: flex;
   height: 85%;
+  max-height: 100%;
   gap: 1rem;
 
   @include mq-tablet-landscape--down {
@@ -22,6 +23,12 @@
 
 .tabs {
   width: 65%;
+
+  @include mq-desktop--up {
+    max-height: 77.8vh;
+    overflow: auto;
+    padding-bottom: 0px;
+  }
 
   @include mq-tablet-landscape--down {
     width: 100%;
