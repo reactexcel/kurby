@@ -2,6 +2,7 @@
   border: 1px solid lightgray;
   box-shadow: none !important;
   border-radius: 0.75rem !important;
+  height: 100%;
 }
 
 .cardContent {
@@ -48,8 +49,8 @@
 
 .launchIcon {
   position: absolute;
-  right: 0.75rem;
-  top: 0.75rem;
+  right: 0.5rem;
+  top: 0.5rem;
   color: #00a13d;
   font-size: 1.25rem;
   cursor: pointer;
