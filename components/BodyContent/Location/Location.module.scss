@@ -43,3 +43,12 @@
   margin-top: 1.5rem;
   width: 100%;
 }
+
+.explainedLikeAlocal {
+  max-height: 10rem;
+  overflow: auto;
+
+  @include mq-tablet-landscape--down {
+    max-height: none;
+  }
+}
