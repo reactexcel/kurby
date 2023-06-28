@@ -49,15 +49,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       apiKey: process.env.OPENAI_API_KEY,
     });
     const openai = new OpenAIApi(configuration);
-    const openAiResponse = await openai.createCompletion({
-      prompt,
+    const openAiResponse = await openai.createChatCompletion({
       max_tokens,
       model: "gpt-4",
       temperature: 0.7,
       top_p: 1,
+      messages: [
+        {
+          content: prompt,
+          role: "user",
+        },
+      ],
     });
 
-    return openAiResponse.data.choices?.[0]?.text;
+    return openAiResponse.data.choices?.[0]?.message?.content;
   };
 
   //Prompts to be answered and returned to front-end
