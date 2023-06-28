@@ -83,7 +83,27 @@ export default function Neighborhood({ filterVal }: Props) {
 
   const [overallCrimeInfo, setOverallCrimeInfo] = useState<OverallCrimeInfo | null>(null);
 
-  const isUsa = useMemo(() => filterVal?.selectedPlace?.formatted_address?.includes("USA"), [filterVal.selectedPlace]);
+  const usaDetectionKeywords = [
+    "USA", // English
+    "США", // Russian
+    "EE. UU.", // Spanish
+    "États-Unis", // French
+    "USA", // German
+    "USA", // Italian
+    "EUA", // Portuguese
+    "美国", // Chinese (Simplified)
+    "アメリカ", // Japanese
+    "미국", // Korean
+    "االمتحدة", // Arabic
+  ];
+
+  const searchInput = filterVal?.selectedPlace?.formatted_address;
+  const isUsa = useMemo(() => {
+    if (!searchInput) return false;
+
+    const lowercasedInput = searchInput.toLowerCase();
+    return usaDetectionKeywords.some((keyword) => lowercasedInput.includes(keyword.toLowerCase()));
+  }, [filterVal.selectedPlace, searchInput]);
 
   const getNearestAgency = async (agencyList: AgencyFBI[]) => {
     let agencyOri = "";

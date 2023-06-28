@@ -23,7 +23,7 @@
 }
 
 .tabLayout {
-  padding-bottom: 0;
+  padding-bottom: 15px;
 
   @include mq-tablet-landscape--down {
     padding-bottom: 1.5rem;
