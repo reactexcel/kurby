@@ -84,7 +84,7 @@ export function Tabs() {
     <>
       <NextSeo description={explainedLikeAlocal.split(".")[0] || "Kurby uses location data to estimate property value like never before."} />
       <Box className={styles.main}>
-        <ToggleButtonGroup color="success" value={activeTab} exclusive onChange={handleTabChange} aria-label="Platform">
+        <ToggleButtonGroup className={styles.toggleButtonGroupLayout} color="success" value={activeTab} exclusive onChange={handleTabChange} aria-label="Platform">
           <ToggleButton className={styles.button} value="location">
             Location
           </ToggleButton>

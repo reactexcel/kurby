@@ -3,6 +3,7 @@
 .main {
   display: flex;
   height: 85%;
+  max-height: 100%;
   gap: 1rem;
 
   @include mq-tablet-landscape--down {
