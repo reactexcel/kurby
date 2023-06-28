@@ -52,7 +52,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const openAiResponse = await openai.createCompletion({
       prompt,
       max_tokens,
-      model: "text-davinci-003",
+      model: "gpt-4",
       temperature: 0.7,
       top_p: 1,
     });
