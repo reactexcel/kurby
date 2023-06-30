@@ -4,42 +4,36 @@ import GoogleAddressInput from "components/GoogleAddressInput";
 import { addressToUrl } from "utils/address";
 import { Paragraph } from "components/Paragraph/Paragraph";
 import { useRouter } from "next/router";
-import { HomepageVideo } from "features/homepage/Homepage/HomepageVideo/HomepageVideo";
-import { useContext } from "react";
-import { WindowSizeContext } from "context/windowSizeContext";
-
-const inputPropsStyle = {
-  width: "95%",
-  height: "2rem",
-  borderBottom: "none !important",
-  margin: "0.25rem 0",
-  "&::before": {
-    borderBottom: "none !important",
-  },
-  "&::after": {
-    borderBottom: "none !important",
-  },
-};
 
 export const MainSection = () => {
   const router = useRouter();
-  const { isMobileTablet } = useContext(WindowSizeContext);
 
   const handleSelectedAddress = (address: any) => {
     const encodedAddress = addressToUrl(address.formatted_address);
     router.push(`/app/${encodedAddress}`);
   };
 
+  const inputPropsStyle = {
+    width: "95%",
+    height: "2rem",
+    borderBottom: "none !important",
+    margin: "0.25rem 0",
+    "&::before": {
+      borderBottom: "none !important",
+    },
+    "&::after": {
+      borderBottom: "none !important",
+    },
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
         <h1 className={styles.header}>
-          UNLOCK THE <span className={styles.coloredText}>POWER</span> OF REAL ESTATE AI
+          UNLOCK THE <span className={styles.coloredText}>POWER</span> OF REAL ESTATE INTELLIGENCE
         </h1>
 
         <Paragraph text="Simplify your property search with our AI-powered app." className={styles.paragraph} />
-
-        {isMobileTablet && <HomepageVideo />}
 
         <div className={styles.formWrapper}>
           <div className={styles.formContainer}>
@@ -63,7 +57,6 @@ export const MainSection = () => {
         <Paragraph text="Try it - it's free, forever." />
         <img src="/images/social-proof.svg" alt="" className={styles.socialProof} />
       </div>
-      {!isMobileTablet && <HomepageVideo />}
     </div>
   );
 };
