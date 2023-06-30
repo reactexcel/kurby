@@ -135,10 +135,6 @@
   @include mq-tablet-landscape--down {
     margin-bottom: 2rem;
   }
-
-  @include mq-phone-only {
-    margin-bottom: 1rem;
-  }
 }
 
 .socialProof {
