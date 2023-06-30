@@ -46,7 +46,7 @@ export const MainSection = () => {
                 sx: inputPropsStyle,
               }}
               className={styles.input}
-              placeholder="Search any address, city or landmark"
+              placeholder="Search a property address"
               handleSelectedAddress={handleSelectedAddress}
             />
             <button className={styles.searchButton}>
@@ -55,7 +55,6 @@ export const MainSection = () => {
           </div>
         </div>
         <Paragraph text="Try it - it's free, forever." />
-        <img src="/images/social-proof.svg" alt="" className={styles.socialProof} />
       </div>
     </div>
   );
