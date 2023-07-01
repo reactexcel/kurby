@@ -46,7 +46,7 @@ export const MainSection = () => {
                 sx: inputPropsStyle,
               }}
               className={styles.input}
-              placeholder="Search a property address"
+              placeholder="Search any property address worldwide"
               handleSelectedAddress={handleSelectedAddress}
             />
             <button className={styles.searchButton}>
