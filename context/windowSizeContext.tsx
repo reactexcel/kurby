@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState, useCallback, createContext } from "react";
+import { useEffect, useState, useCallback, createContext } from "react";
 import debounce from "lodash/debounce";
 
 const MOBILE_BREAKPOINT = 600;
@@ -48,7 +48,7 @@ export function WindowSizeProvider({ children }: { children: React.ReactNode }) 
     setWindowStateCallback();
   }, 333);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setWindowStateCallback();
     window.addEventListener("resize", windowListener);
 
