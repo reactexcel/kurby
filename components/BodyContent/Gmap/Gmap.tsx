@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { GoogleMap, MarkerF } from "@react-google-maps/api";
+import { GoogleMap, MarkerF, OverlayView, Polygon } from "@react-google-maps/api";
 import { filterState } from "../../../context/filterContext";
 import { useRecoilState } from "recoil";
 import GLOBAL_SETTINGS from "../../../globals/GLOBAL_SETTINGS";
 import styles from "./Gmap.module.scss";
+import getCensusData, { LatLong } from "components/Census/getCensusData";
+import { getCartographicData } from "components/Census/GeoJSON/getCensusCartographic";
 
 /**
  * Gmap
@@ -19,6 +21,27 @@ function MyComponent() {
   const [map, setMap] = React.useState(null) as any;
   const [filterVal, setFilterVal] = useRecoilState(filterState);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  const [isMapOverlayLoaded, setMapOverlayLoaded] = useState<boolean>(false);
+
+  useEffect(() => {
+    const prepareGeometricData = async () => {
+      const dataLayer = await getCartographicData({});
+      console.log(dataLayer);
+      map.data.addGeoJson(dataLayer);
+    };
+    if (map && !isMapOverlayLoaded) {
+      map.data.setStyle({
+        fillColor: "rgb(231, 51, 47, 0.5)",
+        strokeColor: "red",
+        strokeWeight: 2,
+      });
+      try {
+        prepareGeometricData();
+      } catch (e) {}
+      setMapOverlayLoaded(true);
+    }
+  }, [filterVal]);
 
   //* Google maps options
   //* SEE https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions
@@ -72,7 +95,7 @@ function MyComponent() {
 
   //* When the marker loads
   const onMarkerLoad = (marker: any) => {
-    //console.log("marker: ", marker);
+    // console.log("marker: ", marker);
   };
 
   //* Get the place markers and icons for them

@@ -1,6 +1,6 @@
 import census from "citysdk";
 
-interface LatLong {
+export interface LatLong {
   lat: number;
   lng: number;
 }
