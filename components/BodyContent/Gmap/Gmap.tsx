@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { GoogleMap, MarkerF, OverlayView, Polygon } from "@react-google-maps/api";
+import { GoogleMap, MarkerF } from "@react-google-maps/api";
 import { filterState } from "../../../context/filterContext";
 import { useRecoilState } from "recoil";
 import GLOBAL_SETTINGS from "../../../globals/GLOBAL_SETTINGS";
 import styles from "./Gmap.module.scss";
-import getCensusData, { LatLong } from "components/Census/getCensusData";
 import { getCartographicData } from "components/Census/GeoJSON/getCensusCartographic";
+import { Stack, Typography } from "@mui/material";
 
 /**
  * Gmap
@@ -30,12 +30,13 @@ function MyComponent() {
       console.log(dataLayer);
       map.data.addGeoJson(dataLayer);
     };
+
     if (map && !isMapOverlayLoaded) {
-      map.data.setStyle({
-        fillColor: "rgb(231, 51, 47, 0.5)",
-        strokeColor: "red",
-        strokeWeight: 2,
+      map.data.setStyle((feature: any) => {
+        // const aland = feature.getProperty("ALAND");
+        // console.log(feature.getProperty("STATE_NAME"), feature.getProperty());
       });
+
       try {
         prepareGeometricData();
       } catch (e) {}
@@ -47,8 +48,9 @@ function MyComponent() {
   //* SEE https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions
   const googleMapOptions = {
     zoomControl: false,
-    minZoom: 13,
-    fullscreenControl: false,
+    minZoom: 17,
+    // fullscreenControl: false,
+    mapId: "7ba16be0c9375fa7",
   };
 
   //* On map load
@@ -131,29 +133,58 @@ function MyComponent() {
   }
 
   return (
-    <GoogleMap
-      center={filterVal.latlong || initialCenter}
-      zoom={GLOBAL_SETTINGS.MAP_ZOOM_DEFAULT}
-      onLoad={onLoad}
-      onUnmount={onUnmount}
-      options={googleMapOptions}
-      onDragEnd={handleMapDrag}
-      onCenterChanged={onCenterChanged}
-      mapContainerClassName={styles.map}
-    >
-      {/* Child components, such as markers, info windows, etc. */}
-      <>
-        {filterVal.latlong && (
-          <>
-            <MarkerF position={filterVal.latlong} onLoad={onMarkerLoad} key={"addressMarker"} />
-            {placesMarkers.map((place) => (
-              <MarkerF key={place.place_id} position={place.position} options={place.options} />
-            ))}
-          </>
-        )}
-      </>
-    </GoogleMap>
+    <div style={{ position: "relative" }}>
+      <GoogleMap
+        center={filterVal.latlong || initialCenter}
+        zoom={GLOBAL_SETTINGS.MAP_ZOOM_DEFAULT}
+        onLoad={onLoad}
+        onUnmount={onUnmount}
+        options={googleMapOptions}
+        onDragEnd={handleMapDrag}
+        onCenterChanged={onCenterChanged}
+        mapContainerClassName={styles.map}
+      >
+        {/* Child components, such as markers, info windows, etc. */}
+        <>
+          {filterVal.latlong && (
+            <>
+              <MarkerF position={filterVal.latlong} onLoad={onMarkerLoad} key={"addressMarker"} />
+              {placesMarkers.map((place) => (
+                <MarkerF key={place.place_id} position={place.position} options={place.options} />
+              ))}
+            </>
+          )}
+        </>
+      </GoogleMap>
+      <MapLegend />
+    </div>
   );
 }
+
+function MapLegend() {
+  const demographicColorRepresentation = ["#A30123", "#D12F26", "#EE6941", "#EEAF72", "#F4D589", "#F4D589", "#D6EAEF", "#ADD2E3", "#6FA7C7", "#4873AF", "#2B368C"];
+  return (
+    <div className={styles.mapLegend}>
+      <Typography marginBottom={1} fontSize={18} fontWeight={800}>
+        Median Household Income
+      </Typography>
+      <Stack direction={"row"}>
+        {demographicColorRepresentation.map((color: string, index: number) => (
+          <Stack flex={1} textAlign={"center"} direction={"column"}>
+            <MapLegendColorItem backgroundColor={color} />
+            {
+              <Typography style={{ fontStyle: "italic" }}>
+                {index}
+                {index !== 0 && "0"}k
+              </Typography>
+            }
+          </Stack>
+        ))}
+      </Stack>
+    </div>
+  );
+}
+
+const MapLegendColorItem = ({ backgroundColor }: { backgroundColor: string }) => <div className={styles.mapLegendColorItem} style={{ backgroundColor }} />;
 
 export default React.memo(MyComponent);

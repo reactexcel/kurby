@@ -7,16 +7,17 @@ export const getCartographicData = async ({}: ICensusCartographicData) => {
   return new Promise((resolve) => {
     census(
       {
-        vintage: 2021,
+        vintage: "2021",
         geoHierarchy: {
           county: "*",
         },
-        // sourcePath: ["acs", "acs5"],
-        // values: ["B19083_001E"], // GINI index
-        geoResolution: "20m", // required
+        sourcePath: ["acs", "acs5"],
+        values: ["B19083_001E"], // GINI index
+        statsKey: "978f544e844f821ccfe1dd7620e9180801de2107",
+        geoResolution: "500k",
       },
       async (err: any, res: any) => {
-        resolve(JSON.parse(res));
+        resolve(res);
       },
     );
   });
