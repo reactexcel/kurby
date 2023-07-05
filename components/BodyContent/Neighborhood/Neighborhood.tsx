@@ -331,7 +331,7 @@ export default function Neighborhood({ filterVal }: Props) {
             <DetailsCard label="Foreign Born Population %" value={censusData?.population?.foreginBornPercent} />
           </DetailsModal>
           <FactCard
-            label="Average Salary"
+            label="Median Household Income"
             type="string"
             value={censusData?.averageSalary && formatter.format(censusData.averageSalary)}
             icon={<AttachMoneyIcon className={styles.icon} />}
