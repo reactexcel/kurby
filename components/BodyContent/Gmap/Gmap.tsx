@@ -77,7 +77,8 @@ function MyComponent() {
 
         return {
           fillColor,
-          fillOpacity: 0.9,
+          fillOpacity: 0.7,
+          strokeWeight: 0,
         };
       });
 
