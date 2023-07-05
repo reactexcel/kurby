@@ -9,12 +9,13 @@ export const getCartographicData = async ({}: ICensusCartographicData) => {
       {
         vintage: "2021",
         geoHierarchy: {
+          state: "12",
           county: "*",
         },
         sourcePath: ["acs", "acs5"],
-        values: ["B19083_001E"], // GINI index
-        statsKey: "978f544e844f821ccfe1dd7620e9180801de2107",
-        geoResolution: "500k",
+        values: ["B19013_001E"], // MEDIAN_HOUSEHOLD_INCOME
+        geoResolution: "20m",
+        // statsKey: "<your key here>",
       },
       async (err: any, res: any) => {
         resolve(res);

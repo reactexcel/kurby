@@ -6,6 +6,7 @@ import GLOBAL_SETTINGS from "../../../globals/GLOBAL_SETTINGS";
 import styles from "./Gmap.module.scss";
 import { getCartographicData } from "components/Census/GeoJSON/getCensusCartographic";
 import { Stack, Typography } from "@mui/material";
+import getCensusData from "components/Census/getCensusData";
 
 /**
  * Gmap
@@ -26,6 +27,10 @@ function MyComponent() {
 
   useEffect(() => {
     const prepareGeometricData = async () => {
+      getCensusData({
+        lat: 28.2639,
+        lng: -80.7214,
+      });
       const dataLayer = await getCartographicData({});
       console.log(dataLayer);
       map.data.addGeoJson(dataLayer);
@@ -33,8 +38,47 @@ function MyComponent() {
 
     if (map && !isMapOverlayLoaded) {
       map.data.setStyle((feature: any) => {
-        // const aland = feature.getProperty("ALAND");
-        // console.log(feature.getProperty("STATE_NAME"), feature.getProperty());
+        const income = feature.getProperty("B19013_001E");
+        let fillColor = "#151e61";
+
+        if (income <= 100000) {
+          fillColor = "#2B368C";
+        }
+        if (income <= 90000) {
+          fillColor = "#2B368C";
+        }
+        if (income <= 80000) {
+          fillColor = "#6FA7C7";
+        }
+        if (income <= 70000) {
+          fillColor = "#ADD2E3";
+        }
+        if (income <= 60000) {
+          fillColor = "#D6EAEF";
+        }
+        if (income <= 50000) {
+          fillColor = "#F6F6B9";
+        }
+        if (income <= 40000) {
+          fillColor = "#F4D589";
+        }
+        if (income <= 30000) {
+          fillColor = "#F4D589";
+        }
+        if (income <= 20000) {
+          fillColor = "#EE6941";
+        }
+        if (income <= 10000) {
+          fillColor = "#D12F26";
+        }
+        if (income <= 5000) {
+          fillColor = "#A30123";
+        }
+
+        return {
+          fillColor,
+          fillOpacity: 0.9,
+        };
       });
 
       try {
@@ -47,8 +91,8 @@ function MyComponent() {
   //* Google maps options
   //* SEE https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions
   const googleMapOptions = {
-    zoomControl: false,
-    minZoom: 17,
+    // zoomControl: false,
+    // minZoom: 17,
     // fullscreenControl: false,
     mapId: "7ba16be0c9375fa7",
   };
