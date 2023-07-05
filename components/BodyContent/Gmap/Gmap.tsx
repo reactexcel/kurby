@@ -92,10 +92,9 @@ function MyComponent() {
   //* Google maps options
   //* SEE https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions
   const googleMapOptions = {
-    // zoomControl: false,
-    // minZoom: 17,
-    // fullscreenControl: false,
-    mapId: "7ba16be0c9375fa7",
+    zoomControl: false,
+    minZoom: 17,
+    fullscreenControl: false,
   };
 
   //* On map load
