@@ -27,7 +27,9 @@ function MyComponent() {
   useEffect(() => {
     const prepareGeometricData = async () => {
       const dataLayer = await getCartographicData({
+        // @ts-ignore
         lat: (filterVal.latlong?.lat() as unknown as number) || 0,
+        // @ts-ignore
         lng: (filterVal.latlong?.lng() as unknown as number) || 0,
       });
       console.log(dataLayer);
