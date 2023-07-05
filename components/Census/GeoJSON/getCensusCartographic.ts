@@ -1,16 +1,23 @@
 import census from "citysdk";
 
-interface ICensusCartographicData {}
+interface ICartographicData {
+  lat: number;
+  lng: number;
+}
 
 //* Gets the raw census data
-export const getCartographicData = async ({}: ICensusCartographicData) => {
+export const getCartographicData = async ({ lat, lng }: ICartographicData) => {
   return new Promise((resolve) => {
     census(
       {
         vintage: "2021",
         geoHierarchy: {
-          state: "*",
-          county: "*",
+          state: {
+            lat,
+            lng,
+          },
+          county: null, // <- leapfrog fix
+          tract: "*",
         },
         sourcePath: ["acs", "acs5"],
         values: ["B19013_001E"], // MEDIAN_HOUSEHOLD_INCOME

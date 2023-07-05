@@ -6,7 +6,6 @@ import GLOBAL_SETTINGS from "../../../globals/GLOBAL_SETTINGS";
 import styles from "./Gmap.module.scss";
 import { getCartographicData } from "components/Census/GeoJSON/getCensusCartographic";
 import { Stack, Typography } from "@mui/material";
-import getCensusData from "components/Census/getCensusData";
 
 /**
  * Gmap
@@ -27,11 +26,10 @@ function MyComponent() {
 
   useEffect(() => {
     const prepareGeometricData = async () => {
-      getCensusData({
-        lat: 28.2639,
-        lng: -80.7214,
+      const dataLayer = await getCartographicData({
+        lat: (filterVal.latlong?.lat() as unknown as number) || 0,
+        lng: (filterVal.latlong?.lng() as unknown as number) || 0,
       });
-      const dataLayer = await getCartographicData({});
       console.log(dataLayer);
       map.data.addGeoJson(dataLayer);
     };
@@ -43,6 +41,9 @@ function MyComponent() {
 
         if (income <= 100000) {
           fillColor = "#2B368C";
+        }
+        if (income <= 95000) {
+          fillColor = "#";
         }
         if (income <= 90000) {
           fillColor = "#2B368C";
@@ -77,7 +78,7 @@ function MyComponent() {
 
         return {
           fillColor,
-          fillOpacity: 0.7,
+          fillOpacity: 0.4,
           strokeWeight: 0,
         };
       });
