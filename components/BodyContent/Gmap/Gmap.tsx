@@ -135,9 +135,9 @@ function MyComponent() {
   //* Google maps options
   //* SEE https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions
   const googleMapOptions = {
-    // zoomControl: false,
-    // minZoom: 17,
-    // fullscreenControl: false,
+    zoomControl: false,
+    minZoom: 17,
+    fullscreenControl: false,
   };
 
   //* On map load
