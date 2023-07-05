@@ -32,57 +32,97 @@ function MyComponent() {
         // @ts-ignore
         lng: (filterVal.latlong?.lng() as unknown as number) || 0,
       });
-      console.log(dataLayer);
       map.data.addGeoJson(dataLayer);
+      console.log(dataLayer);
     };
 
     if (map && !isMapOverlayLoaded) {
+      const returnMap = {
+        fillOpacity: 0.75,
+        strokeWeight: 0.45,
+      };
       map.data.setStyle((feature: any) => {
-        const income = feature.getProperty("B19013_001E");
-        let fillColor = "#151e61";
+        const income = feature.getProperty("B19013_001E").toString();
 
-        if (income <= 100000) {
-          fillColor = "#2B368C";
-        }
-        if (income <= 95000) {
-          fillColor = "#";
-        }
-        if (income <= 90000) {
-          fillColor = "#2B368C";
-        }
-        if (income <= 80000) {
-          fillColor = "#6FA7C7";
-        }
-        if (income <= 70000) {
-          fillColor = "#ADD2E3";
-        }
-        if (income <= 60000) {
-          fillColor = "#D6EAEF";
-        }
-        if (income <= 50000) {
-          fillColor = "#F6F6B9";
-        }
-        if (income <= 40000) {
-          fillColor = "#F4D589";
-        }
-        if (income <= 30000) {
-          fillColor = "#F4D589";
-        }
-        if (income <= 20000) {
-          fillColor = "#EE6941";
-        }
-        if (income <= 10000) {
-          fillColor = "#D12F26";
-        }
-        if (income <= 5000) {
-          fillColor = "#A30123";
+        if (income.length > 6) {
+          return {
+            ...returnMap,
+            fillColor: "#2B368C",
+          };
         }
 
-        return {
-          fillColor,
-          fillOpacity: 0.4,
-          strokeWeight: 0,
-        };
+        if (income.length === 6 && income.startsWith("1")) {
+          return {
+            ...returnMap,
+            fillColor: "#2B368C",
+          };
+        }
+        if (income.length === 5 && income.startsWith("9")) {
+          return {
+            ...returnMap,
+            fillColor: "#4873AF",
+          };
+        }
+        if (income.length === 5 && income.startsWith("8")) {
+          return {
+            ...returnMap,
+            fillColor: "#6FA7C7",
+          };
+        }
+        if (income.length === 5 && income.startsWith("7")) {
+          const fillColor = "#ADD2E3";
+          return {
+            ...returnMap,
+            fillColor,
+          };
+        }
+        if (income.length === 5 && income.startsWith("6")) {
+          const fillColor = "#D6EAEF";
+          return {
+            ...returnMap,
+            fillColor,
+          };
+        }
+        if (income.length === 5 && income.startsWith("5")) {
+          const fillColor = "#F6F6B9";
+          return {
+            ...returnMap,
+            fillColor,
+          };
+        }
+        if (income.length === 5 && income.startsWith("4")) {
+          const fillColor = "#F4D589";
+          return {
+            ...returnMap,
+            fillColor,
+          };
+        }
+        if (income.length === 5 && income.startsWith("3")) {
+          const fillColor = "#F4D589";
+          return {
+            ...returnMap,
+            fillColor,
+          };
+        }
+        if (income.length === 5 && income.startsWith("2")) {
+          const fillColor = "#EE6941";
+          return {
+            ...returnMap,
+            fillColor,
+          };
+        }
+        if (income.length === 5 && income.startsWith("1")) {
+          return {
+            ...returnMap,
+            fillColor: "#D12F26",
+          };
+        }
+        if (income.length === 4) {
+          return {
+            ...returnMap,
+            fillColor: "#A30123",
+          };
+        }
       });
 
       try {
