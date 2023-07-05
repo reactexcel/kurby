@@ -60,13 +60,11 @@ export default function Nearby() {
 
   const pageSize = user ? 5 : 1;
 
-  console.log(nearby.loadedOnScroll);
-
   const fetchMoreData = (initialCall: boolean) => {
     const initialLoad = initialCall ? 0 : nearby.loadedOnScroll;
     setTimeout(async () => {
       const newPlaces = nearby.places.slice(initialLoad, initialLoad + pageSize);
-      const updatedPlaces: any = await prepareLoadedPlaces(newPlaces, filterVal.mapCenter);
+      const updatedPlaces: any = await prepareLoadedPlaces([newPlaces[0]], filterVal.mapCenter);
 
       setNearby((prev) => ({
         ...prev,
@@ -101,38 +99,39 @@ export default function Nearby() {
           <CircularProgress />
         </div>
       ) : nearby.places.length ? (
-        <>
-          {user ? (
-            <InfiniteScroll
-              className={styles.infiniteScroll}
-              dataLength={loadedNearbyPlaces.length}
-              next={fetchMoreData}
-              hasMore={nearby.places.length - loadedNearbyPlaces.length !== 0}
-              loader={
-                <div className={styles.loader}>
-                  <CircularProgress />
-                </div>
-              }
-              height={isMobileTablet ? undefined : "100%"}
-              endMessage={
-                <p style={{ textAlign: "center" }}>
-                  <b>Yay! You have seen it all</b>
-                </p>
-              }
-            >
-              {nearbyPlaces}
-            </InfiniteScroll>
-          ) : (
-            <>
-              {nearbyPlaces[0]}
-              <div className={styles.signUpNote}>
-                <h3>Sign Up</h3>
-                <p>Sign Up for a free account to see 60 top-rated schools, hospitals, parks, grocery stores, and attractions within a 2-mile radius</p>
-                <Button onClick={() => router.push("/?openLoginSignup=true")}>Get Started</Button>
-              </div>
-            </>
-          )}
-        </>
+        // <>
+        //   {user ? (
+        //     <InfiniteScroll
+        //       className={styles.infiniteScroll}
+        //       dataLength={loadedNearbyPlaces.length}
+        //       next={fetchMoreData}
+        //       hasMore={nearby.places.length - loadedNearbyPlaces.length !== 0}
+        //       loader={
+        //         <div className={styles.loader}>
+        //           <CircularProgress />
+        //         </div>
+        //       }
+        //       height={isMobileTablet ? undefined : "100%"}
+        //       endMessage={
+        //         <p style={{ textAlign: "center" }}>
+        //           <b>Yay! You have seen it all</b>
+        //         </p>
+        //       }
+        //     >
+        //       {nearbyPlaces}
+        //     </InfiniteScroll>
+        //   ) : (
+        //     <>
+        //       {nearbyPlaces[0]}
+        //       <div className={styles.signUpNote}>
+        //         <h3>Sign Up</h3>
+        //         <p>Sign Up for a free account to see 60 top-rated schools, hospitals, parks, grocery stores, and attractions within a 2-mile radius</p>
+        //         <Button onClick={() => router.push("/?openLoginSignup=true")}>Get Started</Button>
+        //       </div>
+        //     </>
+        //   )}
+        // </>
+        nearbyPlaces
       ) : (
         <Typography>Please select a place of interest.</Typography>
       )}

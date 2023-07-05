@@ -1,4 +1,4 @@
-import { Box, Chip, Typography, Divider } from "@mui/material";
+import { Chip, Typography, Divider } from "@mui/material";
 import React, { useMemo } from "react";
 import { Rating } from "react-simple-star-rating";
 import PersonIcon from "/public/images/person.svg";
@@ -16,7 +16,7 @@ import LocationSvg from "/public/icons/location.svg";
 //TODO Get distance info and render it
 
 export default function NearbyPlaceCard({ place }: any) {
-  const { name: placeName, vicinity, user_ratings_total: userRatingsTotal, rating, photos, website, walking, biclycling, driving } = place;
+  const { name: placeName, vicinity, user_ratings_total: userRatingsTotal, rating, photos, walking, biclycling, driving } = place;
   const position = {
     lat: place.geometry.location.lat,
     lng: place.geometry.location.lng,
@@ -48,15 +48,7 @@ export default function NearbyPlaceCard({ place }: any) {
         <div className={styles.container}>
           {photo ? <img className={styles.image} src={photo} alt="Picture of the author" width={200} height={200} /> : <StreetView position={position} />}
           <div className={styles.info}>
-            {website ? (
-              <Typography variant="h6">
-                <a href={website} target="_blank" rel="noreferrer">
-                  {placeName}
-                </a>
-              </Typography>
-            ) : (
-              <Typography variant="h6">{placeName}</Typography>
-            )}
+            <Typography variant="h6">{placeName}</Typography>
             <div style={{ display: "flex", alignItems: "center", paddingTop: "2px" }}>
               <LocationSvg style={{ marginRight: "8px" }} />
               <Typography>{vicinity}</Typography>
@@ -75,7 +67,7 @@ export default function NearbyPlaceCard({ place }: any) {
                 </Typography>
               </div>
             )}
-            <Chip disabled={true} style={{ color: "#000000", opacity: "0.8" }} label={formatPlaceType(place._type)} />
+            <Chip disabled={true} style={{ color: "#000000", opacity: "0.8", marginTop: "0.5rem" }} label={formatPlaceType(place._type)} />
           </div>
         </div>
         {(walking || biclycling || driving) && (
