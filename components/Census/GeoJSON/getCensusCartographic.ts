@@ -14,7 +14,7 @@ export const getCartographicData = async ({}: ICensusCartographicData) => {
         },
         sourcePath: ["acs", "acs5"],
         values: ["B19013_001E"], // MEDIAN_HOUSEHOLD_INCOME
-        geoResolution: "20m",
+        geoResolution: "500k",
         // statsKey: "<your key here>",
       },
       async (err: any, res: any) => {
