@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { GoogleMap, MarkerF } from "@react-google-maps/api";
+import { GoogleMap, InfoWindow, MarkerF } from "@react-google-maps/api";
 import { filterState } from "../../../context/filterContext";
 import { useRecoilState } from "recoil";
 import GLOBAL_SETTINGS from "../../../globals/GLOBAL_SETTINGS";
 import styles from "./Gmap.module.scss";
-import { getCartographicData, kurbyLegendColors } from "components/Census/GeoJSON/getCensusCartographic";
+import { getCartographicData, kurbyLegendColors, prepareGeometricData } from "components/Census/GeoJSON/getCensusCartographic";
 import { Stack, Typography } from "@mui/material";
 
 /**
@@ -17,29 +17,43 @@ import { Stack, Typography } from "@mui/material";
 //TODO where should this start?
 const initialCenter = { lat: 38.9987208, lng: -77.2538699 };
 
+export interface ITooltipState {
+  coordinates: google.maps.LatLng | null;
+  income: number;
+  tractName: string;
+  county: string;
+}
+
 function MyComponent() {
-  const [map, setMap] = React.useState(null) as any;
+  const [map, setMap] = React.useState<google.maps.Map | null>(null);
+
   const [filterVal, setFilterVal] = useRecoilState(filterState);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  useEffect(() => {
-    const prepareGeometricData = async () => {
-      const dataLayer = await getCartographicData({
-        // @ts-ignore
-        lat: (filterVal.latlong?.lat() as unknown as number) || 0,
-        // @ts-ignore
-        lng: (filterVal.latlong?.lng() as unknown as number) || 0,
-      });
-      map.data.addGeoJson(dataLayer);
-    };
+  const [toolTip, setToolTip] = useState<ITooltipState>();
 
-    if (map) {
+  useEffect(() => {
+    if (map?.data && filterVal.latlong) {
       map.data.setStyle(kurbyLegendColors);
-      map.data.addListener("click", (feature: google.maps.Data.Feature) => {
-        console.log(feature.getProperty("Hello"));
+      map.data.addListener("click", (event: google.maps.Data.MouseEvent) => {
+        const income: number = event.feature.getProperty("B19013_001E");
+        const tractName: string = event.feature.getProperty("NAMELSAD");
+        const county: string = event.feature.getProperty("NAMELSADCO");
+
+        const tooltip = {
+          coordinates: event.latLng,
+          income,
+          tractName,
+          county,
+        };
+
+        setToolTip(tooltip);
       });
       try {
-        prepareGeometricData();
+        prepareGeometricData(map, {
+          lat: filterVal.latlong.lat(),
+          lng: filterVal.latlong.lng(),
+        });
       } catch (e) {
         console.log(e);
       }
@@ -72,25 +86,25 @@ function MyComponent() {
 
   //* Handle when the map is dragged. Get center and update global state
   const handleMapDrag = () => {
-    if (!map) return;
+    if (!map?.data) return;
 
-    //* Map center
+    // * Map center
     const center = map.getCenter();
 
     //* Update state which will re render certain components
-    setFilterVal((prev: any) => {
+    setFilterVal((prev) => {
       return {
         ...prev,
         mapCenter: {
-          lat: center.lat(),
-          lng: center.lng(),
+          lat: center?.lat() || initialCenter.lat,
+          lng: center?.lng() || initialCenter.lng,
         },
       };
     });
   };
 
   const onCenterChanged = () => {
-    if (!map) {
+    if (!map?.data) {
       return;
     }
     map.getStreetView().setVisible(false);
@@ -154,6 +168,16 @@ function MyComponent() {
                 <MarkerF key={place.place_id} position={place.position} options={place.options} />
               ))}
             </>
+          )}
+          {toolTip && (
+            <InfoWindow onLoad={onLoad} position={toolTip.coordinates as google.maps.LatLng}>
+              <div>
+                <Typography fontWeight={"800"}>{toolTip.tractName}</Typography>
+                <Typography>{toolTip.county}</Typography>
+                <hr />
+                {Math.sign(toolTip.income) ? <Typography>Income: ${toolTip.income.toLocaleString()}</Typography> : <Typography>N/A</Typography>}
+              </div>
+            </InfoWindow>
           )}
         </>
       </GoogleMap>

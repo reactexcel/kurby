@@ -146,3 +146,10 @@ export const kurbyLegendColors = (feature: google.maps.Data.Feature): IKurbyLege
       };
   }
 };
+
+export const prepareGeometricData = async (map: google.maps.Map, coordinates: google.maps.LatLngLiteral) => {
+  const dataLayer = await getCartographicData(coordinates);
+  if (dataLayer) {
+    map.data.addGeoJson(dataLayer);
+  }
+};
