@@ -265,6 +265,9 @@ function MapLegend() {
           </Stack>
         ))}
       </Stack>
+      <Typography fontSize={"13px"} className={styles.legendSource}>
+        Source: 2021 US Census Data
+      </Typography>
     </div>
   );
 }
