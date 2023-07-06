@@ -4,7 +4,7 @@ import { filterState } from "../../../context/filterContext";
 import { useRecoilState } from "recoil";
 import GLOBAL_SETTINGS from "../../../globals/GLOBAL_SETTINGS";
 import styles from "./Gmap.module.scss";
-import { getCartographicData } from "components/Census/GeoJSON/getCensusCartographic";
+import { getCartographicData, kurbyLegendColors } from "components/Census/GeoJSON/getCensusCartographic";
 import { Stack, Typography } from "@mui/material";
 
 /**
@@ -22,8 +22,6 @@ function MyComponent() {
   const [filterVal, setFilterVal] = useRecoilState(filterState);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // const [isMapOverlayLoaded, setMapOverlayLoaded] = useState<boolean>(false);
-
   useEffect(() => {
     const prepareGeometricData = async () => {
       const dataLayer = await getCartographicData({
@@ -33,120 +31,18 @@ function MyComponent() {
         lng: (filterVal.latlong?.lng() as unknown as number) || 0,
       });
       map.data.addGeoJson(dataLayer);
-      console.log(dataLayer);
     };
 
     if (map) {
-      const returnMap = {
-        fillOpacity: 0.75,
-        strokeWeight: 0.45,
-      };
-      map.data.setStyle((feature: any) => {
-        const income = feature.getProperty("B19013_001E").toString();
-        const incomeNativeType = feature.getProperty("B19013_001E");
-        const isIncomeAvailable = Math.sign(incomeNativeType) === 1;
-
-        if (isIncomeAvailable && income.length > 6) {
-          return {
-            ...returnMap,
-            fillColor: "purple",
-          };
-        }
-
-        if (isIncomeAvailable && income.length === 6 && income.startsWith("2")) {
-          return {
-            ...returnMap,
-            fillColor: "purple",
-          };
-        }
-
-        if (isIncomeAvailable && income.length === 6 && income.startsWith("12")) {
-          return {
-            ...returnMap,
-            fillColor: "#2B368C",
-          };
-        }
-
-        if (isIncomeAvailable && income.length === 6 && income.startsWith("1")) {
-          return {
-            ...returnMap,
-            fillColor: "#2B368C",
-          };
-        }
-        if (isIncomeAvailable && income.length === 5 && income.startsWith("9")) {
-          return {
-            ...returnMap,
-            fillColor: "#4873AF",
-          };
-        }
-        if (isIncomeAvailable && income.length === 5 && income.startsWith("8")) {
-          return {
-            ...returnMap,
-            fillColor: "#6FA7C7",
-          };
-        }
-        if (isIncomeAvailable && income.length === 5 && income.startsWith("7")) {
-          const fillColor = "#ADD2E3";
-          return {
-            ...returnMap,
-            fillColor,
-          };
-        }
-        if (isIncomeAvailable && income.length === 5 && income.startsWith("6")) {
-          const fillColor = "#D6EAEF";
-          return {
-            ...returnMap,
-            fillColor,
-          };
-        }
-        if (isIncomeAvailable && income.length === 5 && income.startsWith("5")) {
-          const fillColor = "#F6F6B9";
-          return {
-            ...returnMap,
-            fillColor,
-          };
-        }
-        if (isIncomeAvailable && income.length === 5 && income.startsWith("4")) {
-          const fillColor = "#F4D589";
-          return {
-            ...returnMap,
-            fillColor,
-          };
-        }
-        if (isIncomeAvailable && isIncomeAvailable && income.length === 5 && income.startsWith("3")) {
-          const fillColor = "#F4D589";
-          return {
-            ...returnMap,
-            fillColor,
-          };
-        }
-        if (isIncomeAvailable && income.length === 5 && income.startsWith("2")) {
-          const fillColor = "#EE6941";
-          return {
-            ...returnMap,
-            fillColor,
-          };
-        }
-        if (isIncomeAvailable && income.length === 5 && income.startsWith("1")) {
-          return {
-            ...returnMap,
-            fillColor: "#D12F26",
-          };
-        }
-        if (isIncomeAvailable && income.length === 4) {
-          return {
-            ...returnMap,
-            fillColor: "#A30123",
-          };
-        }
-
-        return {
-          ...returnMap,
-          fillColor: "rgb(255, 255, 255, 0)",
-        };
+      map.data.setStyle(kurbyLegendColors);
+      map.data.addListener("click", (feature: google.maps.Data.Feature) => {
+        console.log(feature.getProperty("Hello"));
       });
-
-      prepareGeometricData();
+      try {
+        prepareGeometricData();
+      } catch (e) {
+        console.log(e);
+      }
     }
   }, [filterVal.latlong]);
 
@@ -267,7 +163,8 @@ function MyComponent() {
 }
 
 function MapLegend() {
-  const demographicColorRepresentation = ["#A30123", "#D12F26", "#EE6941", "#EEAF72", "#F4D589", "#F4D589", "#D6EAEF", "#ADD2E3", "#6FA7C7", "#4873AF", "#2B368C"];
+  const demographicColorRepresentation = ["#A30123", "#D12F26", "#EE6941", "#EEAF72", "#F4D589", "#F4D589", "#D6EAEF", "#ADD2E3", "#6FA7C7", "#4873AF", "#2B368C", "purple"];
+  const mapTextItem = { fontStyle: "italic" };
   return (
     <div className={styles.mapLegend}>
       <Typography marginBottom={1} fontSize={18} fontWeight={800}>
@@ -277,12 +174,14 @@ function MapLegend() {
         {demographicColorRepresentation.map((color: string, index: number) => (
           <Stack flex={1} textAlign={"center"} direction={"column"}>
             <MapLegendColorItem backgroundColor={color} />
-            {
-              <Typography style={{ fontStyle: "italic" }}>
+            {index === 11 ? (
+              <Typography style={mapTextItem}>200k+</Typography>
+            ) : (
+              <Typography style={mapTextItem}>
                 {index}
                 {index !== 0 && "0"}k
               </Typography>
-            }
+            )}
           </Stack>
         ))}
       </Stack>
