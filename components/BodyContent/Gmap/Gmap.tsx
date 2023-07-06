@@ -22,7 +22,7 @@ function MyComponent() {
   const [filterVal, setFilterVal] = useRecoilState(filterState);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const [isMapOverlayLoaded, setMapOverlayLoaded] = useState<boolean>(false);
+  // const [isMapOverlayLoaded, setMapOverlayLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     const prepareGeometricData = async () => {
@@ -36,7 +36,7 @@ function MyComponent() {
       console.log(dataLayer);
     };
 
-    if (map && !isMapOverlayLoaded) {
+    if (map) {
       const returnMap = {
         fillOpacity: 0.75,
         strokeWeight: 0.45,
@@ -125,12 +125,9 @@ function MyComponent() {
         }
       });
 
-      try {
-        prepareGeometricData();
-      } catch (e) {}
-      setMapOverlayLoaded(true);
+      prepareGeometricData();
     }
-  }, [filterVal]);
+  }, [filterVal.latlong]);
 
   //* Google maps options
   //* SEE https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions
