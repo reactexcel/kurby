@@ -43,86 +43,107 @@ function MyComponent() {
       };
       map.data.setStyle((feature: any) => {
         const income = feature.getProperty("B19013_001E").toString();
+        const incomeNativeType = feature.getProperty("B19013_001E");
+        const isIncomeAvailable = Math.sign(incomeNativeType) === 1;
 
-        if (income.length > 6) {
+        if (isIncomeAvailable && income.length > 6) {
+          return {
+            ...returnMap,
+            fillColor: "purple",
+          };
+        }
+
+        if (isIncomeAvailable && income.length === 6 && income.startsWith("2")) {
+          return {
+            ...returnMap,
+            fillColor: "purple",
+          };
+        }
+
+        if (isIncomeAvailable && income.length === 6 && income.startsWith("12")) {
           return {
             ...returnMap,
             fillColor: "#2B368C",
           };
         }
 
-        if (income.length === 6 && income.startsWith("1")) {
+        if (isIncomeAvailable && income.length === 6 && income.startsWith("1")) {
           return {
             ...returnMap,
             fillColor: "#2B368C",
           };
         }
-        if (income.length === 5 && income.startsWith("9")) {
+        if (isIncomeAvailable && income.length === 5 && income.startsWith("9")) {
           return {
             ...returnMap,
             fillColor: "#4873AF",
           };
         }
-        if (income.length === 5 && income.startsWith("8")) {
+        if (isIncomeAvailable && income.length === 5 && income.startsWith("8")) {
           return {
             ...returnMap,
             fillColor: "#6FA7C7",
           };
         }
-        if (income.length === 5 && income.startsWith("7")) {
+        if (isIncomeAvailable && income.length === 5 && income.startsWith("7")) {
           const fillColor = "#ADD2E3";
           return {
             ...returnMap,
             fillColor,
           };
         }
-        if (income.length === 5 && income.startsWith("6")) {
+        if (isIncomeAvailable && income.length === 5 && income.startsWith("6")) {
           const fillColor = "#D6EAEF";
           return {
             ...returnMap,
             fillColor,
           };
         }
-        if (income.length === 5 && income.startsWith("5")) {
+        if (isIncomeAvailable && income.length === 5 && income.startsWith("5")) {
           const fillColor = "#F6F6B9";
           return {
             ...returnMap,
             fillColor,
           };
         }
-        if (income.length === 5 && income.startsWith("4")) {
+        if (isIncomeAvailable && income.length === 5 && income.startsWith("4")) {
           const fillColor = "#F4D589";
           return {
             ...returnMap,
             fillColor,
           };
         }
-        if (income.length === 5 && income.startsWith("3")) {
+        if (isIncomeAvailable && isIncomeAvailable && income.length === 5 && income.startsWith("3")) {
           const fillColor = "#F4D589";
           return {
             ...returnMap,
             fillColor,
           };
         }
-        if (income.length === 5 && income.startsWith("2")) {
+        if (isIncomeAvailable && income.length === 5 && income.startsWith("2")) {
           const fillColor = "#EE6941";
           return {
             ...returnMap,
             fillColor,
           };
         }
-        if (income.length === 5 && income.startsWith("1")) {
+        if (isIncomeAvailable && income.length === 5 && income.startsWith("1")) {
           return {
             ...returnMap,
             fillColor: "#D12F26",
           };
         }
-        if (income.length === 4) {
+        if (isIncomeAvailable && income.length === 4) {
           return {
             ...returnMap,
             fillColor: "#A30123",
           };
         }
+
+        return {
+          ...returnMap,
+          fillColor: "rgb(255, 255, 255, 0)",
+        };
       });
 
       prepareGeometricData();
