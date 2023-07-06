@@ -1,6 +1,6 @@
 import census from "citysdk";
 
-interface LatLong {
+export interface LatLong {
   lat: number;
   lng: number;
 }
@@ -75,6 +75,7 @@ const dataRequests: any = {
   B25003_003E: { label: "RENTER_OCCUPIED_HOUSING_UNITS" },
   B25058_001E: { label: "MEDIAN_CONTRACT_RENT" },
   B25077_001E: { label: "MEDIAN_HOME_VALUE" },
+  B19013_001E: { label: "MEDIAN_HOUSEHOLD_INCOME" },
 };
 
 const deriveCensusData = (mappedDt: any) => {

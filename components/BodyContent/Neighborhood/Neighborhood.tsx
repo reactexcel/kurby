@@ -64,7 +64,7 @@ const convertFloodZoneToRisk = (floodZone: string) => {
 
 interface Props {
   filterVal: {
-    latlong: google.maps.LatLngLiteral | null;
+    latlong: google.maps.LatLng | null;
     radius: any | null;
     address: string | null;
     nearbyPlaces: any[];
