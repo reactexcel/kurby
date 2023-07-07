@@ -4,13 +4,21 @@ import { filterState } from "../../../context/filterContext";
 import { useRecoilState } from "recoil";
 import GLOBAL_SETTINGS from "../../../globals/GLOBAL_SETTINGS";
 import styles from "./Gmap.module.scss";
-import { getCartographicData, kurbyLegendColors, prepareGeometricData } from "components/Census/GeoJSON/getCensusCartographic";
-import { Stack, Typography } from "@mui/material";
+import { prepareHouseholdGeometricData } from "components/Census/GeoJSON/getCensusCartographic";
+import { FormControl, MenuItem, Select, Stack, Typography } from "@mui/material";
+import { createMedianHouseholdIncomeLegend } from "components/Census/Legends/MedianHouseholdIncome";
 
 /**
  * Gmap
  * @description: Displays the google map component + Markers
  */
+
+enum DemographicFeatureSelection {
+  MEDIAN_HOUSEHOLD_INCOME = "B19013_001E",
+  POVERTY_RATE = "test",
+  MEDIAN_HOME_VALUE = "to_be_selected",
+  VACANT_HOUSING_UNITS = "not_defined",
+}
 
 //TODO add to stylesheet
 
@@ -33,8 +41,9 @@ function MyComponent() {
   const [toolTip, setToolTip] = useState<ITooltipState>();
 
   useEffect(() => {
+    const medianHouseholdLegend = createMedianHouseholdIncomeLegend();
     if (map?.data && filterVal.latlong) {
-      map.data.setStyle(kurbyLegendColors);
+      map.data.setStyle(medianHouseholdLegend.getGoogleMapsColor);
       map.data.addListener("click", (event: google.maps.Data.MouseEvent) => {
         const income: number = event.feature.getProperty("B19013_001E");
         const tractName: string = event.feature.getProperty("NAMELSAD");
@@ -50,7 +59,7 @@ function MyComponent() {
         setToolTip(tooltip);
       });
       try {
-        prepareGeometricData(map, {
+        prepareHouseholdGeometricData(map, {
           lat: filterVal.latlong.lat(),
           lng: filterVal.latlong.lng(),
         });
@@ -181,6 +190,7 @@ function MyComponent() {
           )}
         </>
       </GoogleMap>
+      <DemographicFeatureDropdown />
       <MapLegend />
     </div>
   );
@@ -212,6 +222,23 @@ function MapLegend() {
       <Typography fontSize={"13px"} className={styles.legendSource}>
         Source: 2021 US Census Data
       </Typography>
+    </div>
+  );
+}
+
+function DemographicFeatureDropdown() {
+  return (
+    <div className={styles.dropdownFeatureSelector}>
+      <FormControl size="small" fullWidth>
+        <Select defaultValue={DemographicFeatureSelection.MEDIAN_HOUSEHOLD_INCOME} labelId="demo-simple-select-label">
+          <MenuItem value={DemographicFeatureSelection.MEDIAN_HOUSEHOLD_INCOME} defaultChecked>
+            Median household income
+          </MenuItem>
+          <MenuItem value={DemographicFeatureSelection.POVERTY_RATE}>Poverty rate</MenuItem>
+          <MenuItem value={DemographicFeatureSelection.MEDIAN_HOME_VALUE}>Median home value</MenuItem>
+          <MenuItem value={DemographicFeatureSelection.VACANT_HOUSING_UNITS}>Vacant housing units</MenuItem>
+        </Select>
+      </FormControl>
     </div>
   );
 }
