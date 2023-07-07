@@ -1,0 +1,143 @@
+.background {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  height: 1993px;
+  background: #fff;
+  padding: 80px;
+}
+.title {
+  color: var(--black, #061a23);
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: uppercase;
+  margin-top: 80px;
+  margin-bottom: 40px;
+}
+.features {
+  width: 587px;
+  margin-top: 10px;
+}
+.featuresBlock {
+  ul {
+    padding: 0;
+    margin-bottom: 0;
+  }
+}
+.featureItem {
+  list-style: none;
+  color: var(--black, #061a23);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  margin-bottom: 80px;
+}
+.starter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 381px;
+  height: 1833px;
+  border-radius: 10px;
+  background: rgba(175, 7, 254, 0.10000000149011612);
+}
+.growth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 381px;
+  height: 1833px;
+  border-radius: 10px;
+  background: rgba(0, 161, 60, 0.10000000149011612);
+}
+.professional {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 381px;
+  height: 1833px;
+  border-radius: 10px;
+  background: rgba(3, 60, 192, 0.10000000149011612);
+}
+.cardTitle {
+  color: #061a23;
+  text-align: center;
+  font-size: 34px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-transform: uppercase;
+  z-index: 2;
+}
+.starterBtn {
+  width: 184px;
+  height: 42px;
+  border-radius: 6px;
+  background: #af07fe;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.growthBtn {
+  width: 184px;
+  height: 42px;
+  border-radius: 6px;
+  background: #00a13c;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.profBtn {
+  width: 184px;
+  height: 42px;
+  border-radius: 6px;
+  background: #173cc0;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.signs {
+  margin-top: 41px;
+  display: flex;
+  flex-direction: column;
+}
+.signItem {
+  margin: 0 0 84px;
+}
+.signItemMinus {
+  margin: 10px 0 86px;
+}
+.preset {
+  color: #000;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  margin-top: 80px;
+  margin-bottom: 80px;
+}
+.quickSign {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 15px;
+}
+.dataSign {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 90px;
+}

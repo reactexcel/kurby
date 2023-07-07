@@ -21,6 +21,7 @@
     "axios": "^1.2.3",
     "chart.js": "^4.3.0",
     "citysdk": "^2.3.4",
+    "clsx": "^1.2.1",
     "faker": "^6.6.6",
     "google-maps-react-markers": "^1.0.9",
     "isomorphic-unfetch": "^4.0.2",
