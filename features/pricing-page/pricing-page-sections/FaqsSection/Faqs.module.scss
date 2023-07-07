@@ -20,8 +20,8 @@
   text-transform: uppercase;
 }
 .faqs {
-  width: 1760px;
-  height: 218px;
+  width: 96%;
+  //height: 218px;
   padding: 25px;
   border-radius: 10px;
   background: #fff;
@@ -42,7 +42,8 @@
 }
 .fagInfo {
   display: flex;
-  width: 1710px;
+  //width: 1710px;
+  width: 96%;
   flex-direction: column;
   flex-shrink: 0;
   color: var(--grey, #727272);
@@ -54,7 +55,11 @@
   margin-top: 5px;
   p {
     margin: 0;
+    
   }
+}
+.faqLine {
+  width: 98%;
 }
 .faqItem {
   display: flex;
@@ -65,7 +70,8 @@
   padding: 30px 25px;
   border-radius: 10px;
   background: #fff;
-  width: 1760px;
+  //width: 1760px;
+  width: 96%;
   height: 90px;
   flex-shrink: 0;
   color: var(--black, #061a23);

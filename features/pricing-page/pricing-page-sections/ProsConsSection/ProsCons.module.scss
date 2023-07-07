@@ -3,7 +3,7 @@
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  height: 1993px;
+  //height: 1993px;
   background: #fff;
   padding: 80px;
 }
@@ -18,7 +18,8 @@
   margin-bottom: 40px;
 }
 .features {
-  width: 587px;
+  //width: 587px;
+  width: 65%;
   margin-top: 10px;
 }
 .featuresBlock {
@@ -40,8 +41,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 381px;
-  height: 1833px;
+  margin-right: 5px;
+  //width: 381px;
+  //height: 1833px;
+  width: 30%;
   border-radius: 10px;
   background: rgba(175, 7, 254, 0.10000000149011612);
 }
@@ -49,8 +52,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 381px;
-  height: 1833px;
+  //width: 381px;
+  margin-right: 5px;
+  width: 30%;
+  //height: 1833px;
   border-radius: 10px;
   background: rgba(0, 161, 60, 0.10000000149011612);
 }
@@ -58,8 +63,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 381px;
-  height: 1833px;
+  //width: 381px;
+  //height: 1833px;
+  width: 30%;
   border-radius: 10px;
   background: rgba(3, 60, 192, 0.10000000149011612);
 }
@@ -113,6 +119,7 @@
   margin-top: 41px;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 .signItem {
   margin: 0 0 84px;
@@ -133,11 +140,13 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   margin-top: 15px;
 }
 .dataSign {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   margin-top: 90px;
 }

@@ -1,14 +1,16 @@
 .card {
-  width: 490px;
-  height: 705px;
+  //width: 490px;
+  width: 30%;
+  //height: 705px;
   padding: 20px;
   border-radius: 20px;
   box-shadow: 0px 2px 15px 0px rgba(0, 161, 60, 0.1);
 }
 .greenCard {
   background-color: #00a13c;
-  width: 490px;
-  height: 705px;
+  //width: 490px;
+  width: 33%;
+  //height: 705px;
   padding: 20px;
   border-radius: 20px;
   box-shadow: 0px 2px 15px 0px rgba(0, 161, 60, 0.1);
@@ -95,6 +97,10 @@
   list-style: none;
   height: 30px;
   margin-top: 5px;
+
+  @media (max-width: 1580px) {
+    margin-bottom: 25px;
+  }
 }
 .greenFeatureParams {
   display: flex;
@@ -104,6 +110,10 @@
   list-style: none;
   height: 30px;
   margin-top: 8px;
+
+  @media (max-width: 1580px) {
+    margin-bottom: 25px;
+  }
 }
 .FeaturesBlock {
   ul {

@@ -2,12 +2,19 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  height: 422px;
+  //height: 422px;
   background-color: #00a13c;
   padding: 60px;
-  width: 1550px;
+  width: 95%;
   margin: 0 auto;
   border-radius: 20px;
+
+  @media (max-width: 1600px) {
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  }
 }
 .title {
   font-weight: 500;
@@ -42,4 +49,8 @@
   height: 301px;
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(2px);
+
+  @media (max-width: 1600px) {
+    margin-top: 20px;
+  }
 }

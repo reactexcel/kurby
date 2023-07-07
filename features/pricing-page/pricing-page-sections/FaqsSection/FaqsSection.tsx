@@ -14,7 +14,7 @@ export const FaqsSection = () => {
           <p className={styles.faqTitle}>Are there different pricing tiers or options available within the plan?</p>
           <Minus />
         </div>
-        <FaqLine />
+        <FaqLine className ={styles.faqLine}  />
         <div className={styles.infoBlock}>
           <p className={styles.faqInfo}>A mortgage payment is the amount of money paid regularly to pay down, eventually paying off the borrowed mortgage balance.</p>
           <p className={styles.faqInfo}>
