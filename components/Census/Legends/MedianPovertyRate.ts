@@ -10,50 +10,58 @@ interface IKurbyLegendColorDefault {
 }
 
 class KurbyMedianPovertyRate {
-  static getHexColorByHomeValue(povertyRate: number) {
+  static getHexColorByPovertyRate(povertyRate: number) {
     const isValueAvailable = Math.sign(povertyRate) === 1;
     const valueString = povertyRate.toString();
 
-    const IS_45_PLUS = isValueAvailable && valueString.length === 6 && valueString.startsWith("8");
-    const IS_40 = isValueAvailable && valueString.length === 6 && valueString.startsWith("7");
-    const IS_35 = isValueAvailable && valueString.length === 6 && valueString.startsWith("6");
-    const IS_30 = isValueAvailable && valueString.length === 6 && valueString.startsWith("5");
-    const IS_25 = isValueAvailable && valueString.length === 6 && valueString.startsWith("4");
-    const IS_20 = isValueAvailable && valueString.length === 6 && valueString.startsWith("3");
-    const IS_15 = isValueAvailable && valueString.length === 6 && valueString.startsWith("2");
-    const IS_10 = isValueAvailable && valueString.length === 6 && valueString.startsWith("1");
-    const IS_LESS_10 = isValueAvailable && valueString.length === 5 && valueString.startsWith("9");
+    const IS_45_PLUS = isValueAvailable && valueString.length === 2 && valueString.startsWith("5");
+    const IS_40 = isValueAvailable && valueString.length === 2 && valueString.startsWith("4");
+    const IS_35 = isValueAvailable && valueString.length === 2 && valueString.startsWith("35");
+    const IS_30 = isValueAvailable && valueString.length === 2 && valueString.startsWith("3");
+    const IS_25 = isValueAvailable && valueString.length === 2 && valueString.startsWith("25");
+    const IS_20 = isValueAvailable && valueString.length === 2 && valueString.startsWith("2");
+    const IS_15 = isValueAvailable && valueString.length === 2 && valueString.startsWith("15");
+    const IS_10 = isValueAvailable && valueString.length === 2 && valueString.startsWith("1");
+    const IS_LESS_10 = isValueAvailable && valueString.length === 1;
 
     switch (true) {
       case IS_45_PLUS:
-        return "#5C00B2";
+        return "rgb(73, 0, 106)";
       case IS_40:
-        return "#4873AF";
+        return "rgb(122, 3, 119)";
       case IS_40:
-        return "#ADD2E3";
+        return "rgb(174, 3, 126)";
       case IS_35:
-        return "#D6EAEF";
+        return "rgb(221, 52, 151)";
       case IS_30:
-        return "#F6F6B9";
+        return "rgb(247, 104, 161)";
       case IS_25:
-        return "#F4D589";
+        return "rgb(250, 159, 181)";
       case IS_20:
-        return "#F4D589";
+        return "rgb(252, 197, 192)";
       case IS_15:
-        return "#EE6941";
+        return "rgb(252, 197, 194)";
       case IS_10:
-        return "#D12F26";
+        return "rgb(253, 224, 221)";
       case IS_LESS_10:
-        return "#A30123";
+        return "rgb(255, 247, 243)";
       default:
         return "NO_COLOR";
     }
   }
 
   public getGoogleMapsColor(feature: google.maps.Data.Feature): IKurbyLegendColor | IKurbyLegendColorDefault {
-    const homeValue = feature.getProperty("B25077_001E");
+    const C17002_001E = feature.getProperty("C17002_001E");
+    const C17002_002E = feature.getProperty("C17002_002E");
+    const C17002_003E = feature.getProperty("C17002_003E");
 
-    const result = KurbyMedianPovertyRate.getHexColorByHomeValue(homeValue);
+    const result = KurbyMedianPovertyRate.getHexColorByPovertyRate(
+      getPercentUnderPoverty({
+        C17002_001E,
+        C17002_002E,
+        C17002_003E,
+      }),
+    );
     if (result === "NO_COLOR") {
       return {
         strokeWeight: 0,
@@ -70,4 +78,14 @@ class KurbyMedianPovertyRate {
 
 export function createMedianPovertyRateLegend() {
   return new KurbyMedianPovertyRate();
+}
+
+interface IGetPercentUnderPoverty {
+  C17002_001E: number;
+  C17002_002E: number;
+  C17002_003E: number;
+}
+export function getPercentUnderPoverty({ C17002_001E, C17002_002E, C17002_003E }: IGetPercentUnderPoverty) {
+  const convertToPercentage = (num: number) => Math.round(num * 100);
+  return convertToPercentage((C17002_002E + C17002_003E) / C17002_001E);
 }
