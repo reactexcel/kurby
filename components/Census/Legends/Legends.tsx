@@ -1,5 +1,6 @@
 import { Stack, Typography } from "@mui/material";
 import styles from "./Legends.module.scss";
+import { housingUnitsColorRepresentation } from "./MedianVacantHousing";
 
 const MapLegendColorItem = ({ backgroundColor }: { backgroundColor: string }) => <div className={styles.mapLegendColorItem} style={{ backgroundColor }} />;
 
@@ -85,6 +86,30 @@ export function PovertyRateLegend() {
       </Typography>
       <Stack direction={"row"}>
         {povertyColorRepresentation.map((color: string, index: number) => (
+          <Stack flex={1} textAlign={"center"} direction={"column"}>
+            <MapLegendColorItem backgroundColor={color} />
+            <Typography style={mapTextItem}>{povertyColorLabels[index]}</Typography>
+          </Stack>
+        ))}
+      </Stack>
+      <Stack direction={"row"}></Stack>
+      <Typography fontSize={"13px"} className={styles.legendSource}>
+        Source: 2021 US Census Data
+      </Typography>
+    </div>
+  );
+}
+
+export function VacantHousingLegend() {
+  const povertyColorLabels = ["<5%", "5", "10", "15", "20", "25", "25", "30", "35", "40", "50", "50+"];
+  const mapTextItem = { fontStyle: "italic" };
+  return (
+    <div className={styles.mapLegend}>
+      <Typography marginBottom={1} fontSize={18} fontWeight={800}>
+        Vacant Housing Units
+      </Typography>
+      <Stack direction={"row"}>
+        {housingUnitsColorRepresentation.map((color: string, index: number) => (
           <Stack flex={1} textAlign={"center"} direction={"column"}>
             <MapLegendColorItem backgroundColor={color} />
             <Typography style={mapTextItem}>{povertyColorLabels[index]}</Typography>

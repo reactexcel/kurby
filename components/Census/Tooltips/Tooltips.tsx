@@ -46,7 +46,24 @@ export function PovertyRateTooltip({ povertyRate, county, tractName }: IPovertyR
       <Typography fontWeight={"800"}>{tractName}</Typography>
       <Typography>{county}</Typography>
 
-      {Math.sign(povertyRate || -1) ? <Typography>Rate: ${povertyRate.toLocaleString()}%</Typography> : <Typography>N/A</Typography>}
+      {Math.sign(povertyRate || -1) ? <Typography>Rate: {povertyRate.toLocaleString()}%</Typography> : <Typography>N/A</Typography>}
+    </div>
+  );
+}
+
+interface IVacantHousingTooltip {
+  vacantHousing: number;
+  county: string;
+  tractName: string;
+}
+
+export function VacantHousingTooltip({ vacantHousing, county, tractName }: IVacantHousingTooltip) {
+  return (
+    <div style={{ width: 180, borderRadius: 20, backgroundColor: "white", opacity: 0.86, padding: 12 }}>
+      <Typography fontWeight={"800"}>{tractName}</Typography>
+      <Typography>{county}</Typography>
+
+      {Math.sign(vacantHousing || -1) ? <Typography>Units: {vacantHousing.toLocaleString()}</Typography> : <Typography>N/A</Typography>}
     </div>
   );
 }

@@ -9,8 +9,9 @@ import { createMedianHouseholdIncomeLegend } from "components/Census/Legends/Med
 import { createMedianHomeValueLegend } from "components/Census/Legends/MedianHomeValue";
 import { prepareTractGeometricData } from "components/Census/GeoJSON/getCensusCartographic";
 import { createMedianPovertyRateLegend, getPercentUnderPoverty } from "components/Census/Legends/MedianPovertyRate";
-import { HomevalueMapLegend, HouseholdMapLegend, PovertyRateLegend } from "components/Census/Legends/Legends";
-import { HomevalueTooltip, HouseholdIncomeTooltip, PovertyRateTooltip } from "components/Census/Tooltips/Tooltips";
+import { HomevalueMapLegend, HouseholdMapLegend, PovertyRateLegend, VacantHousingLegend } from "components/Census/Legends/Legends";
+import { HomevalueTooltip, HouseholdIncomeTooltip, PovertyRateTooltip, VacantHousingTooltip } from "components/Census/Tooltips/Tooltips";
+import { createHousingUnitsLegend, getVacantHousingUnits } from "components/Census/Legends/MedianVacantHousing";
 
 /**
  * Gmap
@@ -60,6 +61,7 @@ export interface IMetricsTooltipState {
   householdIncome: number;
   homeValue: number;
   povertyRate: number;
+  vacantHousing: number;
 }
 
 function MyComponent() {
@@ -79,12 +81,14 @@ function MyComponent() {
 
   // Load tracts shapes using Census Cartographic
   useEffect(() => {
-    if (map?.data && filterVal.latlong) {
-      prepareTractGeometricData(map, {
-        lat: filterVal.latlong.lat(),
-        lng: filterVal.latlong.lng(),
-      });
-    }
+    try {
+      if (map?.data && filterVal.latlong) {
+        prepareTractGeometricData(map, {
+          lat: filterVal.latlong.lat(),
+          lng: filterVal.latlong.lng(),
+        });
+      }
+    } catch (error) {}
   }, [filterVal.latlong]);
 
   // Create the choropleth map
@@ -103,6 +107,9 @@ function MyComponent() {
     } else if (value === DemographicFeatureSelection.POVERTY_RATE) {
       const medianPovertyRate = createMedianPovertyRateLegend();
       map.data.setStyle(medianPovertyRate.getGoogleMapsColor);
+    } else if (value === DemographicFeatureSelection.VACANT_HOUSING_UNITS) {
+      const housingUnits = createHousingUnitsLegend();
+      map.data.setStyle(housingUnits.getGoogleMapsColor);
     }
   }, [filterVal.latlong, value]);
 
@@ -129,10 +136,18 @@ function MyComponent() {
       const C17002_002E = event.feature.getProperty("C17002_002E");
       const C17002_003E = event.feature.getProperty("C17002_003E");
 
+      const B25002_003E = event.feature.getProperty("B25002_003E");
+      const B25002_001E = event.feature.getProperty("B25002_001E");
+
       const povertyRate: number = getPercentUnderPoverty({
         C17002_001E,
         C17002_002E,
         C17002_003E,
+      });
+
+      const vacantUnits = getVacantHousingUnits({
+        B25002_003E,
+        B25002_001E,
       });
 
       setMetricsTooltip({
@@ -140,6 +155,7 @@ function MyComponent() {
         coordinates: event.latLng,
         householdIncome: income,
         homeValue: value,
+        vacantHousing: vacantUnits,
         povertyRate,
         tractName,
         county,
@@ -257,6 +273,7 @@ function MyComponent() {
               householdIncome={metricsTooltip.householdIncome}
               tractName={metricsTooltip.tractName}
               county={metricsTooltip.county}
+              vacantHousing={metricsTooltip.vacantHousing}
             />
           )}
         </>
@@ -266,8 +283,10 @@ function MyComponent() {
         <HouseholdMapLegend />
       ) : value === DemographicFeatureSelection.MEDIAN_HOME_VALUE ? (
         <HomevalueMapLegend />
+      ) : value === DemographicFeatureSelection.POVERTY_RATE ? (
+        <PovertyRateLegend />
       ) : (
-        value === DemographicFeatureSelection.POVERTY_RATE && <PovertyRateLegend />
+        value === DemographicFeatureSelection.VACANT_HOUSING_UNITS && <VacantHousingLegend />
       )}
     </div>
   );
@@ -286,8 +305,12 @@ function MetricsTooltip(props: IMetricsTooltipProps) {
           <HouseholdIncomeTooltip income={props.householdIncome} county={props.county} tractName={props.tractName} />
         ) : value === DemographicFeatureSelection.MEDIAN_HOME_VALUE ? (
           <HomevalueTooltip value={props.homeValue} county={props.county} tractName={props.tractName} />
+        ) : value === DemographicFeatureSelection.POVERTY_RATE ? (
+          <PovertyRateTooltip povertyRate={props.povertyRate} county={props.county} tractName={props.tractName} />
         ) : (
-          value === DemographicFeatureSelection.POVERTY_RATE && <PovertyRateTooltip povertyRate={props.povertyRate} county={props.county} tractName={props.tractName} />
+          value === DemographicFeatureSelection.VACANT_HOUSING_UNITS && (
+            <VacantHousingTooltip vacantHousing={props.vacantHousing} county={props.county} tractName={props.tractName} />
+          )
         )}
       </div>
     </InfoBox>

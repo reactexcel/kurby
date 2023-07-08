@@ -28,7 +28,7 @@ export const prepareTractGeometricData = async (map: google.maps.Map, coordinate
   const censusStatsApi = createCensusDemographicAPI({
     statusKey: process.env.NEXT_CENSUS_BUREAU_API_KEY || "978f544e844f821ccfe1dd7620e9180801de2107",
     sourcePath: ["acs", "acs5"],
-    values: ["B19013_001E", "B25077_001E", "C17002_001E", "C17002_002E", "C17002_003E"],
+    values: ["B19013_001E", "B25077_001E", "C17002_001E", "C17002_002E", "C17002_003E", "B25002_003E", "B25002_001E"],
     vintage: "2021",
     geoResolution: "500k",
   });
