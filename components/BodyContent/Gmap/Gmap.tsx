@@ -6,8 +6,9 @@ import GLOBAL_SETTINGS from "../../../globals/GLOBAL_SETTINGS";
 import styles from "./Gmap.module.scss";
 import { FormControl, MenuItem, Select, SelectChangeEvent, Stack, Typography } from "@mui/material";
 import { createMedianHouseholdIncomeLegend } from "components/Census/Legends/MedianHouseholdIncome";
-import { createMedianHomeValueLegend, getHomeValueColor } from "components/Census/Legends/MedianHomeValue";
+import { createMedianHomeValueLegend } from "components/Census/Legends/MedianHomeValue";
 import { prepareTractGeometricData } from "components/Census/GeoJSON/getCensusCartographic";
+import { createMedianPovertyRateLegend } from "components/Census/Legends/MedianPovertyRate";
 
 /**
  * Gmap
@@ -48,9 +49,6 @@ const highlightTract = (map: google.maps.Map, event: google.maps.Data.MouseEvent
   previousFeature = event.feature; // Update the previously clicked feature
 };
 
-//TODO add to stylesheet
-
-//TODO where should this start?
 const initialCenter = { lat: 38.9987208, lng: -77.2538699 };
 
 export interface IMetricsTooltipState {
@@ -59,6 +57,7 @@ export interface IMetricsTooltipState {
   tractName: string;
   householdIncome: number;
   homeValue: number;
+  povertyRate: number;
 }
 
 function MyComponent() {
@@ -86,13 +85,6 @@ function MyComponent() {
     }
   }, [filterVal.latlong]);
 
-  useEffect(() => {
-    if (!map?.data || !filterVal.latlong) {
-      return;
-    }
-  }, [filterVal.latlong]);
-
-  const [isClickListenerSet, setClickListener] = useState(false);
   // Create the choropleth map
   useEffect(() => {
     setMetricsTooltip(undefined);
@@ -106,10 +98,14 @@ function MyComponent() {
     } else if (value === DemographicFeatureSelection.MEDIAN_HOME_VALUE) {
       const medianHomeValue = createMedianHomeValueLegend();
       map.data.setStyle(medianHomeValue.getGoogleMapsColor);
+    } else if (value === DemographicFeatureSelection.POVERTY_RATE) {
+      const medianPovertyRate = createMedianPovertyRateLegend();
+      map.data.setStyle(null);
     }
   }, [filterVal.latlong, value]);
 
   // Handle tract tooltip on hover
+  const [isClickListenerSet, setClickListener] = useState(false);
   useEffect(() => {
     if (!map?.data) {
       return;
@@ -120,17 +116,19 @@ function MyComponent() {
     setClickListener(true);
     map.data.addListener("mouseover", (event: google.maps.Data.MouseEvent) => {
       highlightTract(map, event);
+      const county: string = event.feature.getProperty("NAMELSADCO");
+      const tractName: string = event.feature.getProperty("NAMELSAD");
+
       const income: number = event.feature.getProperty("B19013_001E");
       const value: number = event.feature.getProperty("B25077_001E");
-
-      const tractName: string = event.feature.getProperty("NAMELSAD");
-      const county: string = event.feature.getProperty("NAMELSADCO");
+      const povertyRate: number = event.feature.getProperty("C17002_001E");
 
       setMetricsTooltip({
         // @ts-ignore
         coordinates: event.latLng,
         householdIncome: income,
         homeValue: value,
+        povertyRate,
         tractName,
         county,
       });
@@ -241,6 +239,7 @@ function MyComponent() {
           {metricsTooltip && (
             <MetricsTooltip
               onClose={() => setMetricsTooltip(undefined)}
+              povertyRate={metricsTooltip.povertyRate}
               coordinates={metricsTooltip.coordinates as google.maps.LatLng}
               homeValue={metricsTooltip.homeValue}
               householdIncome={metricsTooltip.householdIncome}
@@ -251,7 +250,13 @@ function MyComponent() {
         </>
       </GoogleMap>
       <DemographicFeatureDropdown />
-      {value === DemographicFeatureSelection.MEDIAN_HOUSEHOLD_INCOME ? <HouseholdMapLegend /> : <HomevalueMapLegend />}
+      {value === DemographicFeatureSelection.MEDIAN_HOUSEHOLD_INCOME ? (
+        <HouseholdMapLegend />
+      ) : value === DemographicFeatureSelection.MEDIAN_HOME_VALUE ? (
+        <HomevalueMapLegend />
+      ) : (
+        value === DemographicFeatureSelection.POVERTY_RATE && <PovertyRateLegend />
+      )}
     </div>
   );
 }
@@ -294,11 +299,13 @@ function MetricsTooltip(props: IMetricsTooltipProps) {
   const [value] = useRecoilState(feature);
   return (
     <InfoBox onCloseClick={() => props.onClose()} position={props.coordinates}>
-      {value === DemographicFeatureSelection.MEDIAN_HOUSEHOLD_INCOME ? (
-        <HouseholdIncomeTooltip income={props.householdIncome} county={props.county} tractName={props.tractName} />
-      ) : (
-        value === DemographicFeatureSelection.MEDIAN_HOME_VALUE && <HomevalueTooltip value={props.homeValue} county={props.county} tractName={props.tractName} />
-      )}
+      <div>
+        {value === DemographicFeatureSelection.MEDIAN_HOUSEHOLD_INCOME ? (
+          <HouseholdIncomeTooltip income={props.householdIncome} county={props.county} tractName={props.tractName} />
+        ) : (
+          value === DemographicFeatureSelection.MEDIAN_HOME_VALUE && <HomevalueTooltip value={props.homeValue} county={props.county} tractName={props.tractName} />
+        )}
+      </div>
     </InfoBox>
   );
 }
@@ -360,6 +367,20 @@ function HomevalueMapLegend() {
           </Stack>
         ))}
       </Stack>
+      <Typography fontSize={"13px"} className={styles.legendSource}>
+        Source: 2021 US Census Data
+      </Typography>
+    </div>
+  );
+}
+
+function PovertyRateLegend() {
+  return (
+    <div className={styles.mapLegend}>
+      <Typography marginBottom={1} fontSize={18} fontWeight={800}>
+        Percent below federal poverty line
+      </Typography>
+      <Stack direction={"row"}></Stack>
       <Typography fontSize={"13px"} className={styles.legendSource}>
         Source: 2021 US Census Data
       </Typography>

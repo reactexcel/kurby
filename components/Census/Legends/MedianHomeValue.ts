@@ -75,7 +75,3 @@ class KurbyMedianHomeValueLegend {
 export function createMedianHomeValueLegend() {
   return new KurbyMedianHomeValueLegend();
 }
-
-export function getHomeValueColor(value: number) {
-  return KurbyMedianHomeValueLegend.getHexColorByHomeValue(value);
-}
