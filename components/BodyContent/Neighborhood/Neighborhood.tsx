@@ -318,7 +318,7 @@ export default function Neighborhood({ filterVal }: Props) {
       >
         <h3 className={styles.header}>
           Quick Facts{" "}
-          <Tooltip title="Please note that the primary data provider for our Neighborhood information is sourced from the 2020 American Community Survey conducted by the U.S. Census. Whenever more recent data is available from subsequent Census surveys, we endeavor to update our platform accordingly. However, there may still be a time lag in data representation, and we advise investors to exercise caution and consider consulting additional sources for the most current information.">
+          <Tooltip title="Please note that the primary data provider for our Neighborhood information is sourced from the 2021 American Community Survey conducted by the U.S. Census. Whenever more recent data is available from subsequent Census surveys, we endeavor to update our platform accordingly. However, there may still be a time lag in data representation, and we advise investors to exercise caution and consider consulting additional sources for the most current information.">
             <IconButton style={{ marginBottom: "2px" }}>
               <QuestionTooltipSvg sx={{ fontSize: 20 }} />
             </IconButton>
