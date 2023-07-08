@@ -63,7 +63,7 @@ export function VacantHousingTooltip({ vacantHousing, county, tractName }: IVaca
       <Typography fontWeight={"800"}>{tractName}</Typography>
       <Typography>{county}</Typography>
 
-      {Math.sign(vacantHousing || -1) ? <Typography>Units: {vacantHousing.toLocaleString()}</Typography> : <Typography>N/A</Typography>}
+      {Math.sign(vacantHousing || -1) ? <Typography>Units: {vacantHousing.toLocaleString()}%</Typography> : <Typography>N/A</Typography>}
     </div>
   );
 }
