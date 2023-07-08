@@ -34,7 +34,7 @@ export function HouseholdMapLegend() {
 }
 
 export function HomevalueMapLegend() {
-  const demographicColorRepresentation = ["#A30123", "#D12F26", "#EE6941", "#EEAF72", "#F4D589", "#F6F6B9", "#D6EAEF", "#ADD2E3", "#6FA7C7", "#4873AF", "#2B368C"];
+  const demographicColorRepresentation = ["#A30123", "#D12F26", "#EE6941", "#EEAF72", "#F4D589", "#F6F6B9", "#D6EAEF", "#ADD2E3", "#6FA7C7", "#4873AF", "purple"];
   const mapTextItem = { fontStyle: "italic" };
   return (
     <div className={styles.mapLegend}>

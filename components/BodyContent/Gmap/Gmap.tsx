@@ -10,7 +10,7 @@ import { createMedianHomeValueLegend } from "components/Census/Legends/MedianHom
 import { prepareTractGeometricData } from "components/Census/GeoJSON/getCensusCartographic";
 import { createMedianPovertyRateLegend, getPercentUnderPoverty } from "components/Census/Legends/MedianPovertyRate";
 import { HomevalueMapLegend, HouseholdMapLegend, PovertyRateLegend } from "components/Census/Legends/Legends";
-import { HomevalueTooltip, HouseholdIncomeTooltip } from "components/Census/Tooltips/Tooltips";
+import { HomevalueTooltip, HouseholdIncomeTooltip, PovertyRateTooltip } from "components/Census/Tooltips/Tooltips";
 
 /**
  * Gmap
@@ -284,8 +284,10 @@ function MetricsTooltip(props: IMetricsTooltipProps) {
       <div>
         {value === DemographicFeatureSelection.MEDIAN_HOUSEHOLD_INCOME ? (
           <HouseholdIncomeTooltip income={props.householdIncome} county={props.county} tractName={props.tractName} />
+        ) : value === DemographicFeatureSelection.MEDIAN_HOME_VALUE ? (
+          <HomevalueTooltip value={props.homeValue} county={props.county} tractName={props.tractName} />
         ) : (
-          value === DemographicFeatureSelection.MEDIAN_HOME_VALUE && <HomevalueTooltip value={props.homeValue} county={props.county} tractName={props.tractName} />
+          value === DemographicFeatureSelection.POVERTY_RATE && <PovertyRateTooltip povertyRate={props.povertyRate} county={props.county} tractName={props.tractName} />
         )}
       </div>
     </InfoBox>

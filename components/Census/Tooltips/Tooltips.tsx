@@ -33,3 +33,20 @@ export function HomevalueTooltip({ value, county, tractName }: IHomeValueTooltip
     </div>
   );
 }
+
+interface IPovertyRateTooltip {
+  povertyRate: number;
+  county: string;
+  tractName: string;
+}
+
+export function PovertyRateTooltip({ povertyRate, county, tractName }: IPovertyRateTooltip) {
+  return (
+    <div style={{ width: 180, borderRadius: 20, backgroundColor: "white", opacity: 0.86, padding: 12 }}>
+      <Typography fontWeight={"800"}>{tractName}</Typography>
+      <Typography>{county}</Typography>
+
+      {Math.sign(povertyRate || -1) ? <Typography>Rate: ${povertyRate.toLocaleString()}%</Typography> : <Typography>N/A</Typography>}
+    </div>
+  );
+}
