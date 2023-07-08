@@ -1,22 +1,22 @@
-import { Chip, Typography, Divider } from "@mui/material";
-import React, { useMemo } from "react";
+import { Chip, CircularProgress, Typography } from "@mui/material";
+import React, { useMemo, useState } from "react";
 import { Rating } from "react-simple-star-rating";
-import PersonIcon from "/public/images/person.svg";
-import BicycleIcon from "/public/images/bicycle.svg";
-import CarIcon from "/public/images/car.svg";
+import CarIcon from "/public/images/car-white.svg";
 import styles from "./NearbyPlace.module.scss";
 import StreetView from "../../StreetView/StreetView";
 import LocationSvg from "/public/icons/location.svg";
+import { Button } from "components/Button/Button";
 
-/**
- * NearbyPlaceCard
- * @description: Displays a 'card' for the nearby place
- */
+interface NearbyPlaceCardProps {
+  place: any;
+  loadDrivingDistance: () => Promise<{ driving: any }>;
+}
 
-//TODO Get distance info and render it
+export default function NearbyPlaceCard({ place, loadDrivingDistance }: NearbyPlaceCardProps) {
+  const [drivingDistance, setDrivingDistance] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
-export default function NearbyPlaceCard({ place }: any) {
-  const { name: placeName, vicinity, user_ratings_total: userRatingsTotal, rating, photos, walking, biclycling, driving } = place;
+  const { name: placeName, vicinity, user_ratings_total: userRatingsTotal, rating, photos } = place;
   const position = {
     lat: place.geometry.location.lat,
     lng: place.geometry.location.lng,
@@ -40,6 +40,21 @@ export default function NearbyPlaceCard({ place }: any) {
     if (directionObj.time) return `${directionObj.time} (${directionObj.distance} Miles)`;
 
     return "not found";
+  };
+
+  const hanldeDrivingDistance = async () => {
+    if (drivingDistance) {
+      return;
+    }
+
+    setLoading(true);
+    const { driving } = await loadDrivingDistance();
+
+    if (driving) {
+      setDrivingDistance(driving);
+    }
+
+    setLoading(false);
   };
 
   return (
@@ -70,31 +85,11 @@ export default function NearbyPlaceCard({ place }: any) {
             <Chip disabled={true} style={{ color: "#000000", opacity: "0.8", marginTop: "0.5rem" }} label={formatPlaceType(place._type)} />
           </div>
         </div>
-        {(walking || biclycling || driving) && (
-          <div className={styles.distance}>
-            <Typography>{Object.keys(driving).length ? `${driving.distance} Miles` : ""}</Typography>
-            <Divider />
-
-            {walking && (
-              <div className={styles.nearbyDistanceBox}>
-                <PersonIcon className={styles.nearbyIcon} />
-                <Typography>{distanceText(walking)}</Typography>
-              </div>
-            )}
-            {driving && (
-              <div className={styles.nearbyDistanceBox}>
-                <CarIcon className={styles.nearbyIcon} />
-                <Typography>{distanceText(driving)}</Typography>
-              </div>
-            )}
-            {biclycling && (
-              <div className={styles.nearbyDistanceBox}>
-                <BicycleIcon className={styles.nearbyIcon} />
-                <Typography>{distanceText(biclycling)}</Typography>
-              </div>
-            )}
-          </div>
-        )}
+        <Button variant="filled" className={styles.drivingDistanceButton} onClick={() => hanldeDrivingDistance()}>
+          <CarIcon className={styles.icon} />
+          {loading && !drivingDistance && <CircularProgress className={styles.loader} />}
+          {drivingDistance && <Typography>{distanceText(drivingDistance)}</Typography>}
+        </Button>
       </div>
     </div>
   );

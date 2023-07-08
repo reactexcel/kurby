@@ -8,18 +8,6 @@
   margin-bottom: 25px;
 }
 
-.nearbyIcon {
-  background-color: #fff;
-  border-radius: 50%;
-  padding: 7px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  margin-right: 8px;
-}
-.nearbyDistanceBox {
-  display: flex;
-  margin-top: 12px;
-}
-
 .image {
   background-size: cover;
   background-repeat: no-repeat;
@@ -65,4 +53,28 @@
   @include mq-tablet-landscape--down {
     flex-direction: column;
   }
+}
+
+.drivingDistanceButton {
+  display: flex;
+  height: fit-content;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0rem 0.5rem;
+
+  &:hover {
+    background-color: #00a13d;
+    color: #ffffff;
+  }
+}
+
+.icon {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.loader {
+  width: 1.75rem !important;
+  height: 1.75rem !important;
+  color: #ffffff !important;
 }

@@ -8,28 +8,12 @@ import { CircularProgress, Typography } from "@mui/material";
 import styles from "./Nearby.module.scss";
 import { useAuth } from "providers/AuthProvider";
 import { loadingContext } from "context/loadingContext";
-import { Button } from "components/Button/Button";
 import { useRouter } from "next/router";
 import { WindowSizeContext } from "context/windowSizeContext";
 import { nearbyContext } from "context/nearbyPlacesContext";
+import { Button } from "components/Button/Button";
 
-async function prepareLoadedPlaces(places: any[], currentCenter: { lat: number; lng: number } | null): Promise<any[]> {
-  if (!places || !places.length) {
-    return [];
-  }
-  const resolved = await Promise.all(
-    places.map(async (place) => {
-      return {
-        ...place,
-        ...(await loadDirections(place, currentCenter)),
-      };
-    }),
-  );
-
-  return resolved;
-}
-
-async function loadDirections(place: any, origin: any): Promise<{ walking: any; driving: any; biclycling: any }> {
+async function loadDrivingDistance(place: any, origin: any): Promise<{ driving: any }> {
   try {
     return await loadDirectionsApi({
       origin,
@@ -40,7 +24,7 @@ async function loadDirections(place: any, origin: any): Promise<{ walking: any; 
     });
   } catch (e) {
     console.error(e);
-    return { walking: null, driving: null, biclycling: null };
+    return { driving: null };
   }
 }
 
@@ -64,13 +48,12 @@ export default function Nearby() {
     const initialLoad = initialCall ? 0 : nearby.loadedOnScroll;
     setTimeout(async () => {
       const newPlaces = nearby.places.slice(initialLoad, initialLoad + pageSize);
-      const updatedPlaces: any = await prepareLoadedPlaces([newPlaces[0]], filterVal.mapCenter);
 
       setNearby((prev) => ({
         ...prev,
         loadedOnScroll: prev.loadedOnScroll + pageSize,
       }));
-      setLoadedNearbyPlaces([...loadedNearbyPlaces, ...updatedPlaces]);
+      setLoadedNearbyPlaces([...loadedNearbyPlaces, newPlaces[0]]);
     }, 1000);
   };
 
@@ -87,7 +70,7 @@ export default function Nearby() {
   const nearbyPlaces = useMemo(
     () =>
       loadedNearbyPlaces.map((place: any) => {
-        return <NearbyPlaceCard key={`placecard_${place.place_id}`} place={place} />;
+        return <NearbyPlaceCard key={`placecard_${place.place_id}`} place={place} loadDrivingDistance={() => loadDrivingDistance(place, filterVal.mapCenter)} />;
       }),
     [loadedNearbyPlaces],
   );
@@ -99,39 +82,38 @@ export default function Nearby() {
           <CircularProgress />
         </div>
       ) : nearby.places.length ? (
-        // <>
-        //   {user ? (
-        //     <InfiniteScroll
-        //       className={styles.infiniteScroll}
-        //       dataLength={loadedNearbyPlaces.length}
-        //       next={fetchMoreData}
-        //       hasMore={nearby.places.length - loadedNearbyPlaces.length !== 0}
-        //       loader={
-        //         <div className={styles.loader}>
-        //           <CircularProgress />
-        //         </div>
-        //       }
-        //       height={isMobileTablet ? undefined : "100%"}
-        //       endMessage={
-        //         <p style={{ textAlign: "center" }}>
-        //           <b>Yay! You have seen it all</b>
-        //         </p>
-        //       }
-        //     >
-        //       {nearbyPlaces}
-        //     </InfiniteScroll>
-        //   ) : (
-        //     <>
-        //       {nearbyPlaces[0]}
-        //       <div className={styles.signUpNote}>
-        //         <h3>Sign Up</h3>
-        //         <p>Sign Up for a free account to see 60 top-rated schools, hospitals, parks, grocery stores, and attractions within a 2-mile radius</p>
-        //         <Button onClick={() => router.push("/?openLoginSignup=true")}>Get Started</Button>
-        //       </div>
-        //     </>
-        //   )}
-        // </>
-        nearbyPlaces
+        <>
+          {user ? (
+            <InfiniteScroll
+              className={styles.infiniteScroll}
+              dataLength={loadedNearbyPlaces.length}
+              next={() => fetchMoreData(false)}
+              hasMore={nearby.places.length - loadedNearbyPlaces.length !== 0}
+              loader={
+                <div className={styles.loader}>
+                  <CircularProgress />
+                </div>
+              }
+              height={isMobileTablet ? undefined : "100%"}
+              endMessage={
+                <p style={{ textAlign: "center" }}>
+                  <b>Yay! You have seen it all</b>
+                </p>
+              }
+            >
+              {nearbyPlaces}
+            </InfiniteScroll>
+          ) : (
+            <>
+              {nearbyPlaces[0]}
+              <div className={styles.signUpNote}>
+                <h3>Sign Up</h3>
+                <p>Sign Up for a free account to see 60 top-rated schools, hospitals, parks, grocery stores, and attractions within a 2-mile radius</p>
+                <Button onClick={() => router.push("/?openLoginSignup=true")}>Get Started</Button>
+              </div>
+            </>
+          )}
+        </>
       ) : (
         <Typography>Please select a place of interest.</Typography>
       )}

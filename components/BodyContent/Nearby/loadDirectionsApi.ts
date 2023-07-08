@@ -27,8 +27,6 @@ export default async function loadDirectionsApi(request: { origin: any; destinat
   }
 
   const directions = {
-    walking: getLegs(await getDirectionsByType(origin, destination, google.maps.TravelMode.WALKING)),
-    biclycling: getLegs(await getDirectionsByType(origin, destination, google.maps.TravelMode.BICYCLING)),
     driving: getLegs(await getDirectionsByType(origin, destination, google.maps.TravelMode.DRIVING)),
   };
 
