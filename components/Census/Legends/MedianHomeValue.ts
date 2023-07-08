@@ -14,7 +14,7 @@ class KurbyMedianHomeValueLegend {
     const isIncomeAvailable = Math.sign(homeValue) === 1;
     const valueString = homeValue.toString();
 
-    const IS_1M_PLUS = isIncomeAvailable && valueString.length === 7 && valueString.startsWith("1");
+    const IS_1M_PLUS = (isIncomeAvailable && valueString.length === 7 && valueString.startsWith("1")) || homeValue > 1000000;
     const IS_900K = isIncomeAvailable && valueString.length === 6 && valueString.startsWith("9");
     const IS_800K = isIncomeAvailable && valueString.length === 6 && valueString.startsWith("8");
     const IS_700K = isIncomeAvailable && valueString.length === 6 && valueString.startsWith("7");
