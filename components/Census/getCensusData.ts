@@ -5,7 +5,7 @@ export interface LatLong {
   lng: number;
 }
 
-const dataRequests: any = {
+export const CENSUS_VALUES = {
   B15003_022E: { label: "EDUCATIONAL_ATTAINMENT_FOR_THE_POPULATION____YEARS_AND_OVER_ESTIMATE__TOTAL___BACHELOR_S_DEGREE" },
   B15003_001E: { label: "EDUCATIONAL_ATTAINMENT_FOR_THE_POPULATION____YEARS_AND_OVER_ESTIMATE__TOTAL_" },
   B11012_002E: { label: "HOUSEHOLDS_BY_TYPE_ESTIMATE__TOTAL___MARRIED_COUPLE_HOUSEHOLD_" },
@@ -77,6 +77,8 @@ const dataRequests: any = {
   B25077_001E: { label: "MEDIAN_HOME_VALUE" },
   B19013_001E: { label: "MEDIAN_HOUSEHOLD_INCOME" },
 };
+
+const dataRequests: any = CENSUS_VALUES;
 
 const deriveCensusData = (mappedDt: any) => {
   const convertToPercentage = (num: number) => Math.round(num * 100);

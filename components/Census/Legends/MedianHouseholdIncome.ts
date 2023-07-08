@@ -9,6 +9,13 @@ interface IKurbyLegendColorDefault {
   readonly fillColor: string;
 }
 
+interface ITooltipState {
+  coordinates: google.maps.LatLng | null;
+  income: number;
+  tractName: string;
+  county: string;
+}
+
 class KurbyMedianHouseholdIncomeLegend {
   static getHexColorByIncome(income: number) {
     const isIncomeAvailable = Math.sign(income) === 1;

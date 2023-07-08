@@ -1,9 +1,12 @@
 import census from "citysdk";
+import { CENSUS_VALUES } from "../getCensusData";
 
 type CensusVintageVersions = "2017" | "2018" | "2019" | "2020" | "2021";
 type CensusSourcePath = "acs" | "acs5";
 type CensusGeoResolution = "20m" | "5m" | "500k";
-type CensusStatsValue = "B19013_001E" | "OTHER";
+
+type DataRequestType = typeof CENSUS_VALUES;
+type CensusStatsValue = keyof DataRequestType;
 
 interface ICitySDKRequest {
   readonly vintage: CensusVintageVersions;
