@@ -196,7 +196,7 @@ function MapLegend() {
       </Typography>
       <Stack direction={"row"}>
         {demographicColorRepresentation.map((color: string, index: number) => (
-          <Stack flex={1} textAlign={"center"} direction={"column"}>
+          <Stack flex={1} textAlign={"center"} direction={"column"} key={index}>
             <MapLegendColorItem backgroundColor={color} />
             {index === 11 ? (
               <Typography style={mapTextItem}>200k+</Typography>
