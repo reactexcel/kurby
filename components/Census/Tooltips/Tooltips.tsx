@@ -29,7 +29,7 @@ export function HomevalueTooltip({ value, county, tractName }: IHomeValueTooltip
       <Typography fontWeight={"800"}>{tractName}</Typography>
       <Typography>{county}</Typography>
 
-      {Math.sign(value || -1) ? <Typography>Value: ${value.toLocaleString()}</Typography> : <Typography>N/A</Typography>}
+      {Math.sign(value || -1) && !isNaN(value) ? <Typography>Value: ${value.toLocaleString()}</Typography> : <Typography>N/A</Typography>}
     </div>
   );
 }
@@ -46,7 +46,7 @@ export function PovertyRateTooltip({ povertyRate, county, tractName }: IPovertyR
       <Typography fontWeight={"800"}>{tractName}</Typography>
       <Typography>{county}</Typography>
 
-      {Math.sign(povertyRate || -1) ? <Typography>Rate: {povertyRate.toLocaleString()}%</Typography> : <Typography>N/A</Typography>}
+      {Math.sign(povertyRate || -1) && !isNaN(povertyRate) ? <Typography>Rate: {povertyRate.toLocaleString()}%</Typography> : <Typography>N/A</Typography>}
     </div>
   );
 }
@@ -63,7 +63,7 @@ export function VacantHousingTooltip({ vacantHousing, county, tractName }: IVaca
       <Typography fontWeight={"800"}>{tractName}</Typography>
       <Typography>{county}</Typography>
 
-      {Math.sign(vacantHousing || -1) ? <Typography>Units: {vacantHousing.toLocaleString()}%</Typography> : <Typography>N/A</Typography>}
+      {Math.sign(vacantHousing || -1) && !isNaN(vacantHousing) ? <Typography>Units: {vacantHousing.toLocaleString()}%</Typography> : <Typography>N/A</Typography>}
     </div>
   );
 }

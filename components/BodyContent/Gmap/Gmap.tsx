@@ -7,7 +7,7 @@ import styles from "./Gmap.module.scss";
 import { FormControl, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { createMedianHouseholdIncomeLegend } from "components/Census/Legends/MedianHouseholdIncome";
 import { createMedianHomeValueLegend } from "components/Census/Legends/MedianHomeValue";
-import { prepareTractGeometricData } from "components/Census/GeoJSON/getCensusCartographic";
+import { getCenusTractGeometricData } from "components/Census/GeoJSON/getCensusCartographic";
 import { createMedianPovertyRateLegend, getPercentUnderPoverty } from "components/Census/Legends/MedianPovertyRate";
 import { HomevalueMapLegend, HouseholdMapLegend, PovertyRateLegend, VacantHousingLegend } from "components/Census/Legends/Legends";
 import { HomevalueTooltip, HouseholdIncomeTooltip, PovertyRateTooltip, VacantHousingTooltip } from "components/Census/Tooltips/Tooltips";
@@ -72,6 +72,7 @@ function MyComponent() {
     // minZoom: 17,
     // fullscreenControl: false,
   };
+  const [tractGeometricData, setTractGeometricData] = useState<object | null>(null);
 
   const [filterVal, setFilterVal] = useRecoilState(filterState);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -81,15 +82,29 @@ function MyComponent() {
 
   // Load tracts shapes using Census Cartographic
   useEffect(() => {
+    const prepareTractGeometricData = async () => {
+      const dataLayer = await getCenusTractGeometricData({
+        // @ts-ignore
+        lat: filterVal.latlong.lat(),
+        // @ts-ignore
+        lng: filterVal.latlong.lng(),
+      });
+      setTractGeometricData(dataLayer);
+    };
     try {
-      if (map?.data && filterVal.latlong) {
-        prepareTractGeometricData(map, {
-          lat: filterVal.latlong.lat(),
-          lng: filterVal.latlong.lng(),
-        });
+      if (filterVal.latlong) {
+        prepareTractGeometricData();
       }
     } catch (error) {}
   }, [filterVal.latlong]);
+
+  // Load requested to Google Maps as soon as it becomes available
+  useEffect(() => {
+    if (map?.data && tractGeometricData) {
+      map.data.setMap(map);
+      map.data.addGeoJson(tractGeometricData);
+    }
+  }, [map, tractGeometricData]);
 
   // Create the choropleth map
   useEffect(() => {
@@ -328,12 +343,18 @@ function DemographicFeatureDropdown() {
     <div className={styles.dropdownFeatureSelector}>
       <FormControl size="small" fullWidth>
         <Select value={value} onChange={handleChange} defaultValue={DemographicFeatureSelection.MEDIAN_HOUSEHOLD_INCOME} labelId="demo-simple-select-label">
-          <MenuItem value={DemographicFeatureSelection.MEDIAN_HOUSEHOLD_INCOME} defaultChecked>
+          <MenuItem key={DemographicFeatureSelection.MEDIAN_HOUSEHOLD_INCOME} value={DemographicFeatureSelection.MEDIAN_HOUSEHOLD_INCOME} defaultChecked>
             Median household income
           </MenuItem>
-          <MenuItem value={DemographicFeatureSelection.POVERTY_RATE}>Poverty rate</MenuItem>
-          <MenuItem value={DemographicFeatureSelection.MEDIAN_HOME_VALUE}>Median home value</MenuItem>
-          <MenuItem value={DemographicFeatureSelection.VACANT_HOUSING_UNITS}>Vacant housing units</MenuItem>
+          <MenuItem key={DemographicFeatureSelection.POVERTY_RATE} value={DemographicFeatureSelection.POVERTY_RATE}>
+            Poverty rate
+          </MenuItem>
+          <MenuItem key={DemographicFeatureSelection.MEDIAN_HOME_VALUE} value={DemographicFeatureSelection.MEDIAN_HOME_VALUE}>
+            Median home value
+          </MenuItem>
+          <MenuItem key={DemographicFeatureSelection.VACANT_HOUSING_UNITS} value={DemographicFeatureSelection.VACANT_HOUSING_UNITS}>
+            Vacant housing units
+          </MenuItem>
         </Select>
       </FormControl>
     </div>

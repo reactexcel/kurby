@@ -24,7 +24,7 @@ interface MedianHouseholdIncome {
   readonly ALAND: number;
 }
 
-export const prepareTractGeometricData = async (map: google.maps.Map, coordinates: google.maps.LatLngLiteral) => {
+export const getCenusTractGeometricData = async (coordinates: google.maps.LatLngLiteral) => {
   const censusStatsApi = createCensusDemographicAPI({
     statusKey: process.env.NEXT_CENSUS_BUREAU_API_KEY || "978f544e844f821ccfe1dd7620e9180801de2107",
     sourcePath: ["acs", "acs5"],
@@ -32,9 +32,5 @@ export const prepareTractGeometricData = async (map: google.maps.Map, coordinate
     vintage: "2021",
     geoResolution: "500k",
   });
-  const dataLayer = await censusStatsApi.getCartographicData<MedianHouseholdIncome>(coordinates.lat, coordinates.lng);
-  if (dataLayer) {
-    map.data.setMap(map);
-    map.data.addGeoJson(dataLayer);
-  }
+  return await censusStatsApi.getCartographicData<MedianHouseholdIncome>(coordinates.lat, coordinates.lng);
 };

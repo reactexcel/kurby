@@ -10,18 +10,17 @@ interface IKurbyLegendColorDefault {
 }
 
 export const housingUnitsColorRepresentation = [
-  "#A30123",
-  "#D12F26",
-  "#EE6941",
-  "#EEAF72",
-  "#F4D589",
-  "#F6F6B9",
-  "#D6EAEF",
-  "#ADD2E3",
-  "#6FA7C7",
-  "#4873AF",
-  "#2B368C",
-  "purple",
+  "rgb(255, 247, 252)",
+  "rgb(236, 225, 240)",
+  "rgb(207, 209, 230)",
+  "rgb(166, 188, 219)",
+  "rgb(103, 169, 207)",
+  "rgb(55, 144, 152)",
+  "rgb(4, 129, 137)",
+  "rgb(6, 108, 89)",
+  "rgb(1, 71, 55)",
+  "#00372B",
+  "rgb(0, 18, 14)",
 ];
 class KurbyMedianVacantHousing {
   static getColorByUnitsRate(unitsRate: number) {
