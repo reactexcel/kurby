@@ -1,10 +1,8 @@
 import census from "citysdk";
 import { Box, Button, TextField } from "@mui/material";
-import { createRef, useRef, useState } from "react";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { filterState } from "context/filterContext";
-
-
 
 export default function Census() {
   const [censusKey, setCensusKey] = useState<string | null>(null);

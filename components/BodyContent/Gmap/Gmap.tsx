@@ -1,72 +1,182 @@
 import React, { useEffect, useState } from "react";
-import { GoogleMap, InfoWindow, MarkerF } from "@react-google-maps/api";
+import { GoogleMap, InfoBox, MarkerF } from "@react-google-maps/api";
 import { filterState } from "../../../context/filterContext";
-import { useRecoilState } from "recoil";
+import { atom, useRecoilState } from "recoil";
 import GLOBAL_SETTINGS from "../../../globals/GLOBAL_SETTINGS";
 import styles from "./Gmap.module.scss";
-import { getCartographicData, kurbyLegendColors, prepareGeometricData } from "components/Census/GeoJSON/getCensusCartographic";
-import { Stack, Typography } from "@mui/material";
+import { FormControl, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { createMedianHouseholdIncomeLegend } from "components/Census/Legends/MedianHouseholdIncome";
+import { createMedianHomeValueLegend } from "components/Census/Legends/MedianHomeValue";
+import { getCenusTractGeometricData } from "components/Census/GeoJSON/getCensusCartographic";
+import { createMedianPovertyRateLegend, getPercentUnderPoverty } from "components/Census/Legends/MedianPovertyRate";
+import { HomevalueMapLegend, HouseholdMapLegend, PovertyRateLegend, VacantHousingLegend } from "components/Census/Legends/Legends";
+import { HomevalueTooltip, HouseholdIncomeTooltip, PovertyRateTooltip, VacantHousingTooltip } from "components/Census/Tooltips/Tooltips";
+import { createHousingUnitsLegend, getVacantHousingUnits } from "components/Census/Legends/MedianVacantHousing";
 
 /**
  * Gmap
  * @description: Displays the google map component + Markers
  */
 
-//TODO add to stylesheet
+enum DemographicFeatureSelection {
+  MEDIAN_HOUSEHOLD_INCOME = "household_tab",
+  POVERTY_RATE = "povertyrate_tab",
+  MEDIAN_HOME_VALUE = "homevalue_tab",
+  VACANT_HOUSING_UNITS = "vacant_housing_units_tab",
+}
 
-//TODO where should this start?
+const feature = atom({
+  key: "featureState",
+  default: DemographicFeatureSelection.MEDIAN_HOUSEHOLD_INCOME,
+});
+
+let previousFeature: google.maps.Data.Feature | null = null; // Track the previously clicked feature
+const highlightTract = (map: google.maps.Map, event: google.maps.Data.MouseEvent) => {
+  // Reset style of the previously clicked feature
+  // Reset style of the previously clicked feature
+  if (previousFeature) {
+    map.data.overrideStyle(previousFeature, {
+      strokeColor: "black",
+      strokeWeight: 0.45,
+      // other default style properties...
+    });
+  }
+
+  // Apply custom style to the clicked feature
+  map.data.overrideStyle(event.feature, {
+    strokeColor: "white",
+    strokeWeight: 2,
+    // other custom style properties...
+  });
+
+  previousFeature = event.feature; // Update the previously clicked feature
+};
+
 const initialCenter = { lat: 38.9987208, lng: -77.2538699 };
 
-export interface ITooltipState {
-  coordinates: google.maps.LatLng | null;
-  income: number;
-  tractName: string;
+export interface IMetricsTooltipState {
+  coordinates: google.maps.LatLng;
   county: string;
+  tractName: string;
+  householdIncome: number;
+  homeValue: number;
+  povertyRate: number;
+  vacantHousing: number;
 }
 
 function MyComponent() {
   const [map, setMap] = React.useState<google.maps.Map | null>(null);
 
-  const [filterVal, setFilterVal] = useRecoilState(filterState);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  const [toolTip, setToolTip] = useState<ITooltipState>();
-
-  useEffect(() => {
-    if (map?.data && filterVal.latlong) {
-      map.data.setStyle(kurbyLegendColors);
-      map.data.addListener("click", (event: google.maps.Data.MouseEvent) => {
-        const income: number = event.feature.getProperty("B19013_001E");
-        const tractName: string = event.feature.getProperty("NAMELSAD");
-        const county: string = event.feature.getProperty("NAMELSADCO");
-
-        const tooltip = {
-          coordinates: event.latLng,
-          income,
-          tractName,
-          county,
-        };
-
-        setToolTip(tooltip);
-      });
-      try {
-        prepareGeometricData(map, {
-          lat: filterVal.latlong.lat(),
-          lng: filterVal.latlong.lng(),
-        });
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, [filterVal.latlong]);
-
-  //* Google maps options
-  //* SEE https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions
   const googleMapOptions = {
     // zoomControl: false,
     // minZoom: 17,
     // fullscreenControl: false,
   };
+  const [tractGeometricData, setTractGeometricData] = useState<object | null>(null);
+
+  const [filterVal, setFilterVal] = useRecoilState(filterState);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const [value] = useRecoilState(feature);
+  const [metricsTooltip, setMetricsTooltip] = useState<IMetricsTooltipState | undefined>();
+
+  // Load tracts shapes using Census Cartographic
+  useEffect(() => {
+    const prepareTractGeometricData = async () => {
+      const dataLayer = await getCenusTractGeometricData({
+        // @ts-ignore
+        lat: filterVal.latlong.lat(),
+        // @ts-ignore
+        lng: filterVal.latlong.lng(),
+      });
+      setTractGeometricData(dataLayer);
+    };
+    try {
+      if (filterVal.latlong) {
+        prepareTractGeometricData();
+      }
+    } catch (error) {}
+  }, [filterVal.latlong]);
+
+  // Load requested to Google Maps as soon as it becomes available
+  useEffect(() => {
+    if (map?.data && tractGeometricData) {
+      map.data.setMap(map);
+      map.data.addGeoJson(tractGeometricData);
+    }
+  }, [map, tractGeometricData]);
+
+  // Create the choropleth map
+  useEffect(() => {
+    setMetricsTooltip(undefined);
+    if (!map?.data || !filterVal.latlong) {
+      return;
+    }
+
+    if (value === DemographicFeatureSelection.MEDIAN_HOUSEHOLD_INCOME) {
+      const medianHouseholdLegend = createMedianHouseholdIncomeLegend();
+      map.data.setStyle(medianHouseholdLegend.getGoogleMapsColor);
+    } else if (value === DemographicFeatureSelection.MEDIAN_HOME_VALUE) {
+      const medianHomeValue = createMedianHomeValueLegend();
+      map.data.setStyle(medianHomeValue.getGoogleMapsColor);
+    } else if (value === DemographicFeatureSelection.POVERTY_RATE) {
+      const medianPovertyRate = createMedianPovertyRateLegend();
+      map.data.setStyle(medianPovertyRate.getGoogleMapsColor);
+    } else if (value === DemographicFeatureSelection.VACANT_HOUSING_UNITS) {
+      const housingUnits = createHousingUnitsLegend();
+      map.data.setStyle(housingUnits.getGoogleMapsColor);
+    }
+  }, [filterVal.latlong, value]);
+
+  // Handle tract tooltip on hover
+  const [isClickListenerSet, setClickListener] = useState(false);
+  useEffect(() => {
+    if (!map?.data) {
+      return;
+    }
+    if (isClickListenerSet) {
+      return;
+    }
+    setClickListener(true);
+    map.data.addListener("mouseover", (event: google.maps.Data.MouseEvent) => {
+      highlightTract(map, event);
+      // Get all necessary data for all categories for the map.
+      const county: string = event.feature.getProperty("NAMELSADCO");
+      const tractName: string = event.feature.getProperty("NAMELSAD");
+
+      const income: number = event.feature.getProperty("B19013_001E");
+      const value: number = event.feature.getProperty("B25077_001E");
+
+      const C17002_001E = event.feature.getProperty("C17002_001E");
+      const C17002_002E = event.feature.getProperty("C17002_002E");
+      const C17002_003E = event.feature.getProperty("C17002_003E");
+
+      const B25002_003E = event.feature.getProperty("B25002_003E");
+      const B25002_001E = event.feature.getProperty("B25002_001E");
+
+      const povertyRate: number = getPercentUnderPoverty({
+        C17002_001E,
+        C17002_002E,
+        C17002_003E,
+      });
+
+      const vacantUnits = getVacantHousingUnits({
+        B25002_003E,
+        B25002_001E,
+      });
+
+      setMetricsTooltip({
+        // @ts-ignore
+        coordinates: event.latLng,
+        householdIncome: income,
+        homeValue: value,
+        vacantHousing: vacantUnits,
+        povertyRate,
+        tractName,
+        county,
+      });
+    });
+  }, [filterVal.latlong]);
 
   //* On map load
   const onLoad = React.useCallback(function callback(map: any) {
@@ -169,53 +279,86 @@ function MyComponent() {
               ))}
             </>
           )}
-          {toolTip && (
-            <InfoWindow onLoad={onLoad} position={toolTip.coordinates as google.maps.LatLng}>
-              <div>
-                <Typography fontWeight={"800"}>{toolTip.tractName}</Typography>
-                <Typography>{toolTip.county}</Typography>
-                <hr />
-                {Math.sign(toolTip.income) ? <Typography>Income: ${toolTip.income.toLocaleString()}</Typography> : <Typography>N/A</Typography>}
-              </div>
-            </InfoWindow>
+          {metricsTooltip && (
+            <MetricsTooltip
+              onClose={() => setMetricsTooltip(undefined)}
+              povertyRate={metricsTooltip.povertyRate}
+              coordinates={metricsTooltip.coordinates as google.maps.LatLng}
+              homeValue={metricsTooltip.homeValue}
+              householdIncome={metricsTooltip.householdIncome}
+              tractName={metricsTooltip.tractName}
+              county={metricsTooltip.county}
+              vacantHousing={metricsTooltip.vacantHousing}
+            />
           )}
         </>
       </GoogleMap>
-      <MapLegend />
+      <DemographicFeatureDropdown />
+      {value === DemographicFeatureSelection.MEDIAN_HOUSEHOLD_INCOME ? (
+        <HouseholdMapLegend />
+      ) : value === DemographicFeatureSelection.MEDIAN_HOME_VALUE ? (
+        <HomevalueMapLegend />
+      ) : value === DemographicFeatureSelection.POVERTY_RATE ? (
+        <PovertyRateLegend />
+      ) : (
+        value === DemographicFeatureSelection.VACANT_HOUSING_UNITS && <VacantHousingLegend />
+      )}
     </div>
   );
 }
 
-function MapLegend() {
-  const demographicColorRepresentation = ["#A30123", "#D12F26", "#EE6941", "#EEAF72", "#F4D589", "#F4D589", "#D6EAEF", "#ADD2E3", "#6FA7C7", "#4873AF", "#2B368C", "purple"];
-  const mapTextItem = { fontStyle: "italic" };
+interface IMetricsTooltipProps extends IMetricsTooltipState {
+  onClose: () => void;
+}
+
+function MetricsTooltip(props: IMetricsTooltipProps) {
+  const [value] = useRecoilState(feature);
   return (
-    <div className={styles.mapLegend}>
-      <Typography marginBottom={1} fontSize={18} fontWeight={800}>
-        Median Household Income
-      </Typography>
-      <Stack direction={"row"}>
-        {demographicColorRepresentation.map((color: string, index: number) => (
-          <Stack flex={1} textAlign={"center"} direction={"column"} key={index}>
-            <MapLegendColorItem backgroundColor={color} />
-            {index === 11 ? (
-              <Typography style={mapTextItem}>200k+</Typography>
-            ) : (
-              <Typography style={mapTextItem}>
-                {index}
-                {index !== 0 && "0"}k
-              </Typography>
-            )}
-          </Stack>
-        ))}
-      </Stack>
-      <Typography fontSize={"13px"} className={styles.legendSource}>
-        Source: 2021 US Census Data
-      </Typography>
-    </div>
+    <InfoBox onCloseClick={() => props.onClose()} position={props.coordinates}>
+      <div>
+        {value === DemographicFeatureSelection.MEDIAN_HOUSEHOLD_INCOME ? (
+          <HouseholdIncomeTooltip income={props.householdIncome} county={props.county} tractName={props.tractName} />
+        ) : value === DemographicFeatureSelection.MEDIAN_HOME_VALUE ? (
+          <HomevalueTooltip value={props.homeValue} county={props.county} tractName={props.tractName} />
+        ) : value === DemographicFeatureSelection.POVERTY_RATE ? (
+          <PovertyRateTooltip povertyRate={props.povertyRate} county={props.county} tractName={props.tractName} />
+        ) : (
+          value === DemographicFeatureSelection.VACANT_HOUSING_UNITS && (
+            <VacantHousingTooltip vacantHousing={props.vacantHousing} county={props.county} tractName={props.tractName} />
+          )
+        )}
+      </div>
+    </InfoBox>
   );
 }
 
-const MapLegendColorItem = ({ backgroundColor }: { backgroundColor: string }) => <div className={styles.mapLegendColorItem} style={{ backgroundColor }} />;
+function DemographicFeatureDropdown() {
+  const [value, setValue] = useRecoilState(feature);
+  const handleChange = async (event: SelectChangeEvent) => {
+    const value = event.target.value;
+    setValue(value as DemographicFeatureSelection);
+  };
+
+  return (
+    <div className={styles.dropdownFeatureSelector}>
+      <FormControl size="small" fullWidth>
+        <Select value={value} onChange={handleChange} defaultValue={DemographicFeatureSelection.MEDIAN_HOUSEHOLD_INCOME} labelId="demo-simple-select-label">
+          <MenuItem key={DemographicFeatureSelection.MEDIAN_HOUSEHOLD_INCOME} value={DemographicFeatureSelection.MEDIAN_HOUSEHOLD_INCOME} defaultChecked>
+            Median household income
+          </MenuItem>
+          <MenuItem key={DemographicFeatureSelection.POVERTY_RATE} value={DemographicFeatureSelection.POVERTY_RATE}>
+            Poverty rate
+          </MenuItem>
+          <MenuItem key={DemographicFeatureSelection.MEDIAN_HOME_VALUE} value={DemographicFeatureSelection.MEDIAN_HOME_VALUE}>
+            Median home value
+          </MenuItem>
+          <MenuItem key={DemographicFeatureSelection.VACANT_HOUSING_UNITS} value={DemographicFeatureSelection.VACANT_HOUSING_UNITS}>
+            Vacant housing units
+          </MenuItem>
+        </Select>
+      </FormControl>
+    </div>
+  );
+}
 
 export default React.memo(MyComponent);
