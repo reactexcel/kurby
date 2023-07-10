@@ -91,7 +91,7 @@ export function Tabs() {
 
           {showHome && (
             <ToggleButton className={styles.button} value="property">
-              Home
+              Property data
             </ToggleButton>
           )}
 
