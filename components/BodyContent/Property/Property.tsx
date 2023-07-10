@@ -12,6 +12,7 @@ import styles from "./Property.module.scss";
 import { HouseList } from "./HouseList/HouseList";
 import { Grid } from "components/Grid/Grid";
 import { GridItem } from "components/Grid/GridItem";
+import { createPropertySearchApi } from "components/PropertySearchApi/PropertySearchApi";
 
 /**
  * Body Content
@@ -35,7 +36,16 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
       setPropertyInfo(propertyData.data);
       setLoading(false);
     }
-    getPropertyData();
+
+    async function preparePropertyV2Data() {
+      const api = createPropertySearchApi();
+      const response = await api.getPropertyDataByAddress("111 N Lake Shore Dr, Chicago, IL 60601");
+      console.log(response);
+    }
+    try {
+      // preparePropertyV2Data();
+      getPropertyData();
+    } catch (e) {}
   }, []);
 
   const isAddressInUSA = useMemo(() => filterVal?.selectedPlace?.formatted_address?.includes("USA"), [filterVal?.selectedPlace?.formatted_address]);
