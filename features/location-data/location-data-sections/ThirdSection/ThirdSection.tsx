@@ -1,5 +1,6 @@
 import { Paragraph } from "components/Paragraph/Paragraph";
 import styles from "./ThirdSection.module.scss";
+import Image from "next/image";
 
 export const ThirdSection = () => {
   return (
@@ -12,10 +13,10 @@ export const ThirdSection = () => {
           text="That’s where Walk Score, Bike Score, and Transit Score come in. These are data-driven metrics that show you how easy it is to get around a property without a car. They range from 0 to 100, where higher scores mean more walkable, bikeable, or transit-friendly locations."
           className={styles.paragraph}
         />
-        <img alt="" src="./images/location-data-features.svg" className={styles.imageFeatures} />
+        <Image alt="" src="./images/location-data-features.svg" layout="responsive" className={styles.imageFeatures} width={550} height={370} />
       </div>
       <div className={styles.pictureWrapper}>
-        <img alt="" src="./images/location-data-third-section-right.svg" className={styles.picture} />
+        <Image alt="" src="./images/location-data-third-section-right.svg" layout="responsive" className={styles.picture} width={550} height={370} />
       </div>
     </div>
   );

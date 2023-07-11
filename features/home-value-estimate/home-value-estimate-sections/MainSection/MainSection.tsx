@@ -31,14 +31,8 @@ export const MainSection = () => {
     <div className={styles.container}>
       <div className={styles.wrapper}>
         <h1 className={styles.header}>
-          DISCOVER THE TRUE VALUE
-          <br /> OF
-          <span className={styles.coloredText}>
-            ANY PROPERTY IN THE
-            <br />
-            US
-          </span>{" "}
-          WITH KURBY'S HOME <br /> VALUE ESTIMATES
+          DISCOVER THE TRUE VALUE OF
+          <span className={styles.coloredText}> ANY PROPERTY IN THE US</span> WITH KURBY'S HOME VALUE ESTIMATES
         </h1>
 
         <Paragraph
@@ -67,15 +61,15 @@ export const MainSection = () => {
         </div>
       </div>
       <div className={styles.pictureWrapper}>
-        <div className={styles.bannerStar}>
+        {/*  <div className={styles.bannerStar}>
           <img src="./images/starTop.svg" alt="" style={{ position: "absolute", top: "-90px", left: "50px" }}></img>
           <img src="./images/starBottomRight.svg" alt="" style={{ position: "absolute", bottom: "-410px", left: "-55px" }}></img>
           <img src="./images/starBottomLeft.svg" alt="" style={{ position: "absolute", bottom: "-410px", right: "0px" }}></img>
           <img src="./images/squareTop.svg" alt="" style={{ position: "absolute", bottom: "5px", right: "165px" }}></img>
-          <img src="./images/squareLeft.svg" alt="" style={{ position: "absolute", top: "120px", left: "-150px" }}></img>
-          <img src="./images/squareBottom.svg" alt="" style={{ position: "absolute", top: "440px", right: "240px" }}></img>
-        </div>
-        <Image alt="" src="./images/home-value-banner.svg" width={550} height={370} />
+          <img src="./images/squareLeft.svg" alt="" style={{ position: "absolute", top: "120px", left: "-150px" }}></img> 
+          <img src="./images/squareBottom.svg" alt="" ></img>
+        </div>*/}
+        <Image alt="" src="./images/home-value-banner.svg" layout="responsive" width={550} height={370} />
       </div>
     </div>
   );

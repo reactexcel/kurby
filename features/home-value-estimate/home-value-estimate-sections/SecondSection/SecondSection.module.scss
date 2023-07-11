@@ -14,36 +14,50 @@
   transition: border 0.3s, border-radius 0.3s, box-shadow 0.3s;
   z-index: -1;
   top: 0;
-  display: flex !important;
-  padding: 0rem 5rem !important;
+  display: flex;
+  padding: 0rem 5rem;
 
-  @include mq-desktop--down {
-    background-position: 75% bottom;
-    padding: 0rem 3rem !important;
+  @media (max-width: 1110px) {
+    flex-direction: column-reverse;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
   }
 
-  @include mq-tablet-landscape--down {
-    background-position: 30% bottom;
-    padding: 0rem 2rem !important;
-  }
+  // @include mq-desktop--down {
+  //   background-position: 75% bottom;
+  //   padding: 0rem 3rem !important;
+  // }
 
-  @include mq-phone-only {
-    background-position: 35% 50%;
-    padding: 0rem 1rem !important;
-    height: 75vh;
-  }
+  // @include mq-tablet-landscape--down {
+  //   background-position: 30% bottom;
+  //   padding: 0rem 2rem !important;
+  // }
+
+  // @include mq-phone-only {
+  //   background-position: 35% 50%;
+  //   padding: 0rem 1rem !important;
+  //   height: 75vh;
+  // }
 }
 
 .wrapper {
   padding-bottom: 50px;
-  position: relative;
+  // position: relative;
   display: flex;
   flex-direction: column;
   width: 50%;
   gap: 1rem;
   margin-top: 5rem;
-  @include mq-phone-only {
-    margin-top: 3rem;
+  // @include mq-phone-only {
+  //   margin-top: 3rem;
+  // }
+  @media (max-width: 1110px) {
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    padding-bottom: 30px;
+    margin-top: 0;
   }
 }
 
@@ -58,20 +72,22 @@
 
 .header {
   margin: 0;
-  margin-top: -30px;
+  margin-top: 30px;
   width: 100%;
   color: #061a23;
   font-size: 1.8vw;
   font-weight: 800;
   text-transform: uppercase;
-
-  @include mq-tablet-landscape--down {
-    width: 75%;
+  @media (max-width: 1110px) {
+    text-align: center;
   }
+  // @include mq-tablet-landscape--down {
+  //   width: 75%;
+  // }
 
-  @include mq-phone-only {
-    width: 100%;
-  }
+  // @include mq-phone-only {
+  //   width: 100%;
+  // }
 }
 
 .line {
@@ -87,10 +103,10 @@
   font-style: italic;
   width: 95% !important;
 
-  @include mq-phone-only {
-    margin-bottom: 1rem !important;
-    width: 90%;
-  }
+  // @include mq-phone-only {
+  //   margin-bottom: 1rem !important;
+  //   width: 90%;
+  // }
 }
 
 .listItem {
@@ -110,8 +126,13 @@
 .picture {
   width: 110%;
   height: 110%;
+  margin-top: 50px;
+  @media (max-width: 1110px) {
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
 }
 
 .bannerStar {
-  position: relative;
+  //position: relative;
 }

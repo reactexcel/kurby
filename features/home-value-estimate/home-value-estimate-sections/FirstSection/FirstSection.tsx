@@ -1,8 +1,9 @@
 import styles from "./FirstSection.module.scss";
 import { Paragraph } from "components/Paragraph/Paragraph";
 
-import Home from "../../../../public/images/newHome.svg";
-import HomePrice from "../../../../public/images/home-price.svg";
+//import Home from "../../../../public/images/newHome.svg";
+//import HomePrice from "../../../../public/images/home-price.svg";
+import Image from "next/image";
 
 export const FirstSection = () => {
   return (
@@ -23,8 +24,10 @@ export const FirstSection = () => {
       </div>
       <div className={styles.pictureWrapper}>
         <div className={styles.wrap}>
-          <Home className={styles.homeImg} />
-          <HomePrice className={styles.homePriceImg} />
+          {/* <Home className={styles.homeImg} /> */}
+          {/* <HomePrice className={styles.homePriceImg} /> */}
+          <Image alt="" src="./images/newHome.svg" layout="responsive" width={550} height={370} />
+          {/* <Image alt="" src="./images/home-price.svg" className={styles.homePriceImg} layout="responsive" width={450} height={370} /> */}
         </div>
       </div>
     </div>

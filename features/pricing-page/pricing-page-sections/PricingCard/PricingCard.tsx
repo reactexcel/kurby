@@ -7,6 +7,7 @@ import GreenUnderLine from "../../../../public/icons/greenLine.svg";
 import ItemIcon from "../../../../public/icons/item.svg";
 import WhiteItem from "../../../../public/icons/whiteItem.svg";
 import GreenItem from "../../../../public/icons/greenItem.svg";
+import Image from "next/image";
 
 type mainFeaturesType = {
   text: string;
@@ -49,14 +50,20 @@ export const PricingCard: React.FC<Props> = ({ title, subTitle, price, pricePer,
               className={greenType ? styles.greenFeatureParams : styles.featureParams}
               style={feature.strikeLine ? { textDecoration: "line-through" } : {}}
             >
-              <ItemIcon className={styles.icon} />
+              <div className={styles.iconSign}>
+                <ItemIcon className={styles.icon} />
+              </div>
               {feature.text}
             </li>
           ))}
         </ul>
       </div>
 
-      {greenType === true ? <GreenUnderLine /> : <UnderLine />}
+      {greenType === true ? (
+        <Image alt="" src="./icons/greenLine.svg" layout="responsive" className={styles.line} width={30} height={3} />
+      ) : (
+        <Image alt="" src="./icons/line.svg" layout="responsive" className={styles.line} width={30} height={3} />
+      )}
 
       <h2 className={greenType ? styles.greenFeatureTitle : styles.featureTitle}>{name}</h2>
       <div className={styles.FeaturesBlock}>

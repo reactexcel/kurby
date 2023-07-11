@@ -31,14 +31,7 @@ export const MainSection = () => {
     <div className={styles.container}>
       <div className={styles.wrapper}>
         <h1 className={styles.header}>
-          DISCOVER HIDDEN GEMS
-          <br /> AND{" "}
-          <span className={styles.coloredText}>
-            UNDERVALUED
-            <br /> PROPERTIES
-          </span>{" "}
-          WITH KURBY'S
-          <br /> AI LOCATION ANALYSIS
+          DISCOVER HIDDEN GEMS AND <span className={styles.coloredText}>UNDERVALUED PROPERTIES</span> WITH KURBY'S AI LOCATION ANALYSIS
         </h1>
 
         <Paragraph
@@ -67,15 +60,15 @@ export const MainSection = () => {
         </div>
       </div>
       <div className={styles.pictureWrapper}>
-        <div className={styles.bannerStar}>
+        {/* <div className={styles.bannerStar}>
           <img src="./images/starTop.svg" alt="" style={{ position: "absolute", top: "-90px", left: "50px" }}></img>
           <img src="./images/starBottomRight.svg" alt="" style={{ position: "absolute", bottom: "-410px", left: "-55px" }}></img>
           <img src="./images/starBottomLeft.svg" alt="" style={{ position: "absolute", bottom: "-410px", right: "0px" }}></img>
           <img src="./images/squareTop.svg" alt="" style={{ position: "absolute", bottom: "5px", right: "165px" }}></img>
           <img src="./images/squareLeft.svg" alt="" style={{ position: "absolute", top: "120px", left: "-150px" }}></img>
           <img src="./images/squareBottom.svg" alt="" style={{ position: "absolute", top: "440px", right: "240px" }}></img>
-        </div>
-        <Image alt="" src="./images/locationdata-banner.svg" width={550} height={370} />
+        </div> */}
+        <Image alt="" src="./images/locationdata-banner.svg" layout="responsive" width={550} height={370} />
       </div>
     </div>
   );

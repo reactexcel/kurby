@@ -20,7 +20,7 @@ export const FirstSection = () => {
         <button className={styles.searchButton}>Learn More &#62; &#62;</button>
       </div>
       <div className={styles.pictureWrapper}>
-        <Image alt="" src="./images/location-data-first.svg" width={650} height={450} />
+        <Image alt="" src="./images/location-data-first.svg" layout="responsive" width={650} height={450} />
       </div>
     </div>
   );

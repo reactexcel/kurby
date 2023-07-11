@@ -1,8 +1,10 @@
 import { Paragraph } from "components/Paragraph/Paragraph";
 import styles from "./ThirdSection.module.scss";
 
-import Home from '../../../../public/images/home-value-thirdSection.svg';
-import HomeProp from '../../../../public/images/home-property-third.svg'
+// import Home from '../../../../public/images/home-value-thirdSection.svg';
+// import HomeProp from '../../../../public/images/home-property-third.svg'
+
+import Image from "next/image";
 
 export const ThirdSection = () => {
   return (
@@ -26,8 +28,9 @@ export const ThirdSection = () => {
       </div>
       <div className={styles.pictureWrapper}>
         <div className={styles.wrap}>
-          <Home className={styles.homeImg} />
-          <HomeProp className={styles.homePropImg} />
+          {/* <Home className={styles.homeImg} />
+          <HomeProp className={styles.homePropImg} /> */}
+          <Image alt="" src="./images/home-value-thirdSection.svg" layout="responsive" width={550} height={370} />
         </div>
       </div>
     </div>

@@ -4,6 +4,12 @@
   display: flex;
   justify-content: space-between;
   padding: 60px;
+  @media (max-width: 1110px) {
+    flex-direction: column;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .wrapper {
@@ -16,28 +22,38 @@
   margin-top: 5rem;
   width: 55%;
 
-  @include mq-phone-only {
-    margin-top: 3rem;
+  @media (max-width: 1110px) {
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    padding-bottom: 30px;
   }
+  // @include mq-phone-only {
+  //   margin-top: 3rem;
+  // }
 }
 
 .pictureWrapper {
   margin-left: 100px;
   width: 50%;
+  @media (max-width: 1110px) {
+    margin: 0 0 30px;
+    width: 70%;
+  }
 }
 .wrap {
-  position: relative;
+ // position: relative;
 }
-.homeImg {
-  position: relative;
-  top: 200px;
-  left: 30px;
-}
-.homePropImg {
-  position: absolute;
-  top: 600px;
-  right: 450px;
-}
+// .homeImg {
+//   position: relative;
+//   top: 200px;
+//   left: 30px;
+// }
+// .homePropImg {
+//   position: absolute;
+//   top: 600px;
+//   right: 450px;
+// }
 
 .imageFeatures {
   width: 50%;
@@ -68,14 +84,16 @@
   font-size: 1.8vw;
   font-weight: 800;
   text-transform: uppercase;
-
-  @include mq-tablet-landscape--down {
-    width: 75%;
+  @media (max-width: 1110px) {
+    text-align: center;
   }
+  // @include mq-tablet-landscape--down {
+  //   width: 75%;
+  // }
 
-  @include mq-phone-only {
-    width: 100%;
-  }
+  // @include mq-phone-only {
+  //   width: 100%;
+  // }
 }
 
 .line {

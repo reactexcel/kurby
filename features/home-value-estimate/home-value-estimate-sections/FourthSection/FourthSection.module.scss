@@ -6,11 +6,18 @@
   margin-bottom: 80px;
   background-color: rgba(114, 114, 114, 0.08);
   padding: 60px;
+  @media (max-width: 1110px) {
+    flex-direction: column-reverse;
+    padding: 0;
+    margin-bottom: 40px;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .wrapper {
   padding-bottom: 50px;
-  position: relative;
+  //position: relative;
   display: flex;
   flex-direction: column;
   width: 50%;
@@ -18,14 +25,24 @@
   margin-top: 5rem;
   width: 55%;
 
-  @include mq-phone-only {
-    margin-top: 3rem;
+  @media (max-width: 1110px) {
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    padding-bottom: 30px;
   }
+
+  // @include mq-phone-only {
+  //   margin-top: 3rem;
+  // }
 }
 
 .pictureWrapper {
   margin-right: 60px;
   width: 60%;
+  @media (max-width: 1110px) {
+    margin: 0;
+  }
 }
 
 .picture {
@@ -43,10 +60,10 @@
   font-style: italic;
   width: fit-content !important;
 
-  @include mq-phone-only {
-    margin-bottom: 1rem !important;
-    width: 90%;
-  }
+  // @include mq-phone-only {
+  //   margin-bottom: 1rem !important;
+  //   width: 90%;
+  // }
 }
 
 .greenSection {
@@ -62,13 +79,16 @@
   font-weight: 800;
   text-transform: uppercase;
 
-  @include mq-tablet-landscape--down {
-    width: 75%;
+  @media (max-width: 1110px) {
+    text-align: center;
   }
+  // @include mq-tablet-landscape--down {
+  //   width: 75%;
+  // }
 
-  @include mq-phone-only {
-    width: 100%;
-  }
+  // @include mq-phone-only {
+  //   width: 100%;
+  // }
 }
 
 .line {

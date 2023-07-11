@@ -1,11 +1,13 @@
 import { Paragraph } from "components/Paragraph/Paragraph";
 import styles from "./SecondSection.module.scss";
+import Image from "next/image";
 
 export const SecondSection = () => {
   return (
     <div className={styles.container}>
       <div className={styles.pictureWrapper}>
-        <img alt="" src="./images/home-value-secondSection.svg" className={styles.picture} />
+        {/* <img alt="" src="./images/home-value-secondSection.svg" className={styles.picture} /> */}
+        <Image alt="" src="./images/home-value-secondSection.svg" className={styles.picture} layout="responsive" width={550} height={370} />
       </div>
       <div className={styles.wrapper}>
         <h1 className={styles.header}>Negotiate Better Deals and Increase Your Cash Flow with Home Value Estimates</h1>

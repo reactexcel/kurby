@@ -6,7 +6,7 @@ export const SecondSection = () => {
   return (
     <div className={styles.container}>
       <div className={styles.pictureWrapper}>
-        <img alt="" src="./images/location-data-second-section-left.svg" className={styles.picture} />
+        <Image alt="" src="./images/location-data-second-section-left.svg" className={styles.picture} layout="responsive" width={550} height={370} />
       </div>
       <div className={styles.wrapper}>
         <h1 className={styles.header}>Avoid Bad Deals and Risky Investments with Kurby’s Green and Red Flags</h1>

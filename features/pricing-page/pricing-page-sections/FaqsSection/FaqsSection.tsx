@@ -4,6 +4,7 @@ import styles from "./Faqs.module.scss";
 import FaqLine from "../../../../public/icons/faqLine.svg";
 import Minus from "../../../../public/icons/minus.svg";
 import Plus from "../../../../public/icons/plus.svg";
+import Image from "next/image";
 
 export const FaqsSection = () => {
   return (
@@ -12,9 +13,10 @@ export const FaqsSection = () => {
       <div className={styles.faqs}>
         <div className={styles.faqHeader}>
           <p className={styles.faqTitle}>Are there different pricing tiers or options available within the plan?</p>
-          <Minus />
+          {/* <Image alt="" src="./icons/minus.svg" className={styles.tracingImg} layout="responsive" width={10} height={3} /> */}
+          <Minus className={styles.signPlMn} />
         </div>
-        <FaqLine className ={styles.faqLine}  />
+        <FaqLine className={styles.faqLine} />
         <div className={styles.infoBlock}>
           <p className={styles.faqInfo}>A mortgage payment is the amount of money paid regularly to pay down, eventually paying off the borrowed mortgage balance.</p>
           <p className={styles.faqInfo}>

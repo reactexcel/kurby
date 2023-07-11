@@ -20,23 +20,52 @@ export const ProsConsSection = () => {
         <button className={styles.starterBtn}>Get Started</button>
         <div className={styles.signs}>
           <div className={styles.quickSign}>
-            <Vector className={styles.signItem} />
-            <Vector className={styles.signItem} />
-            <Minus className={styles.signItem} />
-            <Vector className={styles.signItem} />
-            <Vector className={styles.signItem} />
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Minus className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
           </div>
           <p className={styles.preset}>1 Preset</p>
           <Vector className={styles.signItem} />
-          <Minus className={styles.signItem} />
-          <Vector className={styles.signItem} />
-          <Vector className={styles.signItem} />
+          <div className={styles.signMarg}>
+            <div className={styles.sign}>
+              <Minus className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
+          </div>
+
           <div className={styles.dataSign}>
-            <Minus className={styles.signItem} />
-            <Vector className={styles.signItem} />
-            <Vector className={styles.signItem} />
-            <Vector className={styles.signItem} />
-            <Vector className={styles.signItem} />
+            <div className={styles.sign}>
+              <Minus className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
           </div>
         </div>
       </div>
@@ -45,23 +74,49 @@ export const ProsConsSection = () => {
         <button className={styles.growthBtn}>Get Started</button>
         <div className={styles.signs}>
           <div className={styles.quickSign}>
-            <Vector className={styles.signItem} />
-            <Minus className={styles.signItem} />
-            <Vector className={styles.signItem} />
-            <Vector className={styles.signItem} />
-            <Vector className={styles.signItem} />
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Minus className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
           </div>
           <p className={styles.preset}>3 Presets</p>
           <Vector className={styles.signItem} />
-          <Vector className={styles.signItem} />
-          <Vector className={styles.signItem} />
-          <Minus className={styles.signItem} />
+          <div className={styles.signMarg}>
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Minus className={styles.signItem} />
+            </div>
+          </div>
           <div className={styles.dataSign}>
-            <Vector className={styles.signItem} />
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
             <Minus className={styles.signItemMinus} />
-            <Minus className={styles.signItemMinus} />
-            <Minus className={styles.signItemMinus} />
-            <Vector className={styles.signItem} />
+            <div className={styles.sign}>
+              <Minus className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Minus className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
           </div>
         </div>
       </div>
@@ -70,23 +125,52 @@ export const ProsConsSection = () => {
         <button className={styles.profBtn}>Get Started</button>
         <div className={styles.signs}>
           <div className={styles.quickSign}>
-            <Vector className={styles.signItem} />
-            <Vector className={styles.signItem} />
-            <Vector className={styles.signItem} />
-            <Minus className={styles.signItem} />
-            <Vector className={styles.signItem} />
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Minus className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
           </div>
           <p className={styles.preset}>5 Presets</p>
           <Minus className={styles.signItemMinus} />
-          <Vector className={styles.signItem} />
-          <Minus className={styles.signItemMinus} />
-          <Vector className={styles.signItem} />
+          <div className={styles.signMarg}>
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Minus className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
+          </div>
+
           <div className={styles.dataSign}>
-            <Vector className={styles.signItem} />
-            <Vector className={styles.signItem} />
-            <Vector className={styles.signItem} />
-            <Vector className={styles.signItem} />
-            <Minus className={styles.signItem} />
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Vector className={styles.signItem} />
+            </div>
+            <div className={styles.sign}>
+              <Minus className={`${styles.signItem} ${styles.signMinus}`} />
+            </div>
           </div>
         </div>
       </div>
