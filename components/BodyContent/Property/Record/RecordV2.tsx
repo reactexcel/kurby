@@ -195,7 +195,6 @@ export default function RecordV2({ propertyData, description }: { propertyData: 
             )}
           </div>
           <div>
-            {/* // @ts-ignore */}
             <OwnerInformationTable propertyHouse={propertySearchData} />
           </div>
         </GridItem>
@@ -204,7 +203,10 @@ export default function RecordV2({ propertyData, description }: { propertyData: 
   );
 }
 
-export function OwnerInformationTable({ propertyHouse }: { propertyHouse: IPropertyHouse }) {
+export function OwnerInformationTable({ propertyHouse }: { propertyHouse: IPropertyHouse | null | undefined }) {
+  if (!propertyHouse) {
+    return <></>;
+  }
   const createData = (title: string, value: boolean | string | number) => ({
     title,
     value,
@@ -232,6 +234,7 @@ export function OwnerInformationTable({ propertyHouse }: { propertyHouse: IPrope
     } else if (typeof value === "number") {
       return value.toString();
     }
+    return "Null";
   };
 
   return (
