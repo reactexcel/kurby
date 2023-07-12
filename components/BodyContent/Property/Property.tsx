@@ -12,7 +12,8 @@ import styles from "./Property.module.scss";
 import { HouseList } from "./HouseList/HouseList";
 import { Grid } from "components/Grid/Grid";
 import { GridItem } from "components/Grid/GridItem";
-import { createPropertySearchApi } from "components/PropertySearchApi/PropertySearchApi";
+import { IPropertyHouse, IPropertySearchResponse } from "pages/api/propertyV2";
+import RecordV2 from "./Record/RecordV2";
 
 /**
  * Body Content
@@ -21,7 +22,10 @@ import { createPropertySearchApi } from "components/PropertySearchApi/PropertySe
 export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal: string }) {
   const [filterVal] = useRecoilState(filterState);
   const [propertyInfo, setPropertyInfo] = useState<PropertyType | null>(null);
+  const [propertyInfoV2, setPropertyInfoV2] = useState<IPropertyHouse | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+
+  console.log(propertyInfoV2);
 
   useEffect(() => {
     async function getPropertyData() {
@@ -38,14 +42,15 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
     }
 
     async function preparePropertyV2Data() {
-      const api = createPropertySearchApi();
-      const response = await api.getPropertyDataByAddress("111 N Lake Shore Dr, Chicago, IL 60601");
-      console.log(response);
+      const { data } = await axios.post<IPropertySearchResponse>("/api/propertyV2", {
+        address: filterVal.address,
+      });
+      if (data) {
+        setPropertyInfoV2(data.data[0]);
+      }
     }
-    try {
-      // preparePropertyV2Data();
-      getPropertyData();
-    } catch (e) {}
+    preparePropertyV2Data();
+    getPropertyData();
   }, []);
 
   const isAddressInUSA = useMemo(() => filterVal?.selectedPlace?.formatted_address?.includes("USA"), [filterVal?.selectedPlace?.formatted_address]);
@@ -72,8 +77,16 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
           <div className={styles.wrapper}>
             <Grid>
               <GridItem isEmpty={!(propertyInfo?.records && propertyInfo?.records.length > 0)}>
-                <Record propertyInfo={propertyInfo} description={explainedLikeAlocal} />
+                {/* <Record propertyInfo={propertyInfo} description={explainedLikeAlocal} /> */}
+                <RecordV2
+                  propertyData={{
+                    v1: propertyInfo,
+                    v2: propertyInfoV2,
+                  }}
+                  description={explainedLikeAlocal}
+                />
               </GridItem>
+
               <GridItem isEmpty={!propertyInfo?.valueEstimate}>
                 <EstimationGraph valueEstimate={propertyInfo?.valueEstimate} />
               </GridItem>
@@ -82,9 +95,6 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
               </GridItem>
               <GridItem isEmpty={!propertyInfo?.rentEstimate}>
                 <HouseList list={propertyInfo?.rentEstimate} />
-              </GridItem>
-              <GridItem isEmpty={!(propertyInfo?.records && propertyInfo?.records.length > 0)}>
-                <Owner owner={propertyInfo?.records[0]?.owner} />
               </GridItem>
             </Grid>
           </div>

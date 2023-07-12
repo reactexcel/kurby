@@ -118,3 +118,25 @@
     }
   }
 }
+
+.titleStyle {
+  font-size: 22px;
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+.ownersHorizontal {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.description {
+  font-family: Filson Pro;
+  font-size: 16px;
+  font-style: italic;
+  line-height: 23px;
+  letter-spacing: 0em;
+  text-align: left;
+}

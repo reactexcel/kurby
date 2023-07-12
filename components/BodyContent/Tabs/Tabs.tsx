@@ -13,6 +13,7 @@ import { Location } from "../Location/Location";
 import { loadingContext } from "context/loadingContext";
 import styles from "./Tabs.module.scss";
 import { searchContext } from "context/searchCounter";
+import { IPropertySearchResponse } from "pages/api/propertyV2";
 
 export function Tabs() {
   const [activeTab, setActiveTab] = useRecoilState(activeTabState);
@@ -67,7 +68,7 @@ export function Tabs() {
         });
         const response = await request.json();
 
-        // await getPropertyRecord(filterVal.selectedPlace.formatted_address);
+        await getPropertyRecord(filterVal.selectedPlace.formatted_address);
 
         setExplainedLikeAlocal(response.explained_like_a_local);
         setGreenFlags(response.greenFlags);
