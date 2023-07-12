@@ -20,7 +20,7 @@
   text-transform: uppercase;
   margin-top: 80px;
   margin-bottom: 40px;
-  @media (max-width: 1300px) {
+  @media (max-width: 2300px) {
     font-size: 22px;
   }
   @media (max-width: 910px) {
@@ -100,7 +100,7 @@
   line-height: normal;
   text-transform: uppercase;
   z-index: 2;
-  @media (max-width: 1300px) {
+  @media (max-width: 2300px) {
     font-size: 24px;
   }
   @media (max-width: 910px) {
@@ -125,7 +125,7 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  @media (max-width: 1300px) {
+  @media (max-width: 2300px) {
     width: 85%;
   }
   @media (max-width: 910px) {
@@ -151,7 +151,7 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  @media (max-width: 1300px) {
+  @media (max-width: 2300px) {
     width: 85%;
   }
   @media (max-width: 910px) {
@@ -177,7 +177,7 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  @media (max-width: 1300px) {
+  @media (max-width: 2300px) {
     width: 85%;
   }
   @media (max-width: 910px) {
@@ -215,8 +215,13 @@
 .signItemMinus {
   margin: 10px 0 86px;
 }
+.signPlus {
+  @media (max-width: 460px) {
+    margin: -10px 0 50px;
+  }
+}
 .signMarg {
-  @media (max-width: 1300px) {
+  @media (max-width: 2300px) {
     margin: -10px 0 -35px;
   }
   @media (max-width: 950px) {
@@ -239,15 +244,19 @@
   line-height: normal;
   margin-top: 80px;
   margin-bottom: 80px;
-  @media (max-width: 1300px) {
+  @media (max-width: 2300px) {
     margin-bottom: 75px;
+    margin-top: 55px;
+  }
+  @media (max-width: 910px) {
+    margin-top: 50px;
   }
   @media (max-width: 830px) {
     margin: 55px 0 68px;
   }
   @media (max-width: 460px) {
     font-size: 11px;
-    margin: 40px 0 70px;
+    margin: 40px 0 60px;
   }
   @media (max-width: 325px) {
     margin: 60px 0 70px;
@@ -259,6 +268,9 @@
   justify-content: center;
   align-items: center;
   margin-top: 15px;
+  @media (max-width: 910px) {
+    margin-top: 20px;
+  }
 }
 .dataSign {
   display: flex;
@@ -269,8 +281,14 @@
   @media (max-width: 950px) {
     margin-top: 0px;
   }
+  @media (max-width: 910px) {
+    margin-top: 10px;
+  }
+  @media (max-width: 830px) {
+    margin-top: -5px;
+  }
   @media (max-width: 460px) {
-    margin-top: -30px;
+    margin-top: -20px;
   }
   @media (max-width: 345px) {
     margin-top: -5px;

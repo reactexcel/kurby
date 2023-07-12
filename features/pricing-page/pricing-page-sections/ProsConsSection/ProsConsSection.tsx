@@ -112,10 +112,10 @@ export const ProsConsSection = () => {
               <Minus className={styles.signItem} />
             </div>
             <div className={styles.sign}>
-              <Minus className={styles.signItem} />
+              <Minus className={styles.signItem} /> 
             </div>
             <div className={styles.sign}>
-              <Vector className={styles.signItem} />
+              <Vector className={`${styles.signItem} ${styles.signPlus}`} />
             </div>
           </div>
         </div>
