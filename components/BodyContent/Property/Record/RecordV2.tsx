@@ -103,7 +103,7 @@ export default function RecordV2({ propertyData, description }: { propertyData: 
   );
 
   const LastSoldPrice = () =>
-    propertySearchData?.estimatedValue && (
+    propertySearchData?.estimatedValue ? (
       <Box className={styles.box}>
         <Typography variant="h6" component="h6" sx={{ marginRight: "5px", color: KBColor.DRAK_GREY }}>
           Last Sold Price:
@@ -112,6 +112,8 @@ export default function RecordV2({ propertyData, description }: { propertyData: 
           ${convertUSNumberFormat(propertySearchData.lastSaleAmount)}
         </Typography>
       </Box>
+    ) : (
+      <></>
     );
 
   return (
