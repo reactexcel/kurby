@@ -3,10 +3,8 @@ import axios from "axios";
 import { filterState } from "context/filterContext";
 import { useEffect, useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
-import Record from "./Record/Record";
 import { PropertyType } from "./types";
 import EstimationGraph from "./EstimationGraph/EstimationGraph";
-import Owner from "./Owner/Owner";
 import { TabLayout } from "components/layouts/TabLayout/TabLayout";
 import styles from "./Property.module.scss";
 import { HouseList } from "./HouseList/HouseList";
@@ -24,8 +22,6 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
   const [propertyInfo, setPropertyInfo] = useState<PropertyType | null>(null);
   const [propertyInfoV2, setPropertyInfoV2] = useState<IPropertyHouse | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-
-  console.log(propertyInfoV2);
 
   useEffect(() => {
     async function getPropertyData() {
@@ -59,7 +55,7 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
     <TabLayout className={`${styles.tabLayout} ${!isAddressInUSA ? styles.note : ""}`} loading={loading || !propertyInfo}>
       {loading || !propertyInfo ? (
         <CircularProgress />
-      ) : isAddressInUSA ? (
+      ) : true ? (
         <div className={styles.main}>
           <div className={styles.wrapper}>
             <img
@@ -76,7 +72,7 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
           </div>
           <div className={styles.wrapper}>
             <Grid>
-              <GridItem isEmpty={!(propertyInfo?.records && propertyInfo?.records.length > 0)}>
+              <GridItem>
                 {/* <Record propertyInfo={propertyInfo} description={explainedLikeAlocal} /> */}
                 <RecordV2
                   propertyData={{

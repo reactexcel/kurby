@@ -90,11 +90,9 @@ export function Tabs() {
             Location
           </ToggleButton>
 
-          {showHome && (
-            <ToggleButton className={styles.button} value="property">
-              Property data
-            </ToggleButton>
-          )}
+          <ToggleButton className={styles.button} value="property">
+            Property data
+          </ToggleButton>
 
           <ToggleButton className={styles.button} value="neighborhood">
             Neighborhood
@@ -105,7 +103,7 @@ export function Tabs() {
           <Box className={styles.tabsWrapper}>
             {activeTab === "location" && <Location explainedLikeAlocal={explainedLikeAlocal} greenFlags={greenFlags} redFlags={redFlags} />}
             {activeTab == "nearby" && <Nearby />}
-            {activeTab == "property" && showHome && <Property explainedLikeAlocal={explainedLikeAlocal} />}
+            {activeTab == "property" && <Property explainedLikeAlocal={explainedLikeAlocal} />}
 
             {activeTab == "neighborhood" && <Neighborhood filterVal={filterVal} />}
           </Box>

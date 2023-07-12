@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { filterState } from "context/filterContext";
 import React, { useContext } from "react";
 import { useRecoilState } from "recoil";
@@ -6,16 +6,14 @@ import LocationSvg from "../../../../public/icons/location.svg";
 import SqftSvg from "../../../../public/icons/sqft.svg";
 import BedSvg from "../../../../public/icons/bed.svg";
 import WashSvg from "../../../../public/icons/wash.svg";
+import HouseSvg from "../../../../public/icons/house.svg";
 import { KBColor } from "constants/color";
 import { PropertyType } from "../types";
 import { convertUSNumberFormat } from "utils/number";
 import Divider from "@mui/material/Divider";
 import Card from "components/Card/Card";
-import KBTable from "components/KBTable/KBTable";
 import { TableFieldType } from "types/table";
-import moment from "moment";
-import { RecordRow } from "./RecordRow/RecordRow";
-import { Paragraph } from "components/Paragraph/Paragraph";
+import { Field, RecordRow } from "./RecordRow/RecordRow";
 import styles from "./Record.module.scss";
 import { HouseInfoField } from "./HouseInfoField/HouseInfoField";
 import { AdditionalInfoField } from "./AdditionalInfoField/AdditionalInfoField";
@@ -116,6 +114,7 @@ export default function RecordV2({ propertyData, description }: { propertyData: 
       <></>
     );
 
+  const isOwnerInformationAvailable = propertySearchData?.owner1FirstName && propertySearchData.owner1LastName;
   return (
     <>
       <Box className={styles.box}>
@@ -127,9 +126,10 @@ export default function RecordV2({ propertyData, description }: { propertyData: 
       </Box>
       <Box className={styles.box} sx={{ padding: "2px", marginTop: "15px" }}>
         <Box className={styles.houseInfo}>
-          <HouseInfoField data={`${convertUSNumberFormat(propertyInfo?.records[0]?.squareFootage)} Sqft`} icon={<SqftSvg />} />
-          <HouseInfoField data={`${propertyInfo?.records[0]?.bedrooms} Bedrooms`} icon={<BedSvg />} />
-          <HouseInfoField data={`${propertyInfo?.records[0]?.bathrooms} Bathrooms`} icon={<WashSvg />} />
+          <HouseInfoField data={`${propertySearchData?.squareFeet} Sqft`} icon={<SqftSvg />} />
+          <HouseInfoField data={`${propertySearchData?.bedrooms} Bedrooms`} icon={<BedSvg />} />
+          <HouseInfoField data={`${propertySearchData?.bathrooms} Bathrooms`} icon={<WashSvg />} />
+          {propertySearchData?.forSale && <HouseInfoField data={`For Sale`} icon={<HouseSvg />} />}
         </Box>
         {!isMobileTablet && <LastSoldPrice />}
       </Box>
@@ -174,6 +174,7 @@ export default function RecordV2({ propertyData, description }: { propertyData: 
         <GridItem width="2/3">
           <h3 className={styles.titleStyle}>Owner Information</h3>
           <div className={styles.ownersHorizontal}>
+            {!isOwnerInformationAvailable && <p style={{ textAlign: "center" }}>No owner information available</p>}
             {propertySearchData?.owner1FirstName && propertySearchData.owner1LastName && (
               <OwnerV2
                 owner={{
@@ -193,8 +194,56 @@ export default function RecordV2({ propertyData, description }: { propertyData: 
               />
             )}
           </div>
+          <div>
+            {/* // @ts-ignore */}
+            <OwnerInformationTable propertyHouse={propertySearchData} />
+          </div>
         </GridItem>
       </Grid>
     </>
+  );
+}
+
+export function OwnerInformationTable({ propertyHouse }: { propertyHouse: IPropertyHouse }) {
+  const createData = (title: string, value: boolean | string | number) => ({
+    title,
+    value,
+  });
+
+  const propertyHouseData = [
+    createData("Owner Occupied", propertyHouse.ownerOccupied),
+    createData("Absentee Owner", propertyHouse.absenteeOwner),
+    createData("Out Of State Absentee Owner", propertyHouse.outOfStateAbsenteeOwner),
+    createData("In State Absentee Owner", propertyHouse.inStateAbsenteeOwner),
+    createData("Corporate Owned", propertyHouse.corporateOwned),
+    createData("Investor Buyer", propertyHouse.investorBuyer),
+    createData("Address", propertyHouse.address.address),
+    createData("Years Owned", propertyHouse.yearsOwned || 0),
+    createData("Inherited", propertyHouse.inherited),
+    createData("Death", propertyHouse.death),
+    createData("Spousal Death", "Upgrade to Pro Plan"),
+  ];
+
+  const displayValue = (value: boolean | string | number): string => {
+    if (typeof value === "boolean") {
+      return value ? "Yes" : "No";
+    } else if (typeof value === "string") {
+      return value;
+    } else if (typeof value === "number") {
+      return value.toString();
+    }
+  };
+
+  return (
+    <table className={styles.ownersTable}>
+      <tbody>
+        {propertyHouseData.map((item, index) => (
+          <tr key={index}>
+            <td className={`${styles.column} ${styles.column1}`}>{item.title}</td>
+            <td className={`${styles.column} ${styles.column2}`}>{displayValue(item.value)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 }
