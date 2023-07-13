@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "../Record/Record.module.scss";
 import { IPropertyHouse } from "pages/api/propertyV2";
-import { InformationTable, createData } from "components/BodyContent/InformationTable/InformationTable";
 import { Box } from "@mui/material";
 import KBTable from "components/KBTable/KBTable";
 import { KBColor } from "constants/color";
@@ -36,7 +35,7 @@ export default function ListingHistory({ data }: IFinancialMortgageProps) {
     <div>
       <h3 className={styles.titleStyle}>Listing History</h3>
       <Box>
-        <KBTable maxHeight="220px" lineColor={KBColor.LIGHT_GREY} sx={{ background: KBColor.DARK_WHITE }} fields={valueEstimatFields} data={generateGraphData()} />
+        <KBTable maxHeight="220px" lineColor={KBColor.LIGHT_GREY} sx={{ background: KBColor.DARK_WHITE }} fields={valueEstimatFields} data={generateGraphData() as any} />
       </Box>
     </div>
   );
