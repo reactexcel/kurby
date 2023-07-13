@@ -17,8 +17,8 @@ export default function PropertyData({ data }: IRentalEstimatesProps) {
     { title: "Bathrooms", value: data?.bathrooms || "Null" },
     { title: "Bedrooms", value: data?.bedrooms || "Null" },
     { title: "Year built", value: data?.yearBuilt || "Null" },
-    { title: "Assessed Land Value", value: `$${data?.assessedLandValue}` || "Null" },
-    { title: "Assessed Improvement Value", value: `$${data?.assessedImprovementValue}` || "Null" },
+    { title: "Assessed Land Value", value: `$${data?.assessedLandValue.toLocaleString()}` || "Null" },
+    { title: "Assessed Improvement Value", value: `$${data?.assessedImprovementValue.toLocaleString()}` || "Null" },
     { title: "Land Use", value: data?.landUse || "Null" },
     { title: "Units Count", value: data?.unitsCount || "Null" },
     { title: "Rooms Count", value: data?.roomsCount || "Null" },
@@ -35,10 +35,6 @@ export default function PropertyData({ data }: IRentalEstimatesProps) {
         <div style={{ flex: 1 }}>
           <h3 className={styles.titleStyle}>Property Data</h3>
           <InformationTable dataFields={propertyDataHouse} />
-        </div>
-        <div style={{ flex: 1 }}>
-          <h3 className={styles.titleStyle}>Additional Property Data (Upgrade to Pro Plan)</h3>
-          {/* <MortgageInformation /> */}
         </div>
       </div>
     </div>

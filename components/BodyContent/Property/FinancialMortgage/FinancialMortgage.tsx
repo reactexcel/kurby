@@ -26,12 +26,12 @@ function FinancialInformationTable({ propertyHouse }: { propertyHouse: IProperty
   const propertyHouseData = [
     createData("Cash Buyer", propertyHouse?.cashBuyer),
     createData("Equity", propertyHouse?.equity),
-    createData("Equity Percent", propertyHouse?.equityPercent || "Null"),
+    createData("Equity Percent", `${propertyHouse?.equityPercent}%` || "Null"),
     createData("Estimated Equity", propertyHouse?.estimatedEquity),
-    createData("Estimated Value", propertyHouse?.estimatedValue || "Null"),
+    createData("Estimated Value", `$${propertyHouse?.estimatedValue.toLocaleString()}` || "Null"),
     createData("High Equity", propertyHouse?.highEquity),
     createData("Negative Equity", propertyHouse?.negativeEquity),
-    createData("Open Mortgage Balance", propertyHouse?.openMortgageBalance || "Null"),
+    createData("Open Mortgage Balance", `$${propertyHouse?.openMortgageBalance.toLocaleString()}` || "Null"),
     createData("Pre Foreclosure", propertyHouse?.preForeclosure),
     createData("REO", propertyHouse?.reo),
   ];
