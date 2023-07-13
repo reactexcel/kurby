@@ -1,4 +1,4 @@
-import { Box, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { filterState } from "context/filterContext";
 import React, { useContext } from "react";
 import { useRecoilState } from "recoil";
@@ -12,8 +12,7 @@ import { PropertyType } from "../types";
 import { convertUSNumberFormat } from "utils/number";
 import Divider from "@mui/material/Divider";
 import Card from "components/Card/Card";
-import { TableFieldType } from "types/table";
-import { Field, RecordRow } from "./RecordRow/RecordRow";
+import { RecordRow } from "./RecordRow/RecordRow";
 import styles from "./Record.module.scss";
 import { HouseInfoField } from "./HouseInfoField/HouseInfoField";
 import { AdditionalInfoField } from "./AdditionalInfoField/AdditionalInfoField";
@@ -22,29 +21,12 @@ import { GridItem } from "components/Grid/GridItem";
 import { WindowSizeContext } from "context/windowSizeContext";
 import { IPropertyHouse } from "pages/api/propertyV2";
 import OwnerV2 from "../Owner/OwnerV2";
+import { InformationTable, createData } from "components/BodyContent/InformationTable/InformationTable";
 
 /**
  * Body Content
  * @description: Displays everything below the filters
  */
-
-const saleListFields: TableFieldType[] = [
-  { label: "Event", key: "event" },
-  { label: "Date", key: "date" },
-  { label: "Price", key: "price" },
-];
-
-const rentalEstimateFields: TableFieldType[] = [
-  { label: "Bedrooms", key: "bedrooms" },
-  { label: "High Estimate", key: "maxRent" },
-  { label: "Low Estimate", key: "minRent" },
-  { label: "Estimate", key: "averageRent" },
-];
-
-const taxHistoryFields: TableFieldType[] = [
-  { label: "Year", key: "year" },
-  { label: "Price", key: "price" },
-];
 
 type SoldType = {
   event: string;
@@ -76,21 +58,16 @@ export default function RecordV2({ propertyData, description }: { propertyData: 
     { title: "Subdivision", data: propertySearchData?.address.city || "Null" },
     { title: "Pool", data: propertyInfo?.records[0]?.features?.pool ? "True" : "Null" },
     { title: "Garage", data: propertyInfo?.records[0]?.features?.garage ? 1 : "Null" },
-    { title: "Stories", data: "Null" },
     { title: "Type", data: propertySearchData?.propertyType || "Null" },
     { title: "Garage Type", data: propertyInfo?.records[0]?.features?.garageType || "Null" },
-    { title: "Construction", data: "Null" },
     { title: "Roofing", data: propertyInfo?.records[0]?.features?.roofType || "Null" },
     { title: "Sqft", data: propertySearchData?.squareFeet || "Null" },
     { title: "Lot Sqft", data: propertySearchData?.lotSquareFeet || "Null" },
     { title: "Zoning", data: propertySearchData?.floodZoneDescription || "Null" },
-    { title: "Year Renovated", data: "Null" },
-    { title: "Half Baths", data: "Null" },
     { title: "Year Built", data: propertySearchData?.yearBuilt || "Null" },
     { title: "Units", data: propertyInfo?.records[0]?.features?.unitCount || "Null" },
     { title: "Cooling", data: propertyInfo?.records[0]?.features?.coolingType || "Null" },
     { title: "Heating", data: propertyInfo?.records[0]?.features?.heatingType || "Null" },
-    { title: "Fireplace", data: "Null" },
     { title: "Owner Occupied", data: propertyInfo?.records[0]?.ownerOccupied ? "Yes" : "No" },
   ];
 
@@ -203,50 +180,19 @@ export default function RecordV2({ propertyData, description }: { propertyData: 
   );
 }
 
-export function OwnerInformationTable({ propertyHouse }: { propertyHouse: IPropertyHouse | null | undefined }) {
-  if (!propertyHouse) {
-    return <></>;
-  }
-  const createData = (title: string, value: boolean | string | number) => ({
-    title,
-    value,
-  });
-
+function OwnerInformationTable({ propertyHouse }: { propertyHouse: IPropertyHouse | null | undefined }) {
   const propertyHouseData = [
-    createData("Owner Occupied", propertyHouse.ownerOccupied),
-    createData("Absentee Owner", propertyHouse.absenteeOwner),
-    createData("Out Of State Absentee Owner", propertyHouse.outOfStateAbsenteeOwner),
-    createData("In State Absentee Owner", propertyHouse.inStateAbsenteeOwner),
-    createData("Corporate Owned", propertyHouse.corporateOwned),
-    createData("Investor Buyer", propertyHouse.investorBuyer),
-    createData("Address", propertyHouse.address.address),
-    createData("Years Owned", propertyHouse.yearsOwned || 0),
-    createData("Inherited", propertyHouse.inherited),
-    createData("Death", propertyHouse.death),
+    createData("Owner Occupied", propertyHouse?.ownerOccupied || "Null"),
+    createData("Absentee Owner", propertyHouse?.absenteeOwner || "Null"),
+    createData("Out Of State Absentee Owner", propertyHouse?.outOfStateAbsenteeOwner || "Null"),
+    createData("In State Absentee Owner", propertyHouse?.inStateAbsenteeOwner || "Null"),
+    createData("Corporate Owned", propertyHouse?.corporateOwned || "Null"),
+    createData("Investor Buyer", propertyHouse?.investorBuyer || "Null"),
+    createData("Address", propertyHouse?.address?.address || "Null"),
+    createData("Years Owned", propertyHouse?.yearsOwned || 0),
+    createData("Inherited", propertyHouse?.inherited || "Null"),
+    createData("Death", propertyHouse?.death || "Null"),
     createData("Spousal Death", "Upgrade to Pro Plan"),
   ];
-
-  const displayValue = (value: boolean | string | number): string => {
-    if (typeof value === "boolean") {
-      return value ? "Yes" : "No";
-    } else if (typeof value === "string") {
-      return value;
-    } else if (typeof value === "number") {
-      return value.toString();
-    }
-    return "Null";
-  };
-
-  return (
-    <table className={styles.ownersTable}>
-      <tbody>
-        {propertyHouseData.map((item, index) => (
-          <tr key={index}>
-            <td className={`${styles.column} ${styles.column1}`}>{item.title}</td>
-            <td className={`${styles.column} ${styles.column2}`}>{displayValue(item.value)}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
+  return <InformationTable dataFields={propertyHouseData} />;
 }

@@ -12,6 +12,7 @@ import { Grid } from "components/Grid/Grid";
 import { GridItem } from "components/Grid/GridItem";
 import { IPropertyHouse, IPropertySearchResponse } from "pages/api/propertyV2";
 import RecordV2 from "./Record/RecordV2";
+import FinancialMortgage from "./FinancialMortgage/FinancialMortgage";
 
 /**
  * Body Content
@@ -82,7 +83,9 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
                   description={explainedLikeAlocal}
                 />
               </GridItem>
-
+              <GridItem>
+                <FinancialMortgage data={propertyInfoV2} />
+              </GridItem>
               <GridItem isEmpty={!propertyInfo?.valueEstimate}>
                 <EstimationGraph valueEstimate={propertyInfo?.valueEstimate} />
               </GridItem>

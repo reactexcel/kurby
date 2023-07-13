@@ -72,7 +72,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         params: { address: formatted_address },
       });
     } catch (error) {
-      console.log({ error });
+      // console.log({ error });
     }
 
     try {
@@ -86,7 +86,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         },
       });
     } catch (error) {
-      console.log({ error });
+      // console.log({ error });
     }
 
     try {
@@ -100,7 +100,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         },
       });
     } catch (error) {
-      console.log({ error });
+      // console.log({ error });
     }
 
     let saleListData = null;
@@ -114,7 +114,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       };
       saleListData = await axios.request(saleListOptions);
     } catch (error) {
-      console.log({ error });
+      // console.log({ error });
     }
 
     let rentailListOptionData = null;
@@ -128,7 +128,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       };
       rentailListOptionData = await axios.request(rentailListOption);
     } catch (error) {
-      console.log({ error });
+      // console.log({ error });
     }
 
     let marketData = null;
@@ -154,7 +154,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       market: marketData?.data || [],
     });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     const errorMsg = new Error(JSON.stringify(error));
     res.status(500).json(errorMsg);
   }

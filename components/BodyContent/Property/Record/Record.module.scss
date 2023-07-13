@@ -140,24 +140,3 @@
   letter-spacing: 0em;
   text-align: left;
 }
-
-.ownersTable {
-  width: 100%;
-  margin-top: 20px;
-  background-color: #bebebe1a;
-  color: #727272;
-  border-collapse: collapse;
-  border: 1.5px solid #e0e6ea;
-
-  .column {
-    width: 50%;
-    border-bottom: 1.5px solid #e0e6ea;
-    border-right: 1.5px solid #e0e6ea;
-    padding: 10px;
-    box-sizing: border-box;
-
-    &.column2 {
-      border-right: 1.5px solid #e0e6ea;
-    }
-  }
-}
