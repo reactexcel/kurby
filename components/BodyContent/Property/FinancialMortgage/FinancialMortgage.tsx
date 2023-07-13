@@ -1,6 +1,6 @@
 import { IPropertyHouse } from "pages/api/propertyV2";
 import React from "react";
-import styles from "../Record/Record.module.scss";
+import styles from "../FinancialMortgage/FinancialMortgage.module.scss";
 import { InformationTable, createData } from "components/BodyContent/InformationTable/InformationTable";
 
 interface IFinancialMortgageProps {
@@ -9,7 +9,7 @@ interface IFinancialMortgageProps {
 
 export default function FinancialMortgage({ data }: IFinancialMortgageProps) {
   return (
-    <div style={{ display: "flex", gap: 30, flexDirection: "row", marginTop: "25px" }}>
+    <div className={styles.wrapper}>
       <div style={{ flex: 1 }}>
         <h3 className={styles.titleStyle}>Financial Information</h3>
         <FinancialInformationTable propertyHouse={data} />
