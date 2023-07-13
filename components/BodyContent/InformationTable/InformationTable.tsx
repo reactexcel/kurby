@@ -2,14 +2,14 @@ import styles from "./Information.module.scss";
 
 interface IDataField {
   title: string;
-  value: boolean | string | number;
+  value: boolean | string | number | undefined;
 }
 
 interface IInformationTableProps {
   dataFields: IDataField[] | null | undefined;
 }
 
-export const createData = (title: string, value: boolean | string | number) => ({
+export const createData = (title: string, value: boolean | string | number | undefined) => ({
   title,
   value,
 });
@@ -19,7 +19,7 @@ export function InformationTable({ dataFields }: IInformationTableProps) {
     return <></>;
   }
 
-  const displayValue = (value: boolean | string | number): string => {
+  const displayValue = (value: boolean | string | number | undefined): string => {
     if (typeof value === "boolean") {
       return value ? "Yes" : "No";
     } else if (typeof value === "string") {

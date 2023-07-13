@@ -24,16 +24,16 @@ export default function FinancialMortgage({ data }: IFinancialMortgageProps) {
 
 function FinancialInformationTable({ propertyHouse }: { propertyHouse: IPropertyHouse | null | undefined }) {
   const propertyHouseData = [
-    createData("Cash Buyer", propertyHouse?.cashBuyer || "Null"),
-    createData("Equity", propertyHouse?.equity || "Null"),
+    createData("Cash Buyer", propertyHouse?.cashBuyer),
+    createData("Equity", propertyHouse?.equity),
     createData("Equity Percent", propertyHouse?.equityPercent || "Null"),
-    createData("Estimated Equity", propertyHouse?.estimatedEquity || "Null"),
+    createData("Estimated Equity", propertyHouse?.estimatedEquity),
     createData("Estimated Value", propertyHouse?.estimatedValue || "Null"),
-    createData("High Equity", propertyHouse?.highEquity || "Null"),
-    createData("Negative Equity", propertyHouse?.negativeEquity || "Null"),
-    createData("Open Mortgage Balance", propertyHouse?.openMortgageBalance || 0),
-    createData("Pre Foreclosure", propertyHouse?.preForeclosure || "Null"),
-    createData("REO", propertyHouse?.reo || "Null"),
+    createData("High Equity", propertyHouse?.highEquity),
+    createData("Negative Equity", propertyHouse?.negativeEquity),
+    createData("Open Mortgage Balance", propertyHouse?.openMortgageBalance || "Null"),
+    createData("Pre Foreclosure", propertyHouse?.preForeclosure),
+    createData("REO", propertyHouse?.reo),
   ];
   return <InformationTable dataFields={propertyHouseData} />;
 }

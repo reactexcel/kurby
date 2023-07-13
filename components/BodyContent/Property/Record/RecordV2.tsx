@@ -190,8 +190,8 @@ function OwnerInformationTable({ propertyHouse }: { propertyHouse: IPropertyHous
     createData("Investor Buyer", propertyHouse?.investorBuyer || "Null"),
     createData("Address", propertyHouse?.address?.address || "Null"),
     createData("Years Owned", propertyHouse?.yearsOwned || 0),
-    createData("Inherited", propertyHouse?.inherited || "Null"),
-    createData("Death", propertyHouse?.death || "Null"),
+    createData("Inherited", propertyHouse?.inherited),
+    createData("Death", propertyHouse?.death),
     createData("Spousal Death", "Upgrade to Pro Plan"),
   ];
   return <InformationTable dataFields={propertyHouseData} />;
