@@ -130,6 +130,12 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  gap: 10px;
+
+  @media screen and (max-width: 550px) {
+    flex-direction: column;
+    gap: 1em;
+  }
 }
 
 .description {
