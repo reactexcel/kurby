@@ -17,6 +17,7 @@ import ListingHistory from "./ListingHistory/ListingHistory";
 import LastSale from "./LastSale/LastSale";
 import RentalEstimates from "./RentalEstimates/RentalEstimates";
 import PropertyData from "./PropertyData/PropertyData";
+import PropertyStatus from "./PropertyStatus/PropertyStatus";
 
 /**
  * Body Content
@@ -103,6 +104,9 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
               <GridItem>
                 {/* TODO Property Search API */}
                 {/* <ListingHistory data={propertyInfoV2} /> */}
+              </GridItem>
+              <GridItem>
+                <PropertyStatus data={propertyInfoV2} />
               </GridItem>
               <GridItem isEmpty={!propertyInfo?.valueEstimate}>
                 <EstimationGraph valueEstimate={propertyInfo?.valueEstimate} />
