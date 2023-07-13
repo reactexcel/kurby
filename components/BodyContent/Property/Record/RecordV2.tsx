@@ -101,15 +101,17 @@ export default function RecordV2({ propertyData, description }: { propertyData: 
         </Typography>
         {!isMobileTablet && <Price />}
       </Box>
-      <Box className={styles.box} sx={{ padding: "2px", marginTop: "15px" }}>
-        <Box className={styles.houseInfo}>
-          <HouseInfoField data={`${propertySearchData?.squareFeet} Sqft`} icon={<SqftSvg />} />
-          <HouseInfoField data={`${propertySearchData?.bedrooms} Bedrooms`} icon={<BedSvg />} />
-          <HouseInfoField data={`${propertySearchData?.bathrooms} Bathrooms`} icon={<WashSvg />} />
-          {propertySearchData?.forSale && <HouseInfoField data={`For Sale`} icon={<HouseSvg />} />}
+      {
+        <Box className={styles.box} sx={{ padding: "2px", marginTop: "15px" }}>
+          <Box className={styles.houseInfo}>
+            {propertySearchData?.squareFeet && <HouseInfoField data={`${propertySearchData?.squareFeet} Sqft`} icon={<SqftSvg />} />}
+            {propertySearchData?.squareFeet && <HouseInfoField data={`${propertySearchData?.bedrooms} Bedrooms`} icon={<BedSvg />} />}
+            {propertySearchData?.bathrooms && <HouseInfoField data={`${propertySearchData?.bathrooms} Bathrooms`} icon={<WashSvg />} />}
+            {propertySearchData?.forSale && <HouseInfoField data={`For Sale`} icon={<HouseSvg />} />}
+          </Box>
+          {!isMobileTablet && <LastSoldPrice />}
         </Box>
-        {!isMobileTablet && <LastSoldPrice />}
-      </Box>
+      }
       <Box className={styles.moreInfo}>
         <AdditionalInfoField label="Property Type" data={propertySearchData?.propertyType || "Null"} />
         <AdditionalInfoField label="Year Built" data={propertySearchData?.yearBuilt || "Null"} />

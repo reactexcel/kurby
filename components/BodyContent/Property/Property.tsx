@@ -14,6 +14,9 @@ import { IPropertyHouse, IPropertySearchResponse } from "pages/api/propertyV2";
 import RecordV2 from "./Record/RecordV2";
 import FinancialMortgage from "./FinancialMortgage/FinancialMortgage";
 import ListingHistory from "./ListingHistory/ListingHistory";
+import LastSale from "./LastSale/LastSale";
+import RentalEstimates from "./RentalEstimates/RentalEstimates";
+import PropertyData from "./PropertyData/PropertyData";
 
 /**
  * Body Content
@@ -57,7 +60,7 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
     <TabLayout className={`${styles.tabLayout} ${!isAddressInUSA ? styles.note : ""}`} loading={loading || !propertyInfo}>
       {loading || !propertyInfo ? (
         <CircularProgress />
-      ) : true ? (
+      ) : isAddressInUSA ? (
         <div className={styles.main}>
           <div className={styles.wrapper}>
             <img
@@ -88,7 +91,18 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
                 <FinancialMortgage data={propertyInfoV2} />
               </GridItem>
               <GridItem>
-                <ListingHistory data={propertyInfoV2} />
+                {/* TODO Property Search API */}
+                {/* <LastSale /> */}
+              </GridItem>
+              <GridItem>
+                <RentalEstimates data={propertyInfoV2} />
+              </GridItem>
+              <GridItem>
+                <PropertyData data={propertyInfoV2} />
+              </GridItem>
+              <GridItem>
+                {/* TODO Property Search API */}
+                {/* <ListingHistory data={propertyInfoV2} /> */}
               </GridItem>
               <GridItem isEmpty={!propertyInfo?.valueEstimate}>
                 <EstimationGraph valueEstimate={propertyInfo?.valueEstimate} />
