@@ -7,21 +7,21 @@ interface IRentalEstimatesProps {
 }
 
 export default function PropertyData({ data }: IRentalEstimatesProps) {
-  const useBool = (value: boolean | undefined | null) => (value === undefined || null ? "Null" : "False");
+  const useBool = (value: boolean | undefined | null) => (value === undefined || null ? "-" : "False");
   const propertyDataHouse = [
-    { title: "Property Type", value: data?.propertyType || "Null" },
-    { title: "Property Use", value: data?.propertyUse || "Null" },
+    { title: "Property Type", value: data?.propertyType || "-" },
+    { title: "Property Use", value: data?.propertyUse || "-" },
     { title: "MFH2to4", value: useBool(data?.MFH2to4) },
     { title: "MFH5plus", value: useBool(data?.MFH5plus) },
-    { title: "Square Feet", value: data?.squareFeet || "Null" },
-    { title: "Bathrooms", value: data?.bathrooms || "Null" },
-    { title: "Bedrooms", value: data?.bedrooms || "Null" },
-    { title: "Year built", value: data?.yearBuilt || "Null" },
-    { title: "Assessed Land Value", value: `$${data?.assessedLandValue.toLocaleString()}` || "Null" },
-    { title: "Assessed Improvement Value", value: `$${data?.assessedImprovementValue.toLocaleString()}` || "Null" },
-    { title: "Land Use", value: data?.landUse || "Null" },
-    { title: "Units Count", value: data?.unitsCount || "Null" },
-    { title: "Rooms Count", value: data?.roomsCount || "Null" },
+    { title: "Square Feet", value: data?.squareFeet || "-" },
+    { title: "Bathrooms", value: data?.bathrooms || "-" },
+    { title: "Bedrooms", value: data?.bedrooms || "-" },
+    { title: "Year built", value: data?.yearBuilt || "-" },
+    { title: "Assessed Land Value", value: `$${data?.assessedLandValue.toLocaleString()}` || "-" },
+    { title: "Assessed Improvement Value", value: `$${data?.assessedImprovementValue.toLocaleString()}` || "-" },
+    { title: "Land Use", value: data?.landUse || "-" },
+    { title: "Units Count", value: data?.unitsCount || "-" },
+    { title: "Rooms Count", value: data?.roomsCount || "-" },
     { title: "Vacant", value: useBool(data?.vacant) },
     { title: "Basement", value: useBool(data?.basement) },
     { title: "Distressed", value: useBool(data?.distressed) },

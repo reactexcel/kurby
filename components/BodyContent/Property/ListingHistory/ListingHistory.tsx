@@ -24,9 +24,9 @@ export default function ListingHistory({ data }: IFinancialMortgageProps) {
       {
         lastSaleAmount: data?.lastSaleAmount,
         lastSaleDate: data?.lastSaleDate,
-        listingAmount: data?.listingAmount || "Null",
-        rentalEstimates: "Null",
-        rentAmount: data?.rentAmount || "Null",
+        listingAmount: data?.listingAmount || "-",
+        rentalEstimates: "-",
+        rentAmount: data?.rentAmount || "-",
         suggestedRent: data?.suggestedRent,
       },
     ];

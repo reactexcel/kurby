@@ -54,22 +54,22 @@ export default function RecordV2({ propertyData, description }: { propertyData: 
   const propertySearchData = propertyData?.v2;
 
   const recordRowData = [
-    { title: "Exterior", data: propertyInfo?.records[0]?.features?.exteriorType || "Null" },
-    { title: "Subdivision", data: propertySearchData?.address.city || "Null" },
-    { title: "Pool", data: propertyInfo?.records[0]?.features?.pool ? "True" : "Null" },
-    { title: "Garage", data: propertyInfo?.records[0]?.features?.garage ? 1 : "Null" },
-    { title: "Type", data: propertySearchData?.propertyType || "Null" },
-    { title: "Garage Type", data: propertyInfo?.records[0]?.features?.garageType || "Null" },
-    { title: "Roofing", data: propertyInfo?.records[0]?.features?.roofType || "Null" },
-    { title: "Sqft", data: propertySearchData?.squareFeet || "Null" },
-    { title: "Lot Sqft", data: propertySearchData?.lotSquareFeet || "Null" },
-    { title: "Zoning", data: propertySearchData?.floodZoneDescription || "Null" },
-    { title: "Year Built", data: propertySearchData?.yearBuilt || "Null" },
-    { title: "Units", data: propertyInfo?.records[0]?.features?.unitCount || "Null" },
-    { title: "Cooling", data: propertyInfo?.records[0]?.features?.coolingType || "Null" },
-    { title: "Heating", data: propertyInfo?.records[0]?.features?.heatingType || "Null" },
+    { title: "Exterior", data: propertyInfo?.records[0]?.features?.exteriorType },
+    { title: "Subdivision", data: propertySearchData?.address.city },
+    { title: "Pool", data: propertyInfo?.records[0]?.features?.pool ? "Yes" : "No" },
+    { title: "Garage", data: propertyInfo?.records[0]?.features?.garage && 1 },
+    { title: "Type", data: propertySearchData?.propertyType },
+    { title: "Garage Type", data: propertyInfo?.records[0]?.features?.garageType },
+    { title: "Roofing", data: propertyInfo?.records[0]?.features?.roofType },
+    { title: "Sqft", data: `${propertySearchData?.squareFeet} ft²` },
+    { title: "Lot Sqft", data: `${propertySearchData?.lotSquareFeet} ft²` },
+    { title: "Zoning", data: propertySearchData?.floodZoneDescription },
+    { title: "Year Built", data: propertySearchData?.yearBuilt },
+    { title: "Units", data: propertyInfo?.records[0]?.features?.unitCount },
+    { title: "Cooling", data: propertyInfo?.records[0]?.features?.coolingType },
+    { title: "Heating", data: propertyInfo?.records[0]?.features?.heatingType },
     { title: "Owner Occupied", data: propertyInfo?.records[0]?.ownerOccupied ? "Yes" : "No" },
-  ];
+  ].filter((property) => Boolean(property.data));
 
   const Price = () => (
     <Typography variant="h5" component="h5" color={KBColor.GREEN}>
@@ -113,9 +113,9 @@ export default function RecordV2({ propertyData, description }: { propertyData: 
         </Box>
       }
       <Box className={styles.moreInfo}>
-        <AdditionalInfoField label="Property Type" data={propertySearchData?.propertyType || "Null"} />
-        <AdditionalInfoField label="Year Built" data={propertySearchData?.yearBuilt || "Null"} />
-        <AdditionalInfoField label="County" data={propertySearchData?.address.county || "Null"} />
+        <AdditionalInfoField label="Property Type" data={propertySearchData?.propertyType || "-"} />
+        <AdditionalInfoField label="Year Built" data={propertySearchData?.yearBuilt || "-"} />
+        <AdditionalInfoField label="County" data={propertySearchData?.address.county || "-"} />
       </Box>
 
       {isMobileTablet && (
@@ -184,15 +184,15 @@ export default function RecordV2({ propertyData, description }: { propertyData: 
 
 function OwnerInformationTable({ propertyHouse }: { propertyHouse: IPropertyHouse | null | undefined }) {
   const propertyHouseData = [
-    createData("Owner Occupied", propertyHouse?.ownerOccupied || "Null"),
-    createData("Absentee Owner", propertyHouse?.absenteeOwner || "Null"),
-    createData("Out Of State Absentee Owner", propertyHouse?.outOfStateAbsenteeOwner || "Null"),
-    createData("In State Absentee Owner", propertyHouse?.inStateAbsenteeOwner || "Null"),
-    createData("Corporate Owned", propertyHouse?.corporateOwned || "Null"),
-    createData("Investor Buyer", propertyHouse?.investorBuyer || "Null"),
-    createData("Address", propertyHouse?.address?.address || "Null"),
-    createData("Years Owned", propertyHouse?.yearsOwned || 0),
-    createData("Inherited", propertyHouse?.inherited),
+    createData("Owner Occupied", propertyHouse?.ownerOccupied === false ? "No" : "-"),
+    createData("Absentee Owner", propertyHouse?.absenteeOwner === false ? "No" : "-"),
+    createData("Out Of State Absentee Owner", propertyHouse?.outOfStateAbsenteeOwner === false ? "No" : "-"),
+    createData("In State Absentee Owner", propertyHouse?.inStateAbsenteeOwner === false ? "No" : "-"),
+    createData("Corporate Owned", propertyHouse?.corporateOwned === false ? "No" : "-"),
+    createData("Investor Buyer", propertyHouse?.investorBuyer === false ? "No" : "-"),
+    createData("Address", propertyHouse?.address?.address || "-"),
+    createData("Years Owned", propertyHouse?.yearsOwned || "-"),
+    createData("Inherited", propertyHouse?.inherited === false ? "No" : "-"),
     createData("Death", propertyHouse?.death),
     createData("Spousal Death", "Upgrade to Pro Plan"),
   ];

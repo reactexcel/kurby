@@ -26,12 +26,12 @@ function FinancialInformationTable({ propertyHouse }: { propertyHouse: IProperty
   const propertyHouseData = [
     createData("Cash Buyer", propertyHouse?.cashBuyer),
     createData("Equity", propertyHouse?.equity),
-    createData("Equity Percent", `${propertyHouse?.equityPercent}%` || "Null"),
-    createData("Estimated Equity", propertyHouse?.estimatedEquity),
-    createData("Estimated Value", `$${propertyHouse?.estimatedValue.toLocaleString()}` || "Null"),
+    createData("Equity Percent", `${propertyHouse?.equityPercent}%` || "-"),
+    createData("Estimated Equity", `$${propertyHouse?.estimatedEquity.toLocaleString()}` || "-"),
+    createData("Estimated Value", `$${propertyHouse?.estimatedValue.toLocaleString()}` || "-"),
     createData("High Equity", propertyHouse?.highEquity),
     createData("Negative Equity", propertyHouse?.negativeEquity),
-    createData("Open Mortgage Balance", `$${propertyHouse?.openMortgageBalance.toLocaleString()}` || "Null"),
+    createData("Open Mortgage Balance", `$${propertyHouse?.openMortgageBalance.toLocaleString()}` || "-"),
     createData("Pre Foreclosure", propertyHouse?.preForeclosure),
     createData("REO", propertyHouse?.reo),
   ];
@@ -39,16 +39,16 @@ function FinancialInformationTable({ propertyHouse }: { propertyHouse: IProperty
 }
 function MortgageInformation() {
   const propertyHouseData = [
-    createData("Amount", "Null"),
-    createData("Deed Type", "Null"),
-    createData("Open Mortgage Balance", "Null"),
-    createData("Interest Rate", "Null"),
-    createData("Interest Rate Type", "Null"),
-    createData("Lender Name", "Null"),
-    createData("Lender Type", "Null"),
-    createData("Grantee Name", 0),
-    createData("Load Date", "Null"),
-    createData("Maturity Date", "Null"),
+    createData("Amount", "-"),
+    createData("Deed Type", "-"),
+    createData("Open Mortgage Balance", "-"),
+    createData("Interest Rate", "-"),
+    createData("Interest Rate Type", "-"),
+    createData("Lender Name", "-"),
+    createData("Lender Type", "-"),
+    createData("Grantee Name", "-"),
+    createData("Load Date", "-"),
+    createData("Maturity Date", "-"),
   ];
   return <InformationTable dataFields={propertyHouseData} />;
 }

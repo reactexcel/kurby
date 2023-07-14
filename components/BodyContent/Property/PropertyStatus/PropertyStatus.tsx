@@ -7,13 +7,13 @@ interface IPropertyStatusProps {
 }
 
 export default function PropertyStatus({ data }: IPropertyStatusProps) {
-  const useBool = (value: boolean | undefined | null) => (value === undefined || null ? "Null" : "False");
+  const useBool = (value: boolean | undefined | null) => (value === undefined || null ? "-" : "False");
   const propertyDataHouse = [
     { title: "MLS Active", value: useBool(data?.mlsActive) || "Null" },
     { title: "Auction", value: useBool(data?.auction) || "Null" },
     { title: "MLS Cancelled", value: useBool(data?.mlsCancelled) },
     { title: "MLS Failed", value: useBool(data?.mlsFailed) || "Null" },
-    { title: "MLS Listing Price", value: data?.mlsListingPrice ? `$${data?.mlsListingPrice?.toLocaleString()}` : "Null" },
+    { title: "MLS Listing Price", value: data?.mlsListingPrice ? `$${data?.mlsListingPrice?.toLocaleString()}` : "-" },
     { title: "MLS Pending", value: useBool(data?.mlsPending) },
     { title: "MLS Sold", value: useBool(data?.mlsSold) },
   ];

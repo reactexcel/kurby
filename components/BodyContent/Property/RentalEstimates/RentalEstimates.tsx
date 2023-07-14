@@ -17,8 +17,8 @@ export default function RentalEstimates({ data }: IRentalEstimatesProps) {
   const generateGraphData = () => {
     return [
       {
-        rentAmount: data?.rentAmount || "Null",
-        suggestedRent: `$${data?.suggestedRent}` || "Null",
+        rentAmount: data?.rentAmount || "-",
+        suggestedRent: data?.suggestedRent ? `$${data?.suggestedRent}` : "-",
       },
     ];
   };
