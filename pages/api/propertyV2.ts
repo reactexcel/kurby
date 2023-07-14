@@ -169,7 +169,7 @@ class PropertySearchApiV2 {
 }
 
 export const createPropertySearchApi = () => {
-  const env = process.env.NEXT_PROPERTY_SEARCH_API_KEY;
+  const env = process.env.NEXT_PROPERTY_SEARCH_API_KEY || "KURBYAI-7afa-7c90-87e6-fc599dbb61ce";
   if (!env) {
     throw new Error("No PROPERTY_SEARCH_API_KEY found in .env");
   }
