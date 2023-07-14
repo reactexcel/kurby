@@ -59,7 +59,7 @@ type MarketType = {
   averageRent: number | string;
 };
 
-export default function Record({ propertyInfo, description }: { propertyInfo: PropertyType | null; description: string }) {
+export default function Record({ propertyInfo, description }: { propertyInfo: PropertyType | null; description?: string }) {
   const [filterVal] = useRecoilState(filterState);
   const { isMobileTablet } = useContext(WindowSizeContext);
 

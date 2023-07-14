@@ -12,7 +12,7 @@ import { TabLayout } from "components/layouts/TabLayout/TabLayout";
 import styles from "./Location.module.scss";
 
 interface LocationProps {
-  explainedLikeAlocal: string;
+  explainedLikeAlocal?: string;
   greenFlags: any;
   redFlags: any;
 }
@@ -43,15 +43,15 @@ export const Location = ({ explainedLikeAlocal, greenFlags, redFlags }: Location
               Explain it like a local:
               <AIWarningToolTip />
             </Typography>
-            {loading.openai ? <ParagraphSkeleton /> : <Typography className={styles.explainedLikeAlocal}>{explainedLikeAlocal}</Typography>}
+            {loading.openai.explainedLikeAlocal ? <ParagraphSkeleton /> : <Typography className={styles.explainedLikeAlocal}>{explainedLikeAlocal}</Typography>}
             <Box className={styles.margin}>
               <WalkscoreList />
             </Box>
           </Box>
         </Box>
         <Box className={styles.flags}>
-          <Flags color="Green" flagsArr={greenFlags} />
-          <Flags color="Red" flagsArr={redFlags} />
+          <Flags color="Green" flagsArr={greenFlags} loading={loading.openai.greenFlags} />
+          <Flags color="Red" flagsArr={redFlags} loading={loading.openai.redFlags} />
         </Box>
       </Box>
     </TabLayout>

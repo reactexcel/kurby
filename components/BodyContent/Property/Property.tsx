@@ -17,7 +17,7 @@ import { GridItem } from "components/Grid/GridItem";
  * Body Content
  * @description: Displays everything below the filters
  */
-export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal: string }) {
+export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal?: string }) {
   const [filterVal] = useRecoilState(filterState);
   const [propertyInfo, setPropertyInfo] = useState<PropertyType | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
