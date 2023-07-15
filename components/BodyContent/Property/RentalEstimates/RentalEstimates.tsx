@@ -4,6 +4,7 @@ import { Box } from "@mui/material";
 import KBTable from "components/KBTable/KBTable";
 import { KBColor } from "constants/color";
 import { IPropertyHouse } from "pages/api/propertyV2";
+import { toUSDField } from "../utils";
 
 interface IRentalEstimatesProps {
   data: IPropertyHouse | null;
@@ -17,8 +18,8 @@ export default function RentalEstimates({ data }: IRentalEstimatesProps) {
   const generateGraphData = () => {
     return [
       {
-        rentAmount: data?.rentAmount || "-",
-        suggestedRent: data?.suggestedRent ? `$${data?.suggestedRent}` : "-",
+        rentAmount: toUSDField(data?.rentAmount) || "-",
+        suggestedRent: toUSDField(data?.rentAmount) || "-",
       },
     ];
   };

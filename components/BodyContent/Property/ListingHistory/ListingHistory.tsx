@@ -5,6 +5,7 @@ import { Box } from "@mui/material";
 import KBTable from "components/KBTable/KBTable";
 import { KBColor } from "constants/color";
 import { TableFieldType } from "types/table";
+import { toUSDField } from "../utils";
 
 interface IFinancialMortgageProps {
   readonly data: IPropertyHouse | null;
@@ -22,12 +23,12 @@ export default function ListingHistory({ data }: IFinancialMortgageProps) {
   const generateGraphData = () => {
     return [
       {
-        lastSaleAmount: data?.lastSaleAmount,
+        lastSaleAmount: toUSDField(data?.lastSaleAmount),
         lastSaleDate: data?.lastSaleDate,
-        listingAmount: data?.listingAmount || "-",
+        listingAmount: toUSDField(data?.listingAmount),
         rentalEstimates: "-",
-        rentAmount: data?.rentAmount || "-",
-        suggestedRent: data?.suggestedRent,
+        rentAmount: toUSDField(data?.rentAmount),
+        suggestedRent: toUSDField(data?.suggestedRent),
       },
     ];
   };

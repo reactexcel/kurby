@@ -21,6 +21,7 @@ import PropertyStatus from "./PropertyStatus/PropertyStatus";
 import { IPropertyDetailResponse } from "pages/api/propertyDetail";
 import { propertyDetailContext, propertyInfoV2Context } from "context/propertyContext";
 import { AdditionalPropertyInformation } from "./AdditionalPropertyInformation/AdditionalPropertyInformation";
+import LotInfo from "./LotInfo/LotInfo";
 
 /**
  * Body Content
@@ -128,10 +129,10 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
               <GridItem>
                 <AdditionalPropertyInformation />
               </GridItem>
-              {/* <GridItem>
+              <GridItem>
                 <LotInfo />
               </GridItem>
-              <GridItem>
+              {/* <GridItem>
                 <TaxInfo />
               </GridItem> */}
               <GridItem>

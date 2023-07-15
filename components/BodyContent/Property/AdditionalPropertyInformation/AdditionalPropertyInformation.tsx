@@ -1,3 +1,4 @@
+import styles from "../FinancialMortgage/FinancialMortgage.module.scss";
 import { InformationTable, createData } from "components/BodyContent/InformationTable/InformationTable";
 import { propertyDetailContext } from "context/propertyContext";
 import { useRecoilState } from "recoil";
@@ -26,5 +27,10 @@ export function AdditionalPropertyInformation() {
     createData("Pool", propertyInfo?.pool),
     createData("Stories", propertyInfo?.stories),
   ];
-  return <InformationTable dataFields={propertyHouseData} />;
+  return (
+    <>
+      <h3 className={styles.titleStyle}>Additional Property Information</h3>
+      <InformationTable dataFields={propertyHouseData} />
+    </>
+  );
 }

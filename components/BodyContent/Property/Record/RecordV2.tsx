@@ -92,7 +92,7 @@ export default function RecordV2({ propertyData, description }: { propertyData: 
     );
 
   const isOwnerInformationAvailable = Boolean(
-    (propertySearchData?.owner1FirstName && propertySearchData.owner1LastName) || (propertySearchData.owner2FirstName && propertySearchData.owner2LastName),
+    (propertySearchData?.owner1FirstName && propertySearchData.owner1LastName) || (propertySearchData?.owner2FirstName && propertySearchData?.owner2LastName),
   );
   return (
     <>
