@@ -14,21 +14,21 @@ export const createData = (title: string, value: boolean | string | number | und
   value,
 });
 
+export const displayValue = (value: boolean | string | number | undefined): string => {
+  if (typeof value === "boolean") {
+    return value ? "Yes" : "No";
+  } else if (typeof value === "string") {
+    return value;
+  } else if (typeof value === "number") {
+    return value.toString();
+  }
+  return "-";
+};
+
 export function InformationTable({ dataFields }: IInformationTableProps) {
   if (!dataFields) {
     return <></>;
   }
-
-  const displayValue = (value: boolean | string | number | undefined): string => {
-    if (typeof value === "boolean") {
-      return value ? "Yes" : "No";
-    } else if (typeof value === "string") {
-      return value;
-    } else if (typeof value === "number") {
-      return value.toString();
-    }
-    return "Null";
-  };
 
   return (
     <table className={styles.informationTable}>

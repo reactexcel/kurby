@@ -1,18 +1,15 @@
-import { IPropertyHouse } from "pages/api/propertyV2";
 import React from "react";
 import styles from "../FinancialMortgage/FinancialMortgage.module.scss";
 import { InformationTable, createData } from "components/BodyContent/InformationTable/InformationTable";
+import { useRecoilState } from "recoil";
+import { propertyDetailContext, propertyInfoV2Context } from "context/propertyContext";
 
-interface IFinancialMortgageProps {
-  readonly data: IPropertyHouse | null;
-}
-
-export default function FinancialMortgage({ data }: IFinancialMortgageProps) {
+export default function FinancialMortgage() {
   return (
     <div className={styles.wrapper}>
       <div style={{ flex: 1 }}>
         <h3 className={styles.titleStyle}>Financial Information</h3>
-        <FinancialInformationTable propertyHouse={data} />
+        <FinancialInformationTable />
       </div>
       <div style={{ flex: 1 }}>
         <h3 className={styles.titleStyle}>Mortgage Information (Upgrade to Pro Plan)</h3>
@@ -22,7 +19,8 @@ export default function FinancialMortgage({ data }: IFinancialMortgageProps) {
   );
 }
 
-function FinancialInformationTable({ propertyHouse }: { propertyHouse: IPropertyHouse | null | undefined }) {
+function FinancialInformationTable() {
+  const [propertyHouse] = useRecoilState(propertyInfoV2Context);
   const propertyHouseData = [
     createData("Cash Buyer", propertyHouse?.cashBuyer),
     createData("Equity", propertyHouse?.equity),
@@ -37,18 +35,20 @@ function FinancialInformationTable({ propertyHouse }: { propertyHouse: IProperty
   ];
   return <InformationTable dataFields={propertyHouseData} />;
 }
+
 function MortgageInformation() {
+  const [propertyDetail] = useRecoilState(propertyDetailContext);
   const propertyHouseData = [
-    createData("Amount", "-"),
-    createData("Deed Type", "-"),
-    createData("Open Mortgage Balance", "-"),
-    createData("Interest Rate", "-"),
-    createData("Interest Rate Type", "-"),
-    createData("Lender Name", "-"),
-    createData("Lender Type", "-"),
-    createData("Grantee Name", "-"),
-    createData("Load Date", "-"),
-    createData("Maturity Date", "-"),
+    createData("Amount", propertyDetail?.mortgageHistory?.[0]?.amount && `$${propertyDetail?.mortgageHistory?.[0].amount.toLocaleString()}`),
+    createData("Deed Type", propertyDetail?.mortgageHistory?.[0]?.deedType),
+    createData("Open Mortgage Balance", propertyDetail?.mortgageHistory?.[0]?.open),
+    createData("Interest Rate", propertyDetail?.mortgageHistory?.[0]?.interestRate),
+    createData("Interest Rate Type", propertyDetail?.mortgageHistory?.[0]?.interestRateType),
+    createData("Lender Name", propertyDetail?.mortgageHistory?.[0]?.lenderName),
+    createData("Lender Type", propertyDetail?.mortgageHistory?.[0]?.lenderType),
+    createData("Grantee Name", propertyDetail?.mortgageHistory?.[0]?.granteeName),
+    createData("Load Date", propertyDetail?.mortgageHistory?.[0]?.load_date),
+    createData("Maturity Date", propertyDetail?.mortgageHistory?.[0]?.maturityDate),
   ];
   return <InformationTable dataFields={propertyHouseData} />;
 }

@@ -1,12 +1,14 @@
 import React from "react";
 import styles from "../Record/Record.module.scss";
-import { IPropertyHouse } from "pages/api/propertyV2";
 import { Box } from "@mui/material";
 import KBTable from "components/KBTable/KBTable";
 import { KBColor } from "constants/color";
 import { TableFieldType } from "types/table";
+import { useRecoilState } from "recoil";
+import { propertyDetailContext } from "context/propertyContext";
 
 export default function LastSale() {
+  const [propertyDetail] = useRecoilState(propertyDetailContext);
   const valueEstimatFields: TableFieldType[] = [
     { label: "Buyer Names", key: "buyerNames" },
     { label: "Document Type", key: "documentType" },
@@ -20,14 +22,14 @@ export default function LastSale() {
   const generateGraphData = () => {
     return [
       {
-        buyerNames: "Upgrade to Pro",
-        documentType: "Upgrade to Pro",
-        downPayment: "Upgrade to Pro",
-        ltv: "Upgrade to Pro",
-        purchaseMethod: "Upgrade to Pro",
-        sellerNames: "Upgrade to Pro",
-        lastSaleDate: "Upgrade to Pro",
-        lastSalePrice: "Upgrade to Pro",
+        buyerNames: propertyDetail?.lastSale?.buyerNames,
+        documentType: propertyDetail?.lastSale?.documentType,
+        downPayment: propertyDetail?.lastSale?.downPayment,
+        ltv: propertyDetail?.lastSale?.ltv,
+        purchaseMethod: propertyDetail?.lastSale?.purchaseMethod,
+        sellerNames: propertyDetail?.lastSale?.sellerNames,
+        lastSaleDate: propertyDetail?.lastSaleDate,
+        lastSalePrice: propertyDetail?.lastSalePrice,
       },
     ];
   };

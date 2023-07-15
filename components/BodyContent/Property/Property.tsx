@@ -10,7 +10,7 @@ import styles from "./Property.module.scss";
 import { HouseList } from "./HouseList/HouseList";
 import { Grid } from "components/Grid/Grid";
 import { GridItem } from "components/Grid/GridItem";
-import { IPropertyHouse, IPropertySearchResponse } from "pages/api/propertyV2";
+import { IPropertySearchResponse } from "pages/api/propertyV2";
 import RecordV2 from "./Record/RecordV2";
 import FinancialMortgage from "./FinancialMortgage/FinancialMortgage";
 import ListingHistory from "./ListingHistory/ListingHistory";
@@ -18,6 +18,9 @@ import LastSale from "./LastSale/LastSale";
 import RentalEstimates from "./RentalEstimates/RentalEstimates";
 import PropertyData from "./PropertyData/PropertyData";
 import PropertyStatus from "./PropertyStatus/PropertyStatus";
+import { IPropertyDetailResponse } from "pages/api/propertyDetail";
+import { propertyDetailContext, propertyInfoV2Context } from "context/propertyContext";
+import { AdditionalPropertyInformation } from "./AdditionalPropertyInformation/AdditionalPropertyInformation";
 
 /**
  * Body Content
@@ -26,7 +29,8 @@ import PropertyStatus from "./PropertyStatus/PropertyStatus";
 export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal: string }) {
   const [filterVal] = useRecoilState(filterState);
   const [propertyInfo, setPropertyInfo] = useState<PropertyType | null>(null);
-  const [propertyInfoV2, setPropertyInfoV2] = useState<IPropertyHouse | null>(null);
+  const [propertyInfoV2, setPropertyInfoV2] = useRecoilState(propertyInfoV2Context);
+  const [propertyDetail, setPropertyDetail] = useRecoilState(propertyDetailContext);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -51,7 +55,19 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
         setPropertyInfoV2(data.data[0]);
       }
     }
+
+    async function preparePropertyDetail() {
+      const { data } = await axios.post<IPropertyDetailResponse>("/api/propertyDetail", {
+        address: filterVal.address,
+      });
+      console.log(data);
+      if (data) {
+        setPropertyDetail(data.data);
+      }
+    }
+
     preparePropertyV2Data();
+    preparePropertyDetail();
     getPropertyData();
   }, []);
 
@@ -89,22 +105,35 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
                 />
               </GridItem>
               <GridItem>
-                <FinancialMortgage data={propertyInfoV2} />
+                <FinancialMortgage />
               </GridItem>
+              {propertyDetail?.lastSale && (
+                <GridItem>
+                  {/* TODO Property Search API */}
+                  <LastSale />
+                </GridItem>
+              )}
+              {propertyInfoV2?.rentAmount && propertyInfoV2.suggestedRent && (
+                <GridItem>
+                  <RentalEstimates data={propertyInfoV2} />
+                </GridItem>
+              )}
               <GridItem>
                 {/* TODO Property Search API */}
-                {/* <LastSale /> */}
-              </GridItem>
-              <GridItem>
-                <RentalEstimates data={propertyInfoV2} />
+                <ListingHistory data={propertyInfoV2} />
               </GridItem>
               <GridItem>
                 <PropertyData data={propertyInfoV2} />
               </GridItem>
               <GridItem>
-                {/* TODO Property Search API */}
-                {/* <ListingHistory data={propertyInfoV2} /> */}
+                <AdditionalPropertyInformation />
               </GridItem>
+              {/* <GridItem>
+                <LotInfo />
+              </GridItem>
+              <GridItem>
+                <TaxInfo />
+              </GridItem> */}
               <GridItem>
                 <PropertyStatus data={propertyInfoV2} />
               </GridItem>
