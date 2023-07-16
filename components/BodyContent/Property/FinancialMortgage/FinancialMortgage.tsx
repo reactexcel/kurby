@@ -44,7 +44,7 @@ function MortgageInformation() {
     createData("Amount", toUSDField(mortgage?.amount)),
     createData("Deed Type", mortgage?.deedType),
     createData("Open Mortgage Balance", mortgage?.open),
-    createData("Interest Rate", mortgage?.interestRate),
+    createData("Interest Rate", mortgage?.interestRate || "-"),
     createData("Interest Rate Type", mortgage?.interestRateType),
     createData("Lender Name", mortgage?.lenderName),
     createData("Lender Type", mortgage?.lenderType),

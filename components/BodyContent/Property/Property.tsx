@@ -22,6 +22,7 @@ import { IPropertyDetailResponse } from "pages/api/propertyDetail";
 import { propertyDetailContext, propertyInfoV2Context } from "context/propertyContext";
 import { AdditionalPropertyInformation } from "./AdditionalPropertyInformation/AdditionalPropertyInformation";
 import LotInfo from "./LotInfo/LotInfo";
+import TaxInfo from "./TaxInfo/TaxInfo";
 
 /**
  * Body Content
@@ -120,7 +121,6 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
                 </GridItem>
               )}
               <GridItem>
-                {/* TODO Property Search API */}
                 <ListingHistory data={propertyInfoV2} />
               </GridItem>
               <GridItem>
@@ -132,15 +132,15 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
               <GridItem>
                 <LotInfo />
               </GridItem>
-              {/* <GridItem>
+              <GridItem>
                 <TaxInfo />
-              </GridItem> */}
+              </GridItem>
               <GridItem>
                 <PropertyStatus data={propertyInfoV2} />
               </GridItem>
-              <GridItem isEmpty={!propertyInfo?.valueEstimate}>
+              {/* <GridItem isEmpty={!propertyInfo?.valueEstimate}>
                 <EstimationGraph valueEstimate={propertyInfo?.valueEstimate} />
-              </GridItem>
+              </GridItem> */}
               <GridItem isEmpty={!propertyInfo?.valueEstimate}>
                 <HouseList list={propertyInfo?.valueEstimate} variant="sale" />
               </GridItem>

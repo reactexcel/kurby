@@ -22,6 +22,8 @@ import { WindowSizeContext } from "context/windowSizeContext";
 import { IPropertyHouse } from "pages/api/propertyV2";
 import OwnerV2 from "../Owner/OwnerV2";
 import { InformationTable, createData } from "components/BodyContent/InformationTable/InformationTable";
+import { propertyDetailContext } from "context/propertyContext";
+import { toUSDField } from "../utils";
 
 /**
  * Body Content
@@ -73,7 +75,7 @@ export default function RecordV2({ propertyData, description }: { propertyData: 
 
   const Price = () => (
     <Typography variant="h5" component="h5" color={KBColor.GREEN}>
-      ${convertUSNumberFormat(propertyInfo?.valueEstimate?.price)}
+      {toUSDField(propertySearchData?.estimatedValue)}
     </Typography>
   );
 
@@ -185,18 +187,20 @@ export default function RecordV2({ propertyData, description }: { propertyData: 
 }
 
 function OwnerInformationTable({ propertyHouse }: { propertyHouse: IPropertyHouse | null | undefined }) {
+  const [propertyDetail] = useRecoilState(propertyDetailContext);
+  console.log(propertyDetail?.spousalDeath);
   const propertyHouseData = [
-    createData("Owner Occupied", propertyHouse?.ownerOccupied === false ? "No" : "-"),
-    createData("Absentee Owner", propertyHouse?.absenteeOwner === false ? "No" : "-"),
-    createData("Out Of State Absentee Owner", propertyHouse?.outOfStateAbsenteeOwner === false ? "No" : "-"),
-    createData("In State Absentee Owner", propertyHouse?.inStateAbsenteeOwner === false ? "No" : "-"),
-    createData("Corporate Owned", propertyHouse?.corporateOwned === false ? "No" : "-"),
-    createData("Investor Buyer", propertyHouse?.investorBuyer === false ? "No" : "-"),
-    createData("Address", propertyHouse?.address?.address || "-"),
-    createData("Years Owned", propertyHouse?.yearsOwned || "-"),
-    createData("Inherited", propertyHouse?.inherited === false ? "No" : "-"),
+    createData("Owner Occupied", propertyHouse?.ownerOccupied),
+    createData("Absentee Owner", propertyHouse?.absenteeOwner),
+    createData("Out Of State Absentee Owner", propertyHouse?.outOfStateAbsenteeOwner),
+    createData("In State Absentee Owner", propertyHouse?.inStateAbsenteeOwner),
+    createData("Corporate Owned", propertyHouse?.corporateOwned),
+    createData("Investor Buyer", propertyHouse?.investorBuyer),
+    createData("Address", propertyHouse?.address?.address),
+    createData("Years Owned", propertyHouse?.yearsOwned),
+    createData("Inherited", propertyHouse?.inherited),
     createData("Death", propertyHouse?.death),
-    createData("Spousal Death", "Upgrade to Pro Plan"),
+    createData("Spousal Death", propertyDetail?.spousalDeath),
   ];
   return <InformationTable dataFields={propertyHouseData} />;
 }

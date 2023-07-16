@@ -6,6 +6,9 @@ import KBTable from "components/KBTable/KBTable";
 import Typography from "@mui/material/Typography";
 import { TableFieldType } from "types/table";
 import { convertUSNumberFormat } from "utils/number";
+import { toUSDField } from "../utils";
+import { useRecoilState } from "recoil";
+import { propertyInfoV2Context } from "context/propertyContext";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -36,10 +39,11 @@ const valueEstimatFields: TableFieldType[] = [
 ];
 
 export default function EstimationGraph({ valueEstimate }: { valueEstimate: any }) {
+  const [propertyInfoV2] = useRecoilState(propertyInfoV2Context);
   const generateGraphData = () => {
     return [
       {
-        price: `$${convertUSNumberFormat(valueEstimate.price)}`,
+        price: toUSDField(propertyInfoV2?.estimatedValue),
         highPrice: `$${convertUSNumberFormat(valueEstimate.priceRangeHigh)}`,
         lowPrice: `$${convertUSNumberFormat(valueEstimate.priceRangeLow)}`,
       },

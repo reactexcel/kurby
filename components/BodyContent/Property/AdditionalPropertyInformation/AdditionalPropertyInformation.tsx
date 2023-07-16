@@ -29,7 +29,7 @@ export function AdditionalPropertyInformation() {
   ];
   return (
     <>
-      <h3 className={styles.titleStyle}>Additional Property Information</h3>
+      <h3 className={styles.titleStyle}>Additional Property Information (Requires Pro Plan)</h3>
       <InformationTable dataFields={propertyHouseData} />
     </>
   );

@@ -96,6 +96,7 @@ interface Demographics {
   readonly hudAreaCode: string;
   readonly hudAreaName: string;
   readonly medianIncome: string;
+  readonly suggestedRent: string;
 }
 
 interface LastSale {

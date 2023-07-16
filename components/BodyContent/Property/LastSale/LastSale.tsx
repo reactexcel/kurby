@@ -6,6 +6,7 @@ import { KBColor } from "constants/color";
 import { TableFieldType } from "types/table";
 import { useRecoilState } from "recoil";
 import { propertyDetailContext } from "context/propertyContext";
+import { toUSDField } from "../utils";
 
 export default function LastSale() {
   const [propertyDetail] = useRecoilState(propertyDetailContext);
@@ -24,14 +25,14 @@ export default function LastSale() {
       {
         buyerNames: propertyDetail?.lastSale?.buyerNames,
         documentType: propertyDetail?.lastSale?.documentType,
-        downPayment: propertyDetail?.lastSale?.downPayment,
-        ltv: propertyDetail?.lastSale?.ltv,
+        downPayment: toUSDField(propertyDetail?.lastSale?.downPayment),
+        ltv: propertyDetail?.lastSale.ltv && parseFloat(propertyDetail?.lastSale?.ltv),
         purchaseMethod: propertyDetail?.lastSale?.purchaseMethod,
         sellerNames: propertyDetail?.lastSale?.sellerNames,
         lastSaleDate: propertyDetail?.lastSaleDate,
-        lastSalePrice: propertyDetail?.lastSalePrice,
+        lastSalePrice: toUSDField(propertyDetail?.lastSalePrice),
       },
-    ];
+    ].filter((field) => Boolean(field));
   };
   return (
     <div>

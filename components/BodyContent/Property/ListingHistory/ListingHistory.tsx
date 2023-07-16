@@ -6,7 +6,6 @@ import KBTable from "components/KBTable/KBTable";
 import { KBColor } from "constants/color";
 import { TableFieldType } from "types/table";
 import { toUSDField } from "../utils";
-
 interface IFinancialMortgageProps {
   readonly data: IPropertyHouse | null;
 }
@@ -16,7 +15,6 @@ export default function ListingHistory({ data }: IFinancialMortgageProps) {
     { label: "Last Sale Amount", key: "lastSaleAmount" },
     { label: "Last Sale Date", key: "lastSaleDate" },
     { label: "Listing Amount", key: "listingAmount" },
-    { label: "Rental Estimates", key: "rentalEstimates" },
     { label: "Rent Amount", key: "rentAmount" },
     { label: "Suggested Rent", key: "suggestedRent" },
   ];
@@ -26,7 +24,6 @@ export default function ListingHistory({ data }: IFinancialMortgageProps) {
         lastSaleAmount: toUSDField(data?.lastSaleAmount),
         lastSaleDate: data?.lastSaleDate,
         listingAmount: toUSDField(data?.listingAmount),
-        rentalEstimates: "-",
         rentAmount: toUSDField(data?.rentAmount),
         suggestedRent: toUSDField(data?.suggestedRent),
       },
