@@ -142,10 +142,7 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
                 <EstimationGraph valueEstimate={propertyInfo?.valueEstimate} />
               </GridItem> */}
               <GridItem isEmpty={!propertyInfo?.valueEstimate}>
-                <HouseList list={propertyInfo?.valueEstimate} variant="sale" />
-              </GridItem>
-              <GridItem isEmpty={!propertyInfo?.rentEstimate}>
-                <HouseList list={propertyInfo?.rentEstimate} />
+                <HouseList />
               </GridItem>
             </Grid>
           </div>

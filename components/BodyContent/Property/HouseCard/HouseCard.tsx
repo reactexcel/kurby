@@ -14,7 +14,23 @@ const ProTypography = styled(Typography)({
   fontFamily: "FilsonPro !important",
 });
 
-export default function HouseCard({ cardInfo }: { cardInfo: any }) {
+export interface Root {
+  readonly id: string;
+  readonly formattedAddress: string;
+  readonly longitude: number;
+  readonly latitude: number;
+  readonly city: string;
+  readonly state: string;
+  readonly zipcode: string;
+  readonly price: number;
+  readonly address: string;
+  readonly bedrooms: number;
+  readonly bathrooms: number;
+  readonly propertyType: string;
+  readonly squareFootage: number;
+}
+
+export default function HouseCard({ cardInfo }: { cardInfo: Root }) {
   const classes = useStyles;
   const router = useRouter();
 

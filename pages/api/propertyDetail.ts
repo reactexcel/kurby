@@ -82,8 +82,8 @@ export interface IPropertyDetailHouse {
   readonly trusteeSale: boolean;
   readonly vacant: boolean;
   readonly warrantyDeed: boolean;
-  readonly comps: any[];
   readonly reapiAvm: any;
+  readonly comps: IPropertyDetailComps[];
 }
 
 interface Demographics {
@@ -287,6 +287,57 @@ interface Mortgage {
   readonly transactionType: string;
 }
 
+export interface IPropertyDetailComps {
+  readonly id: string;
+  readonly vacant: boolean;
+  readonly absenteeOwner: boolean;
+  readonly corporateOwned: boolean;
+  readonly outOfStateAbsenteeOwner: boolean;
+  readonly inStateAbsenteeOwner: boolean;
+  readonly propertyId: string;
+  readonly bedrooms: string;
+  readonly bathrooms: string;
+  readonly yearBuilt: string;
+  readonly squareFeet: string;
+  readonly estimatedValue: string;
+  readonly equityPercent: string;
+  readonly lastSaleDate: string;
+  readonly lastSaleAmount: string;
+  readonly mlsListingDate?: string;
+  readonly mlsLastStatusDate?: string;
+  readonly lotSquareFeet: string;
+  readonly latitude: string;
+  readonly longitude: string;
+  readonly openMortgageBalance: string;
+  readonly landUse: string;
+  readonly propertyType: string;
+  readonly owner1LastName: string;
+  readonly owner2FirstName?: string;
+  readonly owner2LastName?: string;
+  readonly companyName?: string;
+  readonly preForeclosure?: boolean;
+  readonly cashBuyer: boolean;
+  readonly privateLender: boolean;
+  readonly lenderName: string;
+  readonly address: {
+    readonly zip: string;
+    readonly city: string;
+    readonly county: string;
+    readonly state: string;
+    readonly street: string;
+    readonly address: string;
+  };
+  readonly mailAddress: {
+    readonly zip: string;
+    readonly city: string;
+    readonly county: string;
+    readonly state: string;
+    readonly street: string;
+    readonly address: string;
+  };
+  readonly owner1FirstName?: string;
+}
+
 class PropertyDetail {
   private BASE_URL = "https://api.realestateapi.com/v2/PropertyDetail";
 
@@ -315,6 +366,7 @@ class PropertyDetail {
       ...this.headers(),
       data: {
         address,
+        comps: true,
       },
     };
 
