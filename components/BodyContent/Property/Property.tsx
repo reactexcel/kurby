@@ -36,13 +36,6 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
   const [loading, setLoading] = useState<boolean>(isNotLoaded);
   const [isTabAvailable, setTabAvailable] = useRecoilState(propertyDetailAvailable);
 
-  // Disable the tab in case if the propertyDetail is null
-  useEffect(() => {
-    if (!loading) {
-      setTabAvailable(Boolean(propertyDetail));
-    }
-  }, [propertyInfo, propertyDetail]);
-
   useEffect(() => {
     async function preparePropertyV2Data() {
       const { data } = await axios.post<IPropertySearchResponse>("/api/propertyV2", {
@@ -61,6 +54,7 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
       setLoading(false);
       if (data) {
         setPropertyDetail(data.data);
+        setTabAvailable(Boolean(Object.keys(data.data).length > 0));
       }
     }
 
@@ -135,7 +129,7 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
               {/* <GridItem isEmpty={!propertyInfo?.valueEstimate}>
                 <EstimationGraph valueEstimate={propertyInfo?.valueEstimate} />
               </GridItem> */}
-              {!Boolean(propertyDetail?.comps?.length === 0 || undefined) && (
+              {propertyDetail?.comps && (
                 <GridItem>
                   <HouseList />
                 </GridItem>

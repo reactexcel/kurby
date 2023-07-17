@@ -1,6 +1,6 @@
 import Resultspage from "components/Resultspage/Resultspage";
 import { addressState, filterState } from "context/filterContext";
-import { propertyDetailContext, propertyInfoV2Context } from "context/propertyContext";
+import { propertyDetailAvailable, propertyDetailContext, propertyInfoV2Context } from "context/propertyContext";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -13,6 +13,8 @@ const Address = () => {
   const [filterVal] = useRecoilState(filterState);
   const [, setPropertyInfoV2] = useRecoilState(propertyInfoV2Context);
   const [, setPropertyDetail] = useRecoilState(propertyDetailContext);
+  const [, setTabAvailable] = useRecoilState(propertyDetailAvailable);
+
   useEffect(() => {
     const encodedAddress = router.query.address;
     if (encodedAddress) {
@@ -22,6 +24,7 @@ const Address = () => {
   }, [router.query]);
 
   useEffect(() => {
+    setTabAvailable(true);
     setPropertyInfoV2(null);
     setPropertyDetail(null);
   }, [filterVal.address]);
