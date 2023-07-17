@@ -22,7 +22,7 @@ export const PriceSection = () => {
         title="growth"
         subTitle="Additional Data & Analytics"
         price={param ? "$ 479.99" : "$ 49.99"}
-        pricePer="/ month"
+        pricePer={param ? "/ year" : "/ month"}
         greenType={true}
         mainFeatures={mainFeatures2}
         name="all of the features in starter, plus"
@@ -32,7 +32,7 @@ export const PriceSection = () => {
         title="professional "
         subTitle="Advanced Data & Intelligence"
         price={param ? "$ 959.99" : "$ 99.99"}
-        pricePer="/ month"
+        pricePer={param ? "/ year" : "/ month"}
         greenType={false}
         mainFeatures={mainFeatures3}
         name="all of the features in growth, plus"

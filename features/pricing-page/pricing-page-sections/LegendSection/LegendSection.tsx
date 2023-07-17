@@ -6,7 +6,7 @@ import { useMyContext } from "context/priceContext";
 export const LegendSection: React.FC = () => {
   const [choice, setChoice] = useState<boolean>(true);
 
-  const { param, setParam } = useMyContext();
+  const { setParam } = useMyContext();
 
   const handleClick1 = () => {
     setParam(false);

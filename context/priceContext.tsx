@@ -23,7 +23,7 @@ type MyContextProviderProps = {
 };
 
 export const MyContextProvider: React.FC<MyContextProviderProps> = ({ children, initialParam }) => {
-  const [param, setParam] = useState(initialParam);
+  const [param, setParam] = useState<boolean>(initialParam);
   const setParamValue = (newValue: boolean) => {
     setParam(newValue);
   };

@@ -12,7 +12,7 @@ export const PricingPage = () => {
   const paramValue = true;
 
   return (
-    <MyContextProvider param={paramValue}>
+    <MyContextProvider initialParam={paramValue}>
       <TopToolbar />
       <LegendSection />
       <PriceSection />
