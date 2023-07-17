@@ -3,8 +3,6 @@ import axios from "axios";
 import { filterState } from "context/filterContext";
 import { useEffect, useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
-import { PropertyType } from "./types";
-import EstimationGraph from "./EstimationGraph/EstimationGraph";
 import { TabLayout } from "components/layouts/TabLayout/TabLayout";
 import styles from "./Property.module.scss";
 import { HouseList } from "./HouseList/HouseList";
@@ -30,25 +28,11 @@ import TaxInfo from "./TaxInfo/TaxInfo";
  */
 export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal: string }) {
   const [filterVal] = useRecoilState(filterState);
-  const [propertyInfo, setPropertyInfo] = useState<PropertyType | null>(null);
-  const [propertyInfoV2, setPropertyInfoV2] = useRecoilState(propertyInfoV2Context);
+  const [propertyInfo, setPropertyInfoV2] = useRecoilState(propertyInfoV2Context);
   const [propertyDetail, setPropertyDetail] = useRecoilState(propertyDetailContext);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    async function getPropertyData() {
-      setLoading(true);
-      const lat = filterVal.selectedPlace.geometry.location.lat();
-      const lng = filterVal.selectedPlace.geometry.location.lng();
-
-      const propertyData = await axios.post("/api/property", {
-        place: filterVal.selectedPlace,
-        latLng: [lat, lng],
-      });
-      setPropertyInfo(propertyData.data);
-      setLoading(false);
-    }
-
     async function preparePropertyV2Data() {
       const { data } = await axios.post<IPropertySearchResponse>("/api/propertyV2", {
         address: filterVal.address,
@@ -62,7 +46,6 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
       const { data } = await axios.post<IPropertyDetailResponse>("/api/propertyDetail", {
         address: filterVal.address,
       });
-      console.log(data);
       if (data) {
         setPropertyDetail(data.data);
       }
@@ -70,7 +53,6 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
 
     preparePropertyV2Data();
     preparePropertyDetail();
-    getPropertyData();
   }, []);
 
   const isAddressInUSA = useMemo(() => filterVal?.selectedPlace?.formatted_address?.includes("USA"), [filterVal?.selectedPlace?.formatted_address]);
@@ -97,34 +79,26 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
           <div className={styles.wrapper}>
             <Grid>
               <GridItem>
-                {/* <Record propertyInfo={propertyInfo} description={explainedLikeAlocal} /> */}
-                <RecordV2
-                  propertyData={{
-                    v1: propertyInfo,
-                    v2: propertyInfoV2,
-                  }}
-                  description={explainedLikeAlocal}
-                />
+                <RecordV2 description={explainedLikeAlocal} />
               </GridItem>
               <GridItem>
                 <FinancialMortgage />
               </GridItem>
               {propertyDetail?.lastSale && (
                 <GridItem>
-                  {/* TODO Property Search API */}
                   <LastSale />
                 </GridItem>
               )}
-              {propertyInfoV2?.rentAmount && propertyInfoV2.suggestedRent && (
+              {propertyInfo?.rentAmount && propertyInfo.suggestedRent && (
                 <GridItem>
-                  <RentalEstimates data={propertyInfoV2} />
+                  <RentalEstimates />
                 </GridItem>
               )}
               <GridItem>
-                <ListingHistory data={propertyInfoV2} />
+                <ListingHistory />
               </GridItem>
               <GridItem>
-                <PropertyData data={propertyInfoV2} />
+                <PropertyData />
               </GridItem>
               <GridItem>
                 <AdditionalPropertyInformation />
@@ -136,12 +110,12 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
                 <TaxInfo />
               </GridItem>
               <GridItem>
-                <PropertyStatus data={propertyInfoV2} />
+                <PropertyStatus />
               </GridItem>
               {/* <GridItem isEmpty={!propertyInfo?.valueEstimate}>
                 <EstimationGraph valueEstimate={propertyInfo?.valueEstimate} />
               </GridItem> */}
-              <GridItem isEmpty={!propertyInfo?.valueEstimate}>
+              <GridItem>
                 <HouseList />
               </GridItem>
             </Grid>

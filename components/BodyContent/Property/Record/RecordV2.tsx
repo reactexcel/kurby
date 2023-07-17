@@ -8,11 +8,8 @@ import BedSvg from "../../../../public/icons/bed.svg";
 import WashSvg from "../../../../public/icons/wash.svg";
 import HouseSvg from "../../../../public/icons/house.svg";
 import { KBColor } from "constants/color";
-import { PropertyType } from "../types";
 import { convertUSNumberFormat } from "utils/number";
 import Divider from "@mui/material/Divider";
-import Card from "components/Card/Card";
-import { RecordRow } from "./RecordRow/RecordRow";
 import styles from "./Record.module.scss";
 import { HouseInfoField } from "./HouseInfoField/HouseInfoField";
 import { AdditionalInfoField } from "./AdditionalInfoField/AdditionalInfoField";
@@ -22,7 +19,7 @@ import { WindowSizeContext } from "context/windowSizeContext";
 import { IPropertyHouse } from "pages/api/propertyV2";
 import OwnerV2 from "../Owner/OwnerV2";
 import { InformationTable, createData } from "components/BodyContent/InformationTable/InformationTable";
-import { propertyDetailContext } from "context/propertyContext";
+import { propertyDetailContext, propertyInfoV2Context } from "context/propertyContext";
 import { toUSDField } from "../utils";
 
 /**
@@ -30,63 +27,25 @@ import { toUSDField } from "../utils";
  * @description: Displays everything below the filters
  */
 
-type SoldType = {
-  event: string;
-  date: string;
-  price: string;
-};
-
-type MarketType = {
-  bedrooms: number | string;
-  maxRent: number | string;
-  minRent: number | string;
-  averageRent: number | string;
-};
-
-interface IPropertyInfo {
-  v1: PropertyType;
-  v2: IPropertyHouse | null;
-}
-
-export default function RecordV2({ propertyData, description }: { propertyData: IPropertyInfo | null; description: string }) {
+export default function RecordV2({ description }: { description: string }) {
   const [filterVal] = useRecoilState(filterState);
   const { isMobileTablet } = useContext(WindowSizeContext);
-
-  const propertyInfo = propertyData?.v1;
-  const propertySearchData = propertyData?.v2;
-
-  const recordRowData = [
-    { title: "Exterior", data: propertyInfo?.records[0]?.features?.exteriorType },
-    { title: "Subdivision", data: propertySearchData?.address.city },
-    { title: "Pool", data: propertyInfo?.records[0]?.features?.pool ? "Yes" : "No" },
-    { title: "Garage", data: propertyInfo?.records[0]?.features?.garage && 1 },
-    { title: "Type", data: propertySearchData?.propertyType },
-    { title: "Garage Type", data: propertyInfo?.records[0]?.features?.garageType },
-    { title: "Roofing", data: propertyInfo?.records[0]?.features?.roofType },
-    { title: "Sqft", data: `${propertySearchData?.squareFeet} ft²` },
-    { title: "Lot Sqft", data: `${propertySearchData?.lotSquareFeet} ft²` },
-    { title: "Zoning", data: propertySearchData?.floodZoneDescription },
-    { title: "Year Built", data: propertySearchData?.yearBuilt },
-    { title: "Units", data: propertyInfo?.records[0]?.features?.unitCount },
-    { title: "Cooling", data: propertyInfo?.records[0]?.features?.coolingType },
-    { title: "Heating", data: propertyInfo?.records[0]?.features?.heatingType },
-    { title: "Owner Occupied", data: propertyInfo?.records[0]?.ownerOccupied ? "Yes" : "No" },
-  ].filter((property) => Boolean(property.data));
+  const [propertyInfo] = useRecoilState(propertyInfoV2Context);
 
   const Price = () => (
     <Typography variant="h5" component="h5" color={KBColor.GREEN}>
-      {toUSDField(propertySearchData?.estimatedValue)}
+      {toUSDField(propertyInfo?.estimatedValue)}
     </Typography>
   );
 
   const LastSoldPrice = () =>
-    propertySearchData?.estimatedValue ? (
+    propertyInfo?.estimatedValue ? (
       <Box className={styles.box}>
         <Typography variant="h6" component="h6" sx={{ marginRight: "5px", color: KBColor.DRAK_GREY }}>
           Last Sold Price:
         </Typography>
         <Typography variant="h6" component="h6">
-          ${convertUSNumberFormat(propertySearchData.lastSaleAmount)}
+          ${convertUSNumberFormat(propertyInfo.lastSaleAmount)}
         </Typography>
       </Box>
     ) : (
@@ -94,7 +53,7 @@ export default function RecordV2({ propertyData, description }: { propertyData: 
     );
 
   const isOwnerInformationAvailable = Boolean(
-    (propertySearchData?.owner1FirstName && propertySearchData.owner1LastName) || (propertySearchData?.owner2FirstName && propertySearchData?.owner2LastName),
+    (propertyInfo?.owner1FirstName && propertyInfo.owner1LastName) || (propertyInfo?.owner2FirstName && propertyInfo?.owner2LastName),
   );
   return (
     <>
@@ -108,18 +67,18 @@ export default function RecordV2({ propertyData, description }: { propertyData: 
       {
         <Box className={styles.box} sx={{ padding: "2px", marginTop: "15px" }}>
           <Box className={styles.houseInfo}>
-            {propertySearchData?.squareFeet && <HouseInfoField data={`${propertySearchData?.squareFeet} Sqft`} icon={<SqftSvg />} />}
-            {propertySearchData?.squareFeet && <HouseInfoField data={`${propertySearchData?.bedrooms} Bedrooms`} icon={<BedSvg />} />}
-            {propertySearchData?.bathrooms && <HouseInfoField data={`${propertySearchData?.bathrooms} Bathrooms`} icon={<WashSvg />} />}
-            {propertySearchData?.forSale && <HouseInfoField data={`For Sale`} icon={<HouseSvg />} />}
+            {propertyInfo?.squareFeet && <HouseInfoField data={`${propertyInfo?.squareFeet} Sqft`} icon={<SqftSvg />} />}
+            {propertyInfo?.squareFeet && <HouseInfoField data={`${propertyInfo?.bedrooms} Bedrooms`} icon={<BedSvg />} />}
+            {propertyInfo?.bathrooms && <HouseInfoField data={`${propertyInfo?.bathrooms} Bathrooms`} icon={<WashSvg />} />}
+            {propertyInfo?.forSale && <HouseInfoField data={`For Sale`} icon={<HouseSvg />} />}
           </Box>
           {!isMobileTablet && <LastSoldPrice />}
         </Box>
       }
       <Box className={styles.moreInfo}>
-        <AdditionalInfoField label="Property Type" data={propertySearchData?.propertyType || "-"} />
-        <AdditionalInfoField label="Year Built" data={propertySearchData?.yearBuilt || "-"} />
-        <AdditionalInfoField label="County" data={propertySearchData?.address.county || "-"} />
+        <AdditionalInfoField label="Property Type" data={propertyInfo?.propertyType || "-"} />
+        <AdditionalInfoField label="Year Built" data={propertyInfo?.yearBuilt || "-"} />
+        <AdditionalInfoField label="County" data={propertyInfo?.address.county || "-"} />
       </Box>
 
       {isMobileTablet && (
@@ -143,7 +102,7 @@ export default function RecordV2({ propertyData, description }: { propertyData: 
       ) : null}
 
       <Grid className={styles.grid}>
-        <GridItem width="1/3">
+        {/* <GridItem width="1/3">
           <Card sx={{ backgroundColor: KBColor.DARK }}>
             <table className={styles.table}>
               <tbody>
@@ -153,32 +112,32 @@ export default function RecordV2({ propertyData, description }: { propertyData: 
               </tbody>
             </table>
           </Card>
-        </GridItem>
-        <GridItem width="2/3">
+        </GridItem> */}
+        <GridItem>
           <h3 className={styles.titleStyle}>Owner Information</h3>
           <div className={styles.ownersHorizontal}>
             {!isOwnerInformationAvailable && <p style={{ textAlign: "center" }}>No owner information available</p>}
-            {propertySearchData?.owner1FirstName && propertySearchData.owner1LastName && (
+            {propertyInfo?.owner1FirstName && propertyInfo.owner1LastName && (
               <OwnerV2
                 owner={{
-                  firstName: propertySearchData?.owner1FirstName,
-                  lastName: propertySearchData?.owner1LastName,
-                  address: propertySearchData.address.address,
+                  firstName: propertyInfo?.owner1FirstName,
+                  lastName: propertyInfo?.owner1LastName,
+                  address: propertyInfo.address.address,
                 }}
               />
             )}
-            {propertySearchData?.owner2FirstName && propertySearchData.owner2LastName && (
+            {propertyInfo?.owner2FirstName && propertyInfo.owner2LastName && (
               <OwnerV2
                 owner={{
-                  firstName: propertySearchData?.owner2FirstName,
-                  lastName: propertySearchData?.owner2LastName,
-                  address: propertySearchData.address.address,
+                  firstName: propertyInfo?.owner2FirstName,
+                  lastName: propertyInfo?.owner2LastName,
+                  address: propertyInfo.address.address,
                 }}
               />
             )}
           </div>
           <div>
-            <OwnerInformationTable propertyHouse={propertySearchData} />
+            <OwnerInformationTable propertyHouse={propertyInfo} />
           </div>
         </GridItem>
       </Grid>
@@ -188,7 +147,6 @@ export default function RecordV2({ propertyData, description }: { propertyData: 
 
 function OwnerInformationTable({ propertyHouse }: { propertyHouse: IPropertyHouse | null | undefined }) {
   const [propertyDetail] = useRecoilState(propertyDetailContext);
-  console.log(propertyDetail?.spousalDeath);
   const propertyHouseData = [
     createData("Owner Occupied", propertyHouse?.ownerOccupied),
     createData("Absentee Owner", propertyHouse?.absenteeOwner),

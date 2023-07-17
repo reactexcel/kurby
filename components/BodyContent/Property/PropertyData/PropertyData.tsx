@@ -1,32 +1,30 @@
 import styles from "../FinancialMortgage/FinancialMortgage.module.scss";
 import { InformationTable } from "components/BodyContent/InformationTable/InformationTable";
-import { IPropertyHouse } from "pages/api/propertyV2";
+import { propertyInfoV2Context } from "context/propertyContext";
+import { useRecoilState } from "recoil";
 
-interface IRentalEstimatesProps {
-  data: IPropertyHouse | null;
-}
-
-export default function PropertyData({ data }: IRentalEstimatesProps) {
+export default function PropertyData() {
+  const [propertyInfo] = useRecoilState(propertyInfoV2Context);
   const useBool = (value: boolean | undefined | null) => (value === undefined || null ? "-" : "False");
   const propertyDataHouse = [
-    { title: "Property Type", value: data?.propertyType || "-" },
-    { title: "Property Use", value: data?.propertyUse || "-" },
-    { title: "MFH2to4", value: useBool(data?.MFH2to4) },
-    { title: "MFH5plus", value: useBool(data?.MFH5plus) },
-    { title: "Square Feet", value: data?.squareFeet || "-" },
-    { title: "Bathrooms", value: data?.bathrooms || "-" },
-    { title: "Bedrooms", value: data?.bedrooms || "-" },
-    { title: "Year built", value: data?.yearBuilt || "-" },
-    { title: "Assessed Land Value", value: `$${data?.assessedLandValue.toLocaleString()}` || "-" },
-    { title: "Assessed Improvement Value", value: `$${data?.assessedImprovementValue.toLocaleString()}` || "-" },
-    { title: "Land Use", value: data?.landUse || "-" },
-    { title: "Units Count", value: data?.unitsCount || "-" },
-    { title: "Rooms Count", value: data?.roomsCount || "-" },
-    { title: "Vacant", value: useBool(data?.vacant) },
-    { title: "Basement", value: useBool(data?.basement) },
-    { title: "Distressed", value: useBool(data?.distressed) },
-    { title: "Garage Available", value: useBool(data?.garage) },
-    { title: "Air Conditioning Available", value: useBool(data?.airConditioningAvailable) },
+    { title: "Property Type", value: propertyInfo?.propertyType || "-" },
+    { title: "Property Use", value: propertyInfo?.propertyUse || "-" },
+    { title: "MFH2to4", value: useBool(propertyInfo?.MFH2to4) },
+    { title: "MFH5plus", value: useBool(propertyInfo?.MFH5plus) },
+    { title: "Square Feet", value: propertyInfo?.squareFeet || "-" },
+    { title: "Bathrooms", value: propertyInfo?.bathrooms || "-" },
+    { title: "Bedrooms", value: propertyInfo?.bedrooms || "-" },
+    { title: "Year built", value: propertyInfo?.yearBuilt || "-" },
+    { title: "Assessed Land Value", value: `$${propertyInfo?.assessedLandValue.toLocaleString()}` || "-" },
+    { title: "Assessed Improvement Value", value: `$${propertyInfo?.assessedImprovementValue.toLocaleString()}` || "-" },
+    { title: "Land Use", value: propertyInfo?.landUse || "-" },
+    { title: "Units Count", value: propertyInfo?.unitsCount || "-" },
+    { title: "Rooms Count", value: propertyInfo?.roomsCount || "-" },
+    { title: "Vacant", value: useBool(propertyInfo?.vacant) },
+    { title: "Basement", value: useBool(propertyInfo?.basement) },
+    { title: "Distressed", value: useBool(propertyInfo?.distressed) },
+    { title: "Garage Available", value: useBool(propertyInfo?.garage) },
+    { title: "Air Conditioning Available", value: useBool(propertyInfo?.airConditioningAvailable) },
   ];
 
   return (

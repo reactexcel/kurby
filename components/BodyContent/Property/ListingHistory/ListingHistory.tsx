@@ -6,11 +6,11 @@ import KBTable from "components/KBTable/KBTable";
 import { KBColor } from "constants/color";
 import { TableFieldType } from "types/table";
 import { toUSDField } from "../utils";
-interface IFinancialMortgageProps {
-  readonly data: IPropertyHouse | null;
-}
+import { useRecoilState } from "recoil";
+import { propertyInfoV2Context } from "context/propertyContext";
 
-export default function ListingHistory({ data }: IFinancialMortgageProps) {
+export default function ListingHistory() {
+  const [propertyInfo] = useRecoilState(propertyInfoV2Context);
   const valueEstimatFields: TableFieldType[] = [
     { label: "Last Sale Amount", key: "lastSaleAmount" },
     { label: "Last Sale Date", key: "lastSaleDate" },
@@ -21,11 +21,11 @@ export default function ListingHistory({ data }: IFinancialMortgageProps) {
   const generateGraphData = () => {
     return [
       {
-        lastSaleAmount: toUSDField(data?.lastSaleAmount),
-        lastSaleDate: data?.lastSaleDate,
-        listingAmount: toUSDField(data?.listingAmount),
-        rentAmount: toUSDField(data?.rentAmount),
-        suggestedRent: toUSDField(data?.suggestedRent),
+        lastSaleAmount: toUSDField(propertyInfo?.lastSaleAmount),
+        lastSaleDate: propertyInfo?.lastSaleDate,
+        listingAmount: toUSDField(propertyInfo?.listingAmount),
+        rentAmount: toUSDField(propertyInfo?.rentAmount),
+        suggestedRent: toUSDField(propertyInfo?.suggestedRent),
       },
     ];
   };

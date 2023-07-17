@@ -3,14 +3,12 @@ import styles from "../Record/Record.module.scss";
 import { Box } from "@mui/material";
 import KBTable from "components/KBTable/KBTable";
 import { KBColor } from "constants/color";
-import { IPropertyHouse } from "pages/api/propertyV2";
 import { toUSDField } from "../utils";
+import { useRecoilState } from "recoil";
+import { propertyInfoV2Context } from "context/propertyContext";
 
-interface IRentalEstimatesProps {
-  data: IPropertyHouse | null;
-}
-
-export default function RentalEstimates({ data }: IRentalEstimatesProps) {
+export default function RentalEstimates() {
+  const [propertyInfo] = useRecoilState(propertyInfoV2Context);
   const valueEstimatFields: TableFieldType[] = [
     { label: "Rent Amount", key: "rentAmount" },
     { label: "Suggested Rent", key: "suggestedRent" },
@@ -18,8 +16,8 @@ export default function RentalEstimates({ data }: IRentalEstimatesProps) {
   const generateGraphData = () => {
     return [
       {
-        rentAmount: toUSDField(data?.rentAmount) || "-",
-        suggestedRent: toUSDField(data?.rentAmount) || "-",
+        rentAmount: toUSDField(propertyInfo?.rentAmount) || "-",
+        suggestedRent: toUSDField(propertyInfo?.rentAmount) || "-",
       },
     ];
   };
