@@ -1,10 +1,12 @@
 import React from "react";
 import styles from "./PriceSection.module.scss";
 import { PricingCard } from "../PricingCard/PricingCard";
-
+import { useMyContext } from "context/priceContext";
 import { mainFeatures1, mainFeatures2, mainFeatures3, secondaryFeatures1, secondaryFeatures2, secondaryFeatures3 } from "./mockData";
 
 export const PriceSection = () => {
+  const { param } = useMyContext();
+
   return (
     <div className={styles.container}>
       <PricingCard
@@ -19,7 +21,7 @@ export const PriceSection = () => {
       <PricingCard
         title="growth"
         subTitle="Additional Data & Analytics"
-        price="$ 49.99"
+        price={param ? "$ 479.99" : "$ 49.99"}
         pricePer="/ month"
         greenType={true}
         mainFeatures={mainFeatures2}
@@ -29,7 +31,7 @@ export const PriceSection = () => {
       <PricingCard
         title="professional "
         subTitle="Advanced Data & Intelligence"
-        price="$ 99.99"
+        price={param ? "$ 959.99" : "$ 99.99"}
         pricePer="/ month"
         greenType={false}
         mainFeatures={mainFeatures3}

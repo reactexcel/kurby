@@ -6,9 +6,13 @@ import { FaqsSection } from "./pricing-page-sections/FaqsSection/FaqsSection";
 import { ProsConsSection } from "./pricing-page-sections/ProsConsSection/ProsConsSection";
 import { Footer } from "../Footer/Footer";
 
+import { MyContextProvider } from "../../context/priceContext";
+
 export const PricingPage = () => {
+  const paramValue = true;
+
   return (
-    <>
+    <MyContextProvider param={paramValue}>
       <TopToolbar />
       <LegendSection />
       <PriceSection />
@@ -16,6 +20,6 @@ export const PricingPage = () => {
       <FaqsSection />
       <ProsConsSection />
       <Footer />
-    </>
+    </MyContextProvider>
   );
 };
