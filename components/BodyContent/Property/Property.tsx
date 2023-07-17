@@ -36,9 +36,10 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
   const [loading, setLoading] = useState<boolean>(isNotLoaded);
   const [isTabAvailable, setTabAvailable] = useRecoilState(propertyDetailAvailable);
 
+  // Disable the tab in case if the propertyDetail is null
   useEffect(() => {
     if (!loading) {
-      setTabAvailable(Boolean(propertyInfo?.propertyType !== "OTHER"));
+      setTabAvailable(Boolean(propertyDetail));
     }
   }, [propertyInfo, propertyDetail]);
 
