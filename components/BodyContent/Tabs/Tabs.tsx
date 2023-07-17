@@ -13,7 +13,7 @@ import { Location } from "../Location/Location";
 import { loadingContext } from "context/loadingContext";
 import styles from "./Tabs.module.scss";
 import { searchContext } from "context/searchCounter";
-import { IPropertySearchResponse } from "pages/api/propertyV2";
+import { propertyDetailAvailable } from "context/propertyContext";
 
 export function Tabs() {
   const [activeTab, setActiveTab] = useRecoilState(activeTabState);
@@ -24,7 +24,7 @@ export function Tabs() {
   const [{ searchLimit }] = useRecoilState(searchContext);
   const [filterVal] = useRecoilState(filterState);
 
-  const [showHome, setShowHome] = useState<boolean>(true);
+  const [, setShowHome] = useState<boolean>(true);
 
   const handleTabChange = (event: React.MouseEvent<HTMLElement>, newTab: Tab | null) => {
     if (newTab) {
@@ -81,6 +81,13 @@ export function Tabs() {
     getOpenAiData();
   }, [filterVal.address, filterVal.selectedPlace]);
 
+  const [isPropertyDataAvailable] = useRecoilState(propertyDetailAvailable);
+
+  useEffect(() => {
+    if (!isPropertyDataAvailable) {
+      setActiveTab("location");
+    }
+  }, [isPropertyDataAvailable]);
   return (
     <>
       <NextSeo description={explainedLikeAlocal.split(".")[0] || "Kurby uses location data to estimate property value like never before."} />
@@ -90,9 +97,11 @@ export function Tabs() {
             Location
           </ToggleButton>
 
-          <ToggleButton className={styles.button} value="property">
-            Property data
-          </ToggleButton>
+          {isPropertyDataAvailable && (
+            <ToggleButton className={styles.button} value="property">
+              Property data
+            </ToggleButton>
+          )}
 
           <ToggleButton className={styles.button} value="neighborhood">
             Neighborhood

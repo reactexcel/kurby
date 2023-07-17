@@ -9,10 +9,6 @@ import { propertyDetailContext } from "context/propertyContext";
 export function HouseList() {
   const [propertyDetail] = useRecoilState(propertyDetailContext);
 
-  if (propertyDetail?.comps.length === 0) {
-    return <></>;
-  }
-
   return (
     <Grid>
       <GridItem>

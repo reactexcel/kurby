@@ -22,5 +22,11 @@ const propertyDetail: IPropertyDetailState = {
   default: null,
 };
 
+const propertyDetailAvailableState = {
+  key: "propertyDetailAvailable",
+  default: true,
+};
+
 export const propertyInfoV2Context = atom(propertyInfo);
 export const propertyDetailContext = atom(propertyDetail);
+export const propertyDetailAvailable = atom(propertyDetailAvailableState);

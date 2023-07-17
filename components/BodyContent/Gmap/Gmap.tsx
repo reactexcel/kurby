@@ -12,6 +12,7 @@ import { createMedianPovertyRateLegend, getPercentUnderPoverty } from "component
 import { HomevalueMapLegend, HouseholdMapLegend, PovertyRateLegend, VacantHousingLegend } from "components/Census/Legends/Legends";
 import { HomevalueTooltip, HouseholdIncomeTooltip, PovertyRateTooltip, VacantHousingTooltip } from "components/Census/Tooltips/Tooltips";
 import { createHousingUnitsLegend, getVacantHousingUnits } from "components/Census/Legends/MedianVacantHousing";
+import { ICensusResponse } from "components/Census/GeoJSON/Census";
 
 /**
  * Gmap
@@ -72,7 +73,7 @@ function MyComponent() {
     // minZoom: 17,
     // fullscreenControl: false,
   };
-  const [tractGeometricData, setTractGeometricData] = useState<object | null>(null);
+  const [tractGeometricData, setTractGeometricData] = useState<ICensusResponse<object> | null>(null);
 
   const [filterVal, setFilterVal] = useRecoilState(filterState);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -89,7 +90,9 @@ function MyComponent() {
         // @ts-ignore
         lng: filterVal.latlong.lng(),
       });
-      setTractGeometricData(dataLayer);
+      if (dataLayer?.features.length !== tractGeometricData?.features?.length) {
+        setTractGeometricData(dataLayer);
+      }
     };
     try {
       if (filterVal.latlong) {

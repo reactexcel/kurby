@@ -9,7 +9,7 @@ export function AdditionalPropertyInformation() {
   const propertyHouseData = [
     createData("Basement Finished Percent", propertyInfo?.basementFinishedPercent),
     createData("Basement Square Feet", propertyInfo?.basementSquareFeet),
-    createData("Basement Square Feet Finished", propertyInfo?.basementSquareFeetFinished),
+    createData("Basement Square Feet Finished", propertyInfo?.basementSquareFeetFinished || "-"),
     createData("Basement Square Feet Unfinished", propertyInfo?.basementSquareFeetUnfinished),
     createData("Basement Type", propertyInfo?.basementType),
     createData("Bathrooms", propertyInfo?.bathrooms),

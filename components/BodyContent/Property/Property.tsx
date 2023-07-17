@@ -17,7 +17,7 @@ import RentalEstimates from "./RentalEstimates/RentalEstimates";
 import PropertyData from "./PropertyData/PropertyData";
 import PropertyStatus from "./PropertyStatus/PropertyStatus";
 import { IPropertyDetailResponse } from "pages/api/propertyDetail";
-import { propertyDetailContext, propertyInfoV2Context } from "context/propertyContext";
+import { propertyDetailAvailable, propertyDetailContext, propertyInfoV2Context } from "context/propertyContext";
 import { AdditionalPropertyInformation } from "./AdditionalPropertyInformation/AdditionalPropertyInformation";
 import LotInfo from "./LotInfo/LotInfo";
 import TaxInfo from "./TaxInfo/TaxInfo";
@@ -30,13 +30,24 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
   const [filterVal] = useRecoilState(filterState);
   const [propertyInfo, setPropertyInfoV2] = useRecoilState(propertyInfoV2Context);
   const [propertyDetail, setPropertyDetail] = useRecoilState(propertyDetailContext);
-  const [loading, setLoading] = useState<boolean>(false);
+
+  const isNotLoaded = !Boolean(propertyDetail && propertyInfo);
+
+  const [loading, setLoading] = useState<boolean>(isNotLoaded);
+  const [isTabAvailable, setTabAvailable] = useRecoilState(propertyDetailAvailable);
+
+  useEffect(() => {
+    if (!loading) {
+      setTabAvailable(Boolean(propertyInfo?.propertyType !== "OTHER"));
+    }
+  }, [propertyInfo, propertyDetail]);
 
   useEffect(() => {
     async function preparePropertyV2Data() {
       const { data } = await axios.post<IPropertySearchResponse>("/api/propertyV2", {
         address: filterVal.address,
       });
+      setLoading(false);
       if (data) {
         setPropertyInfoV2(data.data[0]);
       }
@@ -46,16 +57,24 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
       const { data } = await axios.post<IPropertyDetailResponse>("/api/propertyDetail", {
         address: filterVal.address,
       });
+      setLoading(false);
       if (data) {
         setPropertyDetail(data.data);
       }
     }
 
-    preparePropertyV2Data();
-    preparePropertyDetail();
+    if (isNotLoaded) {
+      setLoading(true);
+      preparePropertyV2Data();
+      preparePropertyDetail();
+    }
   }, []);
 
   const isAddressInUSA = useMemo(() => filterVal?.selectedPlace?.formatted_address?.includes("USA"), [filterVal?.selectedPlace?.formatted_address]);
+
+  if (!isTabAvailable) {
+    return <></>;
+  }
 
   return (
     <TabLayout className={`${styles.tabLayout} ${!isAddressInUSA ? styles.note : ""}`} loading={loading || !propertyInfo}>
@@ -115,9 +134,11 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
               {/* <GridItem isEmpty={!propertyInfo?.valueEstimate}>
                 <EstimationGraph valueEstimate={propertyInfo?.valueEstimate} />
               </GridItem> */}
-              <GridItem>
-                <HouseList />
-              </GridItem>
+              {!Boolean(propertyDetail?.comps?.length === 0 || undefined) && (
+                <GridItem>
+                  <HouseList />
+                </GridItem>
+              )}
             </Grid>
           </div>
         </div>
