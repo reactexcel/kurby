@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./TracingSection.module.scss";
 import Image from "next/image";
-//import Tracing from "../../../../public/icons/tracing.svg";
+
 
 export const TracingSection = () => {
   return (
@@ -16,7 +16,7 @@ export const TracingSection = () => {
       <div className={styles.rightBlock}>
         <div className={styles.rightColumn}>
           <Image alt="" src="./icons/tracing.svg" className={styles.tracingImg} layout="responsive" width={170} height={130} />
-          <span className={styles.subtitle}>Skip Tracing with DNC Flagging</span>
+          <div className={styles.subtitle}>Skip Tracing with DNC Flagging</div>
         </div>
       </div>
     </div>

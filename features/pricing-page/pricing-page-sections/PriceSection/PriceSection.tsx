@@ -21,8 +21,8 @@ export const PriceSection = () => {
       <PricingCard
         title="growth"
         subTitle="Additional Data & Analytics"
-        price={param ? "$ 479.99" : "$ 49.99"}
-        pricePer={param ? "/ year" : "/ month"}
+        price={param ? "$ 39" : "$ 49"}
+        pricePer= "/ month"
         greenType={true}
         mainFeatures={mainFeatures2}
         name="all of the features in starter, plus"
@@ -31,8 +31,8 @@ export const PriceSection = () => {
       <PricingCard
         title="professional "
         subTitle="Advanced Data & Intelligence"
-        price={param ? "$ 959.99" : "$ 99.99"}
-        pricePer={param ? "/ year" : "/ month"}
+        price={param ? "$ 79" : "$ 99"}
+        pricePer="/ month"
         greenType={false}
         mainFeatures={mainFeatures3}
         name="all of the features in growth, plus"
