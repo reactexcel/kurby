@@ -9,7 +9,7 @@ import { Footer } from "../Footer/Footer";
 import { MyContextProvider } from "../../context/priceContext";
 
 export const PricingPage = () => {
-  const paramValue = true;
+  const paramValue = false;
 
   return (
     <MyContextProvider initialParam={paramValue}>

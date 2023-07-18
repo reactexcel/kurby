@@ -2,11 +2,9 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  //height: 422px;
   background-color: #00a13c;
-  padding: 60px;
-  //margin: 0 185px;
-  width: 80%;
+  padding: 40px;
+  width: 75%;
   margin: 0 auto;
   border-radius: 20px;
 
@@ -18,12 +16,12 @@
     align-items: center;
   }
   @media (max-width: 1000px) {
-    padding: 60px 0;
+    padding: 30px 0;
     width: 100%;
   }
 }
 .leftBlock {
-  margin-left: 3%;
+  margin-top: 10px;
   @media (max-width: 1200px) {
     //1600
     margin-bottom: 20px;
@@ -37,8 +35,8 @@
 }
 .title {
   font-weight: 500;
-  font-size: 40px;
-  margin: 0;
+  font-size: 35px;
+  margin: 20px 0 0;
   color: #fff;
   text-transform: uppercase;
   @media (max-width: 1000px) {
@@ -50,11 +48,11 @@
 }
 .text {
   font-weight: 400;
-  font-size: 26px;
-  margin-top: 40px;
+  font-size: 22px;
+  margin-top: 20px;
   color: #fff;
   padding-right: 10px;
-  //width: 851px;
+  width: 90%;
   @media (max-width: 1000px) {
     width: 90%;
     //margin: 10px;
