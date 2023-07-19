@@ -13,6 +13,7 @@ import { HomevalueMapLegend, HouseholdMapLegend, PovertyRateLegend, VacantHousin
 import { HomevalueTooltip, HouseholdIncomeTooltip, PovertyRateTooltip, VacantHousingTooltip } from "components/Census/Tooltips/Tooltips";
 import { createHousingUnitsLegend, getVacantHousingUnits } from "components/Census/Legends/MedianVacantHousing";
 import { ICensusResponse } from "components/Census/GeoJSON/Census";
+import { mapClicksCounter } from "context/visitorContext";
 
 /**
  * Gmap
@@ -67,6 +68,7 @@ export interface IMetricsTooltipState {
 
 function MyComponent() {
   const [map, setMap] = React.useState<google.maps.Map | null>(null);
+  const [, setMapCounter] = useRecoilState(mapClicksCounter);
 
   const googleMapOptions = {
     // zoomControl: false,
@@ -133,6 +135,7 @@ function MyComponent() {
 
   // Handle tract tooltip on hover
   const [isClickListenerSet, setClickListener] = useState(false);
+
   useEffect(() => {
     if (!map?.data) {
       return;
@@ -141,8 +144,9 @@ function MyComponent() {
       return;
     }
     setClickListener(true);
-    map.data.addListener("mouseover", (event: google.maps.Data.MouseEvent) => {
+    map.data.addListener("click", (event: google.maps.Data.MouseEvent) => {
       highlightTract(map, event);
+      setMapCounter((prev) => prev + 1);
       // Get all necessary data for all categories for the map.
       const county: string = event.feature.getProperty("NAMELSADCO");
       const tractName: string = event.feature.getProperty("NAMELSAD");

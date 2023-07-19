@@ -13,10 +13,8 @@ import { Location } from "../Location/Location";
 import { loadingContext } from "context/loadingContext";
 import styles from "./Tabs.module.scss";
 import { propertyDetailAvailable } from "context/propertyContext";
-import { IAppPlans, plansContext } from "context/plansContext";
 
 export function Tabs() {
-  const [currentPlan] = useRecoilState(plansContext);
   const [activeTab, setActiveTab] = useRecoilState(activeTabState);
   const [explainedLikeAlocal, setExplainedLikeAlocal] = useState("");
   const [greenFlags, setGreenFlags] = useState<any[]>([]);
@@ -24,8 +22,6 @@ export function Tabs() {
   const [loading, setLoading] = useRecoilState(loadingContext);
 
   const [filterVal] = useRecoilState(filterState);
-
-  console.log(currentPlan);
 
   const [, setShowHome] = useState<boolean>(true);
 
