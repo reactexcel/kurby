@@ -27,6 +27,8 @@ import { loadingContext } from "context/loadingContext";
 import { DetailsModal } from "./DetailsModal/DetailsModal";
 import { DetailsCard } from "./DetailsCard/DetailsCard";
 import { VersusCard } from "./VersusCard/VersusCard";
+import { useSearchCounter } from "hooks/use-search-counter";
+import KurbyPaidPlanLimit, { TabLimitMessage } from "components/AIWarningTooltip/KurbyPaidPlanLimit";
 
 const floodRiskMap: { [key: string]: string } = {
   A: "Medium",
@@ -82,6 +84,7 @@ export default function Neighborhood({ filterVal }: Props) {
   const [loading, setLoading] = useRecoilState(loadingContext);
 
   const [overallCrimeInfo, setOverallCrimeInfo] = useState<OverallCrimeInfo | null>(null);
+  const { searchLimit } = useSearchCounter();
 
   const usaDetectionKeywords = [
     "USA", // English
@@ -308,10 +311,11 @@ export default function Neighborhood({ filterVal }: Props) {
 
   return (
     <TabLayout className={styles.tabLayout}>
+      {searchLimit && <KurbyPaidPlanLimit type={TabLimitMessage.NEIGHBORHOOD_TAB} />}
       <Box
         style={{
           overflow: "auto",
-          height: "100%",
+          height: "50%",
           width: "100%",
           position: "relative",
         }}

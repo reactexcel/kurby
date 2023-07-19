@@ -32,7 +32,7 @@ export default function Filters() {
   const [, setSnackbar] = useRecoilState(snackbarContext);
   const [isSelectAll, setSelectAll] = useState<boolean>(true);
   const [, setLoading] = useRecoilState(loadingContext);
-  const { searchLimit, incrementCounter } = useSearchCounter();
+  const { incrementCounter } = useSearchCounter();
 
   //* State for the place select element
   const [typesOfPlace, setTypesOfPlace] = useState<any[]>(PLACE_TYPES);
@@ -267,7 +267,7 @@ export default function Filters() {
             </div>
           </div>
         </div> */}
-        {searchLimit && (
+        {/* {searchLimit && (
           <Dialog open className={styles.dialog}>
             <h2 className={styles.dialogTitle}>Daily Search Limit Reached</h2>
             <DialogContent className={styles.dialogContent}>
@@ -275,7 +275,7 @@ export default function Filters() {
               <LoginSignupButton />
             </DialogContent>
           </Dialog>
-        )}
+        )} */}
       </Box>
     </>
   );

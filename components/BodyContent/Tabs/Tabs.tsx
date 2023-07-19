@@ -12,17 +12,20 @@ import Property from "../Property/Property";
 import { Location } from "../Location/Location";
 import { loadingContext } from "context/loadingContext";
 import styles from "./Tabs.module.scss";
-import { searchContext } from "context/searchCounter";
 import { propertyDetailAvailable } from "context/propertyContext";
+import { IAppPlans, plansContext } from "context/plansContext";
 
 export function Tabs() {
+  const [currentPlan] = useRecoilState(plansContext);
   const [activeTab, setActiveTab] = useRecoilState(activeTabState);
   const [explainedLikeAlocal, setExplainedLikeAlocal] = useState("");
   const [greenFlags, setGreenFlags] = useState<any[]>([]);
   const [redFlags, setRedFlags] = useState<any[]>([]);
   const [loading, setLoading] = useRecoilState(loadingContext);
-  const [{ searchLimit }] = useRecoilState(searchContext);
+
   const [filterVal] = useRecoilState(filterState);
+
+  console.log(currentPlan);
 
   const [, setShowHome] = useState<boolean>(true);
 
@@ -88,6 +91,7 @@ export function Tabs() {
       setActiveTab("location");
     }
   }, [isPropertyDataAvailable]);
+
   return (
     <>
       <NextSeo description={explainedLikeAlocal.split(".")[0] || "Kurby uses location data to estimate property value like never before."} />
@@ -108,15 +112,13 @@ export function Tabs() {
           </ToggleButton>
         </ToggleButtonGroup>
 
-        {!searchLimit && (
-          <Box className={styles.tabsWrapper}>
-            {activeTab === "location" && <Location explainedLikeAlocal={explainedLikeAlocal} greenFlags={greenFlags} redFlags={redFlags} />}
-            {activeTab == "nearby" && <Nearby />}
-            {activeTab == "property" && <Property explainedLikeAlocal={explainedLikeAlocal} />}
+        <Box className={styles.tabsWrapper}>
+          {activeTab === "location" && <Location explainedLikeAlocal={explainedLikeAlocal} greenFlags={greenFlags} redFlags={redFlags} />}
+          {activeTab == "nearby" && <Nearby />}
+          {activeTab == "property" && <Property explainedLikeAlocal={explainedLikeAlocal} />}
 
-            {activeTab == "neighborhood" && <Neighborhood filterVal={filterVal} />}
-          </Box>
-        )}
+          {activeTab == "neighborhood" && <Neighborhood filterVal={filterVal} />}
+        </Box>
       </Box>
     </>
   );
