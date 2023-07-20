@@ -103,6 +103,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     outsetaRef.current?.setAccessToken("");
     sessionStorage.removeItem("xanoToken");
     setUser(null);
+    window.location.reload();
   };
 
   const openLoginSignup = () => {

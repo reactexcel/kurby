@@ -29,6 +29,8 @@ import { DetailsCard } from "./DetailsCard/DetailsCard";
 import { VersusCard } from "./VersusCard/VersusCard";
 import { useSearchCounter } from "hooks/use-search-counter";
 import KurbyPaidPlanLimit, { TabLimitMessage } from "components/AIWarningTooltip/KurbyPaidPlanLimit";
+import { useAuth } from "providers/AuthProvider";
+import { IAppPlans } from "context/plansContext";
 
 const floodRiskMap: { [key: string]: string } = {
   A: "Medium",
@@ -85,6 +87,7 @@ export default function Neighborhood({ filterVal }: Props) {
 
   const [overallCrimeInfo, setOverallCrimeInfo] = useState<OverallCrimeInfo | null>(null);
   const { searchLimit } = useSearchCounter();
+  const { user } = useAuth();
 
   const usaDetectionKeywords = [
     "USA", // English
@@ -309,15 +312,18 @@ export default function Neighborhood({ filterVal }: Props) {
     );
   }
 
+  const isFreePlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.FREE_PLAN;
+
   return (
-    <TabLayout className={styles.tabLayout}>
-      {searchLimit && <KurbyPaidPlanLimit type={TabLimitMessage.NEIGHBORHOOD_TAB} />}
+    <TabLayout style={isFreePlan && searchLimit ? { height: "67vh", overflow: "hidden" } : {}} className={styles.tabLayout}>
+      {isFreePlan && searchLimit && <KurbyPaidPlanLimit type={TabLimitMessage.NEIGHBORHOOD_TAB} />}
       <Box
         style={{
-          overflow: "auto",
+          overflow: isFreePlan && searchLimit ? "hidden" : "auto",
           height: "50%",
           width: "100%",
           position: "relative",
+          userSelect: searchLimit ? "none" : "auto",
         }}
       >
         <h3 className={styles.header}>

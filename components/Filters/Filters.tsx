@@ -15,9 +15,10 @@ import { loadingContext } from "context/loadingContext";
 import { useSearchCounter } from "hooks/use-search-counter";
 import { Dialog, DialogContent } from "@mui/material";
 import { LoginSignupButton } from "components/LoginSignupButton/LoginSignupButton";
-import { mapClicksCounter } from "context/visitorContext";
+import { mapClicksCounter, visitorStayLimit } from "context/visitorContext";
 import { usePersistentRecoilState } from "hooks/recoil-persist-state";
 import { useAuth } from "providers/AuthProvider";
+import { plansContext } from "context/plansContext";
 
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
@@ -226,9 +227,30 @@ export default function Filters() {
   }, [address]);
 
   const { user } = useAuth();
+
   const [mapCounter] = usePersistentRecoilState("mapClickCounter", mapClicksCounter);
+  const [visitorStayLimitLaunched] = usePersistentRecoilState("visitorStayLimit", visitorStayLimit);
+
   const isVisitor = !Boolean(user);
   const visitorFourClicks = isVisitor && mapCounter >= 4;
+  const visitorSearchLimit = !Boolean(user) && searchLimit;
+  const visitorStayLimitReached = isVisitor && visitorStayLimitLaunched;
+
+  const [showDialog, setShowDialog] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      // Open dialog after 2 seconds, to have respect for coldstart variables
+      // Since user is undefined for the first time you load the page, we make sure,
+      // we don't display the dialog too quickly
+      if (visitorStayLimitReached || visitorFourClicks || visitorSearchLimit) {
+        setShowDialog(true);
+      }
+    }, 1800);
+
+    // Clean up timer
+    return () => clearTimeout(timer);
+  }, [visitorStayLimitReached, visitorFourClicks, visitorSearchLimit, user]);
 
   return (
     <>
@@ -276,7 +298,7 @@ export default function Filters() {
             </div>
           </div>
         </div> */}
-        {(visitorFourClicks || searchLimit) && (
+        {showDialog && (
           <Dialog open className={styles.dialog}>
             <h2 className={styles.dialogTitle}>Daily {(searchLimit && "Search") || ""} Limit Reached</h2>
             <DialogContent className={styles.dialogContent}>

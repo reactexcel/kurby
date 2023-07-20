@@ -21,12 +21,16 @@ import { propertyDetailAvailable, propertyDetailContext, propertyInfoV2Context }
 import { AdditionalPropertyInformation } from "./AdditionalPropertyInformation/AdditionalPropertyInformation";
 import LotInfo from "./LotInfo/LotInfo";
 import TaxInfo from "./TaxInfo/TaxInfo";
+import KurbyPaidPlanLimit, { TabLimitMessage } from "components/AIWarningTooltip/KurbyPaidPlanLimit";
+import { IAppPlans } from "context/plansContext";
+import { useAuth } from "providers/AuthProvider";
 
 /**
  * Body Content
  * @description: Displays everything below the filters
  */
 export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal: string }) {
+  const { user } = useAuth();
   const [filterVal] = useRecoilState(filterState);
   const [propertyInfo, setPropertyInfoV2] = useRecoilState(propertyInfoV2Context);
   const [propertyDetail, setPropertyDetail] = useRecoilState(propertyDetailContext);
@@ -71,12 +75,19 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
     return <></>;
   }
 
+  const isFreePlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.FREE_PLAN;
+
   return (
-    <TabLayout className={`${styles.tabLayout} ${!isAddressInUSA ? styles.note : ""}`} loading={loading || !propertyInfo}>
+    <TabLayout
+      style={isFreePlan ? { height: "67vh", overflow: "hidden" } : {}}
+      className={`${styles.tabLayout} ${!isAddressInUSA ? styles.note : ""}`}
+      loading={loading || !propertyInfo}
+    >
       {loading || !propertyInfo ? (
         <CircularProgress />
       ) : isAddressInUSA ? (
         <div className={styles.main}>
+          {isFreePlan && <KurbyPaidPlanLimit type={TabLimitMessage.PROPERTY_DATA_TAB} />}
           <div className={styles.wrapper}>
             <img
               src={

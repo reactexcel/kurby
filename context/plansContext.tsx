@@ -1,11 +1,12 @@
 import { usePersistentRecoilState } from "hooks/recoil-persist-state";
 import { useEffect } from "react";
 import { atom } from "recoil";
-import { mapClicksCounter } from "./visitorContext";
+import { visitorStayLimit } from "./visitorContext";
+
 export enum IAppPlans {
-  FREE_PLAN,
-  GROWTH,
-  PROFESSIONAL,
+  FREE_PLAN = "Free",
+  GROWTH = "Growth Plan",
+  PROFESSIONAL = "Professional Plan",
 }
 
 type PlansContextState = {
@@ -21,15 +22,13 @@ const plansContextState: PlansContextState = {
 export const plansContext = atom(plansContextState);
 
 export function useTenMinutesForVisitor() {
-  const [, setCounter] = usePersistentRecoilState("mapClickCounter", mapClicksCounter);
+  const [, setLimit] = usePersistentRecoilState("visitorStayLimit", visitorStayLimit);
 
   useEffect(() => {
-    // Set counter to 4 after 5 seconds (should be 10 minutes)
     const timer = setTimeout(() => {
-      setCounter(4);
-    }, 10 * 60 * 1000); // 5 seconds in milliseconds
+      setLimit(true);
+    }, 10 * 60 * 1000);
 
-    // Clear the timeout if the component is unmounted before the timeout completes
     return () => clearTimeout(timer);
-  }, [setCounter]);
+  }, [setLimit]);
 }
