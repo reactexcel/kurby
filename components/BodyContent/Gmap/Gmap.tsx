@@ -324,8 +324,20 @@ interface IMetricsTooltipProps extends IMetricsTooltipState {
 function MetricsTooltip(props: IMetricsTooltipProps) {
   const [value] = useRecoilState(feature);
   const { user } = useAuth();
-  const [mapCounter] = usePersistentRecoilState("mapClickCounter", mapClicksCounter);
+  const [mapCounter, setMapCounter] = usePersistentRecoilState("mapClickCounter", mapClicksCounter);
   const isFreePlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.FREE_PLAN;
+
+  // check if we've reached a new day and reset the counter if so
+  useEffect(() => {
+    const lastVisitDate = localStorage.getItem("lastVisitDate");
+    const currentDate = new Date().toISOString().slice(0, 10); // today's date in 'yyyy-mm-dd' format
+
+    if (lastVisitDate !== currentDate) {
+      localStorage.setItem("lastVisitDate", currentDate);
+      setMapCounter(0);
+    }
+  }, [setMapCounter]);
+
   const visitorMapReachedClickLimit = isFreePlan && mapCounter >= 50;
 
   if (visitorMapReachedClickLimit) {
