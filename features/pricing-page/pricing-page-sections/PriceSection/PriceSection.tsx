@@ -1,43 +1,56 @@
 import React from "react";
 import styles from "./PriceSection.module.scss";
 import { PricingCard } from "../PricingCard/PricingCard";
+import { FreePricingCard } from "../PricingCard/freePricingCard";
 import { useMyContext } from "context/priceContext";
-import { mainFeatures1, mainFeatures2, mainFeatures3, secondaryFeatures1, secondaryFeatures2, secondaryFeatures3 } from "./mockData";
+import { freeFeatures, starterFeatures, growthFeatures, proffFeatures, freeSecFeatures, starterSecFeatures, growthSecFeatures, proffSecFeatures } from "./mockData";
 
 export const PriceSection = () => {
   const { param } = useMyContext();
 
   return (
     <div className={styles.container}>
-      <PricingCard
-        title="starter"
-        subTitle="quick stats"
-        price="free forever"
-        greenType={false}
-        mainFeatures={mainFeatures1}
-        name="key features"
-        secondaryFeatures={secondaryFeatures1}
-      />
-      <PricingCard
-        title="growth"
-        subTitle="Additional Data & Analytics"
-        price={param ? "$ 39" : "$ 49"}
-        pricePer= "/ month"
-        greenType={true}
-        mainFeatures={mainFeatures2}
-        name="all of the features in starter, plus"
-        secondaryFeatures={secondaryFeatures2}
-      />
-      <PricingCard
-        title="professional "
-        subTitle="Advanced Data & Intelligence"
-        price={param ? "$ 79" : "$ 99"}
-        pricePer="/ month"
-        greenType={false}
-        mainFeatures={mainFeatures3}
-        name="all of the features in growth, plus"
-        secondaryFeatures={secondaryFeatures3}
-      />
+      <div className={styles.headCard}>
+        <FreePricingCard
+          title="free"
+          subTitle="quick stats"
+          price="free forever"
+          mainFeatures={freeFeatures}
+          name="key features"
+          secondaryFeatures={freeSecFeatures}
+        />
+      </div>
+      <div className={styles.bodyCard}>
+        <PricingCard
+          title="starter"
+          subTitle="quick stats"
+          price={param ? "$ 10" : "$ 12"}
+          greenType={false}
+          mainFeatures={starterFeatures}
+          name="key features"
+          secondaryFeatures={starterSecFeatures}
+        />
+        <PricingCard
+          title="professional "
+          subTitle="Advanced Data & Intelligence"
+          price={param ? "$ 79" : "$ 99"}
+          pricePer="/ month"
+          greenType={true}
+          mainFeatures={proffFeatures}
+          name="all of the features in growth, plus"
+          secondaryFeatures={proffSecFeatures}
+        />
+        <PricingCard
+          title="growth"
+          subTitle="Additional Data & Analytics"
+          price={param ? "$ 39" : "$ 49"}
+          pricePer="/ month"
+          greenType={false}
+          mainFeatures={growthFeatures}
+          name="all of the features in starter, plus"
+          secondaryFeatures={growthSecFeatures}
+        />
+      </div>
     </div>
   );
 };

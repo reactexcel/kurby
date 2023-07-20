@@ -2,8 +2,6 @@ import React from "react";
 import styles from "./PricingCard.module.scss";
 import { Paragraph } from "components/Paragraph/Paragraph";
 
-import UnderLine from "../../../../public/icons/line.svg";
-import GreenUnderLine from "../../../../public/icons/greenLine.svg";
 import ItemIcon from "../../../../public/icons/item.svg";
 import WhiteItem from "../../../../public/icons/whiteItem.svg";
 import GreenItem from "../../../../public/icons/greenItem.svg";

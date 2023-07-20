@@ -4,8 +4,6 @@ import styles from "./ProsCons.module.scss";
 import { quickStats, addData, advancedData } from "./mockData";
 import { ProsConsItem } from "./ProsConsItem";
 import Image from "next/image";
-import Vector from "../../../../public/icons/vector.svg";
-import Minus from "../../../../public/icons/blackMinus.svg";
 
 export const ProsConsSection = () => {
   return (
@@ -21,13 +19,13 @@ export const ProsConsSection = () => {
         <button className={styles.starterBtn}>Get Started</button>
         <div className={styles.signs}>
           <div className={styles.quickSign}>
-            <p className={styles.feat}>5 Insights per day</p>
+            <p className={styles.feat5}>5 Insights per day</p>
             <p className={`${styles.feat} ${styles.pFix} `}>5 Searches/ Clicks per day</p>
             <div className={`${styles.sign} ${styles.startSign} ${styles.addStartSign}`}>
               <Image src="/icons/blackMinus.svg" className={styles.signItem} width={30} height={22} alt="minus" />
             </div>
             <div className={styles.sign}>
-            <Image src="/icons/blackMinus.svg" className={styles.signItem} width={30} height={22} alt="minus" />
+              <Image src="/icons/blackMinus.svg" className={styles.signItem} width={30} height={22} alt="minus" />
             </div>
             <div className={styles.sign}>
               <Image src="/icons/vector.svg" className={styles.signItem} width={30} height={22} alt="plus" />
@@ -35,7 +33,63 @@ export const ProsConsSection = () => {
           </div>
           <div className={styles.presetBlock}>
             <p className={styles.preset}>1 Preset</p>
-            <ul className={styles.presetList}>
+            <ul className={styles.presetList1}>
+              <li>Living</li>
+            </ul>
+          </div>
+          <div className={styles.signPreset}>
+            <Image src="/icons/blackMinus.svg" className={styles.signItem} width={30} height={22} alt="minus" />
+          </div>
+          <div>
+            <div className={styles.sign}>
+              <Image src="/icons/blackMinus.svg" className={styles.signItem} width={30} height={22} alt="minus" />
+            </div>
+            <div className={styles.sign}>
+              <Image src="/icons/blackMinus.svg" className={styles.signItem} width={30} height={22} alt="minus" />
+            </div>
+            <div className={styles.sign}>
+              <Image src="/icons/blackMinus.svg" className={styles.signItem} width={30} height={22} alt="minus" />
+            </div>
+          </div>
+          <div className={styles.dataSign}>
+            <div className={`${styles.sign} ${styles.signBot}`}>
+              <Image src="/icons/blackMinus.svg" className={styles.signItem} width={30} height={22} alt="minus" />
+            </div>
+            <div className={`${styles.sign} ${styles.signBot}`}>
+              <Image src="/icons/blackMinus.svg" className={styles.signItem} width={30} height={22} alt="minus" />
+            </div>
+            <div className={`${styles.sign} ${styles.signBot}`}>
+              <Image src="/icons/blackMinus.svg" className={styles.signItem} width={30} height={22} alt="minus" />
+            </div>
+            <div className={`${styles.sign} ${styles.signBot}`}>
+              <Image src="/icons/blackMinus.svg" className={styles.signItem} width={30} height={22} alt="minus" />
+            </div>
+            <div className={`${styles.sign} ${styles.signBot}`}>
+              <Image src="/icons/blackMinus.svg" className={styles.signItem} width={30} height={22} alt="minus" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className={styles.cheaper}>
+        <h1 className={styles.cardTitle}>Cheaper</h1>
+        <button className={styles.starterBtn}>Get Started</button>
+        <div className={styles.signs}>
+          <div className={styles.quickSign}>
+            <p className={styles.feat}>Unlimited</p>
+            <p className={styles.feat}>Unlimited</p>
+            <div className={`${styles.sign} ${styles.startSign} `}>
+              <Image src="/icons/vector.svg" className={styles.signItem} width={30} height={22} alt="minus" />
+            </div>
+            <div className={styles.sign}>
+              <Image src="/icons/blackMinus.svg" className={styles.signItem} width={30} height={22} alt="minus" />
+            </div>
+            <div className={styles.sign}>
+              <Image src="/icons/vector.svg" className={styles.signItem} width={30} height={22} alt="plus" />
+            </div>
+          </div>
+          <div className={styles.presetBlock}>
+            <p className={styles.preset}>1 Preset</p>
+            <ul className={styles.presetList1}>
               <li>Living</li>
             </ul>
           </div>
@@ -91,9 +145,9 @@ export const ProsConsSection = () => {
           </div>
           <div className={styles.presetBlock}>
             <p className={styles.preset}>5 Preset</p>
-            <ul className={styles.presetList}>
+            <ul className={styles.presetList2}>
               <li>Buy & Hold</li>
-              <li>International Tourism</li>
+              <li>Intl. Tourism</li>
             </ul>
           </div>
           <div className={styles.presetGrowth}>
@@ -108,7 +162,7 @@ export const ProsConsSection = () => {
               <Image src="/icons/vector.svg" className={styles.signItem} width={30} height={22} alt="plus" />
             </div>
           </div>
-          <div className={styles.bottomSign}>
+          <div className={styles.bottomSign1}>
             <div className={`${styles.sign} ${styles.signBot}`}>
               <Image src="/icons/blackMinus.svg" className={styles.signItem} width={30} height={22} alt="minus" />
             </div>
@@ -146,10 +200,10 @@ export const ProsConsSection = () => {
           </div>
           <div className={styles.presetBlock}>
             <p className={styles.preset}>7 Preset</p>
-            <ul className={styles.presetList}>
+            <ul className={styles.presetList3}>
               <li>STR</li>
               <li>Buy & Flip</li>
-              <li>International Tourism</li>
+              <li>RE Developer</li>
             </ul>
           </div>
           <Image src="/icons/vector.svg" className={styles.signItemPlus} width={30} height={22} alt="plus" />
@@ -163,7 +217,7 @@ export const ProsConsSection = () => {
             </div>
           </div>
 
-          <div className={styles.bottomSign}>
+          <div className={styles.bottomSign2}>
             <div className={`${styles.sign} ${styles.signBot}`}>
               <Image src="/icons/vector.svg" className={styles.signItem} width={30} height={22} alt="plus" />
             </div>

@@ -3,7 +3,7 @@ type mainFeaturesType = {
   strikeLine: boolean;
 };
 
-export const mainFeatures1: mainFeaturesType[] = [
+export const freeFeatures: mainFeaturesType[] = [
   {
     text: "5 AI-Powered Property Insights/day",
     strikeLine: false,
@@ -17,7 +17,39 @@ export const mainFeatures1: mainFeaturesType[] = [
     strikeLine: true,
   },
 ];
-export const mainFeatures2: mainFeaturesType[] = [
+export const starterFeatures: mainFeaturesType[] = [
+  {
+    text: "Unlimited AI-Powered Property Insights",
+    strikeLine: false,
+  },
+  {
+    text: "Property Data",
+    strikeLine: false,
+  },
+  {
+    text: "Nearby Places",
+    strikeLine: false,
+  },
+];
+export const proffFeatures: mainFeaturesType[] = [
+  {
+    text: "Owner Mortgage Data",
+    strikeLine: false,
+  },
+  {
+    text: "Comps",
+    strikeLine: false,
+  },
+  {
+    text: "AI Property Finder w Advanced Investor Filtering",
+    strikeLine: false,
+  },
+  {
+    text: "AI Market Research",
+    strikeLine: false,
+  },
+];
+export const growthFeatures: mainFeaturesType[] = [
   {
     text: "Unlimited AI-Powered Property Insights",
     strikeLine: false,
@@ -35,37 +67,26 @@ export const mainFeatures2: mainFeaturesType[] = [
     strikeLine: false,
   },
 ];
-export const mainFeatures3: mainFeaturesType[] = [
-  {
-    text: "Mortgage Data",
-    strikeLine: false,
-  },
-  {
-    text: "Comps",
-    strikeLine: false,
-  },
-  {
-    text: "Property Finder w Advanced Investor Filtering",
-    strikeLine: false,
-  },
-  {
-    text: "Down Payment",
-    strikeLine: false,
-  },
-];
 
-export const secondaryFeatures1: string[] = [
+export const freeSecFeatures: string[] = [
   "Global AI Data-Driven Property Reports ",
   "Census-Based Map Insights",
   "U.S. Census Data (Nationwide)",
   "Competitive Market Analysis",
   "Map & Street View (Worldwide)",
 ];
-export const secondaryFeatures2: string[] = [
+export const starterSecFeatures: string[] = [
+  "Global AI Data-Driven Property Reports ",
+  "Census-Based Map Insights",
+  "U.S. Census Data (Nationwide)",
+  "Competitive Market Analysis",
+  "Map & Street View (Worldwide)",
+];
+export const proffSecFeatures: string[] = ["Last Sale Data", "Lot Information", "Tax Information", "Pre-Foreclosure Properties", "Additional Property Data"];
+export const growthSecFeatures: string[] = [
   "3 AI Investor Presets",
-  "Nationwide Property & Owner Data",
+  "Insight on 150+ million properties and owners",
   "Nearby Schools, Amenities, Attractions",
-  "Comps",
+  "AI Recommendations",
   "Home Value & Rent Estimates",
 ];
-export const secondaryFeatures3: string[] = ["Last Sale Data", "Lot Information", "Tax Information", "Pre-Foreclosure Properties", "Additional Property Data"];
