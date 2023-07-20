@@ -94,7 +94,7 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
         <CircularProgress />
       ) : isAddressInUSA ? (
         <div className={styles.main}>
-          {!Boolean(user) || (isFreePlan && <KurbyPaidPlanLimit type={TabLimitMessage.PROPERTY_DATA_TAB} />)}
+          {isFreePlan && <KurbyPaidPlanLimit type={TabLimitMessage.PROPERTY_DATA_TAB} />}
           <div className={styles.wrapper}>
             <img
               src={
