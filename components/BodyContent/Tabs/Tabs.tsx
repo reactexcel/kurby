@@ -13,6 +13,7 @@ import { Location } from "../Location/Location";
 import { loadingContext } from "context/loadingContext";
 import styles from "./Tabs.module.scss";
 import { propertyDetailAvailable } from "context/propertyContext";
+import { useAuth } from "providers/AuthProvider";
 
 export function Tabs() {
   const [activeTab, setActiveTab] = useRecoilState(activeTabState);
@@ -88,6 +89,7 @@ export function Tabs() {
     }
   }, [isPropertyDataAvailable]);
 
+  const user = useAuth();
   return (
     <>
       <NextSeo description={explainedLikeAlocal.split(".")[0] || "Kurby uses location data to estimate property value like never before."} />
@@ -97,7 +99,7 @@ export function Tabs() {
             Location
           </ToggleButton>
 
-          {isPropertyDataAvailable && (
+          {!user && isPropertyDataAvailable && (
             <ToggleButton className={styles.button} value="property">
               Property data
             </ToggleButton>

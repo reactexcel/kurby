@@ -64,7 +64,7 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
       }
     }
 
-    if (isFreePlan && Boolean(user)) {
+    if (isFreePlan || Boolean(user)) {
       setPropertyInfoV2(propertyV2Mock);
       setLoading(false);
       // setPropertyDetail(data.data);
