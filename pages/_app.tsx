@@ -5,10 +5,15 @@ import Topbar from "../features/homepage/Topbar/Topbar";
 import { RecoilRoot } from "recoil";
 import { AuthProvider } from "providers/AuthProvider";
 import { WindowSizeProvider } from "context/windowSizeContext";
+import Head from "next/head";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
+      <Head>
+        <meta name="robots" content="index, follow" />
+        <title>Real Estate AI - Kurby</title>
+      </Head>
       {/* @next/next/no-before-interactive-script-outside-document */}
       <Script strategy="beforeInteractive" id="google-tag-manager">
         {`
