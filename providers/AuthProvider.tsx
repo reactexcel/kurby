@@ -119,7 +119,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const openProfile = () => {
-    outsetaRef.current?.profile?.open({ tab: "profile" });
+    outsetaRef.current?.profile?.open({ tab: "plan" });
   };
 
   return (

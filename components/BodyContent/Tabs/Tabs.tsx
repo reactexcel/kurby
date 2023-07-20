@@ -13,7 +13,6 @@ import { Location } from "../Location/Location";
 import { loadingContext } from "context/loadingContext";
 import styles from "./Tabs.module.scss";
 import { propertyDetailAvailable } from "context/propertyContext";
-import { useAuth } from "providers/AuthProvider";
 
 export function Tabs() {
   const [activeTab, setActiveTab] = useRecoilState(activeTabState);

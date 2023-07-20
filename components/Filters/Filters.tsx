@@ -15,7 +15,7 @@ import { loadingContext } from "context/loadingContext";
 import { useSearchCounter } from "hooks/use-search-counter";
 import { Dialog, DialogContent } from "@mui/material";
 import { LoginSignupButton } from "components/LoginSignupButton/LoginSignupButton";
-import { mapClicksCounter, visitorStayLimit } from "context/visitorContext";
+import { visitorStayLimit } from "context/visitorContext";
 import { usePersistentRecoilState } from "hooks/recoil-persist-state";
 import { useAuth } from "providers/AuthProvider";
 import { IAppPlans } from "context/plansContext";
@@ -229,12 +229,10 @@ export default function Filters() {
 
   const { user } = useAuth();
 
-  const [mapCounter] = usePersistentRecoilState("mapClickCounter", mapClicksCounter);
-  const [visitorStayLimitLaunched] = usePersistentRecoilState("visitorStayLimit", visitorStayLimit);
-
   const isFreePlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.FREE_PLAN;
   const isVisitor = !Boolean(user);
-  const visitorFourClicks = (isFreePlan || isVisitor) && mapCounter >= 4;
+
+  const [visitorStayLimitLaunched] = usePersistentRecoilState("visitorStayLimit", visitorStayLimit);
   const visitorSearchLimit = !Boolean(user) && searchLimit;
   const visitorStayLimitReached = isVisitor && visitorStayLimitLaunched;
 
@@ -245,14 +243,14 @@ export default function Filters() {
       // Open dialog after 2 seconds, to have respect for coldstart variables
       // Since user is undefined for the first time you load the page, we make sure,
       // we don't display the dialog too quickly
-      if (visitorStayLimitReached || visitorFourClicks || visitorSearchLimit) {
+      if (visitorStayLimitReached || visitorSearchLimit) {
         setShowDialog(true);
       }
-    }, 1800);
+    }, 800);
 
     // Clean up timer
     return () => clearTimeout(timer);
-  }, [visitorStayLimitReached, visitorFourClicks, visitorSearchLimit, user]);
+  }, [visitorStayLimitReached, visitorSearchLimit, user]);
 
   return (
     <>

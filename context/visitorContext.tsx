@@ -2,7 +2,6 @@ import { usePersistentRecoilState } from "hooks/recoil-persist-state";
 import { useAuth } from "providers/AuthProvider";
 import { useEffect } from "react";
 import { atom } from "recoil";
-import { IAppPlans } from "./plansContext";
 
 type GmapClickCounterType = {
   key: string;
@@ -34,8 +33,12 @@ export const freeUserStayLimit = atom(freeUserStayLimitState);
 
 export function useTenMinutesForVisitor() {
   const [, setLimit] = usePersistentRecoilState("visitorStayLimit", visitorStayLimit);
-
+  const { user } = useAuth();
+  const isVisitor = !user;
   useEffect(() => {
+    if (!isVisitor) {
+      return;
+    }
     const timer = setTimeout(() => {
       setLimit(true);
     }, 10 * 60 * 1000);

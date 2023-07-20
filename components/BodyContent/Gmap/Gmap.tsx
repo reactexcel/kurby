@@ -10,10 +10,13 @@ import { createMedianHomeValueLegend } from "components/Census/Legends/MedianHom
 import { getCenusTractGeometricData } from "components/Census/GeoJSON/getCensusCartographic";
 import { createMedianPovertyRateLegend, getPercentUnderPoverty } from "components/Census/Legends/MedianPovertyRate";
 import { HomevalueMapLegend, HouseholdMapLegend, PovertyRateLegend, VacantHousingLegend } from "components/Census/Legends/Legends";
-import { HomevalueTooltip, HouseholdIncomeTooltip, PovertyRateTooltip, VacantHousingTooltip } from "components/Census/Tooltips/Tooltips";
+import { HomevalueTooltip, HouseholdIncomeTooltip, PlanReachedTooltip, PovertyRateTooltip, VacantHousingTooltip } from "components/Census/Tooltips/Tooltips";
 import { createHousingUnitsLegend, getVacantHousingUnits } from "components/Census/Legends/MedianVacantHousing";
 import { ICensusResponse } from "components/Census/GeoJSON/Census";
 import { mapClicksCounter } from "context/visitorContext";
+import { usePersistentRecoilState } from "hooks/recoil-persist-state";
+import { useAuth } from "providers/AuthProvider";
+import { IAppPlans } from "context/plansContext";
 
 /**
  * Gmap
@@ -144,7 +147,7 @@ function MyComponent() {
       return;
     }
     setClickListener(true);
-    map.data.addListener("click", (event: google.maps.Data.MouseEvent) => {
+    map.data.addListener("mouseover", (event: google.maps.Data.MouseEvent) => {
       highlightTract(map, event);
       setMapCounter((prev) => prev + 1);
       // Get all necessary data for all categories for the map.
@@ -320,6 +323,20 @@ interface IMetricsTooltipProps extends IMetricsTooltipState {
 
 function MetricsTooltip(props: IMetricsTooltipProps) {
   const [value] = useRecoilState(feature);
+  const { user } = useAuth();
+  const [mapCounter] = usePersistentRecoilState("mapClickCounter", mapClicksCounter);
+  const isFreePlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.FREE_PLAN;
+  const isVisitor = !Boolean(user);
+  const visitorMapReachedClickLimit = (isFreePlan || isVisitor) && mapCounter >= 50;
+
+  if (visitorMapReachedClickLimit) {
+    return (
+      <InfoBox onCloseClick={() => props.onClose()} position={props.coordinates}>
+        <PlanReachedTooltip />
+      </InfoBox>
+    );
+  }
+
   return (
     <InfoBox onCloseClick={() => props.onClose()} position={props.coordinates}>
       <div>
