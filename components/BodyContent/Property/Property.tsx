@@ -64,7 +64,7 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
       }
     }
 
-    if (isFreePlan || Boolean(user)) {
+    if (isFreePlan || !Boolean(user)) {
       setPropertyInfoV2(propertyV2Mock);
       setLoading(false);
       // setPropertyDetail(data.data);
@@ -84,9 +84,11 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
     return <></>;
   }
 
+  const isLimitReached = !Boolean(user) || isFreePlan;
+
   return (
     <TabLayout
-      style={isFreePlan ? { height: "67vh", overflow: "hidden" } : {}}
+      style={isLimitReached ? { height: "67vh", overflow: "hidden" } : {}}
       className={`${styles.tabLayout} ${!isAddressInUSA ? styles.note : ""}`}
       loading={loading || !propertyInfo}
     >
@@ -94,7 +96,7 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
         <CircularProgress />
       ) : isAddressInUSA ? (
         <div className={styles.main}>
-          {isFreePlan && <KurbyPaidPlanLimit type={TabLimitMessage.PROPERTY_DATA_TAB} />}
+          {isLimitReached && <KurbyPaidPlanLimit type={TabLimitMessage.PROPERTY_DATA_TAB} />}
           <div className={styles.wrapper}>
             <img
               src={

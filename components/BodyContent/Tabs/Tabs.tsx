@@ -89,7 +89,6 @@ export function Tabs() {
     }
   }, [isPropertyDataAvailable]);
 
-  const user = useAuth();
   return (
     <>
       <NextSeo description={explainedLikeAlocal.split(".")[0] || "Kurby uses location data to estimate property value like never before."} />
@@ -99,7 +98,7 @@ export function Tabs() {
             Location
           </ToggleButton>
 
-          {!user && isPropertyDataAvailable && (
+          {isPropertyDataAvailable && (
             <ToggleButton className={styles.button} value="property">
               Property data
             </ToggleButton>
