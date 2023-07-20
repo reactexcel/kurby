@@ -1,3 +1,4 @@
+import { GetStarted } from "components/GetStartedPricing/GetStartedPricing";
 import styles from "./KurbyPaidPlan.module.scss";
 
 export enum TabLimitMessage {
@@ -27,6 +28,7 @@ function NeighborhoodBlurLimit() {
         Sign up for a paid plan to receive statistics on crime rate, average household income, % of residents with a bachelor degree, population growth, % of residents living
         under poverty, and more.
       </p>
+      <GetStarted />
     </div>
   );
 }
@@ -39,6 +41,7 @@ function PropertyDataBlurLimit() {
         <p className={styles.description}>
           Sign up for a paid plan to receive property owner information, mortgage information, home value estimates, comparable homes, and more.
         </p>
+        <GetStarted />
       </div>
     </div>
   );

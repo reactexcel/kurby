@@ -18,7 +18,8 @@ import { LoginSignupButton } from "components/LoginSignupButton/LoginSignupButto
 import { mapClicksCounter, visitorStayLimit } from "context/visitorContext";
 import { usePersistentRecoilState } from "hooks/recoil-persist-state";
 import { useAuth } from "providers/AuthProvider";
-import { plansContext } from "context/plansContext";
+import { IAppPlans, plansContext } from "context/plansContext";
+import { GetStarted } from "components/GetStartedPricing/GetStartedPricing";
 
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
@@ -235,6 +236,9 @@ export default function Filters() {
   const visitorFourClicks = isVisitor && mapCounter >= 4;
   const visitorSearchLimit = !Boolean(user) && searchLimit;
   const visitorStayLimitReached = isVisitor && visitorStayLimitLaunched;
+  const [freeStayLimit] = usePersistentRecoilState("freeUserStayLimit", visitorStayLimit);
+  const isFreePlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.FREE_PLAN;
+  const freeStayLimitReached = isFreePlan && freeStayLimit;
 
   const [showDialog, setShowDialog] = useState(false);
 
@@ -243,7 +247,7 @@ export default function Filters() {
       // Open dialog after 2 seconds, to have respect for coldstart variables
       // Since user is undefined for the first time you load the page, we make sure,
       // we don't display the dialog too quickly
-      if (visitorStayLimitReached || visitorFourClicks || visitorSearchLimit) {
+      if (visitorStayLimitReached || visitorFourClicks || visitorSearchLimit || freeStayLimitReached) {
         setShowDialog(true);
       }
     }, 1800);
@@ -301,10 +305,17 @@ export default function Filters() {
         {showDialog && (
           <Dialog open className={styles.dialog}>
             <h2 className={styles.dialogTitle}>Daily {(searchLimit && "Search") || ""} Limit Reached</h2>
-            <DialogContent className={styles.dialogContent}>
-              You’ve reached your daily limit. To get free unlimited access forever: Log In or Join Kurby, but you are free to accept or refuse.
-              <LoginSignupButton />
-            </DialogContent>
+            {freeStayLimitReached ? (
+              <DialogContent className={styles.dialogContent}>
+                You’ve reached your daily limit. To get unlimited access, upgrade to a paid plan.
+                <GetStarted />
+              </DialogContent>
+            ) : (
+              <DialogContent className={styles.dialogContent}>
+                You’ve reached your daily limit. To get free unlimited access forever: Log In or Join Kurby, but you are free to accept or refuse.
+                <LoginSignupButton />
+              </DialogContent>
+            )}
           </Dialog>
         )}
       </Box>
