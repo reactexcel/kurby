@@ -24,6 +24,7 @@ import TaxInfo from "./TaxInfo/TaxInfo";
 import KurbyPaidPlanLimit, { TabLimitMessage } from "components/AIWarningTooltip/KurbyPaidPlanLimit";
 import { IAppPlans } from "context/plansContext";
 import { useAuth } from "providers/AuthProvider";
+import { propertyV2Mock } from "mock/freePlanPropertyMock";
 
 /**
  * Body Content
@@ -39,6 +40,7 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
 
   const [loading, setLoading] = useState<boolean>(isNotLoaded);
   const [isTabAvailable, setTabAvailable] = useRecoilState(propertyDetailAvailable);
+  const isFreePlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.FREE_PLAN;
 
   useEffect(() => {
     async function preparePropertyV2Data() {
@@ -62,6 +64,13 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
       }
     }
 
+    if (isFreePlan && Boolean(user)) {
+      setPropertyInfoV2(propertyV2Mock);
+      setLoading(false);
+      // setPropertyDetail(data.data);
+      return;
+    }
+
     if (isNotLoaded) {
       setLoading(true);
       preparePropertyV2Data();
@@ -74,8 +83,6 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
   if (!isTabAvailable) {
     return <></>;
   }
-
-  const isFreePlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.FREE_PLAN;
 
   return (
     <TabLayout
