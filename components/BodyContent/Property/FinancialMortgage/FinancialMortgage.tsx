@@ -24,16 +24,16 @@ export default function FinancialMortgage() {
 function FinancialInformationTable() {
   const [propertyHouse] = useRecoilState(propertyInfoV2Context);
   const propertyHouseData = [
-    createData("Cash Buyer", propertyHouse?.cashBuyer, IAppPlans.PROFESSIONAL),
-    createData("Equity", propertyHouse?.equity, IAppPlans.PROFESSIONAL),
-    createData("Equity Percent", `${propertyHouse?.equityPercent}%` || "-", IAppPlans.PROFESSIONAL),
-    createData("Estimated Equity", toUSDField(propertyHouse?.estimatedEquity) || "-", IAppPlans.PROFESSIONAL),
-    createData("Estimated Value", toUSDField(propertyHouse?.estimatedValue) || "-", IAppPlans.PROFESSIONAL),
-    createData("High Equity", propertyHouse?.highEquity, IAppPlans.PROFESSIONAL),
-    createData("Negative Equity", propertyHouse?.negativeEquity, IAppPlans.PROFESSIONAL),
-    createData("Open Mortgage Balance", toUSDField(propertyHouse?.openMortgageBalance) || "-", IAppPlans.PROFESSIONAL),
-    createData("Pre Foreclosure", propertyHouse?.preForeclosure, IAppPlans.PROFESSIONAL),
-    createData("REO", propertyHouse?.reo, IAppPlans.PROFESSIONAL),
+    createData("Cash Buyer", propertyHouse?.cashBuyer),
+    createData("Equity", propertyHouse?.equity),
+    createData("Equity Percent", propertyHouse?.equityPercent),
+    createData("Estimated Equity", toUSDField(propertyHouse?.estimatedEquity)),
+    createData("Estimated Value", toUSDField(propertyHouse?.estimatedValue)),
+    createData("High Equity", propertyHouse?.highEquity),
+    createData("Negative Equity", propertyHouse?.negativeEquity),
+    createData("Open Mortgage Balance", toUSDField(propertyHouse?.openMortgageBalance)),
+    createData("Pre Foreclosure", propertyHouse?.preForeclosure),
+    createData("REO", propertyHouse?.reo),
   ];
   return <InformationTable dataFields={propertyHouseData} />;
 }
