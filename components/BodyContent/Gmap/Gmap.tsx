@@ -326,8 +326,7 @@ function MetricsTooltip(props: IMetricsTooltipProps) {
   const { user } = useAuth();
   const [mapCounter] = usePersistentRecoilState("mapClickCounter", mapClicksCounter);
   const isFreePlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.FREE_PLAN;
-  const isVisitor = !Boolean(user);
-  const visitorMapReachedClickLimit = (isFreePlan || isVisitor) && mapCounter >= 50;
+  const visitorMapReachedClickLimit = isFreePlan && mapCounter >= 50;
 
   if (visitorMapReachedClickLimit) {
     return (
