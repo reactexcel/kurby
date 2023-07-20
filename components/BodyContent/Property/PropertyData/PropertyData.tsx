@@ -1,30 +1,30 @@
 import styles from "../FinancialMortgage/FinancialMortgage.module.scss";
-import { InformationTable } from "components/BodyContent/InformationTable/InformationTable";
+import { InformationTable, createData } from "components/BodyContent/InformationTable/InformationTable";
 import { propertyInfoV2Context } from "context/propertyContext";
 import { useRecoilState } from "recoil";
+import { toUSDField } from "../utils";
 
 export default function PropertyData() {
   const [propertyInfo] = useRecoilState(propertyInfoV2Context);
-  const useBool = (value: boolean | undefined | null) => (value === undefined || null ? "-" : "False");
   const propertyDataHouse = [
-    { title: "Property Type", value: propertyInfo?.propertyType || "-" },
-    { title: "Property Use", value: propertyInfo?.propertyUse || "-" },
-    { title: "MFH2to4", value: useBool(propertyInfo?.MFH2to4) },
-    { title: "MFH5plus", value: useBool(propertyInfo?.MFH5plus) },
-    { title: "Square Feet", value: propertyInfo?.squareFeet || "-" },
-    { title: "Bathrooms", value: propertyInfo?.bathrooms || "-" },
-    { title: "Bedrooms", value: propertyInfo?.bedrooms || "-" },
-    { title: "Year built", value: propertyInfo?.yearBuilt || "-" },
-    { title: "Assessed Land Value", value: `$${propertyInfo?.assessedLandValue.toLocaleString()}` || "-" },
-    { title: "Assessed Improvement Value", value: `$${propertyInfo?.assessedImprovementValue.toLocaleString()}` || "-" },
-    { title: "Land Use", value: propertyInfo?.landUse || "-" },
-    { title: "Units Count", value: propertyInfo?.unitsCount || "-" },
-    { title: "Rooms Count", value: propertyInfo?.roomsCount || "-" },
-    { title: "Vacant", value: useBool(propertyInfo?.vacant) },
-    { title: "Basement", value: useBool(propertyInfo?.basement) },
-    { title: "Distressed", value: useBool(propertyInfo?.distressed) },
-    { title: "Garage Available", value: useBool(propertyInfo?.garage) },
-    { title: "Air Conditioning Available", value: useBool(propertyInfo?.airConditioningAvailable) },
+    createData("Property Type", propertyInfo?.propertyType),
+    createData("Property Use", propertyInfo?.propertyUse),
+    createData("MFH2to4", propertyInfo?.MFH2to4),
+    createData("MFH5plus", propertyInfo?.MFH5plus),
+    createData("Square Feet", propertyInfo?.squareFeet),
+    createData("Bathrooms", propertyInfo?.bathrooms),
+    createData("Bedrooms", propertyInfo?.bedrooms),
+    createData("Year built", propertyInfo?.yearBuilt),
+    createData("Assessed Land Value", toUSDField(propertyInfo?.assessedLandValue)),
+    createData("Assessed Improvement Value", toUSDField(propertyInfo?.assessedImprovementValue)),
+    createData("Land Use", propertyInfo?.landUse),
+    createData("Units Count", propertyInfo?.unitsCount),
+    createData("Rooms Count", propertyInfo?.roomsCount),
+    createData("Vacant", propertyInfo?.vacant),
+    createData("Basement", propertyInfo?.basement),
+    createData("Distressed", propertyInfo?.distressed),
+    createData("Garage Available", propertyInfo?.garage),
+    createData("Air Conditioning Available", propertyInfo?.airConditioningAvailable),
   ];
 
   return (

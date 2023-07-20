@@ -1,19 +1,19 @@
 import styles from "../FinancialMortgage/FinancialMortgage.module.scss";
-import { InformationTable } from "components/BodyContent/InformationTable/InformationTable";
+import { InformationTable, createData } from "components/BodyContent/InformationTable/InformationTable";
 import { propertyInfoV2Context } from "context/propertyContext";
 import { useRecoilState } from "recoil";
+import { toUSDField } from "../utils";
 
 export default function PropertyStatus() {
   const [propertyInfo] = useRecoilState(propertyInfoV2Context);
-  const useBool = (value: boolean | undefined | null) => (value === undefined || null ? "-" : "False");
   const propertyDataHouse = [
-    { title: "MLS Active", value: useBool(propertyInfo?.mlsActive) || "Null" },
-    { title: "Auction", value: useBool(propertyInfo?.auction) || "Null" },
-    { title: "MLS Cancelled", value: useBool(propertyInfo?.mlsCancelled) },
-    { title: "MLS Failed", value: useBool(propertyInfo?.mlsFailed) || "Null" },
-    { title: "MLS Listing Price", value: propertyInfo?.mlsListingPrice ? `$${propertyInfo?.mlsListingPrice?.toLocaleString()}` : "-" },
-    { title: "MLS Pending", value: useBool(propertyInfo?.mlsPending) },
-    { title: "MLS Sold", value: useBool(propertyInfo?.mlsSold) },
+    createData("MLS Active", propertyInfo?.mlsActive),
+    createData("Auction", propertyInfo?.auction),
+    createData("MLS Cancelled", propertyInfo?.mlsCancelled),
+    createData("MLS Failed", propertyInfo?.mlsFailed),
+    createData("MLS Listing Price", toUSDField(propertyInfo?.mlsListingPrice)),
+    createData("MLS Pending", propertyInfo?.mlsPending),
+    createData("MLS Sold", propertyInfo?.mlsSold),
   ];
 
   return (

@@ -41,6 +41,7 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
   const [loading, setLoading] = useState<boolean>(isNotLoaded);
   const [isTabAvailable, setTabAvailable] = useRecoilState(propertyDetailAvailable);
   const isFreePlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.FREE_PLAN;
+  const isGrowthPlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.GROWTH;
 
   useEffect(() => {
     async function preparePropertyV2Data() {
@@ -68,6 +69,13 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
       setPropertyInfoV2(propertyV2Mock);
       setLoading(false);
       // setPropertyDetail(data.data);
+      return;
+    }
+
+    if (isGrowthPlan) {
+      setLoading(true);
+      preparePropertyV2Data();
+
       return;
     }
 

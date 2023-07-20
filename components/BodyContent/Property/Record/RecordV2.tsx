@@ -21,6 +21,7 @@ import OwnerV2 from "../Owner/OwnerV2";
 import { InformationTable, createData } from "components/BodyContent/InformationTable/InformationTable";
 import { propertyDetailContext, propertyInfoV2Context } from "context/propertyContext";
 import { toUSDField } from "../utils";
+import { IAppPlans } from "context/plansContext";
 
 /**
  * Body Content
@@ -158,7 +159,7 @@ function OwnerInformationTable({ propertyHouse }: { propertyHouse: IPropertyHous
     createData("Years Owned", propertyHouse?.yearsOwned),
     createData("Inherited", propertyHouse?.inherited),
     createData("Death", propertyHouse?.death),
-    createData("Spousal Death", propertyDetail?.spousalDeath),
+    createData("Spousal Death", propertyDetail?.spousalDeath, IAppPlans.PROFESSIONAL),
   ];
   return <InformationTable dataFields={propertyHouseData} />;
 }

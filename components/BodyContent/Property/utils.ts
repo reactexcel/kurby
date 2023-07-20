@@ -4,7 +4,7 @@ function formatPriceToUSD(num: number): string {
 
 export function toUSDField(num: any) {
   if (!Boolean(num) && typeof num !== "number") {
-    return "-";
+    return undefined;
   }
   return formatPriceToUSD(num);
 }

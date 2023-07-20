@@ -246,6 +246,7 @@ export default function Filters() {
       // Open dialog after 2 seconds, to have respect for coldstart variables
       // Since user is undefined for the first time you load the page, we make sure,
       // we don't display the dialog too quickly
+      console.log(visitorStayLimitReached, visitorSearchLimit, visitorMapReachedClickLimit);
       if (visitorStayLimitReached || visitorSearchLimit || visitorMapReachedClickLimit) {
         setShowDialog(true);
       }
