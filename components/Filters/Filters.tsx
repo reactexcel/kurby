@@ -18,7 +18,7 @@ import { LoginSignupButton } from "components/LoginSignupButton/LoginSignupButto
 import { mapClicksCounter, visitorStayLimit } from "context/visitorContext";
 import { usePersistentRecoilState } from "hooks/recoil-persist-state";
 import { useAuth } from "providers/AuthProvider";
-import { IAppPlans, plansContext } from "context/plansContext";
+import { IAppPlans } from "context/plansContext";
 import { GetStarted } from "components/GetStartedPricing/GetStartedPricing";
 
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
@@ -237,8 +237,6 @@ export default function Filters() {
   const visitorFourClicks = (isFreePlan || isVisitor) && mapCounter >= 4;
   const visitorSearchLimit = !Boolean(user) && searchLimit;
   const visitorStayLimitReached = isVisitor && visitorStayLimitLaunched;
-  const [freeStayLimit] = usePersistentRecoilState("freeUserStayLimit", visitorStayLimit);
-  const freeStayLimitReached = isFreePlan && freeStayLimit;
 
   const [showDialog, setShowDialog] = useState(false);
 
@@ -247,7 +245,7 @@ export default function Filters() {
       // Open dialog after 2 seconds, to have respect for coldstart variables
       // Since user is undefined for the first time you load the page, we make sure,
       // we don't display the dialog too quickly
-      if (visitorStayLimitReached || visitorFourClicks || visitorSearchLimit || freeStayLimitReached) {
+      if (visitorStayLimitReached || visitorFourClicks || visitorSearchLimit) {
         setShowDialog(true);
       }
     }, 1800);
@@ -305,7 +303,7 @@ export default function Filters() {
         {showDialog && (
           <Dialog open className={styles.dialog}>
             <h2 className={styles.dialogTitle}>Daily {(searchLimit && "Search") || ""} Limit Reached</h2>
-            {isFreePlan || freeStayLimitReached ? (
+            {isFreePlan ? (
               <DialogContent className={styles.dialogContent}>
                 You’ve reached your daily limit. To get unlimited access, upgrade to a paid plan.
                 <GetStarted />

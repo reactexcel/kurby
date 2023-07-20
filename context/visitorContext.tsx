@@ -44,18 +44,18 @@ export function useTenMinutesForVisitor() {
   }, [setLimit]);
 }
 
-export function useFifthTeenMinutesForFreePlan() {
-  const [, setLimit] = usePersistentRecoilState("freeUserStayLimit", visitorStayLimit);
-  const { user } = useAuth();
-  const isFreePlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.FREE_PLAN;
-  useEffect(() => {
-    if (!isFreePlan) {
-      return;
-    }
-    const timer = setTimeout(() => {
-      setLimit(true);
-    }, 15 * 60 * 1000); // 15 minutes in milliseconds
+// export function useFifthTeenMinutesForFreePlan() {
+//   const [, setLimit] = usePersistentRecoilState("freeUserStayLimit", freeUserStayLimit);
+//   const { user } = useAuth();
+//   const isFreePlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.FREE_PLAN;
+//   useEffect(() => {
+//     if (!isFreePlan) {
+//       return;
+//     }
+//     const timer = setTimeout(() => {
+//       setLimit(true);
+//     }, 15 * 60 * 1000); // 15 minutes in milliseconds
 
-    return () => clearTimeout(timer);
-  }, [setLimit]);
-}
+//     return () => clearTimeout(timer);
+//   }, [setLimit]);
+// }

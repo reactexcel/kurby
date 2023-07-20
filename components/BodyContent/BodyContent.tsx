@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import Gmap from "./Gmap/Gmap";
 import { Tabs } from "./Tabs/Tabs";
 import styles from "./BodyContent.module.scss";
-import { useTenMinutesForVisitor, useFifthTeenMinutesForFreePlan } from "context/visitorContext";
+import { useTenMinutesForVisitor } from "context/visitorContext";
 
 /**
  * Body Content
@@ -10,7 +10,6 @@ import { useTenMinutesForVisitor, useFifthTeenMinutesForFreePlan } from "context
  */
 export default function BodyContent() {
   useTenMinutesForVisitor();
-  useFifthTeenMinutesForFreePlan();
   return (
     <Box className={styles.main}>
       <Box className={styles.map}>
