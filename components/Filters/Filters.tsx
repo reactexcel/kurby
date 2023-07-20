@@ -232,12 +232,12 @@ export default function Filters() {
   const [mapCounter] = usePersistentRecoilState("mapClickCounter", mapClicksCounter);
   const [visitorStayLimitLaunched] = usePersistentRecoilState("visitorStayLimit", visitorStayLimit);
 
+  const isFreePlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.FREE_PLAN;
   const isVisitor = !Boolean(user);
-  const visitorFourClicks = isVisitor && mapCounter >= 4;
+  const visitorFourClicks = (isFreePlan || isVisitor) && mapCounter >= 4;
   const visitorSearchLimit = !Boolean(user) && searchLimit;
   const visitorStayLimitReached = isVisitor && visitorStayLimitLaunched;
   const [freeStayLimit] = usePersistentRecoilState("freeUserStayLimit", visitorStayLimit);
-  const isFreePlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.FREE_PLAN;
   const freeStayLimitReached = isFreePlan && freeStayLimit;
 
   const [showDialog, setShowDialog] = useState(false);
@@ -305,7 +305,7 @@ export default function Filters() {
         {showDialog && (
           <Dialog open className={styles.dialog}>
             <h2 className={styles.dialogTitle}>Daily {(searchLimit && "Search") || ""} Limit Reached</h2>
-            {freeStayLimitReached ? (
+            {isFreePlan || freeStayLimitReached ? (
               <DialogContent className={styles.dialogContent}>
                 You’ve reached your daily limit. To get unlimited access, upgrade to a paid plan.
                 <GetStarted />
