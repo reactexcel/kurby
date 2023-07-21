@@ -1,17 +1,23 @@
 .card {
   background-color: #00a13c;
   width: 100%;
-  padding: 20px;
+  padding: 30px;
   margin-bottom: 80px;
   border-radius: 20px;
   box-shadow: 0px 2px 15px 0px rgba(0, 161, 60, 0.1);
   @media (max-width: 1072px) {
     width: 100%;
   }
-  @media (max-width: 1000px) {
-    width: 80%;
+  @media (max-width: 1100px) {
+    width: 100%;
+    padding: 10px;
   }
-
+  @media (max-width: 700px) {
+    padding: 0 10px;
+  }
+  @media (max-width: 586px) {
+    padding: 10px;
+  }
   @media (max-width: 550px) {
     width: 98%;
   }
@@ -33,10 +39,10 @@
 .price {
   color: #fff;
   font-weight: bold;
-  font-size: 46px;
+  font-size: 40px;
   line-height: normal;
   text-transform: uppercase;
-  margin: 0 0 30px;
+  margin: 0;
 }
 .pricePer {
   color: #fff;
@@ -51,8 +57,8 @@
   color: #fff;
   font-weight: 400;
   font-size: 20px;
-  @media (max-width: 1000px) {
-    width: 100%;
+  @media (max-width: 1100px) {
+    width: 80%;
   }
 }
 .header {
@@ -60,8 +66,8 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 40px 40px 0;
-  @media (max-width: 1000px) {
+  padding: 20px 20px 0;
+  @media (max-width: 1100px) {
     width: 100%;
     flex-direction: column;
     align-items: center;
@@ -74,14 +80,17 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 0 40px;
-  @media (max-width: 1520px) {
+  padding: 0 20px;
+  @media (max-width: 1870px) {
     margin-top: -70px;
   }
-  @media (max-width: 1000px) {
+  @media (max-width: 1100px) {
     flex-direction: column;
     justify-content: center;
     padding: 0;
+  }
+  @media (max-width: 700px) {
+    padding: 0 10px;
   }
 }
 .featureParams {
@@ -94,10 +103,10 @@
   margin-top: 8px;
   margin-right: 30px;
   width: fit-content;
-  @media (max-width: 1120px) {
+  @media (max-width: 1371px) {
     margin-bottom: 25px;
   }
-  @media (max-width: 1000px) {
+  @media (max-width: 1100px) {
     margin-bottom: 40px;
   }
 }
@@ -107,7 +116,7 @@
   flex-wrap: wrap;
   height: 12rem;
   width: 60%;
-  @media (max-width: 1520px) {
+  @media (max-width: 1870px) {
     height: 16rem;
     margin-top: 40px;
     width: fit-content;
@@ -115,10 +124,10 @@
   @media (max-width: 1289px) {
     margin-bottom: 30px;
   }
-  @media (max-width: 1120px) {
+  @media (max-width: 1371px) {
     height: 24rem;
   }
-  @media (max-width: 1000px) {
+  @media (max-width: 1100px) {
     height: 30rem;
     width: 100%;
     align-items: center;
@@ -129,9 +138,6 @@
   @media (max-width: 599px) {
     height: 34rem;
   }
-  //   @media (max-width: 413px) {
-  //     height: 30rem;
-  //   }
 }
 .featuresBlock {
   ul {
@@ -139,10 +145,11 @@
     flex-direction: column;
     justify-content: center;
     margin-top: 30px;
-    @media (max-width: 1520px) {
+    padding: 0;
+    @media (max-width: 1870px) {
       margin-top: 10px;
     }
-    @media (max-width: 1000px) {
+    @media (max-width: 1100px) {
       margin-top: 50px;
     }
     @media (max-width: 780px) {
@@ -179,8 +186,9 @@
   flex-direction: column;
   flex-wrap: wrap;
   height: 9rem;
-  @media (max-width: 1520px) {
+  @media (max-width: 1870px) {
     flex-wrap: nowrap;
     height: 14rem;
   }
+
 }

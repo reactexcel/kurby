@@ -4,12 +4,11 @@
   justify-content: space-between;
   background-color: #00a13c;
   padding: 40px;
-  width: 75%;
+  width: 70%;
   margin: 0 auto;
   border-radius: 20px;
 
   @media (max-width: 1200px) {
-    //1600
     flex-wrap: wrap;
     flex-direction: column;
     justify-content: space-around;
@@ -23,7 +22,6 @@
 .leftBlock {
   margin-top: 10px;
   @media (max-width: 1200px) {
-    //1600
     margin-bottom: 20px;
   }
   @media (max-width: 1000px) {
@@ -55,9 +53,6 @@
   width: 90%;
   @media (max-width: 1000px) {
     width: 90%;
-    //margin: 10px;
-    //padding: 0 15px;
-    //margin-right: 3%;
   }
   @media (max-width: 700px) {
     font-size: 20px;
@@ -68,14 +63,10 @@
 }
 .subtitle {
   font-weight: 400;
-  font-size: 26px;
+  font-size: 22px;
   color: #fff;
-  //width: 120%;
   margin-top: 20px;
   text-align: center;
-  @media (max-width: 1000px) {
-    //width: 95%;
-  }
   @media (max-width: 700px) {
     font-size: 20px;
   }
@@ -85,15 +76,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0 60px 20px;
+  padding: 0 60px 10px;
   border-radius: 12px;
-  width: 20rem;
-  //width: 458px;
-  //height: 301px;
+  width: 16rem;
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(2px);
   @media (max-width: 600px) {
-   // width: 94%;
     padding: 0 30px 10px;
   }
 }
