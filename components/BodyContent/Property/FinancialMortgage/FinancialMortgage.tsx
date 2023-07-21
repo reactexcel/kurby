@@ -14,7 +14,7 @@ export default function FinancialMortgage() {
         <FinancialInformationTable />
       </div>
       <div style={{ flex: 1 }}>
-        <h3 className={styles.titleStyle}>Mortgage Information (Upgrade to Pro Plan)</h3>
+        <h3 className={styles.titleStyle}>Mortgage Information</h3>
         <MortgageInformation />
       </div>
     </div>

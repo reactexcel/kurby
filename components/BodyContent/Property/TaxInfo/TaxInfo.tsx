@@ -28,7 +28,7 @@ export default function TaxInfo() {
   ];
   return (
     <>
-      <h3 className={styles.titleStyle}>Tax Info (Requires Pro Plan)</h3>
+      <h3 className={styles.titleStyle}>Tax Info</h3>
       <InformationTable dataFields={propertyHouseData} />
     </>
   );

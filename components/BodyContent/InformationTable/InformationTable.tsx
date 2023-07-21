@@ -99,7 +99,7 @@ export function InformationTable({ dataFields }: IInformationTableProps) {
           <tr key={index}>
             <td className={`${styles.column} ${styles.column1}`}>{item.title}</td>
             {isGrowthPlan && !Boolean(item.value) && item.plan === IAppPlans.PROFESSIONAL ? (
-              <td style={{ filter: "blur(5px)" }} className={`${styles.column} ${styles.column2}`}>
+              <td style={{ userSelect: "none", filter: "blur(5px)" }} className={`${styles.column} ${styles.column2}`}>
                 {generateRandomWord()}
               </td>
             ) : (

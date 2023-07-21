@@ -20,7 +20,7 @@ export default function LotInfo() {
   ];
   return (
     <>
-      <h3 className={styles.titleStyle}>Lot Info (Requires Pro Plan)</h3>
+      <h3 className={styles.titleStyle}>Lot Info</h3>
       <InformationTable dataFields={propertyHouseData} />
     </>
   );
