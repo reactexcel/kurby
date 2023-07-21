@@ -7,9 +7,7 @@
   padding: 80px 10%;
 
   @media (max-width: 1200px) {
-    // flex-wrap: wrap;
     margin: 40px auto;
-    // justify-content: space-around;
   }
   @media (max-width: 520px) {
     padding: 60px 5%;
@@ -24,6 +22,9 @@
   align-items: center;
   justify-content: center;
   margin-bottom: -25px;
+  @media (max-width: 1620px) {
+   width: 90%;
+  }
   @media (max-width: 1000px) {
     justify-content: center;
   }

@@ -2,18 +2,21 @@
   background-color: #00a13c;
   width: 100%;
   padding: 0 30px;
-  margin-bottom: 80px;
+  margin-bottom: 50px;
   border-radius: 20px;
   box-shadow: 0px 2px 15px 0px rgba(0, 161, 60, 0.1);
   @media (max-width: 1072px) {
     width: 100%;
   }
   @media (max-width: 1100px) {
-    width: 100%;
-    padding: 10px;
+    width: 70%;
+    padding: 15px 10px 25px;
+  }
+  @media (max-width: 1000px) {
+    width: 80%;
   }
   @media (max-width: 700px) {
-    padding: 0 10px;
+    //padding: 0 10px;
   }
   @media (max-width: 586px) {
     padding: 10px;
@@ -23,7 +26,7 @@
   }
 }
 .title {
-  margin: 0 0 10px;
+  margin: 0 0 5px;
   font-size: 24px;
   font-weight: 400;
   line-height: normal;
@@ -31,15 +34,15 @@
   color: #fff;
 }
 .subTitle {
-  font-size: 18px;
+  font-size: 15px;
   text-transform: capitalize;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   color: #fff;
 }
 .price {
   color: #fff;
   font-weight: bold;
-  font-size: 40px;
+  font-size: 32px;
   line-height: normal;
   text-transform: uppercase;
   margin: 0;
@@ -56,7 +59,7 @@
   border-radius: 12px;
   color: #fff;
   font-weight: 400;
-  font-size: 20px;
+  font-size: 18px;
   @media (max-width: 1100px) {
     width: 80%;
   }
@@ -66,13 +69,13 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 20px 0;
+  padding: 15px 20px 0;
   @media (max-width: 1100px) {
     width: 100%;
     flex-direction: column;
     align-items: center;
     margin-top: 0;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
   }
 }
 .content {
@@ -81,54 +84,51 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
-  @media (max-width: 1870px) {
-    margin-top: -70px;
-  }
   @media (max-width: 1100px) {
     flex-direction: column;
     justify-content: center;
     padding: 0;
   }
   @media (max-width: 700px) {
-    padding: 0 10px;
+   // padding: 0 10px;
   }
 }
 .featureParams {
   display: flex;
   color: #fff;
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 300;
   list-style: none;
-  height: 30px;
-  margin-top: 8px;
+  height: 27px;
+  margin-top: 5px;
   margin-right: 30px;
   width: fit-content;
-  @media (max-width: 1371px) {
-    margin-bottom: 25px;
+  @media (max-width: 636px) {
+    margin-bottom: 20px;
   }
   @media (max-width: 1100px) {
-    margin-bottom: 40px;
+    //margin-bottom: 40px;
   }
 }
 .feature {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  height: 12rem;
+  height: 10rem;
   width: 60%;
-  @media (max-width: 1870px) {
-    height: 16rem;
-    margin-top: 40px;
+  @media (max-width: 1440px) {
+    height: 12rem;
+    //margin-top: 40px;
     width: fit-content;
   }
   @media (max-width: 1289px) {
     margin-bottom: 30px;
   }
-  @media (max-width: 1371px) {
-    height: 24rem;
+  @media (max-width: 636px) {
+    height: 17rem;
   }
   @media (max-width: 1100px) {
-    height: 30rem;
+    //height: 30rem;
     width: 100%;
     align-items: center;
     margin-top: 0;
@@ -136,7 +136,7 @@
   @media (max-width: 780px) {
   }
   @media (max-width: 599px) {
-    height: 34rem;
+   height: 22rem;
   }
 }
 .featuresBlock {
@@ -144,13 +144,13 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin-top: 30px;
+    margin-top: 0px;
     padding: 0;
-    @media (max-width: 1870px) {
+    @media (max-width: 1440px) {
       margin-top: 10px;
     }
     @media (max-width: 1100px) {
-      margin-top: 50px;
+     // margin-top: 50px;
     }
     @media (max-width: 780px) {
       margin-top: 50px;
@@ -170,7 +170,7 @@
   }
 }
 .featureTitle {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 400;
   color: #fff;
   text-transform: uppercase;
@@ -178,6 +178,7 @@
 }
 .icon {
   margin-right: 10px;
+  margin-top: -5px;
   @media (max-width: 1110px) {
     margin-right: 10px;
   }
@@ -186,10 +187,9 @@
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  height: 9rem;
-  @media (max-width: 1870px) {
+  height: 7rem;
+  @media (max-width: 1440px) {
     flex-wrap: nowrap;
     height: 14rem;
   }
-
 }
