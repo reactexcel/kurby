@@ -250,7 +250,7 @@ export default function Filters() {
       if (visitorStayLimitReached || visitorSearchLimit || visitorMapReachedClickLimit) {
         setShowDialog(true);
       }
-    }, 800);
+    }, 1500);
 
     // Clean up timer
     return () => clearTimeout(timer);

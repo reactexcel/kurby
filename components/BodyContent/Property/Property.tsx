@@ -41,7 +41,10 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
   const [loading, setLoading] = useState<boolean>(isNotLoaded);
   const [isTabAvailable, setTabAvailable] = useRecoilState(propertyDetailAvailable);
   const isFreePlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.FREE_PLAN;
+  const isStarterPlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.STARTER;
   const isGrowthPlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.GROWTH;
+
+  console.log(user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.STARTER);
 
   useEffect(() => {
     async function preparePropertyV2Data() {
@@ -65,7 +68,7 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
       }
     }
 
-    if (isFreePlan || !Boolean(user)) {
+    if (isFreePlan || isStarterPlan || !Boolean(user)) {
       setPropertyInfoV2(propertyV2Mock);
       setLoading(false);
       // setPropertyDetail(data.data);
@@ -96,7 +99,7 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
 
   return (
     <TabLayout
-      style={isLimitReached ? { height: "67vh", overflow: "hidden" } : {}}
+      style={isLimitReached || isStarterPlan ? { height: "67vh", overflow: "hidden" } : {}}
       className={`${styles.tabLayout} ${!isAddressInUSA ? styles.note : ""}`}
       loading={loading || !propertyInfo}
     >
@@ -105,6 +108,7 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
       ) : isAddressInUSA ? (
         <div className={styles.main}>
           {isLimitReached && <KurbyPaidPlanLimit type={TabLimitMessage.PROPERTY_DATA_TAB} />}
+          {isStarterPlan && <KurbyPaidPlanLimit type={TabLimitMessage.PROPERTY_DATA_TAB_STARTER} />}
           <div className={styles.wrapper}>
             <img
               src={

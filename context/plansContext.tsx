@@ -2,6 +2,7 @@ import { atom } from "recoil";
 
 export enum IAppPlans {
   FREE_PLAN = "Free",
+  STARTER = "Starter",
   GROWTH = "Growth Plan",
   PROFESSIONAL = "Professional Plan",
 }
