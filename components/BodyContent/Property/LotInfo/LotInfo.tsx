@@ -4,6 +4,7 @@ import React from "react";
 import { useRecoilState } from "recoil";
 import styles from "../FinancialMortgage/FinancialMortgage.module.scss";
 import { IAppPlans } from "context/plansContext";
+import { useIsProPlan } from "hooks/require-pro-plan";
 
 export default function LotInfo() {
   const [propertyDetail] = useRecoilState(propertyDetailContext);
@@ -18,9 +19,11 @@ export default function LotInfo() {
     createData("Property Class", propertyInfo?.propertyClass, IAppPlans.PROFESSIONAL),
     createData("Property Use", propertyInfo?.propertyUse, IAppPlans.PROFESSIONAL),
   ];
+
+  const isProPlan = useIsProPlan();
   return (
     <>
-      <h3 className={styles.titleStyle}>Lot Info</h3>
+      <h3 className={styles.titleStyle}>Lot Info {!isProPlan && "(Requires Pro Plan)"}</h3>
       <InformationTable dataFields={propertyHouseData} />
     </>
   );

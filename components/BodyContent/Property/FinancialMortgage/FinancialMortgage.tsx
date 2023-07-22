@@ -5,8 +5,10 @@ import { useRecoilState } from "recoil";
 import { propertyDetailContext, propertyInfoV2Context } from "context/propertyContext";
 import { toUSDField } from "../utils";
 import { IAppPlans } from "context/plansContext";
+import { useIsProPlan } from "hooks/require-pro-plan";
 
 export default function FinancialMortgage() {
+  const isProPlan = useIsProPlan();
   return (
     <div className={styles.wrapper}>
       <div style={{ flex: 1 }}>
@@ -14,7 +16,7 @@ export default function FinancialMortgage() {
         <FinancialInformationTable />
       </div>
       <div style={{ flex: 1 }}>
-        <h3 className={styles.titleStyle}>Mortgage Information</h3>
+        <h3 className={styles.titleStyle}>Mortgage Information {!isProPlan && "(Requires Pro Plan)"}</h3>
         <MortgageInformation />
       </div>
     </div>
@@ -53,5 +55,6 @@ function MortgageInformation() {
     createData("Load Date", mortgage?.load_date, IAppPlans.PROFESSIONAL),
     createData("Maturity Date", mortgage?.maturityDate, IAppPlans.PROFESSIONAL),
   ];
+
   return <InformationTable dataFields={propertyHouseData} />;
 }
