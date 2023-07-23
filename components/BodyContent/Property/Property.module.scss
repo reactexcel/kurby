@@ -28,3 +28,12 @@
 .note {
   padding: 1.5rem;
 }
+
+.propertyDataNotAvailable {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 67vh;
+  overflow: hidden;
+}

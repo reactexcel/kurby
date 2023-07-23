@@ -80,14 +80,6 @@ export function Tabs() {
     getOpenAiData();
   }, [filterVal.address, filterVal.selectedPlace]);
 
-  const [isPropertyDataAvailable] = useRecoilState(propertyDetailAvailable);
-
-  useEffect(() => {
-    if (!isPropertyDataAvailable) {
-      setActiveTab("location");
-    }
-  }, [isPropertyDataAvailable]);
-
   return (
     <>
       <NextSeo description={explainedLikeAlocal.split(".")[0] || "Kurby uses location data to estimate property value like never before."} />
@@ -97,11 +89,9 @@ export function Tabs() {
             Location
           </ToggleButton>
 
-          {isPropertyDataAvailable && (
-            <ToggleButton className={styles.button} value="property">
-              Property data
-            </ToggleButton>
-          )}
+          <ToggleButton className={styles.button} value="property">
+            Property data
+          </ToggleButton>
 
           <ToggleButton className={styles.button} value="neighborhood">
             Neighborhood

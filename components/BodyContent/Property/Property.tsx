@@ -44,8 +44,6 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
   const isStarterPlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.STARTER;
   const isGrowthPlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.GROWTH;
 
-  console.log(user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.STARTER);
-
   useEffect(() => {
     async function preparePropertyV2Data() {
       const { data } = await axios.post<IPropertySearchResponse>("/api/propertyV2", {
@@ -92,7 +90,11 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
   const isAddressInUSA = useMemo(() => filterVal?.selectedPlace?.formatted_address?.includes("USA"), [filterVal?.selectedPlace?.formatted_address]);
 
   if (!isTabAvailable) {
-    return <></>;
+    return (
+      <TabLayout className={styles.propertyDataNotAvailable}>
+        <h2>Property Data Unavailable</h2>
+      </TabLayout>
+    );
   }
 
   const isLimitReached = !Boolean(user) || isFreePlan;
