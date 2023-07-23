@@ -9,25 +9,14 @@ interface OpenAiResponseType {
   redFlags?: string;
 }
 
-type VariantType = "explainedLikeAlocal" | "greenFlags" | "redFlags" | "all";
+type VariantType = "explainedLikeAlocal" | "greenFlags" | "redFlags";
 
 export const useOpenAi = () => {
   const [{ explainedLikeAlocal, greenFlags, redFlags }, setOpenAiResponse] = useState<OpenAiResponseType>({});
   const [filterVal] = useRecoilState(filterState);
-  const [loading, setLoading] = useRecoilState(loadingContext);
+  const [, setLoading] = useRecoilState(loadingContext);
 
   const setLoadingCallback = useCallback((variant: VariantType, state: boolean) => {
-    if (variant === "all") {
-      return setLoading((prevState) => ({
-        ...prevState,
-        openai: {
-          explainedLikeAlocal: state,
-          greenFlags: state,
-          redFlags: state,
-        },
-      }));
-    }
-
     setLoading((prevState) => ({
       ...prevState,
       openai: {
@@ -57,9 +46,7 @@ export const useOpenAi = () => {
 
       const data = JSON.parse(event.data);
 
-      if (loading.openai[data.variant as keyof typeof loading.openai]) {
-        setLoadingCallback(data.variant, false);
-      }
+      setLoadingCallback(data.variant, false);
       setOpenAiResponse((prevState) => ({
         ...prevState,
         [data.variant]: prevState[data.variant as keyof typeof prevState] + data?.content,
@@ -69,6 +56,10 @@ export const useOpenAi = () => {
     eventSource.onerror = (error) => {
       eventSource.close();
       console.error(error);
+    };
+
+    return () => {
+      eventSource.close();
     };
   }, [filterVal.address]);
 
