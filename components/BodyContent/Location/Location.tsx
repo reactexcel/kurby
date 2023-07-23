@@ -50,8 +50,8 @@ export const Location = ({ explainedLikeAlocal, greenFlags, redFlags }: Location
           </Box>
         </Box>
         <Box className={styles.flags}>
-          <Flags color="Green" flagsArr={greenFlags} loading={loading.openai.greenFlags} />
-          <Flags color="Red" flagsArr={redFlags} loading={loading.openai.redFlags} />
+          <Flags color="Green" flagsMessage={greenFlags} loading={loading.openai.greenFlags} />
+          <Flags color="Red" flagsMessage={redFlags} loading={loading.openai.redFlags} />
         </Box>
       </Box>
     </TabLayout>

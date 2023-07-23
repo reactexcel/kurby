@@ -5,41 +5,16 @@ import { useRecoilState } from "recoil";
 
 interface OpenAiResponseType {
   explainedLikeAlocal?: string;
-  greenFlags?: string[];
-  redFlags?: string[];
+  greenFlags?: string;
+  redFlags?: string;
 }
 
 type VariantType = "explainedLikeAlocal" | "greenFlags" | "redFlags" | "all";
 
-const request = async (params: any) => {
-  try {
-    const response = await fetch(`/api/openai`, {
-      method: "POST",
-      body: JSON.stringify(params),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    return await response.json();
-  } catch (error) {
-    console.error(error);
-
-    return {};
-  }
-};
-
 export const useOpenAi = () => {
   const [{ explainedLikeAlocal, greenFlags, redFlags }, setOpenAiResponse] = useState<OpenAiResponseType>({});
   const [filterVal] = useRecoilState(filterState);
-  const [, setLoading] = useRecoilState(loadingContext);
-
-  const setOpenAiResponseCallback = useCallback((variant: VariantType, response: string) => {
-    setOpenAiResponse((prevState) => ({
-      ...prevState,
-      [variant]: response,
-    }));
-  }, []);
+  const [loading, setLoading] = useRecoilState(loadingContext);
 
   const setLoadingCallback = useCallback((variant: VariantType, state: boolean) => {
     if (variant === "all") {
@@ -63,42 +38,39 @@ export const useOpenAi = () => {
   }, []);
 
   useEffect(() => {
-    if (explainedLikeAlocal || greenFlags || redFlags) {
-      setOpenAiResponse({});
-      setLoadingCallback("all", true);
+    setOpenAiResponse({
+      explainedLikeAlocal: "",
+      greenFlags: "",
+      redFlags: "",
+    });
+    if (!filterVal.address) {
+      return;
     }
 
-    if (!filterVal.address) return;
+    const eventSource = new EventSource(`/api/openai?address=${filterVal.address}`);
 
-    request({ ...filterVal.selectedPlace, variant: "explainedLikeAlocal" })
-      .then((response) => {
-        setOpenAiResponseCallback("explainedLikeAlocal", response);
-        setLoadingCallback("explainedLikeAlocal", false);
+    eventSource.onmessage = (event) => {
+      if (event.data === "[FINISHED]") {
+        eventSource.close();
+        return;
+      }
 
-        return response;
-      })
-      .then(async (response) => {
-        const r = await request({ ...filterVal.selectedPlace, variant: "greenFlags", message: response || "" }).then((response) => {
-          setOpenAiResponseCallback("greenFlags", response);
-          setLoadingCallback("greenFlags", false);
+      const data = JSON.parse(event.data);
 
-          return response;
-        });
+      if (loading.openai[data.variant as keyof typeof loading.openai]) {
+        setLoadingCallback(data.variant, false);
+      }
+      setOpenAiResponse((prevState) => ({
+        ...prevState,
+        [data.variant]: prevState[data.variant as keyof typeof prevState] + data?.content,
+      }));
+    };
 
-        return r;
-      })
-      .then(async (response) => {
-        await request({ ...filterVal.selectedPlace, variant: "redFlags", message: response || "" }).then((response) => {
-          setOpenAiResponseCallback("redFlags", response);
-          setLoadingCallback("redFlags", false);
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-
-        setLoadingCallback("all", false);
-      });
-  }, [filterVal.address, filterVal.selectedPlace]);
+    eventSource.onerror = (error) => {
+      eventSource.close();
+      console.error(error);
+    };
+  }, [filterVal.address]);
 
   return {
     explainedLikeAlocal,

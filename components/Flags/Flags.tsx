@@ -2,14 +2,15 @@ import { Box, Typography } from "@mui/material";
 import { AIWarningToolTip } from "components/AIWarningTooltip/AIWarningTooltip";
 import { ParagraphSkeleton } from "components/ParagraphSkeleton/ParagraphSkeleton";
 import styles from "./Flags.module.scss";
+import { useMemo } from "react";
 
 interface FlagsProps {
   color: string;
-  flagsArr: any[];
+  flagsMessage: string;
   loading: boolean;
 }
 
-export const Flags = ({ color, flagsArr, loading }: FlagsProps) => {
+export const Flags = ({ color, flagsMessage, loading }: FlagsProps) => {
   const Title = () => (
     <Box style={{ marginTop: "10px" }}>
       <Typography variant="subtitle1">
@@ -18,6 +19,8 @@ export const Flags = ({ color, flagsArr, loading }: FlagsProps) => {
       </Typography>
     </Box>
   );
+
+  const flagsArr = useMemo(() => flagsMessage.split("- ").filter((value) => value), [flagsMessage]);
 
   if (loading)
     return (

@@ -160,7 +160,15 @@ export default function Filters() {
           }
         : { open: false }),
     }));
-    setLoading((prevState) => ({ ...prevState, walkscore: false }));
+    setLoading((prevState) => ({
+      ...prevState,
+      walkscore: false,
+      openai: {
+        explainedLikeAlocal: true,
+        greenFlags: true,
+        redFlags: true,
+      },
+    }));
     setFilterVal((prevVal: any) => ({
       ...prevVal,
       latlong: place.geometry.location,
