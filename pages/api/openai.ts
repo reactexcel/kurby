@@ -13,6 +13,8 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
+export const dynamic = "force-dynamic";
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let { address } = req.query;
 
