@@ -13,10 +13,6 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-export const config = {
-  runtime: "edge",
-};
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let { address } = req.query;
 
