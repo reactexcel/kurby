@@ -1,8 +1,8 @@
+import RequiresProPlan from "components/RequiresProPlanHeaading/RequiresProPlan";
 import styles from "../FinancialMortgage/FinancialMortgage.module.scss";
 import { InformationTable, createData } from "components/BodyContent/InformationTable/InformationTable";
 import { IAppPlans } from "context/plansContext";
 import { propertyDetailContext } from "context/propertyContext";
-import { useIsProPlan } from "hooks/require-pro-plan";
 import { useRecoilState } from "recoil";
 
 export function AdditionalPropertyInformation() {
@@ -30,10 +30,9 @@ export function AdditionalPropertyInformation() {
     createData("Stories", propertyInfo?.stories, IAppPlans.PROFESSIONAL),
   ];
 
-  const isProPlan = useIsProPlan();
   return (
     <>
-      <h3 className={styles.titleStyle}>Additional Property Information {!isProPlan && "(Requires Pro Plan)"} </h3>
+      <RequiresProPlan title={"Additional Property Information"} />
       <InformationTable dataFields={propertyHouseData} />
     </>
   );

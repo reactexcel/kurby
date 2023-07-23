@@ -2,10 +2,9 @@ import { InformationTable, createData } from "components/BodyContent/Information
 import { propertyDetailContext } from "context/propertyContext";
 import React from "react";
 import { useRecoilState } from "recoil";
-import styles from "../FinancialMortgage/FinancialMortgage.module.scss";
 import { toUSDField } from "../utils";
 import { IAppPlans } from "context/plansContext";
-import { useIsProPlan } from "hooks/require-pro-plan";
+import RequiresProPlan from "components/RequiresProPlanHeaading/RequiresProPlan";
 
 export default function TaxInfo() {
   const [propertyDetail] = useRecoilState(propertyDetailContext);
@@ -28,10 +27,9 @@ export default function TaxInfo() {
     createData("Year", propertyInfo?.year),
   ];
 
-  const isProPlan = useIsProPlan();
   return (
     <>
-      <h3 className={styles.titleStyle}>Tax Info {!isProPlan && "(Requires Pro Plan)"}</h3>
+      <RequiresProPlan title={"Tax Info"} />
       <InformationTable dataFields={propertyHouseData} />
     </>
   );
