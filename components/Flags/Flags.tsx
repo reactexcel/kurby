@@ -20,7 +20,7 @@ export const Flags = ({ color, flagsMessage, loading }: FlagsProps) => {
     </Box>
   );
 
-  const flagsArr = useMemo(() => flagsMessage.split("- ").filter((value) => value), [flagsMessage]);
+  const flagsArr = useMemo(() => flagsMessage?.split("- ").filter((value) => value), [flagsMessage]);
 
   if (loading)
     return (

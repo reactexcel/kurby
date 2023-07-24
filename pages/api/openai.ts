@@ -1,6 +1,6 @@
-import { Readable } from "stream";
-import { OpenAIApi, Configuration } from "openai";
-import { NextApiRequest, NextApiResponse } from "next";
+import { OpenAIApi, Configuration } from "openai-edge";
+import { OpenAIStream, StreamingTextResponse } from "ai";
+import { NextApiRequest } from "next";
 
 /**
  * Stream OpenAI chat completion
@@ -13,12 +13,12 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  let { address } = req.query;
+export const runtime = "edge";
 
-  if (!address) {
-    address = "123 Main St, San Francisco, CA 94105";
-  }
+const handler = async (req: NextApiRequest) => {
+  const params = req.url && new URL(req.url).searchParams;
+  const address = params && params.get("address");
+  const variant = params && params.get("variant");
 
   const variants = {
     explainedLikeAlocal: {
@@ -35,102 +35,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     },
   };
 
-  console.time("chatCompletion");
-
-  res.setHeader("Content-Type", "text/event-stream");
-  res.setHeader("Cache-Control", "no-cache, no-transform");
-  res.setHeader("Connection", "keep-alive");
-  res.setHeader("Content-Encoding", "none");
-
-  Promise.resolve()
-    .then(async () => {
-      console.log("explainedLikeAlocal");
-      return await streamChatCompletion("explainedLikeAlocal", variants.explainedLikeAlocal, res);
-    })
-    .then(async (previousResponse) => {
-      console.log("greenFlags");
-      return await streamChatCompletion("greenFlags", variants.greenFlags, res, previousResponse);
-    })
-    .then(async (previousResponse) => {
-      console.log("redFlags");
-      await streamChatCompletion("redFlags", variants.redFlags, res, previousResponse);
-    })
-    .then(() => res.write("data:[FINISHED]\n\n"))
-    .then(() => res.end())
-    .catch((error) => {
-      console.error(error);
-      res.end();
-    });
-
-  console.timeEnd("chatCompletion");
+  return await streamChatCompletion(variants[variant as keyof typeof variants]);
 };
 
 export default handler;
 
-const streamChatCompletion = async (variant: string, variantObj: { prompt: string; max_tokens: number }, res: NextApiResponse, previousResponse?: string) => {
-  let prompt = variantObj.prompt;
-
-  if (previousResponse) {
-    prompt += "\n" + "Do not contradict the following information: " + previousResponse;
-  }
-
-  const response = await openai.createChatCompletion(
-    {
-      model: "gpt-4",
-      stream: true,
-      messages: [
-        {
-          content: prompt,
-          role: "user",
-        },
-      ],
-      max_tokens: variantObj.max_tokens,
-      temperature: 0.9,
-    },
-    { responseType: "stream" },
-  );
-
-  let responseString = "";
-
-  await new Promise((resolve, reject) => {
-    const readable = Readable.from(response.data as any);
-    readable.on("readable", () => {
-      let chunk;
-      while (null !== (chunk = readable.read())) {
-        let data = chunk.toString() as string;
-
-        if (data.startsWith("data: ")) {
-          const lines = data.split("\n").map((line) => (line.startsWith("data: ") ? line.slice("data: ".length) : line));
-          const json = lines.join("\n");
-
-          try {
-            const object = JSON.parse(json);
-            const content = object?.choices?.[0]?.delta?.content;
-            responseString += content;
-            res.write("data:" + JSON.stringify({ variant, content }) + "\n\n");
-          } catch (error) {
-            try {
-              const dataArray = json.split("\n").filter((line) => line && line !== "[DONE]");
-
-              if (dataArray.length > 1) {
-                dataArray.forEach((data) => {
-                  const obj = JSON.parse(data);
-                  const content = obj?.choices?.[0]?.delta?.content;
-                  responseString += content;
-                  res.write("data:" + JSON.stringify({ variant, content }) + "\n\n");
-                });
-              }
-            } catch (e) {
-              console.log(error, e);
-            }
-          }
-        }
-      }
-    });
-
-    readable.on("end", resolve);
-    readable.on("error", reject);
+const streamChatCompletion = async (variantObj: { prompt: string; max_tokens: number }) => {
+  const response = await openai.createChatCompletion({
+    model: "gpt-4",
+    stream: true,
+    messages: [
+      {
+        content: variantObj.prompt,
+        role: "user",
+      },
+    ],
+    max_tokens: variantObj.max_tokens,
+    temperature: 0.9,
   });
 
-  return responseString;
+  const stream = OpenAIStream(response);
+
+  return new StreamingTextResponse(stream);
 };
