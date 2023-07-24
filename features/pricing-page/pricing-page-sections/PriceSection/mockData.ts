@@ -24,11 +24,11 @@ export const starterFeatures: mainFeaturesType[] = [
   },
   {
     text: "Property Data",
-    strikeLine: false,
+    strikeLine: true,
   },
   {
     text: "Nearby Places",
-    strikeLine: false,
+    strikeLine: true,
   },
 ];
 export const proffFeatures: mainFeaturesType[] = [
