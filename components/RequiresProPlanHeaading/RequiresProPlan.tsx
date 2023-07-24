@@ -15,10 +15,10 @@ export default function RequiresProPlan({ title }: IRequiresProPlanProps) {
   };
   return (
     <h3 className={styles.titleStyle}>
-      {title} {!isProPlan && "(Requires Pro Plan)"}
+      {title}
       {!isProPlan && (
         <Button onClick={handleRedirect} color="primary">
-          Change plan
+          (Upgrade to Pro Plan)
         </Button>
       )}
     </h3>

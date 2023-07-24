@@ -11,20 +11,14 @@ export const PriceSection = () => {
   return (
     <div className={styles.container}>
       <div className={styles.headCard}>
-        <FreePricingCard
-          title="free"
-          subTitle="quick stats"
-          price="free forever"
-          mainFeatures={freeFeatures}
-          name="key features"
-          secondaryFeatures={freeSecFeatures}
-        />
+        <FreePricingCard title="free" subTitle="quick stats" price="free forever" mainFeatures={freeFeatures} name="key features" secondaryFeatures={freeSecFeatures} />
       </div>
       <div className={styles.bodyCard}>
         <PricingCard
           title="starter"
           subTitle="quick stats"
           price={param ? "$ 10" : "$ 12"}
+          pricePer="/ month"
           greenType={false}
           mainFeatures={starterFeatures}
           name="key features"
