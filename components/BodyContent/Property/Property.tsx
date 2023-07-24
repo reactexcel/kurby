@@ -3,49 +3,114 @@ import axios from "axios";
 import { filterState } from "context/filterContext";
 import { useEffect, useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
-import Record from "./Record/Record";
-import { PropertyType } from "./types";
-import EstimationGraph from "./EstimationGraph/EstimationGraph";
-import Owner from "./Owner/Owner";
 import { TabLayout } from "components/layouts/TabLayout/TabLayout";
 import styles from "./Property.module.scss";
 import { HouseList } from "./HouseList/HouseList";
 import { Grid } from "components/Grid/Grid";
 import { GridItem } from "components/Grid/GridItem";
+import { IPropertySearchResponse } from "pages/api/propertyV2";
+import RecordV2 from "./Record/RecordV2";
+import FinancialMortgage from "./FinancialMortgage/FinancialMortgage";
+import ListingHistory from "./ListingHistory/ListingHistory";
+import LastSale from "./LastSale/LastSale";
+import RentalEstimates from "./RentalEstimates/RentalEstimates";
+import PropertyData from "./PropertyData/PropertyData";
+import PropertyStatus from "./PropertyStatus/PropertyStatus";
+import { IPropertyDetailResponse } from "pages/api/propertyDetail";
+import { propertyDetailAvailable, propertyDetailContext, propertyInfoV2Context } from "context/propertyContext";
+import { AdditionalPropertyInformation } from "./AdditionalPropertyInformation/AdditionalPropertyInformation";
+import LotInfo from "./LotInfo/LotInfo";
+import TaxInfo from "./TaxInfo/TaxInfo";
+import KurbyPaidPlanLimit, { TabLimitMessage } from "components/AIWarningTooltip/KurbyPaidPlanLimit";
+import { IAppPlans } from "context/plansContext";
+import { useAuth } from "providers/AuthProvider";
+import { propertyV2Mock } from "mock/freePlanPropertyMock";
 
 /**
  * Body Content
  * @description: Displays everything below the filters
  */
 export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal: string }) {
+  const { user } = useAuth();
   const [filterVal] = useRecoilState(filterState);
-  const [propertyInfo, setPropertyInfo] = useState<PropertyType | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [propertyInfo, setPropertyInfoV2] = useRecoilState(propertyInfoV2Context);
+  const [propertyDetail, setPropertyDetail] = useRecoilState(propertyDetailContext);
+
+  const isNotLoaded = !Boolean(propertyDetail && propertyInfo);
+
+  const [loading, setLoading] = useState<boolean>(isNotLoaded);
+  const [isTabAvailable, setTabAvailable] = useRecoilState(propertyDetailAvailable);
+  const isFreePlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.FREE_PLAN;
+  const isStarterPlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.STARTER;
+  const isGrowthPlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.GROWTH;
 
   useEffect(() => {
-    async function getPropertyData() {
-      setLoading(true);
-      const lat = filterVal.selectedPlace.geometry.location.lat();
-      const lng = filterVal.selectedPlace.geometry.location.lng();
-
-      const propertyData = await axios.post("/api/property", {
-        place: filterVal.selectedPlace,
-        latLng: [lat, lng],
+    async function preparePropertyV2Data() {
+      const { data } = await axios.post<IPropertySearchResponse>("/api/propertyV2", {
+        address: filterVal.address,
       });
-      setPropertyInfo(propertyData.data);
       setLoading(false);
+      if (data) {
+        setPropertyInfoV2(data.data[0]);
+      }
     }
-    getPropertyData();
+
+    async function preparePropertyDetail() {
+      const { data } = await axios.post<IPropertyDetailResponse>("/api/propertyDetail", {
+        address: filterVal.address,
+      });
+      setLoading(false);
+      if (data) {
+        setPropertyDetail(data.data);
+        setTabAvailable(Boolean(Object.keys(data.data).length > 0));
+      }
+    }
+
+    if (isFreePlan || isStarterPlan || !Boolean(user)) {
+      setPropertyInfoV2(propertyV2Mock);
+      setLoading(false);
+      // setPropertyDetail(data.data);
+      return;
+    }
+
+    if (isGrowthPlan) {
+      setLoading(true);
+      preparePropertyV2Data();
+
+      return;
+    }
+
+    if (isNotLoaded) {
+      setLoading(true);
+      preparePropertyV2Data();
+      preparePropertyDetail();
+    }
   }, []);
 
   const isAddressInUSA = useMemo(() => filterVal?.selectedPlace?.formatted_address?.includes("USA"), [filterVal?.selectedPlace?.formatted_address]);
 
+  if (!isTabAvailable) {
+    return (
+      <TabLayout className={styles.propertyDataNotAvailable}>
+        <h2>Property Data Unavailable</h2>
+      </TabLayout>
+    );
+  }
+
+  const isLimitReached = !Boolean(user) || isFreePlan;
+
   return (
-    <TabLayout className={`${styles.tabLayout} ${!isAddressInUSA ? styles.note : ""}`} loading={loading || !propertyInfo}>
+    <TabLayout
+      style={isLimitReached || isStarterPlan ? { height: "67vh", overflow: "hidden" } : {}}
+      className={`${styles.tabLayout} ${!isAddressInUSA ? styles.note : ""}`}
+      loading={loading || !propertyInfo}
+    >
       {loading || !propertyInfo ? (
         <CircularProgress />
       ) : isAddressInUSA ? (
         <div className={styles.main}>
+          {isLimitReached && <KurbyPaidPlanLimit type={TabLimitMessage.PROPERTY_DATA_TAB} />}
+          {isStarterPlan && <KurbyPaidPlanLimit type={TabLimitMessage.PROPERTY_DATA_TAB_STARTER} />}
           <div className={styles.wrapper}>
             <img
               src={
@@ -61,21 +126,48 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
           </div>
           <div className={styles.wrapper}>
             <Grid>
-              <GridItem isEmpty={!(propertyInfo?.records && propertyInfo?.records.length > 0)}>
-                <Record propertyInfo={propertyInfo} description={explainedLikeAlocal} />
+              <GridItem>
+                <RecordV2 description={explainedLikeAlocal} />
               </GridItem>
-              <GridItem isEmpty={!propertyInfo?.valueEstimate}>
+              <GridItem>
+                <FinancialMortgage />
+              </GridItem>
+              {propertyDetail?.lastSale && (
+                <GridItem>
+                  <LastSale />
+                </GridItem>
+              )}
+              {propertyInfo?.rentAmount && propertyInfo.suggestedRent && (
+                <GridItem>
+                  <RentalEstimates />
+                </GridItem>
+              )}
+              <GridItem>
+                <ListingHistory />
+              </GridItem>
+              <GridItem>
+                <PropertyData />
+              </GridItem>
+              <GridItem>
+                <AdditionalPropertyInformation />
+              </GridItem>
+              <GridItem>
+                <LotInfo />
+              </GridItem>
+              <GridItem>
+                <TaxInfo />
+              </GridItem>
+              <GridItem>
+                <PropertyStatus />
+              </GridItem>
+              {/* <GridItem isEmpty={!propertyInfo?.valueEstimate}>
                 <EstimationGraph valueEstimate={propertyInfo?.valueEstimate} />
-              </GridItem>
-              <GridItem isEmpty={!propertyInfo?.valueEstimate}>
-                <HouseList list={propertyInfo?.valueEstimate} variant="sale" />
-              </GridItem>
-              <GridItem isEmpty={!propertyInfo?.rentEstimate}>
-                <HouseList list={propertyInfo?.rentEstimate} />
-              </GridItem>
-              <GridItem isEmpty={!(propertyInfo?.records && propertyInfo?.records.length > 0)}>
-                <Owner owner={propertyInfo?.records[0]?.owner} />
-              </GridItem>
+              </GridItem> */}
+              {propertyDetail?.comps && (
+                <GridItem>
+                  <HouseList />
+                </GridItem>
+              )}
             </Grid>
           </div>
         </div>

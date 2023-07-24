@@ -45,6 +45,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const accessToken = searchParams["access_token"];
 
     if (accessToken) {
+      console.log(outsetaRef.current);
       outsetaRef.current?.setAccessToken(accessToken);
     }
 
@@ -102,6 +103,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     outsetaRef.current?.setAccessToken("");
     sessionStorage.removeItem("xanoToken");
     setUser(null);
+    window.location.reload();
   };
 
   const openLoginSignup = () => {
@@ -117,7 +119,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const openProfile = () => {
-    outsetaRef.current?.profile?.open({ tab: "profile" });
+    outsetaRef.current?.profile?.open({ tab: "plan" });
   };
 
   return (

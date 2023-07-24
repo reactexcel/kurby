@@ -27,6 +27,10 @@ import { loadingContext } from "context/loadingContext";
 import { DetailsModal } from "./DetailsModal/DetailsModal";
 import { DetailsCard } from "./DetailsCard/DetailsCard";
 import { VersusCard } from "./VersusCard/VersusCard";
+import { useSearchCounter } from "hooks/use-search-counter";
+import KurbyPaidPlanLimit, { TabLimitMessage } from "components/AIWarningTooltip/KurbyPaidPlanLimit";
+import { useAuth } from "providers/AuthProvider";
+import { IAppPlans } from "context/plansContext";
 
 const floodRiskMap: { [key: string]: string } = {
   A: "Medium",
@@ -64,7 +68,7 @@ const convertFloodZoneToRisk = (floodZone: string) => {
 
 interface Props {
   filterVal: {
-    latlong: google.maps.LatLngLiteral | null;
+    latlong: google.maps.LatLng | null;
     radius: any | null;
     address: string | null;
     nearbyPlaces: any[];
@@ -82,6 +86,8 @@ export default function Neighborhood({ filterVal }: Props) {
   const [loading, setLoading] = useRecoilState(loadingContext);
 
   const [overallCrimeInfo, setOverallCrimeInfo] = useState<OverallCrimeInfo | null>(null);
+  const { searchLimit } = useSearchCounter();
+  const { user } = useAuth();
 
   const usaDetectionKeywords = [
     "USA", // English
@@ -306,19 +312,23 @@ export default function Neighborhood({ filterVal }: Props) {
     );
   }
 
+  const isFreePlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.FREE_PLAN;
+
   return (
-    <TabLayout className={styles.tabLayout}>
+    <TabLayout style={isFreePlan && searchLimit ? { height: "67vh", overflow: "hidden" } : {}} className={styles.tabLayout}>
+      {isFreePlan && searchLimit && <KurbyPaidPlanLimit type={TabLimitMessage.NEIGHBORHOOD_TAB} />}
       <Box
         style={{
-          overflow: "auto",
-          height: "100%",
+          overflow: isFreePlan && searchLimit ? "hidden" : "auto",
+          height: "50%",
           width: "100%",
           position: "relative",
+          userSelect: searchLimit ? "none" : "auto",
         }}
       >
         <h3 className={styles.header}>
           Quick Facts{" "}
-          <Tooltip title="Please note that the primary data provider for our Neighborhood information is sourced from the 2020 American Community Survey conducted by the U.S. Census. Whenever more recent data is available from subsequent Census surveys, we endeavor to update our platform accordingly. However, there may still be a time lag in data representation, and we advise investors to exercise caution and consider consulting additional sources for the most current information.">
+          <Tooltip title="Please note that the primary data provider for our Neighborhood information is sourced from the 2021 American Community Survey conducted by the U.S. Census. Whenever more recent data is available from subsequent Census surveys, we endeavor to update our platform accordingly. However, there may still be a time lag in data representation, and we advise investors to exercise caution and consider consulting additional sources for the most current information.">
             <IconButton style={{ marginBottom: "2px" }}>
               <QuestionTooltipSvg sx={{ fontSize: 20 }} />
             </IconButton>
@@ -331,7 +341,7 @@ export default function Neighborhood({ filterVal }: Props) {
             <DetailsCard label="Foreign Born Population %" value={censusData?.population?.foreginBornPercent} />
           </DetailsModal>
           <FactCard
-            label="Average Salary"
+            label="Median Household Income"
             type="string"
             value={censusData?.averageSalary && formatter.format(censusData.averageSalary)}
             icon={<AttachMoneyIcon className={styles.icon} />}

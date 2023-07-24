@@ -1,0 +1,22 @@
+.mapLegend {
+  border: 1px solid #b7b7b7;
+  position: absolute;
+  padding: 8px;
+  padding-bottom: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 20px;
+  background: rgb(252, 252, 252);
+  border-radius: 10px;
+  font-size: 18px;
+}
+
+.mapLegendColorItem {
+  height: 9px;
+  margin-right: 2px;
+}
+
+.legendSource {
+  font-size: 12px;
+  font-weight: 700;
+}
