@@ -15,7 +15,7 @@ export const ProsConsSection = () => {
       </div>
 
       <div className={styles.starter}>
-        <h1 className={styles.cardTitle}>Starter</h1>
+        <h1 className={styles.cardTitle}>Free</h1>
         <button className={styles.starterBtn}>Get Started</button>
         <div className={styles.signs}>
           <div className={styles.quickSign}>
@@ -71,7 +71,7 @@ export const ProsConsSection = () => {
         </div>
       </div>
       <div className={styles.cheaper}>
-        <h1 className={styles.cardTitle}>Cheaper</h1>
+        <h1 className={styles.cardTitle}>Starter</h1>
         <button className={styles.starterBtn}>Get Started</button>
         <div className={styles.signs}>
           <div className={styles.quickSign}>

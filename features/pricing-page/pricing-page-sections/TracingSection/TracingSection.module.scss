@@ -20,6 +20,7 @@
   }
 }
 .leftBlock {
+  flex: 2;
   margin-top: 10px;
   @media (max-width: 1200px) {
     margin-bottom: 20px;
@@ -73,13 +74,13 @@
   }
 }
 .rightColumn {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 0 60px 10px;
   border-radius: 12px;
-  width: 16rem;
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(2px);
   @media (max-width: 600px) {
@@ -90,6 +91,7 @@
   margin-top: 30px;
 }
 .rightBlock {
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
