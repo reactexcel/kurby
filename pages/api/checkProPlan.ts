@@ -1,28 +1,56 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import OutsetaApiClient from "outseta-api-client";
+import jwt_decode from "jwt-decode";
+import { IAppPlans } from "context/plansContext";
 
-export default async function checkProPlan(req: NextApiRequest, res: NextApiResponse) {
+interface IUserTokenResponse {
+  readonly nbf: number;
+  readonly exp: number;
+  readonly iss: string;
+  readonly client_id: string;
+  readonly scope: Array<string>;
+  readonly sub: string;
+  readonly auth_time: number;
+  readonly idp: string;
+  readonly email: string;
+  readonly family_name: string;
+  readonly given_name: string;
+  readonly name: string;
+  readonly nameid: string;
+  readonly "outseta:accountUid": string;
+  readonly "outseta:isPrimary": string;
+  readonly "outseta:subscriptionUid": string;
+  readonly "outseta:planUid": string;
+  readonly "outseta:addOnUids": Array<any>;
+  readonly amr: Array<string>;
+  readonly aud: Array<string>;
+  readonly iat: number;
+}
+
+export default async function checkProPlan(userToken: string): Promise<boolean | void> {
   try {
-    const userToken = JSON.parse(req.body).userToken;
-
     if (!userToken) {
-      return res.status(400).json({ error: "No user token provided." });
+      throw new Error("No user token provided.");
     }
+    const decoded: IUserTokenResponse = jwt_decode(userToken);
 
-    new OutsetaApiClient({
+    // Validate userToken with REST
+    const client = new OutsetaApiClient({
       subdomain: "kurby",
       accessToken: userToken,
     });
+    if ((await client.user.profile.get()).Uid !== decoded.nameid) {
+      throw new Error("This user is not valid.");
+    }
 
-    // const hasProPlan = profile.Account?.Subscriptions?.some((subscription) => subscription.Plan.Uid === IAppPlans.PROFESSIONAL_PLAN_UID);
+    const hasProPlan = decoded["outseta:planUid"] === IAppPlans.PROFESSIONAL_PLAN_UID;
+    if (!hasProPlan) {
+      throw new Error("User does not have a Pro plan.");
+    }
 
-    // if (!hasProPlan) {
-    //   return res.status(403).json({ error: "User does not have a Pro plan." });
-    // }
-
-    return res.status(200).json({ message: "User has a Pro plan." });
+    return true;
   } catch (error) {
     // @ts-ignore
-    return res.status(500).json({ error: error?.message || "Unexpected error." });
+    throw new Error(error?.message || "Unexpected error.");
   }
 }

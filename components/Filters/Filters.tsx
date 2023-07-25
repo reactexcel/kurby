@@ -232,7 +232,7 @@ export default function Filters() {
   const { isVisitor, isFree } = usePlanChecker();
 
   const [visitorStayLimitLaunched] = usePersistentRecoilState("visitorStayLimit", visitorStayLimit);
-  const visitorSearchLimit = !Boolean(user) && searchLimit;
+  const visitorSearchLimit = isVisitor && searchLimit;
   const visitorStayLimitReached = isVisitor && visitorStayLimitLaunched;
   const [mapCounter] = usePersistentRecoilState("mapClickCounter", mapClicksCounter);
 

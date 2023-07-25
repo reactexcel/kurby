@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
+import checkProPlan from "./checkProPlan";
 
 export interface IPropertyDetailResponse {
   readonly input: IPropertyDetailSearchInput;
@@ -383,6 +384,16 @@ export const createPropertyDetailApi = () => {
 };
 
 export default async function handler(request: NextApiRequest, res: NextApiResponse) {
+  const isPro = await checkProPlan(request.body.userToken);
+
+  if (!isPro) {
+    return res.status(401).send(
+      JSON.stringify({
+        error: "You are not allowed to create this request.",
+      }),
+    );
+  }
+
   const api = createPropertyDetailApi();
   const response = await api.getPropertyDataByAddress(request.body.address);
 
