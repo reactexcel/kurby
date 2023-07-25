@@ -4,6 +4,7 @@ import { Paragraph } from "components/Paragraph/Paragraph";
 
 import ItemIcon from "../../../../public/icons/item.svg";
 import WhiteItem from "../../../../public/icons/whiteItem.svg";
+import { usePlanWindow } from "./PricingCard";
 
 type mainFeaturesType = {
   text: string;
@@ -21,6 +22,7 @@ type Props = {
 };
 
 export const FreePricingCard: React.FC<Props> = ({ title, subTitle, price, pricePer, mainFeatures, name, secondaryFeatures }) => {
+  const planCheckout = usePlanWindow();
   return (
     <div className={styles.card}>
       <div className={styles.header}>
@@ -32,7 +34,7 @@ export const FreePricingCard: React.FC<Props> = ({ title, subTitle, price, price
             <p className={styles.greenPricePer}>{pricePer}</p>
           </div>
         </div>
-        <button className={styles.button} type="button">
+        <button onClick={() => planCheckout.openFree()} className={styles.button} type="button">
           Get Started
         </button>
       </div>

@@ -4,6 +4,7 @@ import { PricingCard } from "../PricingCard/PricingCard";
 import { FreePricingCard } from "../PricingCard/freePricingCard";
 import { useMyContext } from "context/priceContext";
 import { freeFeatures, starterFeatures, growthFeatures, proffFeatures, freeSecFeatures, starterSecFeatures, growthSecFeatures, proffSecFeatures } from "./mockData";
+import { IAppPlans } from "context/plansContext";
 
 export const PriceSection = () => {
   const { param } = useMyContext();
@@ -23,6 +24,7 @@ export const PriceSection = () => {
           mainFeatures={starterFeatures}
           name="key features"
           secondaryFeatures={starterSecFeatures}
+          planId={IAppPlans.STARTER_PLAN_UID}
         />
         <PricingCard
           title="professional "
@@ -33,6 +35,7 @@ export const PriceSection = () => {
           mainFeatures={proffFeatures}
           name="all of the features in growth, plus"
           secondaryFeatures={proffSecFeatures}
+          planId={IAppPlans.PROFESSIONAL_PLAN_UID}
         />
         <PricingCard
           title="growth"
@@ -43,6 +46,7 @@ export const PriceSection = () => {
           mainFeatures={growthFeatures}
           name="all of the features in starter, plus"
           secondaryFeatures={growthSecFeatures}
+          planId={IAppPlans.GROWTH_PLAN_UID}
         />
       </div>
     </div>

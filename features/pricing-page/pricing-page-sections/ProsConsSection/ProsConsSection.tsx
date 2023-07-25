@@ -4,14 +4,10 @@ import styles from "./ProsCons.module.scss";
 import { quickStats, addData, advancedData } from "./mockData";
 import { ProsConsItem } from "./ProsConsItem";
 import Image from "next/image";
-import { useOutseta } from "hooks/use-outseta";
+import { usePlanWindow } from "../PricingCard/PricingCard";
 
 export const ProsConsSection = () => {
-  const outsetaRef = useOutseta();
-
-  const handleStarterPlanClick = () => {
-    outsetaRef.current?.profile?.open({ tab: "plan" });
-  };
+  const planCheckout = usePlanWindow();
   return (
     <div className={styles.background}>
       <div className={styles.features}>
@@ -22,7 +18,7 @@ export const ProsConsSection = () => {
 
       <div className={styles.starter}>
         <h1 className={styles.cardTitle}>Free</h1>
-        <button onClick={handleStarterPlanClick} className={styles.starterBtn}>
+        <button onClick={() => planCheckout.openFree()} className={styles.starterBtn}>
           Get Started
         </button>
         <div className={styles.signs}>
@@ -80,7 +76,7 @@ export const ProsConsSection = () => {
       </div>
       <div className={styles.cheaper}>
         <h1 className={styles.cardTitle}>Starter</h1>
-        <button onClick={handleStarterPlanClick} className={styles.starterBtn}>
+        <button onClick={() => planCheckout.openStarter()} className={styles.starterBtn}>
           Get Started
         </button>
         <div className={styles.signs}>
@@ -138,7 +134,9 @@ export const ProsConsSection = () => {
       </div>
       <div className={styles.growth}>
         <h1 className={styles.cardTitle}>growth</h1>
-        <button className={styles.growthBtn}>Get Started</button>
+        <button onClick={() => planCheckout.openGrowth()} className={styles.growthBtn}>
+          Get Started
+        </button>
         <div className={styles.signs}>
           <div className={`${styles.quickSign}  ${styles.presetBlockRes}`}>
             <p className={styles.feat}>Unlimited</p>
@@ -193,7 +191,9 @@ export const ProsConsSection = () => {
       </div>
       <div className={styles.professional}>
         <h1 className={styles.cardTitle}>professional</h1>
-        <button className={styles.profBtn}>Get Started</button>
+        <button onClick={() => planCheckout.openPro()} className={styles.profBtn}>
+          Get Started
+        </button>
         <div className={styles.signs}>
           <div className={`${styles.quickSign}  ${styles.presetBlockRes}`}>
             <p className={styles.feat}>Unlimited</p>

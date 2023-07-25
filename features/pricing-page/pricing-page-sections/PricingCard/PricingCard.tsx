@@ -6,6 +6,8 @@ import ItemIcon from "../../../../public/icons/item.svg";
 import WhiteItem from "../../../../public/icons/whiteItem.svg";
 import GreenItem from "../../../../public/icons/greenItem.svg";
 import Image from "next/image";
+import { useOutseta } from "hooks/use-outseta";
+import { IAppPlans } from "context/plansContext";
 
 type mainFeaturesType = {
   text: string;
@@ -13,17 +15,36 @@ type mainFeaturesType = {
 };
 
 type Props = {
-  title: string;
-  subTitle: string;
-  price: string;
-  pricePer?: string;
-  mainFeatures: mainFeaturesType[];
-  name: string;
-  secondaryFeatures: string[];
-  greenType: boolean;
+  readonly title: string;
+  readonly subTitle: string;
+  readonly price: string;
+  readonly pricePer?: string;
+  readonly mainFeatures: mainFeaturesType[];
+  readonly name: string;
+  readonly secondaryFeatures: string[];
+  readonly greenType: boolean;
+  readonly planId: IAppPlans;
 };
 
-export const PricingCard: React.FC<Props> = ({ title, subTitle, price, pricePer, mainFeatures, name, secondaryFeatures, greenType }) => {
+const handlePlanSelect = (outsetaRef: any, planId: string) => {
+  outsetaRef.current?.auth?.open({ widgetMode: "register", planUid: planId });
+};
+
+export const usePlanWindow = () => {
+  const outsetaRef = useOutseta();
+
+  return {
+    openFree: () => handlePlanSelect(outsetaRef, IAppPlans.FREE_PLAN_UID),
+    openStarter: () => handlePlanSelect(outsetaRef, IAppPlans.STARTER_PLAN_UID),
+    openGrowth: () => handlePlanSelect(outsetaRef, IAppPlans.GROWTH_PLAN_UID),
+    openPro: () => handlePlanSelect(outsetaRef, IAppPlans.PROFESSIONAL_PLAN_UID),
+    openPlanWithUid: (uid: IAppPlans) => handlePlanSelect(outsetaRef, uid),
+  };
+};
+
+export const PricingCard: React.FC<Props> = ({ title, subTitle, price, pricePer, mainFeatures, name, secondaryFeatures, greenType, planId }) => {
+  const checkoutWindow = usePlanWindow();
+
   return (
     <div className={greenType ? styles.greenCard : styles.card}>
       <h1 className={greenType ? styles.greenTitle : styles.title}>{title}</h1>
@@ -36,7 +57,7 @@ export const PricingCard: React.FC<Props> = ({ title, subTitle, price, pricePer,
         <p className={greenType ? styles.greenPricePer : ""}>{pricePer}</p>
       </div>
 
-      <button className={greenType ? styles.greenButton : styles.button} type="button">
+      <button onClick={() => checkoutWindow.openPlanWithUid(planId)} className={greenType ? styles.greenButton : styles.button} type="button">
         Get Started
       </button>
 
