@@ -1,6 +1,7 @@
 import { useEffect, useState, createContext, useRef, useContext } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { useOutseta } from "hooks/use-outseta";
 
 interface AuthContextType {
   user: any;
@@ -26,15 +27,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [status, setStatus] = useState("init");
   const [user, setUser] = useState<any>();
   const [outsetaToken, setOutsetaToken] = useState<string>("");
-  const outsetaRef = useRef<any>(null);
-
-  useEffect(() => {
-    if (window["Outseta" as any]) {
-      outsetaRef.current = window["Outseta" as any];
-    } else {
-      throw new Error("Outseta is missing, have you added the script to head?");
-    }
-  }, []);
+  const outsetaRef = useOutseta();
 
   const handleLogin = () => {
     localStorage.removeItem("searchCounter");
@@ -119,7 +112,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const openProfile = () => {
-    outsetaRef.current?.profile?.open({ tab: "plan" });
+    outsetaRef.current?.profile?.open({ tab: "profile" });
   };
 
   return (

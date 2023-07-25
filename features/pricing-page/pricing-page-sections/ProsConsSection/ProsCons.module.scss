@@ -498,6 +498,7 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  cursor: pointer;
   @media (max-width: 2300px) {
     width: 85%;
   }
@@ -514,6 +515,7 @@
   }
 }
 .growthBtn {
+  cursor: pointer;
   width: 90%;
   height: 42px;
   border-radius: 6px;

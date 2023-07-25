@@ -176,9 +176,8 @@ export const createPropertySearchApi = () => {
   return new PropertySearchApiV2(env);
 };
 
-export default async function handler(request: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const api = createPropertySearchApi();
-  const response = await api.getPropertyDataByAddress(request.body.address);
-
-  return res.status(200).send(JSON.stringify(response));
+  const response = await api.getPropertyDataByAddress(req.body.address);
+  return res.status(200).json(response);
 }

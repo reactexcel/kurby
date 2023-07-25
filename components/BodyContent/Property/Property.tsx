@@ -25,6 +25,7 @@ import KurbyPaidPlanLimit, { TabLimitMessage } from "components/AIWarningTooltip
 import { IAppPlans } from "context/plansContext";
 import { useAuth } from "providers/AuthProvider";
 import { propertyV2Mock } from "mock/freePlanPropertyMock";
+import { usePlanChecker } from "hooks/plans";
 
 /**
  * Body Content
@@ -40,9 +41,8 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
 
   const [loading, setLoading] = useState<boolean>(isNotLoaded);
   const [isTabAvailable, setTabAvailable] = useRecoilState(propertyDetailAvailable);
-  const isFreePlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.FREE_PLAN;
-  const isStarterPlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.STARTER;
-  const isGrowthPlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.GROWTH;
+
+  const { isFree, isStarter, isGrowth } = usePlanChecker();
 
   useEffect(() => {
     async function preparePropertyV2Data() {
@@ -58,6 +58,7 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
     async function preparePropertyDetail() {
       const { data } = await axios.post<IPropertyDetailResponse>("/api/propertyDetail", {
         address: filterVal.address,
+        userToken: localStorage.getItem("Outseta.nocode.accessToken"),
       });
       setLoading(false);
       if (data) {
@@ -66,14 +67,14 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
       }
     }
 
-    if (isFreePlan || isStarterPlan || !Boolean(user)) {
+    if (isFree || isStarter || !Boolean(user)) {
       setPropertyInfoV2(propertyV2Mock);
       setLoading(false);
       // setPropertyDetail(data.data);
       return;
     }
 
-    if (isGrowthPlan) {
+    if (isGrowth) {
       setLoading(true);
       preparePropertyV2Data();
 
@@ -97,11 +98,11 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
     );
   }
 
-  const isLimitReached = !Boolean(user) || isFreePlan;
+  const isLimitReached = !Boolean(user) || isFree;
 
   return (
     <TabLayout
-      style={isLimitReached || isStarterPlan ? { height: "67vh", overflow: "hidden" } : {}}
+      style={isLimitReached || isStarter ? { height: "67vh", overflow: "hidden" } : {}}
       className={`${styles.tabLayout} ${!isAddressInUSA ? styles.note : ""}`}
       loading={loading || !propertyInfo}
     >
@@ -110,7 +111,7 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
       ) : isAddressInUSA ? (
         <div className={styles.main}>
           {isLimitReached && <KurbyPaidPlanLimit type={TabLimitMessage.PROPERTY_DATA_TAB} />}
-          {isStarterPlan && <KurbyPaidPlanLimit type={TabLimitMessage.PROPERTY_DATA_TAB_STARTER} />}
+          {isStarter && <KurbyPaidPlanLimit type={TabLimitMessage.PROPERTY_DATA_TAB_STARTER} />}
           <div className={styles.wrapper}>
             <img
               src={

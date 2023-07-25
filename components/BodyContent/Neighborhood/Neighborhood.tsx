@@ -31,6 +31,7 @@ import { useSearchCounter } from "hooks/use-search-counter";
 import KurbyPaidPlanLimit, { TabLimitMessage } from "components/AIWarningTooltip/KurbyPaidPlanLimit";
 import { useAuth } from "providers/AuthProvider";
 import { IAppPlans } from "context/plansContext";
+import { usePlanChecker } from "hooks/plans";
 
 const floodRiskMap: { [key: string]: string } = {
   A: "Medium",
@@ -87,7 +88,7 @@ export default function Neighborhood({ filterVal }: Props) {
 
   const [overallCrimeInfo, setOverallCrimeInfo] = useState<OverallCrimeInfo | null>(null);
   const { searchLimit } = useSearchCounter();
-  const { user } = useAuth();
+  const { isFree } = usePlanChecker();
 
   const usaDetectionKeywords = [
     "USA", // English
@@ -312,14 +313,12 @@ export default function Neighborhood({ filterVal }: Props) {
     );
   }
 
-  const isFreePlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.FREE_PLAN;
-
   return (
-    <TabLayout style={isFreePlan && searchLimit ? { height: "67vh", overflow: "hidden" } : {}} className={styles.tabLayout}>
-      {isFreePlan && searchLimit && <KurbyPaidPlanLimit type={TabLimitMessage.NEIGHBORHOOD_TAB} />}
+    <TabLayout style={isFree && searchLimit ? { height: "67vh", overflow: "hidden" } : {}} className={styles.tabLayout}>
+      {isFree && searchLimit && <KurbyPaidPlanLimit type={TabLimitMessage.NEIGHBORHOOD_TAB} />}
       <Box
         style={{
-          overflow: isFreePlan && searchLimit ? "hidden" : "auto",
+          overflow: isFree && searchLimit ? "hidden" : "auto",
           height: "50%",
           width: "100%",
           position: "relative",

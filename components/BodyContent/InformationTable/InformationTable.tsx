@@ -1,6 +1,7 @@
 import { useAuth } from "providers/AuthProvider";
 import styles from "./Information.module.scss";
 import { IAppPlans } from "context/plansContext";
+import { usePlanChecker } from "hooks/plans";
 
 interface IDataField {
   title: string;
@@ -85,8 +86,7 @@ function generateRandomWord() {
 }
 
 export function InformationTable({ dataFields }: IInformationTableProps) {
-  const { user } = useAuth();
-  const isGrowthPlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.GROWTH;
+  const { isGrowth } = usePlanChecker();
 
   if (!dataFields) {
     return <></>;
@@ -98,7 +98,7 @@ export function InformationTable({ dataFields }: IInformationTableProps) {
         {dataFields.map((item, index) => (
           <tr key={index}>
             <td className={`${styles.column} ${styles.column1}`}>{item.title}</td>
-            {isGrowthPlan && !Boolean(item.value) && item.plan === IAppPlans.PROFESSIONAL ? (
+            {isGrowth && !Boolean(item.value) && item.plan === IAppPlans.PROFESSIONAL ? (
               <td style={{ userSelect: "none", filter: "blur(5px)" }} className={`${styles.column} ${styles.column2}`}>
                 {generateRandomWord()}
               </td>

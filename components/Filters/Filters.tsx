@@ -20,6 +20,7 @@ import { usePersistentRecoilState } from "hooks/recoil-persist-state";
 import { useAuth } from "providers/AuthProvider";
 import { IAppPlans } from "context/plansContext";
 import { GetStarted } from "components/GetStartedPricing/GetStartedPricing";
+import { usePlanChecker } from "hooks/plans";
 
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
@@ -228,9 +229,7 @@ export default function Filters() {
   }, [address]);
 
   const { user } = useAuth();
-
-  const isFreePlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.FREE_PLAN;
-  const isVisitor = !Boolean(user);
+  const { isVisitor, isFree } = usePlanChecker();
 
   const [visitorStayLimitLaunched] = usePersistentRecoilState("visitorStayLimit", visitorStayLimit);
   const visitorSearchLimit = !Boolean(user) && searchLimit;
@@ -242,18 +241,9 @@ export default function Filters() {
   const [showDialog, setShowDialog] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      // Open dialog after 2 seconds, to have respect for coldstart variables
-      // Since user is undefined for the first time you load the page, we make sure,
-      // we don't display the dialog too quickly
-      console.log(visitorStayLimitReached, visitorSearchLimit, visitorMapReachedClickLimit);
-      if (visitorStayLimitReached || visitorSearchLimit || visitorMapReachedClickLimit) {
-        setShowDialog(true);
-      }
-    }, 1500);
-
-    // Clean up timer
-    return () => clearTimeout(timer);
+    if (visitorStayLimitReached || visitorSearchLimit || visitorMapReachedClickLimit) {
+      setShowDialog(true);
+    }
   }, [visitorStayLimitReached, visitorSearchLimit, visitorMapReachedClickLimit, user]);
 
   return (
@@ -305,7 +295,7 @@ export default function Filters() {
         {showDialog && (
           <Dialog open className={styles.dialog}>
             <h2 className={styles.dialogTitle}>Daily {(searchLimit && "Search") || ""} Limit Reached</h2>
-            {isFreePlan ? (
+            {isFree ? (
               <DialogContent className={styles.dialogContent}>
                 You’ve reached your daily limit. To get unlimited access, upgrade to a paid plan.
                 <GetStarted />

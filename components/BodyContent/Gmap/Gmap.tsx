@@ -17,6 +17,7 @@ import { mapClicksCounter } from "context/visitorContext";
 import { usePersistentRecoilState } from "hooks/recoil-persist-state";
 import { useAuth } from "providers/AuthProvider";
 import { IAppPlans } from "context/plansContext";
+import { usePlanChecker } from "hooks/plans";
 
 /**
  * Gmap
@@ -322,10 +323,9 @@ interface IMetricsTooltipProps extends IMetricsTooltipState {
 }
 
 function MetricsTooltip(props: IMetricsTooltipProps) {
+  const { isFree } = usePlanChecker();
   const [value] = useRecoilState(feature);
-  const { user } = useAuth();
   const [mapCounter, setMapCounter] = usePersistentRecoilState("mapClickCounter", mapClicksCounter);
-  const isFreePlan = user?.Account?.CurrentSubscription?.Plan?.Name === IAppPlans.FREE_PLAN;
 
   // check if we've reached a new day and reset the counter if so
   useEffect(() => {
@@ -338,7 +338,7 @@ function MetricsTooltip(props: IMetricsTooltipProps) {
     }
   }, [setMapCounter]);
 
-  const visitorMapReachedClickLimit = isFreePlan && mapCounter >= 50;
+  const visitorMapReachedClickLimit = isFree && mapCounter >= 50;
 
   if (visitorMapReachedClickLimit) {
     return (

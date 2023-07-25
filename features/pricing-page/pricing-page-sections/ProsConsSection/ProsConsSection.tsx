@@ -4,8 +4,14 @@ import styles from "./ProsCons.module.scss";
 import { quickStats, addData, advancedData } from "./mockData";
 import { ProsConsItem } from "./ProsConsItem";
 import Image from "next/image";
+import { useOutseta } from "hooks/use-outseta";
 
 export const ProsConsSection = () => {
+  const outsetaRef = useOutseta();
+
+  const handleStarterPlanClick = () => {
+    outsetaRef.current?.profile?.open({ tab: "plan" });
+  };
   return (
     <div className={styles.background}>
       <div className={styles.features}>
@@ -16,7 +22,9 @@ export const ProsConsSection = () => {
 
       <div className={styles.starter}>
         <h1 className={styles.cardTitle}>Free</h1>
-        <button className={styles.starterBtn}>Get Started</button>
+        <button onClick={handleStarterPlanClick} className={styles.starterBtn}>
+          Get Started
+        </button>
         <div className={styles.signs}>
           <div className={styles.quickSign}>
             <p className={styles.feat5}>5 Insights per day</p>
@@ -72,7 +80,9 @@ export const ProsConsSection = () => {
       </div>
       <div className={styles.cheaper}>
         <h1 className={styles.cardTitle}>Starter</h1>
-        <button className={styles.starterBtn}>Get Started</button>
+        <button onClick={handleStarterPlanClick} className={styles.starterBtn}>
+          Get Started
+        </button>
         <div className={styles.signs}>
           <div className={styles.quickSign}>
             <p className={styles.feat}>Unlimited</p>
