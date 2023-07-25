@@ -1,4 +1,3 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import OutsetaApiClient from "outseta-api-client";
 import jwt_decode from "jwt-decode";
 import { IAppPlans } from "context/plansContext";
