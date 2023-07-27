@@ -2,7 +2,7 @@ import styles from "./Filters.module.scss";
 import Box from "@mui/material/Box";
 import Illustration from "../../public/icons/search.svg";
 import { SelectChangeEvent } from "@mui/material/Select";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, use } from "react";
 import { useRecoilState } from "recoil";
 import { addressState, filterState } from "../../context/filterContext";
 import GLOBAL_SETTINGS from "../../globals/GLOBAL_SETTINGS";
@@ -15,6 +15,12 @@ import { loadingContext } from "context/loadingContext";
 import { useSearchCounter } from "hooks/use-search-counter";
 import { Dialog, DialogContent } from "@mui/material";
 import { LoginSignupButton } from "components/LoginSignupButton/LoginSignupButton";
+import { mapClicksCounter, visitorStayLimit } from "context/visitorContext";
+import { usePersistentRecoilState } from "hooks/recoil-persist-state";
+import { useAuth } from "providers/AuthProvider";
+import { IAppPlans } from "context/plansContext";
+import { GetStarted } from "components/GetStartedPricing/GetStartedPricing";
+import { usePlanChecker } from "hooks/plans";
 
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
@@ -32,7 +38,8 @@ export default function Filters() {
   const [, setSnackbar] = useRecoilState(snackbarContext);
   const [isSelectAll, setSelectAll] = useState<boolean>(true);
   const [, setLoading] = useRecoilState(loadingContext);
-  const { searchLimit, incrementCounter } = useSearchCounter();
+  const { incrementCounter } = useSearchCounter();
+  const { searchLimit } = useSearchCounter();
 
   //* State for the place select element
   const [typesOfPlace, setTypesOfPlace] = useState<any[]>(PLACE_TYPES);
@@ -221,6 +228,24 @@ export default function Filters() {
     }
   }, [address]);
 
+  const { user } = useAuth();
+  const { isVisitor, isFree } = usePlanChecker();
+
+  const [visitorStayLimitLaunched] = usePersistentRecoilState("visitorStayLimit", visitorStayLimit);
+  const visitorSearchLimit = isVisitor && searchLimit;
+  const visitorStayLimitReached = isVisitor && visitorStayLimitLaunched;
+  const [mapCounter] = usePersistentRecoilState("mapClickCounter", mapClicksCounter);
+
+  const visitorMapReachedClickLimit = isVisitor && mapCounter >= 50;
+
+  const [showDialog, setShowDialog] = useState(false);
+
+  useEffect(() => {
+    if (visitorStayLimitReached || visitorSearchLimit || visitorMapReachedClickLimit) {
+      setShowDialog(true);
+    }
+  }, [visitorStayLimitReached, visitorSearchLimit, visitorMapReachedClickLimit, user]);
+
   return (
     <>
       <Box className={styles.container}>
@@ -267,13 +292,20 @@ export default function Filters() {
             </div>
           </div>
         </div> */}
-        {searchLimit && (
+        {showDialog && (
           <Dialog open className={styles.dialog}>
-            <h2 className={styles.dialogTitle}>Daily Search Limit Reached</h2>
-            <DialogContent className={styles.dialogContent}>
-              You’ve reached your daily search limit. To get free unlimited access forever: Log In or Join Kurby, but you are free to accept or refuse.
-              <LoginSignupButton />
-            </DialogContent>
+            <h2 className={styles.dialogTitle}>Daily {(searchLimit && "Search") || ""} Limit Reached</h2>
+            {isFree ? (
+              <DialogContent className={styles.dialogContent}>
+                You’ve reached your daily limit. To get unlimited access, upgrade to a paid plan.
+                <GetStarted />
+              </DialogContent>
+            ) : (
+              <DialogContent className={styles.dialogContent}>
+                You’ve reached your daily limit. To get free unlimited access forever: Log In or Join Kurby, but you are free to accept or refuse.
+                <LoginSignupButton />
+              </DialogContent>
+            )}
           </Dialog>
         )}
       </Box>

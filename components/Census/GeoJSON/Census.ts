@@ -32,7 +32,7 @@ interface ICensusDemographicStatsProps {
   readonly geoResolution: CensusGeoResolution;
 }
 
-interface ICensusResponse<T> {
+export interface ICensusResponse<T> {
   readonly type: string;
   readonly features: Feature<T>[];
 }

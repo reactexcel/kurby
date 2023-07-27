@@ -67,3 +67,9 @@ export function VacantHousingTooltip({ vacantHousing, county, tractName }: IVaca
     </div>
   );
 }
+
+export const PlanReachedTooltip = () => (
+  <div style={{ width: 180, borderRadius: 20, backgroundColor: "white", opacity: 0.86, padding: 12 }}>
+    You have reached your daily hover limit. Sign up for a paid plan to continue browsing.
+  </div>
+);

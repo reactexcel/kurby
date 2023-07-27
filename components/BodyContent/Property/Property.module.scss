@@ -1,8 +1,9 @@
 .tabLayout {
+  position: relative;
   padding: 0;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  
 }
 
 .loading {
@@ -26,4 +27,13 @@
 
 .note {
   padding: 1.5rem;
+}
+
+.propertyDataNotAvailable {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 67vh;
+  overflow: hidden;
 }

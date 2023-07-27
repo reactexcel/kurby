@@ -1,0 +1,13 @@
+@import "../Record/Record.module.scss";
+
+.wrapper {
+  display: flex;
+  gap: 30px;
+  flex-direction: row;
+  margin-top: 25px;
+
+  @media screen and (max-width: 550px) {
+    flex-direction: column;
+    gap: 1em;
+  }
+}

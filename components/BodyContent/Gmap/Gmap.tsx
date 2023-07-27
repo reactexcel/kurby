@@ -10,8 +10,14 @@ import { createMedianHomeValueLegend } from "components/Census/Legends/MedianHom
 import { getCenusTractGeometricData } from "components/Census/GeoJSON/getCensusCartographic";
 import { createMedianPovertyRateLegend, getPercentUnderPoverty } from "components/Census/Legends/MedianPovertyRate";
 import { HomevalueMapLegend, HouseholdMapLegend, PovertyRateLegend, VacantHousingLegend } from "components/Census/Legends/Legends";
-import { HomevalueTooltip, HouseholdIncomeTooltip, PovertyRateTooltip, VacantHousingTooltip } from "components/Census/Tooltips/Tooltips";
+import { HomevalueTooltip, HouseholdIncomeTooltip, PlanReachedTooltip, PovertyRateTooltip, VacantHousingTooltip } from "components/Census/Tooltips/Tooltips";
 import { createHousingUnitsLegend, getVacantHousingUnits } from "components/Census/Legends/MedianVacantHousing";
+import { ICensusResponse } from "components/Census/GeoJSON/Census";
+import { mapClicksCounter } from "context/visitorContext";
+import { usePersistentRecoilState } from "hooks/recoil-persist-state";
+import { useAuth } from "providers/AuthProvider";
+import { IAppPlans } from "context/plansContext";
+import { usePlanChecker } from "hooks/plans";
 
 /**
  * Gmap
@@ -66,13 +72,14 @@ export interface IMetricsTooltipState {
 
 function MyComponent() {
   const [map, setMap] = React.useState<google.maps.Map | null>(null);
+  const [, setMapCounter] = useRecoilState(mapClicksCounter);
 
   const googleMapOptions = {
     // zoomControl: false,
     // minZoom: 17,
     // fullscreenControl: false,
   };
-  const [tractGeometricData, setTractGeometricData] = useState<object | null>(null);
+  const [tractGeometricData, setTractGeometricData] = useState<ICensusResponse<object> | null>(null);
 
   const [filterVal, setFilterVal] = useRecoilState(filterState);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -89,7 +96,9 @@ function MyComponent() {
         // @ts-ignore
         lng: filterVal.latlong.lng(),
       });
-      setTractGeometricData(dataLayer);
+      if (dataLayer?.features.length !== tractGeometricData?.features?.length) {
+        setTractGeometricData(dataLayer);
+      }
     };
     try {
       if (filterVal.latlong) {
@@ -130,6 +139,7 @@ function MyComponent() {
 
   // Handle tract tooltip on hover
   const [isClickListenerSet, setClickListener] = useState(false);
+
   useEffect(() => {
     if (!map?.data) {
       return;
@@ -140,6 +150,7 @@ function MyComponent() {
     setClickListener(true);
     map.data.addListener("mouseover", (event: google.maps.Data.MouseEvent) => {
       highlightTract(map, event);
+      setMapCounter((prev) => prev + 1);
       // Get all necessary data for all categories for the map.
       const county: string = event.feature.getProperty("NAMELSADCO");
       const tractName: string = event.feature.getProperty("NAMELSAD");
@@ -312,7 +323,31 @@ interface IMetricsTooltipProps extends IMetricsTooltipState {
 }
 
 function MetricsTooltip(props: IMetricsTooltipProps) {
+  const { isFree } = usePlanChecker();
   const [value] = useRecoilState(feature);
+  const [mapCounter, setMapCounter] = usePersistentRecoilState("mapClickCounter", mapClicksCounter);
+
+  // check if we've reached a new day and reset the counter if so
+  useEffect(() => {
+    const lastVisitDate = localStorage.getItem("lastVisitDate");
+    const currentDate = new Date().toISOString().slice(0, 10); // today's date in 'yyyy-mm-dd' format
+
+    if (lastVisitDate !== currentDate) {
+      localStorage.setItem("lastVisitDate", currentDate);
+      setMapCounter(0);
+    }
+  }, [setMapCounter]);
+
+  const visitorMapReachedClickLimit = isFree && mapCounter >= 50;
+
+  if (visitorMapReachedClickLimit) {
+    return (
+      <InfoBox onCloseClick={() => props.onClose()} position={props.coordinates}>
+        <PlanReachedTooltip />
+      </InfoBox>
+    );
+  }
+
   return (
     <InfoBox onCloseClick={() => props.onClose()} position={props.coordinates}>
       <div>
