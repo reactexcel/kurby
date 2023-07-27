@@ -17,8 +17,11 @@ export const useOpenAi = () => {
   const [filterVal] = useRecoilState(filterState);
   const [, setLoading] = useRecoilState(loadingContext);
   const [variant, setVariant] = useState<VariantType>("explainedLikeAlocal");
-  const { messages, append } = useChat({
+  const { messages, append, stop, setMessages } = useChat({
     api: `/api/openai?address=${filterVal.address}&variant=${variant}`,
+    // body: {
+    //   previousResponse: variant === "greenFlags" ? explainedLikeAlocal : variant === "redFlags" ? greenFlags : undefined,
+    // },
     onFinish: () => {
       if (variant === "explainedLikeAlocal") {
         setVariant("greenFlags");
@@ -50,6 +53,7 @@ export const useOpenAi = () => {
   }, [variant]);
 
   useEffect(() => {
+    setMessages([]);
     setOpenAiResponse(() => ({
       explainedLikeAlocal: "",
       greenFlags: "",
@@ -59,10 +63,18 @@ export const useOpenAi = () => {
       return;
     }
 
-    append({
-      content: "",
-      role: "user",
-    });
+    const timeout = setTimeout(() => {
+      append({
+        content: "",
+        role: "user",
+      });
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeout);
+      stop();
+      setVariant("explainedLikeAlocal");
+    };
   }, [filterVal.address]);
 
   useEffect(() => {

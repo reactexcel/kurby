@@ -22,7 +22,7 @@ export const Flags = ({ color, flagsMessage, loading }: FlagsProps) => {
 
   const flagsArr = useMemo(() => flagsMessage?.split("- ").filter((value) => value), [flagsMessage]);
 
-  if (loading)
+  if (loading || !flagsArr?.length)
     return (
       <>
         <Title />
