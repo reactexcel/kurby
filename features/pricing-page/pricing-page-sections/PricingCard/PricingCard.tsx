@@ -6,8 +6,8 @@ import ItemIcon from "../../../../public/icons/item.svg";
 import WhiteItem from "../../../../public/icons/whiteItem.svg";
 import GreenItem from "../../../../public/icons/greenItem.svg";
 import Image from "next/image";
-import { useOutseta } from "hooks/use-outseta";
 import { IAppPlans } from "context/plansContext";
+import { usePlanWindow } from "hooks/use-plan-window";
 
 type mainFeaturesType = {
   text: string;
@@ -24,22 +24,6 @@ type Props = {
   readonly secondaryFeatures: string[];
   readonly greenType: boolean;
   readonly planId: IAppPlans;
-};
-
-const handlePlanSelect = (outsetaRef: any, planId: string) => {
-  outsetaRef.current?.auth?.open({ widgetMode: "register", planUid: planId });
-};
-
-export const usePlanWindow = () => {
-  const outsetaRef = useOutseta();
-
-  return {
-    openFree: () => handlePlanSelect(outsetaRef, IAppPlans.FREE_PLAN_UID),
-    openStarter: () => handlePlanSelect(outsetaRef, IAppPlans.STARTER_PLAN_UID),
-    openGrowth: () => handlePlanSelect(outsetaRef, IAppPlans.GROWTH_PLAN_UID),
-    openPro: () => handlePlanSelect(outsetaRef, IAppPlans.PROFESSIONAL_PLAN_UID),
-    openPlanWithUid: (uid: IAppPlans) => handlePlanSelect(outsetaRef, uid),
-  };
 };
 
 export const PricingCard: React.FC<Props> = ({ title, subTitle, price, pricePer, mainFeatures, name, secondaryFeatures, greenType, planId }) => {

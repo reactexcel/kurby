@@ -4,7 +4,7 @@ import { Paragraph } from "components/Paragraph/Paragraph";
 
 import ItemIcon from "../../../../public/icons/item.svg";
 import WhiteItem from "../../../../public/icons/whiteItem.svg";
-import { usePlanWindow } from "./PricingCard";
+import { usePlanWindow } from "hooks/use-plan-window";
 
 type mainFeaturesType = {
   text: string;

@@ -4,7 +4,7 @@ import styles from "./ProsCons.module.scss";
 import { quickStats, addData, advancedData } from "./mockData";
 import { ProsConsItem } from "./ProsConsItem";
 import Image from "next/image";
-import { usePlanWindow } from "../PricingCard/PricingCard";
+import { usePlanWindow } from "hooks/use-plan-window";
 
 export const ProsConsSection = () => {
   const planCheckout = usePlanWindow();
