@@ -113,8 +113,6 @@ export const useOpenAi = () => {
     return validMessage;
   }, [messages]);
 
-  console.log(idRef.current);
-
   useEffect(() => {
     if (idRef.current) {
       const removedDuplicates = idRef.current.filter((id) => !openaiIds.includes(id));
