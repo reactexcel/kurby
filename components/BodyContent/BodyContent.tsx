@@ -10,9 +10,7 @@ import styles from "./BodyContent.module.scss";
 export default function BodyContent() {
   return (
     <Box className={styles.main}>
-      <Box className={styles.map}>
-        <Gmap />
-      </Box>
+      <Box className={styles.map}>{/* <Gmap /> */}</Box>
       <Box className={styles.tabs}>
         <Tabs />
       </Box>
