@@ -6,6 +6,8 @@ import { useRecoilState } from "recoil";
 import { propertySearch } from "context/propertySearchPage";
 import axios from "axios";
 import { Sparkles } from "./Sparkles";
+import Typewriter from "typewriter-effect";
+import { useEffect, useState } from "react";
 
 export const PropertySearch = () => {
   return (
@@ -57,11 +59,24 @@ function SearchBox() {
 
 function SuggestionsSection() {
   const [, setPayload] = useRecoilState(propertySearch);
-  const suggestions = [
+  const allSuggestions = [
     "Find absentee owner properties in Fairfax Virginia that are high equity and built after 1980.",
     "Find investor buyer properties purchased before 2015 that are high equity with out of state owners in Boston Massachusetts.",
     "Find vacant properties with high equity and out of state owners in Cleveland Ohio.",
   ];
+
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+
+  useEffect(() => {
+    let index = 0;
+    const interval = setInterval(() => {
+      setSuggestions((prevSuggestions) => [...prevSuggestions, allSuggestions[index]]);
+      index += 1;
+      if (index >= allSuggestions.length) {
+        clearInterval(interval);
+      }
+    }, 5000);
+  }, []);
 
   const handleSuggestionClick = (suggestion: string) => {
     setPayload({
@@ -72,20 +87,21 @@ function SuggestionsSection() {
   return (
     <div className={styles.suggestionsSection}>
       {suggestions.map((value, index) => {
-        return (
-          <GPTSuggestion onClick={() => handleSuggestionClick(value)} key={index}>
-            {value}
-          </GPTSuggestion>
-        );
+        return <GPTSuggestion onClick={() => handleSuggestionClick(value)} key={index} value={value} />;
       })}
     </div>
   );
 }
 
-function GPTSuggestion({ children, onClick }: { children: React.ReactNode; onClick: () => void }) {
+function GPTSuggestion({ value, onClick }: { value: string; onClick: () => void }) {
   return (
     <div onClick={onClick} className={styles.searchSuggestion}>
-      {children}
+      <Typewriter
+        options={{ delay: 50 }} // reduce delay for faster typing
+        onInit={(typewriter) => {
+          typewriter.typeString(value).changeDelay("natural").start();
+        }}
+      />
     </div>
   );
 }
