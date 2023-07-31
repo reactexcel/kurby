@@ -1,12 +1,19 @@
 .main {
- background-color: #F0FAF4; 
- height: 92vh;
- display: flex;
- flex-direction: column;
- align-items: center;
- justify-content: center;
+  position: relative;
+  background-color: #f0faf4;
+  min-height: calc(100vh - 76.5px); /* Assuming navbar is 50px. Adjust accordingly. */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
 }
 
+@media screen and (max-width: 744px) {
+  .main {
+    min-height: 100%; /* If you want the main to shrink on small screens */
+  }
+}
 .title {
   padding: 0;
   margin: 0;
@@ -18,7 +25,7 @@
 }
 
 .green {
-  color: #00A13C;
+  color: #00a13c;
 }
 
 .description {
@@ -47,8 +54,9 @@
     width: 75%;
   }
 
-  ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    background: -webkit-linear-gradient(left, black, transparent);
+  ::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    background: -webkit-linear-gradient(left, rgb(204, 204, 204), transparent);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -56,7 +64,6 @@
     color: black;
     opacity: 1; /* Firefox */
   }
-
 }
 
 .searchBoxStyle {
@@ -69,8 +76,8 @@
   letter-spacing: 0em;
   text-align: left;
   border: 0px;
-  background: #F9FDFF;
-  box-shadow: 0px 4px 15px 0px #0000000F;
+  background: #f9fdff;
+  box-shadow: 0px 4px 15px 0px #0000000f;
   border-radius: 16px;
 }
 .searchBox {
@@ -79,7 +86,7 @@
   bottom: 10px;
   right: 10px;
   cursor: pointer;
-  background-color: #00A13C;
+  background-color: #00a13c;
   width: 54px;
   display: flex;
   align-items: center;
@@ -94,7 +101,6 @@
 }
 
 .suggestionsSection {
- 
   margin-top: 40px;
   display: flex;
   flex-direction: column;
@@ -108,14 +114,14 @@
   @media screen and (min-width: 804px) and (max-width: 1200px) {
     width: 75%;
   }
-
 }
 
 .searchSuggestion {
+  z-index: 10;
   padding: 8px;
-  background-color: #C7EFD6;
+  background-color: #c7efd6;
   margin: 5px;
-  border-radius: 10px;;
+  border-radius: 10px;
   font-size: 20px;
   font-weight: 300;
   line-height: 24px;
@@ -130,4 +136,44 @@
   user-select: none;
   opacity: 0.25;
   transition: 0s linear;
+}
+
+.rectangleVector {
+  z-index: 0;
+  position: fixed;
+  bottom: 260px;
+  left: 62px;
+}
+
+.starVector {
+  position: fixed;
+  bottom: 120px;
+  left: 20%;
+
+  @media screen and (min-width: 1900px) {
+    left: 25%;
+  }
+
+  @media screen and (max-width: 1475px) {
+    display: none;
+  }
+}
+
+.starVectorSemi {
+  position: fixed;
+  top: 150px;
+  left: 20%;
+
+  @media screen and (min-width: 1900px) {
+    left: 15%;
+  }
+
+  @media screen and (max-width: 1475px) {
+    display: none;
+  }
+}
+
+.rectangleVector2 {
+  position: fixed;
+  top: 150px;
 }

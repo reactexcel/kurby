@@ -2,10 +2,28 @@ import { Box } from "@mui/material";
 import styles from "./PropertySearchPage.module.scss";
 import SearchLoupe from "../../public/icons/loupe.svg";
 import { Button } from "components/Button/Button";
+import { useRecoilState } from "recoil";
+import { propertySearch } from "context/propertySearchPage";
+import axios from "axios";
+import RectangleVector from "../../public/icons/rectangle-vector.svg";
+import StarVector from "../../public/icons/star-vector.svg";
+import StarVectorSemi from "../../public/icons/star-vector-semi.svg";
 
 export const PropertySearch = () => {
   return (
     <Box className={styles.main}>
+      <div className={styles.rectangleVector}>
+        <RectangleVector />
+      </div>
+      <div className={styles.starVector}>
+        <StarVector />
+      </div>
+      <div className={styles.starVectorSemi}>
+        <StarVectorSemi />
+      </div>
+      <div className={styles.rectangleVector2}>
+        <RectangleVector />
+      </div>
       <h2 className={styles.title}>
         Discover <span className={styles.green}>Properties</span>
       </h2>
@@ -18,10 +36,32 @@ export const PropertySearch = () => {
 };
 
 function SearchBox() {
+  // const router = useRouter();
+  const [payload, setPayload] = useRecoilState(propertySearch);
+
+  const handleInputChange = (event: any) => {
+    setPayload({ searchPayload: event.target.value });
+  };
+
+  const fetchGPTPropertyData = async (query: string) => {
+    const url = new URL(`https://www.propgpt.com/query/?query=${query}`);
+    const response = await axios.get(url.toString());
+    return response;
+  };
+
+  const handleSearch = async () => {
+    try {
+      const result = await fetchGPTPropertyData(payload.searchPayload);
+
+      // router.push("/app/");
+    } catch (error) {
+      console.error("Failed to fetch property data:", error);
+    }
+  };
   return (
     <div className={styles.searchBoxMain}>
-      <input className={styles.searchBoxStyle} placeholder="Can I help you with your property search?" />
-      <div className={styles.searchBox}>
+      <input value={payload.searchPayload} onChange={handleInputChange} className={styles.searchBoxStyle} placeholder="Can I help you with your property search?" />
+      <div onClick={handleSearch} className={styles.searchBox}>
         <SearchLoupe />
       </div>
     </div>
@@ -29,20 +69,36 @@ function SearchBox() {
 }
 
 function SuggestionsSection() {
+  const [, setPayload] = useRecoilState(propertySearch);
   const suggestions = [
     "Find absentee owner properties in Fairfax Virginia that are high equity and built after 1980.",
     "Find investor buyer properties purchased before 2015 that are high equity with out of state owners in Boston Massachusetts.",
     "Find vacant properties with high equity and out of state owners in Cleveland Ohio.",
   ];
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setPayload({
+      searchPayload: suggestion,
+    });
+  };
+
   return (
     <div className={styles.suggestionsSection}>
       {suggestions.map((value, index) => {
-        return <GPTSuggestion key={index}>{value}</GPTSuggestion>;
+        return (
+          <GPTSuggestion onClick={() => handleSuggestionClick(value)} key={index}>
+            {value}
+          </GPTSuggestion>
+        );
       })}
     </div>
   );
 }
 
-function GPTSuggestion({ children }: { children: React.ReactNode }) {
-  return <div className={styles.searchSuggestion}>{children}</div>;
+function GPTSuggestion({ children, onClick }: { children: React.ReactNode; onClick: () => void }) {
+  return (
+    <div onClick={onClick} className={styles.searchSuggestion}>
+      {children}
+    </div>
+  );
 }
