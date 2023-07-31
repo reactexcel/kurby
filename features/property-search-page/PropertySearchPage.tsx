@@ -5,25 +5,12 @@ import { Button } from "components/Button/Button";
 import { useRecoilState } from "recoil";
 import { propertySearch } from "context/propertySearchPage";
 import axios from "axios";
-import RectangleVector from "../../public/icons/rectangle-vector.svg";
-import StarVector from "../../public/icons/star-vector.svg";
-import StarVectorSemi from "../../public/icons/star-vector-semi.svg";
+import { Sparkles } from "./Sparkles";
 
 export const PropertySearch = () => {
   return (
     <Box className={styles.main}>
-      <div className={styles.rectangleVector}>
-        <RectangleVector />
-      </div>
-      <div className={styles.starVector}>
-        <StarVector />
-      </div>
-      <div className={styles.starVectorSemi}>
-        <StarVectorSemi />
-      </div>
-      <div className={styles.rectangleVector2}>
-        <RectangleVector />
-      </div>
+      <Sparkles />
       <h2 className={styles.title}>
         Discover <span className={styles.green}>Properties</span>
       </h2>

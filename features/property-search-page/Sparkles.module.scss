@@ -1,0 +1,74 @@
+// Base styles for vector elements
+%vector {
+  position: absolute;
+}
+
+// Rectangle Vectors
+.rectangleVector,
+.rectangleVector2,
+.rectangleVector3 {
+  @extend %vector;
+
+  @media screen and (max-width: 1200px) {
+    display: none;
+  }
+}
+
+.rectangleVector {
+  bottom: 260px;
+  left: 62px;
+}
+
+.rectangleVector2 {
+  position: fixed;
+  top: 150px;
+
+  @media screen and (max-height: 900px), screen and (max-width: 500px) {
+    display: none;
+  }
+}
+
+.rectangleVector3 {
+  bottom: 100px;
+  right: 200px;
+}
+
+// Star Vectors
+.starVector,
+.starVector2,
+.starVectorSemi,
+.starVectorSemi2 {
+  @extend %vector;
+
+  @media screen and (max-width: 1475px), screen and (max-width: 500px) {
+    display: none;
+  }
+}
+
+.starVector,
+.starVectorSemi {
+  bottom: 120px;
+  left: 20%;
+
+  @media screen and (min-width: 1900px) {
+    left: 25%;
+  }
+}
+
+.starVectorSemi {
+  top: 150px;
+
+  @media screen and (min-width: 1900px) {
+    left: 15%;
+  }
+}
+
+.starVector2 {
+  top: 250px;
+  right: 150px;
+}
+
+.starVectorSemi2 {
+  bottom: 305px;
+  right: 420px;
+}
