@@ -47,9 +47,7 @@ export const Location = ({ explainedLikeAlocal, greenFlags, redFlags }: Location
               <AIWarningToolTip />
             </Typography>
             {loading.openai.explainedLikeAlocal ? (
-              <div className={styles.skeleton}>
-                <ParagraphSkeleton />
-              </div>
+              <ParagraphSkeleton />
             ) : (
               <Typography className={styles.explainedLikeAlocal}>
                 {separateMessage?.map((part, index) => (

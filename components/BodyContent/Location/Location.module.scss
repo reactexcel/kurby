@@ -44,14 +44,6 @@
   width: 100%;
 }
 
-.skeleton {
-  margin-left: calc(200px + 1rem);
-
-  @include mq-tablet-landscape--down {
-    margin-left: 0;
-  }
-}
-
 .part {
   font-size: 1rem;
   margin: 0.5rem 0rem;
