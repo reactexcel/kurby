@@ -12,11 +12,20 @@
 }
 
 .wrapper {
-  display: flex;
-
   @include mq-tablet-landscape--down {
+    display: flex;
     flex-direction: column;
     gap: 1rem;
+  }
+}
+
+.streetView {
+  float: left;
+  margin-right: 1rem;
+
+  @include mq-tablet-landscape--down {
+    width: 100%;
+    margin-right: 0;
   }
 }
 
@@ -44,11 +53,14 @@
   width: 100%;
 }
 
-.explainedLikeAlocal {
-  max-height: 9rem;
-  overflow: auto;
+.li {
+  font-size: 1rem;
+}
+
+.skeleton {
+  margin-left: calc(200px + 1rem);
 
   @include mq-tablet-landscape--down {
-    max-height: none;
+    margin-left: 0;
   }
 }

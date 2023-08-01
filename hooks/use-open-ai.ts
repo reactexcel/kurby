@@ -24,6 +24,10 @@ export const useOpenAi = () => {
   const [variant, setVariant] = useState<VariantType>("explainedLikeAlocal");
   const { messages, append, stop, setMessages } = useChat({
     api: `/api/openai?address=${filterVal.address}&variant=${variant}`,
+    body: {
+      explainedLikeAlocal: variant === "greenFlags" ? explainedLikeAlocal : undefined,
+      greenFlags: variant === "redFlags" ? greenFlags : undefined,
+    },
     onFinish: (message) => {
       if (variant === "explainedLikeAlocal") {
         setVariant("greenFlags");

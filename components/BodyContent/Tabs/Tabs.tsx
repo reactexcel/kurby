@@ -48,7 +48,7 @@ export function Tabs() {
           <Box className={styles.tabsWrapper}>
             {activeTab === "location" && <Location explainedLikeAlocal={explainedLikeAlocal} greenFlags={greenFlags} redFlags={redFlags} />}
             {activeTab == "nearby" && <Nearby />}
-            {activeTab == "property" && <Property explainedLikeAlocal={explainedLikeAlocal} />}
+            {activeTab == "property" && <Property />}
 
             {activeTab == "neighborhood" && <Neighborhood filterVal={filterVal} />}
           </Box>

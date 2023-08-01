@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Box, Typography, CircularProgress } from "@mui/material";
 import StreetView from "../StreetView/StreetView";
 import LocationSvg from "../../../public/icons/location.svg";
@@ -21,6 +22,8 @@ export const Location = ({ explainedLikeAlocal, greenFlags, redFlags }: Location
   const [filterVal] = useRecoilState(filterState);
   const [loading] = useRecoilState(loadingContext);
 
+  const separateMessage = useMemo(() => explainedLikeAlocal?.split("- ").filter((part) => part), [explainedLikeAlocal]);
+
   if (loading.walkscore) {
     return (
       <TabLayout loading={loading.walkscore}>
@@ -33,7 +36,7 @@ export const Location = ({ explainedLikeAlocal, greenFlags, redFlags }: Location
     <TabLayout>
       <Box className={styles.main}>
         <Box className={styles.wrapper}>
-          <StreetView position={filterVal.latlong} />
+          <StreetView position={filterVal.latlong} className={styles.streetView} />
           <Box>
             <div className={styles.headerWrapper}>
               <LocationSvg style={{ minWidth: "17px" }} />
@@ -43,8 +46,20 @@ export const Location = ({ explainedLikeAlocal, greenFlags, redFlags }: Location
               Explain it like a local:
               <AIWarningToolTip />
             </Typography>
-            {loading.openai.explainedLikeAlocal ? <ParagraphSkeleton /> : <Typography className={styles.explainedLikeAlocal}>{explainedLikeAlocal}</Typography>}
-            <Box className={styles.margin}>
+            {loading.openai.explainedLikeAlocal ? (
+              <div className={styles.skeleton}>
+                <ParagraphSkeleton />
+              </div>
+            ) : (
+              <Typography className={styles.explainedLikeAlocal}>
+                {separateMessage?.map((part, index) => (
+                  <li className={styles.li} key={index}>
+                    {part}
+                  </li>
+                ))}
+              </Typography>
+            )}
+            <Box className={`${styles.margin} ${styles.walkscore}`}>
               <WalkscoreList />
             </Box>
           </Box>
