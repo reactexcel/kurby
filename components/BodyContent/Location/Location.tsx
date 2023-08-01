@@ -53,9 +53,9 @@ export const Location = ({ explainedLikeAlocal, greenFlags, redFlags }: Location
             ) : (
               <Typography className={styles.explainedLikeAlocal}>
                 {separateMessage?.map((part, index) => (
-                  <li className={styles.li} key={index}>
+                  <p className={styles.part} key={index}>
                     {part}
-                  </li>
+                  </p>
                 ))}
               </Typography>
             )}
