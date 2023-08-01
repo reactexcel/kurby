@@ -36,7 +36,7 @@ export const Location = ({ explainedLikeAlocal, greenFlags, redFlags }: Location
     <TabLayout>
       <Box className={styles.main}>
         <Box className={styles.wrapper}>
-          <StreetView position={filterVal.latlong} className={styles.streetView} />
+          <StreetView position={filterVal.latlong} />
           <Box>
             <div className={styles.headerWrapper}>
               <LocationSvg style={{ minWidth: "17px" }} />
@@ -57,7 +57,7 @@ export const Location = ({ explainedLikeAlocal, greenFlags, redFlags }: Location
                 ))}
               </Typography>
             )}
-            <Box className={`${styles.margin} ${styles.walkscore}`}>
+            <Box className={styles.margin}>
               <WalkscoreList />
             </Box>
           </Box>

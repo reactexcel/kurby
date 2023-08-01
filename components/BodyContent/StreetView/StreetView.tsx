@@ -6,7 +6,7 @@ import styles from "./StreetView.module.scss";
  * @description: Displays the street view instance for the given location
  */
 
-export default React.memo(function StreetView({ position, className }: any) {
+export default React.memo(function StreetView({ position }: any) {
   const streetViewMap = useRef(null);
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export default React.memo(function StreetView({ position, className }: any) {
   }, [position]);
 
   return (
-    <div className={`${styles.main} ${className || ""}`} ref={streetViewMap}>
+    <div className={styles.main} ref={streetViewMap}>
       StreetView
     </div>
   );
