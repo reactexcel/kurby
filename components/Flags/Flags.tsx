@@ -2,12 +2,15 @@ import { Box, Typography } from "@mui/material";
 import { AIWarningToolTip } from "components/AIWarningTooltip/AIWarningTooltip";
 import { ParagraphSkeleton } from "components/ParagraphSkeleton/ParagraphSkeleton";
 import styles from "./Flags.module.scss";
-import { useRecoilState } from "recoil";
-import { loadingContext } from "context/loadingContext";
+import { useMemo } from "react";
 
-export const Flags = ({ color, flagsArr }: { color: string; flagsArr: any[] }) => {
-  const [loading] = useRecoilState(loadingContext);
+interface FlagsProps {
+  color: string;
+  flagsMessage: string;
+  loading: boolean;
+}
 
+export const Flags = ({ color, flagsMessage, loading }: FlagsProps) => {
   const Title = () => (
     <Box style={{ marginTop: "10px" }}>
       <Typography variant="subtitle1">
@@ -17,7 +20,9 @@ export const Flags = ({ color, flagsArr }: { color: string; flagsArr: any[] }) =
     </Box>
   );
 
-  if (loading.openai)
+  const flagsArr = useMemo(() => flagsMessage?.split("- ").filter((value) => value), [flagsMessage]);
+
+  if (loading || !flagsArr?.length)
     return (
       <>
         <Title />
@@ -31,7 +36,7 @@ export const Flags = ({ color, flagsArr }: { color: string; flagsArr: any[] }) =
 
       <Box className={styles.box}>
         <ul>
-          {flagsArr.length ? (
+          {flagsArr?.length ? (
             flagsArr.map((flagContent: string, index: number) => {
               return (
                 <li className={styles.li} key={index}>

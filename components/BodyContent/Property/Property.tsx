@@ -17,7 +17,7 @@ import { GridItem } from "components/Grid/GridItem";
  * Body Content
  * @description: Displays everything below the filters
  */
-export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal: string }) {
+export default function Property() {
   const [filterVal] = useRecoilState(filterState);
   const [propertyInfo, setPropertyInfo] = useState<PropertyType | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -62,7 +62,7 @@ export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal:
           <div className={styles.wrapper}>
             <Grid>
               <GridItem isEmpty={!(propertyInfo?.records && propertyInfo?.records.length > 0)}>
-                <Record propertyInfo={propertyInfo} description={explainedLikeAlocal} />
+                <Record propertyInfo={propertyInfo} />
               </GridItem>
               <GridItem isEmpty={!propertyInfo?.valueEstimate}>
                 <EstimationGraph valueEstimate={propertyInfo?.valueEstimate} />

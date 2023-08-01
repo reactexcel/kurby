@@ -43,3 +43,12 @@
   margin-top: 1.5rem;
   width: 100%;
 }
+
+.part {
+  font-size: 1rem;
+  margin: 0.5rem 0rem;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}

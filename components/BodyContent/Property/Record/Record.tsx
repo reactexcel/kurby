@@ -15,7 +15,6 @@ import KBTable from "components/KBTable/KBTable";
 import { TableFieldType } from "types/table";
 import moment from "moment";
 import { RecordRow } from "./RecordRow/RecordRow";
-import { Paragraph } from "components/Paragraph/Paragraph";
 import styles from "./Record.module.scss";
 import { HouseInfoField } from "./HouseInfoField/HouseInfoField";
 import { AdditionalInfoField } from "./AdditionalInfoField/AdditionalInfoField";
@@ -59,7 +58,7 @@ type MarketType = {
   averageRent: number | string;
 };
 
-export default function Record({ propertyInfo, description }: { propertyInfo: PropertyType | null; description: string }) {
+export default function Record({ propertyInfo }: { propertyInfo: PropertyType | null }) {
   const [filterVal] = useRecoilState(filterState);
   const { isMobileTablet } = useContext(WindowSizeContext);
 
@@ -195,17 +194,6 @@ export default function Record({ propertyInfo, description }: { propertyInfo: Pr
       )}
 
       <Divider sx={{ height: "1.5px", borderColor: KBColor.LIGHT_GREY, marginTop: 1 }} />
-
-      {description ? (
-        <Box sx={{ display: "flex", marginTop: "1rem", marginBottom: "1rem" }}>
-          <Box>
-            <Typography variant="h6" component="h6">
-              Explain It Like a Local
-            </Typography>
-            <Paragraph>{description}</Paragraph>
-          </Box>
-        </Box>
-      ) : null}
 
       <Grid className={styles.grid}>
         <GridItem width="1/3">

@@ -1,104 +1,65 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from "next";
-import { Configuration, OpenAIApi } from "openai";
+import { OpenAIApi, Configuration } from "openai-edge";
+import { OpenAIStream, StreamingTextResponse } from "ai";
 
-type Data = {
-  explained_like_a_local: string | undefined;
-  greenFlags: string[];
-  redFlags: string[];
+/**
+ * Stream OpenAI chat completion
+ * @param message
+ * @param from
+ */
+
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+const openai = new OpenAIApi(configuration);
+
+export const runtime = "edge";
+
+const handler = async (req: any) => {
+  const params = req.url && new URL(req.url).searchParams;
+  const address = params && params.get("address");
+  const variant = params && params.get("variant");
+  const body = await req.json();
+  const { explainedLikeAlocal, greenFlags } = body;
+
+  const variants = {
+    explainedLikeAlocal: {
+      prompt: `I'm interested in buying ${address}. Tell me about the location. Tell me about the crime rate, the school district rating, and the nearby amenities such as schools, parks, grocery stores, tourist attractions, and more. Tell me about the average household income in this neighborhood and the nearby neighborhoods. If this particular property is not in the city tell me how far the nearest city center is. Tell me about the job growth in this neighborhood. End with a full sentence, this is important, don't end in the middle of the sentence. Don't say you are an AI and don't have real-time data, just give the data you have when your knowledge is cut off, don't mention your last update. Separate response in 3 parts with "- " separating them`,
+      max_tokens: 500,
+    },
+    greenFlags: {
+      prompt: `Create a bullet list with 4 items of positive aspects of living at ${address}. Keep the bullets short and concise. Separate bullets with "- ", not numbers. In the response only list bullets and end, don't add anything, don't mention these are the positive aspects. Do not include the specified address in your response. Do not include any negative aspects in your list. End with a full sentence, this is important, don't end in the middle of sentence.${
+        explainedLikeAlocal ? ` Don't contradict the following information: ${explainedLikeAlocal}` : ""
+      }`,
+      max_tokens: 150,
+    },
+    redFlags: {
+      prompt: `Create a bullet list with 4 items of negative aspects of living at ${address}. Keep the bullets short and concise. Separate bullets with "- ", not numbers. In the response only list bullets and end, don't add anything, don't mention these are the negative aspects. Do not include the specified address in your response. Do not include any positive aspects in your list. End with a full sentence, this is important, don't end in the middle of sentence.${
+        greenFlags ? ` Don't contradict the following information: ${greenFlags}` : ""
+      }`,
+      max_tokens: 150,
+    },
+  };
+
+  return await streamChatCompletion(variants[variant as keyof typeof variants]);
 };
 
-//TODO We should validate the request body using zod or something
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
+export default handler;
 
-  const { formatted_address: address, geometry } = req.body;
-
-  //! Temp validation to prevent fake requests. Should validate incoming request as in todo
-  const BAD_REQUEST_CODE = 400;
-  if(!geometry || !Object.keys(geometry).length || !address) res.status(BAD_REQUEST_CODE)
-
-  //This converts the bullets or dashes into an array that can be used by the front-end
-  const bulletsToArray = (str: string | undefined) => {
-    if (!str) return [];
-
-    // Split the input string into an array of individual lines
-    let lines = str.split("\n");
-
-    // Remove any leading or trailing whitespace from each line
-    lines = lines.map((line) => {
-      return line
-        .trim()
-        .replace("•", "")
-        .replace("-", "")
-        .replace(/^\s+|\s+$/gm, "");
-    });
-
-    lines = lines.filter((line) => line.length > 0);
-
-    return lines;
-  };
-
-  //Method handles creating a completion with openAI
-  const createCompletionWithAi = async ({
-    prompt,
-    max_tokens,
-  }: {
-    prompt: string;
-    max_tokens: number;
-  }) => {
-    //Init openAI
-
-  if (!process.env.OPENAI_API_KEY) {
-    console.error("no api key for openai");
-  }
-
-  const configuration = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY,
+const streamChatCompletion = async (variantObj: { prompt: string; max_tokens: number }) => {
+  const response = await openai.createChatCompletion({
+    model: "gpt-4",
+    stream: true,
+    messages: [
+      {
+        content: variantObj.prompt,
+        role: "user",
+      },
+    ],
+    max_tokens: variantObj.max_tokens,
+    temperature: 0.9,
   });
-    const openai = new OpenAIApi(configuration);
-    const openAiResponse = await openai.createCompletion({
-      prompt,
-      max_tokens,
-      model: "text-davinci-003",
-      temperature: 0.7,
-      top_p: 1,
-    });
 
-    return openAiResponse.data.choices?.[0]?.text;
-  };
+  const stream = OpenAIStream(response);
 
-  //Prompts to be answered and returned to front-end
-  const getOpenAiResponses = async () => {
-    
-
-    const explainedLikeLocalResponse = await createCompletionWithAi({
-      prompt: `I'm interested in buying ${address}. Tell me about the location. What is the crime rate? What is the school district rating? What amenities are nearby? What is the average household income in this neighborhood and the nearby neighborhoods? How far is the nearest city center? How's the jobs market? End with a full sentance.`,
-      max_tokens: 150,
-    });
-    let lastInd = explainedLikeLocalResponse?.lastIndexOf('.') || 0;
-    const noPartialResponses = explainedLikeLocalResponse?.slice(0, lastInd + 1)
-
-    const greenFlags = await createCompletionWithAi({
-      prompt: `Create a bullet list with 4 items of positive aspects of living at ${address}. Do not include the specified address in your response. Do not include any negative aspects in your list. Do not contradict the following information: "${noPartialResponses}"`,
-      max_tokens: 100,
-    });
-
-    const redFlags = await createCompletionWithAi({
-      prompt: `Create a bullet list with 4 items of negative aspects of living at ${address}. Do not include the specified address in your response. Do not include any positive aspects in your list. Do not contradict the following information: "${greenFlags}"`,
-      max_tokens: 100,
-    });
-
-    return {
-      explained_like_a_local:noPartialResponses,
-      greenFlags: bulletsToArray(greenFlags),
-      redFlags: bulletsToArray(redFlags),
-    };
-  };
-
-  const openAiResponses = await getOpenAiResponses();
-
-  res.status(200).json(openAiResponses);
-}
+  return new StreamingTextResponse(stream);
+};
