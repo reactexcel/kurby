@@ -1,5 +1,7 @@
-import { FilterItem } from "../FilterItem/FilterItem";
+import { useRecoilState } from "recoil";
+import { FilterRadioOption, FilterItem } from "../FilterItem/FilterItem";
 import styles from "./Filter.module.scss";
+import { forSaleFilter } from "context/propertySearchContext";
 
 export function PropertyFilter() {
   return (
@@ -13,8 +15,27 @@ export function PropertyFilter() {
   );
 }
 
+const ForSaleContents = () => {
+  const [search, setSearch] = useRecoilState(forSaleFilter);
+  return (
+    <div>
+      <FilterRadioOption
+        id={"for_sale"}
+        onSelect={() =>
+          setSearch({
+            for_sale: !search.for_sale,
+          })
+        }
+        isSelected={search.for_sale}
+      >
+        For Sale
+      </FilterRadioOption>
+    </div>
+  );
+};
+
 function ForSaleFilter() {
-  return <FilterItem title="For sale" />;
+  return <FilterItem title="For sale" renderContent={<ForSaleContents />} />;
 }
 
 function PriceFilter() {

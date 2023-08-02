@@ -1,3 +1,9 @@
+.root {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%; // adjust as necessary
+}
 .filterItem {
   flex: 1;
   padding: 15px;
@@ -10,4 +16,44 @@
   margin: 10px;
   user-select: none;
   cursor: pointer;
+}
+
+.content {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  background-color: white;
+  top: 68px;
+  border-radius: 0px 0px 6px 6px;
+  border: 1px solid #e3e3e3;
+  padding: 10px;
+  z-index: 100;
+}
+
+.arrowContent {
+  padding: 0px;
+  margin-bottom: -5px;
+}
+
+.filterOptionContent {
+  width: 100%;
+  background-color: #ffffff;
+  padding: 8px;
+  border-radius: 4px;
+  z-index: 100;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+}
+
+.filterOptionContent:hover {
+  background-color: #f5f5f5;
+  cursor: pointer;
+  user-select: none;
+}
+
+.filterOptionSelect {
+  margin-right: 10px;
+  margin-bottom: -5px;
 }
