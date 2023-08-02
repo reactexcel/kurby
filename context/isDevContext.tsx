@@ -7,7 +7,7 @@ interface IsDevContext {
 }
 
 const message = (componentName?: string) => {
-  return `Some features are disabled because this is development environment, turn off isDevContext to enable them. Component: ${componentName}`;
+  return `Some features are disabled because this is development environment to reduce costs, turn off isDevContext to enable them. Component: ${componentName}`;
 };
 
 const initialValues = {
