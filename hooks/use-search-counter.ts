@@ -1,6 +1,7 @@
+import { IsDevContext } from "context/isDevContext";
 import { searchContext } from "context/searchCounter";
 import { useAuth } from "providers/AuthProvider";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
 const initialValues = () => {
@@ -13,6 +14,7 @@ export const useSearchCounter = () => {
   const { user } = useAuth();
   const [{ count, searchLimit }, setCounter] = useRecoilState(searchContext);
   const [date, setDate] = useState<Date>(new Date());
+  const { isDev } = useContext(IsDevContext);
 
   const hasDateExpired = (date: Date) => {
     date.setHours(0, 0, 0, 0);
@@ -30,7 +32,7 @@ export const useSearchCounter = () => {
   const resetCounter = useCallback(() => setCounter(() => ({ searchLimit: false, count: "0" })), []);
 
   useEffect(() => {
-    if (!user) {
+    if (!user && !isDev) {
       const item = window.localStorage.getItem("searchCounter");
       let searchCounterStorage = JSON.parse(item || "null");
 
@@ -54,7 +56,7 @@ export const useSearchCounter = () => {
   }, [user]);
 
   useEffect(() => {
-    if (!user && count !== "0") {
+    if (!user && !isDev && count !== "0") {
       window.localStorage.setItem("searchCounter", JSON.stringify({ count, date }));
     }
 
@@ -66,7 +68,7 @@ export const useSearchCounter = () => {
   }, [count]);
 
   const incrementCounter = () => {
-    if (!user) {
+    if (!user && !isDev) {
       setCounterCallback("count", (+count + 1).toString());
     }
   };

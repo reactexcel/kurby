@@ -14,7 +14,7 @@ export function HouseholdMapLegend() {
       </Typography>
       <Stack direction={"row"}>
         {demographicColorRepresentation.map((color: string, index: number) => (
-          <Stack flex={1} textAlign={"center"} direction={"column"}>
+          <Stack flex={1} textAlign={"center"} direction={"column"} key={index}>
             <MapLegendColorItem backgroundColor={color} />
             {index === 11 ? (
               <Typography style={mapTextItem}>200k+</Typography>
@@ -44,7 +44,7 @@ export function HomevalueMapLegend() {
       </Typography>
       <Stack direction={"row"}>
         {demographicColorRepresentation.map((color: string, index: number) => (
-          <Stack flex={1} textAlign={"center"} direction={"column"}>
+          <Stack flex={1} textAlign={"center"} direction={"column"} key={index}>
             <MapLegendColorItem backgroundColor={color} />
             {index === 10 ? (
               <Typography style={mapTextItem}>1M+</Typography>
@@ -86,7 +86,7 @@ export function PovertyRateLegend() {
       </Typography>
       <Stack direction={"row"}>
         {povertyColorRepresentation.map((color: string, index: number) => (
-          <Stack flex={1} textAlign={"center"} direction={"column"}>
+          <Stack flex={1} textAlign={"center"} direction={"column"} key={index}>
             <MapLegendColorItem backgroundColor={color} />
             <Typography style={mapTextItem}>{povertyColorLabels[index]}</Typography>
           </Stack>
@@ -110,7 +110,7 @@ export function VacantHousingLegend() {
       </Typography>
       <Stack direction={"row"}>
         {housingUnitsColorRepresentation.map((color: string, index: number) => (
-          <Stack flex={1} textAlign={"center"} direction={"column"}>
+          <Stack flex={1} textAlign={"center"} direction={"column"} key={index}>
             <MapLegendColorItem backgroundColor={color} />
             <Typography style={mapTextItem}>{povertyColorLabels[index]}</Typography>
           </Stack>

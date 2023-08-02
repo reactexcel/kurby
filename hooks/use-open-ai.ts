@@ -1,10 +1,11 @@
 import { filterState } from "context/filterContext";
 import { loadingContext } from "context/loadingContext";
-import { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef, useContext } from "react";
 import { useRecoilState } from "recoil";
 import { useChat } from "ai/react";
 import { openaiCacheContext } from "context/openaiCacheContext";
 import { openaiIdsContext } from "context/openaiIdsContext";
+import { IsDevContext } from "context/isDevContext";
 
 interface OpenAiResponseType {
   explainedLikeAlocal?: string;
@@ -22,6 +23,7 @@ export const useOpenAi = () => {
   const idRef = useRef<string[]>([]);
   const [openaiIds, setOpenaiIds] = useRecoilState(openaiIdsContext);
   const [variant, setVariant] = useState<VariantType>("explainedLikeAlocal");
+  const { isDev } = useContext(IsDevContext);
   const { messages, append, stop, setMessages } = useChat({
     api: `/api/openai?address=${filterVal.address}&variant=${variant}`,
     body: {
@@ -118,6 +120,10 @@ export const useOpenAi = () => {
   }, [messages]);
 
   useEffect(() => {
+    if (isDev) {
+      return;
+    }
+
     if (idRef.current) {
       const removedDuplicates = idRef.current.filter((id) => !openaiIds.includes(id));
 
