@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { Box, Typography, CircularProgress } from "@mui/material";
 import StreetView from "../StreetView/StreetView";
 import LocationSvg from "../../../public/icons/location.svg";
@@ -11,6 +11,7 @@ import { Flags } from "components/Flags/Flags";
 import { loadingContext } from "context/loadingContext";
 import { TabLayout } from "components/layouts/TabLayout/TabLayout";
 import styles from "./Location.module.scss";
+import { IsDevContext } from "context/isDevContext";
 
 interface LocationProps {
   explainedLikeAlocal?: string;
@@ -21,6 +22,7 @@ interface LocationProps {
 export const Location = ({ explainedLikeAlocal, greenFlags, redFlags }: LocationProps) => {
   const [filterVal] = useRecoilState(filterState);
   const [loading] = useRecoilState(loadingContext);
+  const { isDev, message } = useContext(IsDevContext);
 
   const separateMessage = useMemo(() => explainedLikeAlocal?.split("- ").filter((part) => part), [explainedLikeAlocal]);
 
@@ -46,6 +48,7 @@ export const Location = ({ explainedLikeAlocal, greenFlags, redFlags }: Location
               Explain it like a local:
               <AIWarningToolTip />
             </Typography>
+            {isDev && <Typography className={styles.margin}>{message("Location")}</Typography>}
             {loading.openai.explainedLikeAlocal ? (
               <ParagraphSkeleton />
             ) : (

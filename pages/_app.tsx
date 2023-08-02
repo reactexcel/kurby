@@ -5,6 +5,7 @@ import Topbar from "../features/homepage/Topbar/Topbar";
 import { RecoilRoot } from "recoil";
 import { AuthProvider } from "providers/AuthProvider";
 import { WindowSizeProvider } from "context/windowSizeContext";
+import { IsDevProvider } from "context/isDevContext";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -37,19 +38,21 @@ export default function App({ Component, pageProps }: AppProps) {
         src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places&callback=initMap`}
       />
       <WindowSizeProvider>
-        <AuthProvider>
-          <Topbar>
-            <div
-              style={{
-                position: "relative",
-              }}
-            >
-              <RecoilRoot>
-                <Component {...pageProps} />
-              </RecoilRoot>
-            </div>
-          </Topbar>
-        </AuthProvider>
+        <IsDevProvider>
+          <AuthProvider>
+            <Topbar>
+              <div
+                style={{
+                  position: "relative",
+                }}
+              >
+                <RecoilRoot>
+                  <Component {...pageProps} />
+                </RecoilRoot>
+              </div>
+            </Topbar>
+          </AuthProvider>
+        </IsDevProvider>
       </WindowSizeProvider>
     </>
   );
