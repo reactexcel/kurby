@@ -1,0 +1,13 @@
+.filterItem {
+  flex: 1;
+  padding: 15px;
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px;
+  user-select: none;
+  cursor: pointer;
+}
