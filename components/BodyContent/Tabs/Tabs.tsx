@@ -12,7 +12,6 @@ import Property from "../Property/Property";
 import { Location } from "../Location/Location";
 import { loadingContext } from "context/loadingContext";
 import styles from "./Tabs.module.scss";
-import { propertyDetailAvailable } from "context/propertyContext";
 
 export function Tabs() {
   const [activeTab, setActiveTab] = useRecoilState(activeTabState);

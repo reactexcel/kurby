@@ -8,8 +8,35 @@ import axios from "axios";
 import { Sparkles } from "./Sparkles";
 import Typewriter from "typewriter-effect";
 import { useEffect, useState } from "react";
+import { usePlanChecker } from "hooks/plans";
+import { useRouter } from "next/router";
+import { IPropertySearchResponse } from "pages/api/propertyV2";
 
 export const PropertySearch = () => {
+  const plan = usePlanChecker();
+  const router = useRouter();
+  const [isCheckPlan, setIsCheckPlan] = useState(false); // New state variable
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsCheckPlan(true);
+    }, 1000); // Set the state after 1.5 seconds
+
+    return () => clearTimeout(timer); // Clear timeout if the component unmounts
+  }, []);
+
+  if (plan.isVisitor) {
+    router.back();
+  }
+
+  if (isCheckPlan && !plan.isVisitor && !plan.isPro) {
+    return (
+      <Box className={styles.main}>
+        <>Sorry this page is not available for your plan.</>
+      </Box>
+    );
+  }
+
   return (
     <Box className={styles.main}>
       <Sparkles />
@@ -25,7 +52,7 @@ export const PropertySearch = () => {
 };
 
 function SearchBox() {
-  // const router = useRouter();
+  const router = useRouter();
   const [payload, setPayload] = useRecoilState(propertySearch);
 
   const handleInputChange = (event: any) => {
@@ -34,15 +61,14 @@ function SearchBox() {
 
   const fetchGPTPropertyData = async (query: string) => {
     const url = new URL(`https://www.propgpt.com/query/?query=${query}`);
-    const response = await axios.get(url.toString());
+    const response = await axios.get<IPropertySearchResponse>(url.toString());
     return response;
   };
 
   const handleSearch = async () => {
     try {
-      const result = await fetchGPTPropertyData(payload.searchPayload);
-
-      // router.push("/app/");
+      const { data } = await fetchGPTPropertyData(payload.searchPayload);
+      router.push(`/app/${data.data[0].address.address}`);
     } catch (error) {
       console.error("Failed to fetch property data:", error);
     }

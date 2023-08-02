@@ -22,7 +22,6 @@ import { AdditionalPropertyInformation } from "./AdditionalPropertyInformation/A
 import LotInfo from "./LotInfo/LotInfo";
 import TaxInfo from "./TaxInfo/TaxInfo";
 import KurbyPaidPlanLimit, { TabLimitMessage } from "components/AIWarningTooltip/KurbyPaidPlanLimit";
-import { IAppPlans } from "context/plansContext";
 import { useAuth } from "providers/AuthProvider";
 import { propertyV2Mock } from "mock/freePlanPropertyMock";
 import { usePlanChecker } from "hooks/plans";
@@ -31,7 +30,7 @@ import { usePlanChecker } from "hooks/plans";
  * Body Content
  * @description: Displays everything below the filters
  */
-export default function Property({ explainedLikeAlocal }: { explainedLikeAlocal: string }) {
+export default function AddressPropertyDetails({ explainedLikeAlocal }: { explainedLikeAlocal: string }) {
   const { user } = useAuth();
   const [filterVal] = useRecoilState(filterState);
   const [propertyInfo, setPropertyInfoV2] = useRecoilState(propertyInfoV2Context);
