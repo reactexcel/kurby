@@ -3,6 +3,7 @@ import { FilterItem } from "../FilterItem/FilterItem";
 import styles from "./Filter.module.scss";
 import { forSaleFilter } from "context/propertySearchContext";
 import { ForSaleFilter } from "./ForSaleFilter/ForSaleFilter";
+import { PriceFilter } from "./PriceFilter/PriceFilter";
 
 export function PropertyFilter() {
   const [forSale] = useRecoilState(forSaleFilter);
@@ -23,18 +24,14 @@ export function PropertyFilter() {
   );
 }
 
-function PriceFilter() {
-  return <FilterItem title="Price" />;
-}
-
 function BedBathsFilter() {
-  return <FilterItem title="Beds & Baths" />;
+  return <FilterItem flex={1} title="Beds & Baths" />;
 }
 
 function HomeTypeFilter() {
-  return <FilterItem title="Home Type" />;
+  return <FilterItem flex={1} title="Home Type" />;
 }
 
 function MoreFilter() {
-  return <FilterItem title="More" />;
+  return <FilterItem flex={1} title="More" />;
 }

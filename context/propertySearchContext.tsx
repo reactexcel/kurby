@@ -18,4 +18,21 @@ const forSaleContext: SaleContext = {
   },
 };
 
+interface PriceContext {
+  key: string;
+  default: {
+    minimum: number;
+    maximum: number;
+  };
+}
+
+const priceFilterContext: PriceContext = {
+  key: "propertySearchContext",
+  default: {
+    minimum: 0,
+    maximum: 0,
+  },
+};
+
 export const forSaleFilter = atom(forSaleContext);
+export const priceFilter = atom(priceFilterContext);

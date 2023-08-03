@@ -5,13 +5,15 @@ import Selected from "../../../../public/icons/button-selected.svg";
 import UnSelected from "../../../../public/icons/button-unselected.svg";
 interface IFilterItemProps {
   readonly title: string;
+  readonly renderContentWidth?: string;
   readonly renderContent?: React.ReactNode;
+  readonly flex: number;
 }
 
-export function FilterItem({ title, renderContent }: IFilterItemProps) {
+export function FilterItem({ title, renderContent, renderContentWidth, flex }: IFilterItemProps) {
   const [isOpen, setOpen] = useState<boolean>(false);
   return (
-    <div className={styles.root}>
+    <div style={flex ? { flex } : {}} className={styles.root}>
       <div
         onClick={() => {
           setOpen(!isOpen);
@@ -23,13 +25,29 @@ export function FilterItem({ title, renderContent }: IFilterItemProps) {
           <ArrowDown />
         </div>
       </div>
-      {isOpen && renderContent ? <div className={styles.content}>{renderContent}</div> : <></>}
+      {isOpen && renderContent ? (
+        <div style={renderContentWidth ? { width: renderContentWidth } : {}} className={styles.content}>
+          {renderContent}
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }
 
 // eslint-disable-next-line no-unused-vars
 export function FilterRadioOption({ id, onSelect, isSelected, children }: { id: string; onSelect: (id: string) => void; isSelected: boolean; children: React.ReactNode }) {
+  return (
+    <div onClick={() => onSelect(id)} className={styles.filterOptionContent}>
+      <div className={styles.filterOptionSelect}>{isSelected ? <Selected /> : <UnSelected />}</div>
+      {children}
+    </div>
+  );
+}
+
+// eslint-disable-next-line no-unused-vars
+export function FilterItems({ id, onSelect, isSelected, children }: { id: string; onSelect: (id: string) => void; isSelected: boolean; children: React.ReactNode }) {
   return (
     <div onClick={() => onSelect(id)} className={styles.filterOptionContent}>
       <div className={styles.filterOptionSelect}>{isSelected ? <Selected /> : <UnSelected />}</div>
