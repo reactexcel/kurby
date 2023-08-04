@@ -1,16 +1,20 @@
 import { useRecoilState } from "recoil";
 import { FilterItem } from "../FilterItem/FilterItem";
 import styles from "./Filter.module.scss";
-import { forSaleFilter } from "context/propertySearchContext";
+import { forSaleFilter, homeTypeFilter, priceFilter } from "context/propertySearchContext";
 import { ForSaleFilter } from "./ForSaleFilter/ForSaleFilter";
 import { PriceFilter } from "./PriceFilter/PriceFilter";
 import { HomeTypeFilter } from "./HomeType/HomeType";
 
 export function PropertyFilter() {
   const [forSale] = useRecoilState(forSaleFilter);
+  const [price] = useRecoilState(priceFilter);
+  const [homeType] = useRecoilState(homeTypeFilter);
 
   const searchObject = {
-    ...forSale,
+    forSale,
+    price,
+    homeType,
   };
 
   console.log(searchObject);

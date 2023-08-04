@@ -11,26 +11,24 @@ const HomeTypeContents = () => {
       ...filter,
       // @ts-ignore
       [id]: !filter[id],
-      all: false,
     });
   };
 
   const handleSelectAll = () => {
     setFilter({
-      all: true,
-      houses: false,
-      townHouse: false,
-      multiFamily: false,
-      condosCoOps: false,
-      lotsLands: false,
-      apartment: false,
-      manufactured: false,
+      houses: true,
+      townHouse: true,
+      multiFamily: true,
+      condosCoOps: true,
+      lotsLands: true,
+      apartment: true,
+      manufactured: true,
     });
   };
 
   return (
     <div>
-      <FilterRadioOption id={"sold"} onSelect={() => handleSelectAll()} isSelected={filter.all}>
+      <FilterRadioOption id={"sold"} onSelect={() => handleSelectAll()} isSelected={Object.values(filter).every((field) => field === true)}>
         All
       </FilterRadioOption>
       <FilterCheckboxOption id={"for_sale"} onSelect={() => handleSelect("houses")} isSelected={filter.houses}>

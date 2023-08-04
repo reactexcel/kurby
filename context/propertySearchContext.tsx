@@ -42,7 +42,6 @@ const priceFilterContext: PriceContext = {
 interface HomeFilterContext {
   key: string;
   default: {
-    all: boolean;
     houses: boolean;
     townHouse: boolean;
     multiFamily: boolean;
@@ -56,7 +55,6 @@ interface HomeFilterContext {
 const homeType: HomeFilterContext = {
   key: "homeTypeFilter",
   default: {
-    all: false,
     houses: false,
     townHouse: false,
     multiFamily: false,
