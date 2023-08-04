@@ -9,6 +9,14 @@ export enum IPriceFilterCurrentTab {
   MONTHLY_PAYMENT_TAB,
 }
 
+export enum IPriceFilterDownPayment {
+  NO_DOWN_PAYMENT = "no-down-payment",
+  FIVE = 5,
+  TEN = 10,
+  FIFTHTEEN = 15,
+  TWENTY = 20,
+}
+
 const PriceFilterContents = () => {
   const [priceFilterState, setPriceFilter] = useRecoilState(priceFilter);
   const currentTab = priceFilterState.tab;
@@ -28,6 +36,13 @@ const PriceFilterContents = () => {
     setPriceFilter({
       ...priceFilterState,
       [keyToUse]: isNaN(numericValue) ? 0 : numericValue,
+    });
+  };
+
+  const setDownPayment = (selectOption: IPriceFilterDownPayment) => {
+    setPriceFilter({
+      ...priceFilterState,
+      downPayment: selectOption,
     });
   };
 
@@ -86,7 +101,13 @@ const PriceFilterContents = () => {
             <p className={styles.monthlyPaymentDescription}>Includes estimated principal and interest, mortgage insurance, property taxes, home insurance and HOA fees.</p>
             <div className={styles.downPayment}>
               <div>Down Payment</div>
-              <div>No Down payment</div>
+              <select className={styles.downPaymentSelector} value={priceFilterState.downPayment} onChange={(e) => setDownPayment(e.target.value as IPriceFilterDownPayment)}>
+                <option value={IPriceFilterDownPayment.NO_DOWN_PAYMENT}>NO Down payment</option>
+                <option value={IPriceFilterDownPayment.FIVE}>5%</option>
+                <option value={IPriceFilterDownPayment.TEN}>10%</option>
+                <option value={IPriceFilterDownPayment.FIFTHTEEN}>15%</option>
+                <option value={IPriceFilterDownPayment.TWENTY}>20%</option>
+              </select>
             </div>
           </>
         )}

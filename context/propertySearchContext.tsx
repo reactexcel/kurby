@@ -1,4 +1,4 @@
-import { IPriceFilterCurrentTab } from "components/BodyContent/PropertySearch/Filters/PriceFilter/PriceFilter";
+import { IPriceFilterCurrentTab, IPriceFilterDownPayment } from "components/BodyContent/PropertySearch/Filters/PriceFilter/PriceFilter";
 import { atom } from "recoil";
 
 interface SaleContext {
@@ -25,15 +25,17 @@ interface PriceContext {
     tab: IPriceFilterCurrentTab;
     minimum: number;
     maximum: number;
+    downPayment: IPriceFilterDownPayment;
   };
 }
 
 const priceFilterContext: PriceContext = {
-  key: "propertySearchContext",
+  key: "priceFilterContext",
   default: {
     tab: IPriceFilterCurrentTab.LIST_PRICE_TAB,
     minimum: 0,
     maximum: 0,
+    downPayment: IPriceFilterDownPayment.NO_DOWN_PAYMENT,
   },
 };
 
