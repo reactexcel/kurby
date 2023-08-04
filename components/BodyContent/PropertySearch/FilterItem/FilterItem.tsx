@@ -3,6 +3,9 @@ import ArrowDown from "../../../../public/icons/arrow-down.svg";
 import { useState } from "react";
 import Selected from "../../../../public/icons/button-selected.svg";
 import UnSelected from "../../../../public/icons/button-unselected.svg";
+import Checkmark from "../../../../public/icons/checkmark.svg";
+import CheckmarkUnchecked from "../../../../public/icons/checkmark-unchecked.svg";
+
 interface IFilterItemProps {
   readonly title: string;
   readonly renderContentWidth?: string;
@@ -39,10 +42,40 @@ export function FilterItem({ title, renderContent, renderContentWidth, flex }: I
 // eslint-disable-next-line no-unused-vars
 export function FilterRadioOption({ id, onSelect, isSelected, children }: { id: string; onSelect: (id: string) => void; isSelected: boolean; children: React.ReactNode }) {
   return (
+    <FilterOption id={id} onSelect={onSelect} isSelected={isSelected} selectedIcon={<Selected />} unselectedIcon={<UnSelected />}>
+      {children}
+    </FilterOption>
+  );
+}
+
+export function FilterOption({
+  id,
+  onSelect,
+  isSelected,
+  children,
+  selectedIcon,
+  unselectedIcon,
+}: {
+  id: string;
+  onSelect: (id: string) => void;
+  isSelected: boolean;
+  children: React.ReactNode;
+  selectedIcon: React.ReactNode;
+  unselectedIcon: React.ReactNode;
+}) {
+  return (
     <div onClick={() => onSelect(id)} className={styles.filterOptionContent}>
-      <div className={styles.filterOptionSelect}>{isSelected ? <Selected /> : <UnSelected />}</div>
+      <div className={styles.filterOptionSelect}>{isSelected ? selectedIcon : unselectedIcon}</div>
       {children}
     </div>
+  );
+}
+
+export function FilterCheckboxOption({ id, onSelect, isSelected, children }: { id: string; onSelect: (id: string) => void; isSelected: boolean; children: React.ReactNode }) {
+  return (
+    <FilterOption id={id} onSelect={onSelect} isSelected={isSelected} selectedIcon={<Checkmark />} unselectedIcon={<CheckmarkUnchecked />}>
+      {children}
+    </FilterOption>
   );
 }
 

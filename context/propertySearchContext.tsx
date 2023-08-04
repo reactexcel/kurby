@@ -39,5 +39,34 @@ const priceFilterContext: PriceContext = {
   },
 };
 
+interface HomeFilterContext {
+  key: string;
+  default: {
+    all: boolean;
+    houses: boolean;
+    townHouse: boolean;
+    multiFamily: boolean;
+    condosCoOps: boolean;
+    lotsLands: boolean;
+    apartment: boolean;
+    manufactured: boolean;
+  };
+}
+
+const homeType: HomeFilterContext = {
+  key: "homeTypeFilter",
+  default: {
+    all: false,
+    houses: false,
+    townHouse: false,
+    multiFamily: false,
+    condosCoOps: false,
+    lotsLands: false,
+    apartment: false,
+    manufactured: false,
+  },
+};
+
 export const forSaleFilter = atom(forSaleContext);
 export const priceFilter = atom(priceFilterContext);
+export const homeTypeFilter = atom(homeType);
