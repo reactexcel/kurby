@@ -1,3 +1,4 @@
+import { IPriceFilterCurrentTab } from "components/BodyContent/PropertySearch/Filters/PriceFilter/PriceFilter";
 import { atom } from "recoil";
 
 interface SaleContext {
@@ -21,6 +22,7 @@ const forSaleContext: SaleContext = {
 interface PriceContext {
   key: string;
   default: {
+    tab: IPriceFilterCurrentTab;
     minimum: number;
     maximum: number;
   };
@@ -29,6 +31,7 @@ interface PriceContext {
 const priceFilterContext: PriceContext = {
   key: "propertySearchContext",
   default: {
+    tab: IPriceFilterCurrentTab.LIST_PRICE_TAB,
     minimum: 0,
     maximum: 0,
   },
