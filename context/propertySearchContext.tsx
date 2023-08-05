@@ -104,6 +104,8 @@ interface MoreFilterContext {
     equityPercentMax: number | null;
     estimatedEquityMin: number | null;
     estimatedEquityMax: number | null;
+    estimatedValueMin: number | null;
+    estimatedValueMax: number | null;
   };
 }
 
@@ -145,6 +147,8 @@ const moreFilterContext: MoreFilterContext = {
     equityPercentMax: null,
     estimatedEquityMin: null,
     estimatedEquityMax: null,
+    estimatedValueMin: null,
+    estimatedValueMax: null,
   },
 };
 

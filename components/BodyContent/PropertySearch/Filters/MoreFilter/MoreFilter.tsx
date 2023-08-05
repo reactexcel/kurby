@@ -312,6 +312,31 @@ function MoreFilterContent() {
           </div>
         </div>
       </div>
+      {/* Estimated Value */}
+      <div style={defaultSpacing}>
+        <div style={spaceBottom(0)}>Estimated Value</div>
+        <div className={styles.minMaxSelector}>
+          <div className={styles.min}>
+            <small className={styles.minMaxSelectorPlaceholder}>Minimum</small>
+            <input
+              value={moreFilterState.estimatedValueMin !== null ? moreFilterState.estimatedValueMin.toString() : ""}
+              onChange={(event) => handleNumberChange(event.target.value, "estimatedValueMin")}
+              placeholder="No Min"
+              className={styles.input}
+            />
+          </div>
+          <small className={styles.to}>to</small>
+          <div className={styles.max}>
+            <small className={styles.minMaxSelectorPlaceholder}>Maximum</small>
+            <input
+              value={moreFilterState.estimatedValueMax !== null ? moreFilterState.estimatedValueMax.toString() : ""}
+              onChange={(event) => handleNumberChange(event.target.value, "estimatedValueMax")}
+              placeholder="No Max"
+              className={styles.input}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
