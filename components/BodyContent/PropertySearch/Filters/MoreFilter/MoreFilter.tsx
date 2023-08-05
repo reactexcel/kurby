@@ -1,11 +1,7 @@
 import { useRecoilState } from "recoil";
-import { FilterCheckboxOption, FilterItem, FilterOption } from "../../FilterItem/FilterItem";
+import { FilterCheckboxOption, FilterItem } from "../../FilterItem/FilterItem";
 import styles from "./MoreFilter.module.scss";
 import { moreFilter } from "context/propertySearchContext";
-
-export enum MaxHoa {
-  ANY,
-}
 
 export enum ListingTypeTab {
   BY_AGENT = "by-agent",
@@ -43,20 +39,21 @@ function MoreFilterContent() {
   };
 
   const handleCheckboxSelect = (id: string, value: boolean) => {
-    setMoreFilter({
-      ...moreFilterState,
+    setMoreFilter((prevState) => ({
+      ...prevState,
       [id]: value,
-    });
+    }));
   };
+
+  const handleYearsChange = (value: string, minOrMax: "yearsOwnedMin" | "yearsOwnedMax") => {
+    setMoreFilter((prevState) => ({
+      ...prevState,
+      [minOrMax]: value === "" ? null : Number(value),
+    }));
+  };
+
   return (
-    <div>
-      {/* Max HOA  */}
-      <>
-        <div>Max HOA</div>
-        <select style={defaultSpacing} className={styles.selector}>
-          <option>Any</option>
-        </select>
-      </>
+    <div className={styles.main}>
       {/* Listing Type */}
       <div style={defaultSpacing}>
         <div style={spaceBottom(10)}>Listing Type</div>
@@ -103,7 +100,7 @@ function MoreFilterContent() {
         </div>
       </div>
       {/* Property Status  */}
-      <>
+      <div style={defaultSpacing}>
         <div style={spaceBottom(10)}>Property Status</div>
         <div className={styles.row}>
           <div className={styles.column}>
@@ -153,7 +150,81 @@ function MoreFilterContent() {
             </FilterCheckboxOption>
           </div>
         </div>
-      </>
+      </div>
+      {/* Owner Information */}
+      <div style={defaultSpacing}>
+        <div style={spaceBottom(10)}>Owner Information</div>
+        <div className={styles.row}>
+          <div className={styles.column}>
+            <FilterCheckboxOption
+              id="nonOwnerOccupied"
+              onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.nonOwnerOccupied)}
+              isSelected={moreFilterState.nonOwnerOccupied}
+            >
+              Non-Owner Occupied
+            </FilterCheckboxOption>
+            <FilterCheckboxOption id="absenteeOwner" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.absenteeOwner)} isSelected={moreFilterState.absenteeOwner}>
+              Absentee Owner
+            </FilterCheckboxOption>
+            <FilterCheckboxOption
+              id="outOfStateAbsenteeOwner"
+              onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.outOfStateAbsenteeOwner)}
+              isSelected={moreFilterState.outOfStateAbsenteeOwner}
+            >
+              Out Of State Absentee Owner
+            </FilterCheckboxOption>
+            <FilterCheckboxOption
+              id="inStateAbsenteeOwner"
+              onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.inStateAbsenteeOwner)}
+              isSelected={moreFilterState.inStateAbsenteeOwner}
+            >
+              In State Absentee Owner
+            </FilterCheckboxOption>
+            <FilterCheckboxOption id="corporateOwner" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.corporateOwner)} isSelected={moreFilterState.corporateOwner}>
+              Corporate Owned
+            </FilterCheckboxOption>
+          </div>
+          <div className={styles.column}>
+            <FilterCheckboxOption id="investorBuyer" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.investorBuyer)} isSelected={moreFilterState.investorBuyer}>
+              Investor Buyer
+            </FilterCheckboxOption>
+            <FilterCheckboxOption id="inherited" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.inherited)} isSelected={moreFilterState.inherited}>
+              Inherited
+            </FilterCheckboxOption>
+            <FilterCheckboxOption id="ownerDeath" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.ownerDeath)} isSelected={moreFilterState.ownerDeath}>
+              Owner Death
+            </FilterCheckboxOption>
+            <FilterCheckboxOption id="spousalDeath" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.spousalDeath)} isSelected={moreFilterState.spousalDeath}>
+              Spousal Death
+            </FilterCheckboxOption>
+          </div>
+        </div>
+      </div>
+      {/* Years Owned */}
+      <div style={defaultSpacing}>
+        <div style={spaceBottom(0)}>Years Owned</div>
+        <div className={styles.yearsSelector}>
+          <div className={styles.min}>
+            <small className={styles.yearsSelectorPlaceholder}>Minimum</small>
+            <input
+              value={moreFilterState.yearsOwnedMin !== null ? moreFilterState.yearsOwnedMin.toString() : ""}
+              onChange={(event) => handleYearsChange(event.target.value, "yearsOwnedMin")}
+              placeholder="No Min"
+              className={styles.input}
+            />
+          </div>
+          <small className={styles.to}>to</small>
+          <div className={styles.max}>
+            <small className={styles.yearsSelectorPlaceholder}>Maximum</small>
+            <input
+              value={moreFilterState.yearsOwnedMax !== null ? moreFilterState.yearsOwnedMax.toString() : ""}
+              onChange={(event) => handleYearsChange(event.target.value, "yearsOwnedMax")}
+              placeholder="No Max"
+              className={styles.input}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

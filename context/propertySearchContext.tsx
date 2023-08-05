@@ -1,4 +1,4 @@
-import { ListingTypeTab, MaxHoa } from "components/BodyContent/PropertySearch/Filters/MoreFilter/MoreFilter";
+import { ListingTypeTab } from "components/BodyContent/PropertySearch/Filters/MoreFilter/MoreFilter";
 import { IPriceFilterCurrentTab, IPriceFilterDownPayment } from "components/BodyContent/PropertySearch/Filters/PriceFilter/PriceFilter";
 import { atom } from "recoil";
 
@@ -69,7 +69,6 @@ const homeType: HomeFilterContext = {
 interface MoreFilterContext {
   key: string;
   default: {
-    maxHoa: MaxHoa;
     listingType: ListingTypeTab;
     agentListed: boolean;
     newConstruction: boolean;
@@ -82,13 +81,23 @@ interface MoreFilterContext {
     propertyStatusCancelled: boolean;
     propertyStatusFailed: boolean;
     propertyStatusSold: boolean;
+    nonOwnerOccupied: boolean;
+    absenteeOwner: boolean;
+    outOfStateAbsenteeOwner: boolean;
+    inStateAbsenteeOwner: boolean;
+    corporateOwner: boolean;
+    investorBuyer: boolean;
+    inherited: boolean;
+    ownerDeath: boolean;
+    spousalDeath: boolean;
+    yearsOwnedMin: number | null;
+    yearsOwnedMax: number | null;
   };
 }
 
 const moreFilterContext: MoreFilterContext = {
   key: "moreFilterContext",
   default: {
-    maxHoa: MaxHoa.ANY,
     listingType: ListingTypeTab.BY_AGENT,
     agentListed: true,
     newConstruction: false,
@@ -101,6 +110,17 @@ const moreFilterContext: MoreFilterContext = {
     propertyStatusCancelled: false,
     propertyStatusFailed: false,
     propertyStatusSold: false,
+    nonOwnerOccupied: false,
+    absenteeOwner: false,
+    outOfStateAbsenteeOwner: false,
+    inStateAbsenteeOwner: false,
+    corporateOwner: false,
+    investorBuyer: false,
+    inherited: false,
+    ownerDeath: false,
+    spousalDeath: false,
+    yearsOwnedMin: null,
+    yearsOwnedMax: null,
   },
 };
 

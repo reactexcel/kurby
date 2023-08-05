@@ -46,3 +46,37 @@
   display: flex;
   flex-direction: column;
 }
+
+.yearsSelector {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.min {
+  margin-right: 10px;
+}
+
+.max {
+  margin-left: 10px;
+}
+
+.yearsSelectorPlaceholder {
+  font-size: 12px;
+  line-height: 35px;
+  padding: 0px;
+}
+
+.to {
+  margin-bottom: -35px;
+  font-size: 16px;
+}
+
+.input {
+  width: 100%;
+  padding: 8.5px;
+  border: 0px;
+  border-radius: 7px;
+  background-color: #f1f4f6;
+}
