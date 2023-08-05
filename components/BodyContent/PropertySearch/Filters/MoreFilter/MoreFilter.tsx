@@ -45,11 +45,13 @@ function MoreFilterContent() {
     }));
   };
 
-  const handleYearsChange = (value: string, minOrMax: "yearsOwnedMin" | "yearsOwnedMax") => {
-    setMoreFilter((prevState) => ({
-      ...prevState,
-      [minOrMax]: value === "" ? null : Number(value),
-    }));
+  const handleNumberChange = (value: string, fieldName: string) => {
+    if (!isNaN(Number(value)) || value === "") {
+      setMoreFilter((prevState) => ({
+        ...prevState,
+        [fieldName]: value === "" ? null : Number(value),
+      }));
+    }
   };
 
   return (
@@ -203,22 +205,22 @@ function MoreFilterContent() {
       {/* Years Owned */}
       <div style={defaultSpacing}>
         <div style={spaceBottom(0)}>Years Owned</div>
-        <div className={styles.yearsSelector}>
+        <div className={styles.minMaxSelector}>
           <div className={styles.min}>
-            <small className={styles.yearsSelectorPlaceholder}>Minimum</small>
+            <small className={styles.minMaxSelectorPlaceholder}>Minimum</small>
             <input
               value={moreFilterState.yearsOwnedMin !== null ? moreFilterState.yearsOwnedMin.toString() : ""}
-              onChange={(event) => handleYearsChange(event.target.value, "yearsOwnedMin")}
+              onChange={(event) => handleNumberChange(event.target.value, "yearsOwnedMin")}
               placeholder="No Min"
               className={styles.input}
             />
           </div>
           <small className={styles.to}>to</small>
           <div className={styles.max}>
-            <small className={styles.yearsSelectorPlaceholder}>Maximum</small>
+            <small className={styles.minMaxSelectorPlaceholder}>Maximum</small>
             <input
               value={moreFilterState.yearsOwnedMax !== null ? moreFilterState.yearsOwnedMax.toString() : ""}
-              onChange={(event) => handleYearsChange(event.target.value, "yearsOwnedMax")}
+              onChange={(event) => handleNumberChange(event.target.value, "yearsOwnedMax")}
               placeholder="No Max"
               className={styles.input}
             />
@@ -257,6 +259,56 @@ function MoreFilterContent() {
             <FilterCheckboxOption id="freeClear" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.freeClear)} isSelected={moreFilterState.freeClear}>
               Free Clear
             </FilterCheckboxOption>
+          </div>
+        </div>
+      </div>
+      {/* Equity Percent */}
+      <div style={defaultSpacing}>
+        <div style={spaceBottom(0)}>Equity Percent</div>
+        <div className={styles.minMaxSelector}>
+          <div className={styles.min}>
+            <small className={styles.minMaxSelectorPlaceholder}>Minimum</small>
+            <input
+              value={moreFilterState.equityPercentMin !== null ? moreFilterState.equityPercentMin.toString() : ""}
+              onChange={(event) => handleNumberChange(event.target.value, "equityPercentMin")}
+              placeholder="No Min"
+              className={styles.input}
+            />
+          </div>
+          <small className={styles.to}>to</small>
+          <div className={styles.max}>
+            <small className={styles.minMaxSelectorPlaceholder}>Maximum</small>
+            <input
+              value={moreFilterState.equityPercentMax !== null ? moreFilterState.equityPercentMax.toString() : ""}
+              onChange={(event) => handleNumberChange(event.target.value, "equityPercentMax")}
+              placeholder="No Max"
+              className={styles.input}
+            />
+          </div>
+        </div>
+      </div>
+      {/* Estimated Equity */}
+      <div style={defaultSpacing}>
+        <div style={spaceBottom(0)}>Estimated Equity</div>
+        <div className={styles.minMaxSelector}>
+          <div className={styles.min}>
+            <small className={styles.minMaxSelectorPlaceholder}>Minimum</small>
+            <input
+              value={moreFilterState.estimatedEquityMin !== null ? moreFilterState.estimatedEquityMin.toString() : ""}
+              onChange={(event) => handleNumberChange(event.target.value, "estimatedEquityMin")}
+              placeholder="No Min"
+              className={styles.input}
+            />
+          </div>
+          <small className={styles.to}>to</small>
+          <div className={styles.max}>
+            <small className={styles.minMaxSelectorPlaceholder}>Maximum</small>
+            <input
+              value={moreFilterState.estimatedEquityMax !== null ? moreFilterState.estimatedEquityMax.toString() : ""}
+              onChange={(event) => handleNumberChange(event.target.value, "estimatedEquityMax")}
+              placeholder="No Max"
+              className={styles.input}
+            />
           </div>
         </div>
       </div>

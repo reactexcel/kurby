@@ -100,6 +100,10 @@ interface MoreFilterContext {
     privateLender: boolean;
     adjustableRate: boolean;
     freeClear: boolean;
+    equityPercentMin: number | null;
+    equityPercentMax: number | null;
+    estimatedEquityMin: number | null;
+    estimatedEquityMax: number | null;
   };
 }
 
@@ -137,6 +141,10 @@ const moreFilterContext: MoreFilterContext = {
     privateLender: false,
     adjustableRate: false,
     freeClear: false,
+    equityPercentMin: null,
+    equityPercentMax: null,
+    estimatedEquityMin: null,
+    estimatedEquityMax: null,
   },
 };
 
