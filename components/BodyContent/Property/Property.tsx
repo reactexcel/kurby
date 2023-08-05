@@ -25,12 +25,13 @@ import KurbyPaidPlanLimit, { TabLimitMessage } from "components/AIWarningTooltip
 import { useAuth } from "providers/AuthProvider";
 import { propertyV2Mock } from "mock/freePlanPropertyMock";
 import { usePlanChecker } from "hooks/plans";
+import { useOpenAi } from "hooks/use-open-ai";
 
 /**
  * Body Content
  * @description: Displays everything below the filters
  */
-export default function AddressPropertyDetails({ explainedLikeAlocal }: { explainedLikeAlocal: string }) {
+export default function Property() {
   const { user } = useAuth();
   const [filterVal] = useRecoilState(filterState);
   const [propertyInfo, setPropertyInfoV2] = useRecoilState(propertyInfoV2Context);
@@ -42,6 +43,7 @@ export default function AddressPropertyDetails({ explainedLikeAlocal }: { explai
   const [isTabAvailable, setTabAvailable] = useRecoilState(propertyDetailAvailable);
 
   const { isFree, isStarter, isGrowth } = usePlanChecker();
+  const { explainedLikeAlocal } = useOpenAi();
 
   useEffect(() => {
     async function preparePropertyV2Data() {
@@ -127,7 +129,7 @@ export default function AddressPropertyDetails({ explainedLikeAlocal }: { explai
           <div className={styles.wrapper}>
             <Grid>
               <GridItem>
-                <RecordV2 description={explainedLikeAlocal} />
+                <RecordV2 description={explainedLikeAlocal as any} />
               </GridItem>
               <GridItem>
                 <FinancialMortgage />

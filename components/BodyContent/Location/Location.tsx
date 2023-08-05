@@ -1,3 +1,4 @@
+import { useContext, useMemo } from "react";
 import { Box, Typography, CircularProgress } from "@mui/material";
 import StreetView from "../StreetView/StreetView";
 import LocationSvg from "../../../public/icons/location.svg";
@@ -10,9 +11,10 @@ import { Flags } from "components/Flags/Flags";
 import { loadingContext } from "context/loadingContext";
 import { TabLayout } from "components/layouts/TabLayout/TabLayout";
 import styles from "./Location.module.scss";
+import { IsDevContext } from "context/isDevContext";
 
 interface LocationProps {
-  explainedLikeAlocal: string;
+  explainedLikeAlocal?: string;
   greenFlags: any;
   redFlags: any;
 }
@@ -20,6 +22,9 @@ interface LocationProps {
 export const Location = ({ explainedLikeAlocal, greenFlags, redFlags }: LocationProps) => {
   const [filterVal] = useRecoilState(filterState);
   const [loading] = useRecoilState(loadingContext);
+  const { isDev, message } = useContext(IsDevContext);
+
+  const separateMessage = useMemo(() => explainedLikeAlocal?.split("- ").filter((part) => part), [explainedLikeAlocal]);
 
   if (loading.walkscore) {
     return (
@@ -43,15 +48,26 @@ export const Location = ({ explainedLikeAlocal, greenFlags, redFlags }: Location
               Explain it like a local:
               <AIWarningToolTip />
             </Typography>
-            {loading.openai ? <ParagraphSkeleton /> : <Typography>{explainedLikeAlocal}</Typography>}
+            {isDev && <Typography className={styles.margin}>{message("Location")}</Typography>}
+            {loading.openai.explainedLikeAlocal ? (
+              <ParagraphSkeleton />
+            ) : (
+              <Typography className={styles.explainedLikeAlocal}>
+                {separateMessage?.map((part, index) => (
+                  <p className={styles.part} key={index}>
+                    {part}
+                  </p>
+                ))}
+              </Typography>
+            )}
             <Box className={styles.margin}>
               <WalkscoreList />
             </Box>
           </Box>
         </Box>
         <Box className={styles.flags}>
-          <Flags color="Green" flagsArr={greenFlags} />
-          <Flags color="Red" flagsArr={redFlags} />
+          <Flags color="Green" flagsMessage={greenFlags} loading={loading.openai.greenFlags} />
+          <Flags color="Red" flagsMessage={redFlags} loading={loading.openai.redFlags} />
         </Box>
       </Box>
     </TabLayout>

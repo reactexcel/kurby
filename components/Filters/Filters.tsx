@@ -178,6 +178,15 @@ export default function Filters() {
     // Determine if the place is a city or an address
     const placeCategory = getPlaceCategory(place.address_components);
 
+    setLoading((prevState) => ({
+      ...prevState,
+      walkscore: false,
+      openai: {
+        explainedLikeAlocal: true,
+        greenFlags: true,
+        redFlags: true,
+      },
+    }));
     setFilterVal((prevVal: any) => ({
       ...prevVal,
       latlong: place.geometry.location,
