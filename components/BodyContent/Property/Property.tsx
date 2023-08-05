@@ -43,7 +43,7 @@ export default function Property() {
   const [isTabAvailable, setTabAvailable] = useRecoilState(propertyDetailAvailable);
 
   const { isFree, isStarter, isGrowth } = usePlanChecker();
-  const { explainedLikeAlocal } = useOpenAi();
+  // const { explainedLikeAlocal } = useOpenAi();
 
   useEffect(() => {
     async function preparePropertyV2Data() {
@@ -129,7 +129,7 @@ export default function Property() {
           <div className={styles.wrapper}>
             <Grid>
               <GridItem>
-                <RecordV2 description={explainedLikeAlocal as any} />
+                <RecordV2 description={""} />
               </GridItem>
               <GridItem>
                 <FinancialMortgage />
