@@ -3,6 +3,7 @@ import styles from "./PriceFilter.module.scss";
 import { Button } from "components/Button/Button";
 import { useRecoilState } from "recoil";
 import { priceFilter } from "context/propertySearchContext";
+import React from "react";
 
 export enum IPriceFilterCurrentTab {
   LIST_PRICE_TAB,
@@ -55,6 +56,7 @@ const PriceFilterContents = () => {
     background: "#F1F4F6",
     color: "black",
   };
+
   return (
     <div className={styles.main}>
       <div className={styles.tabs}>
@@ -121,5 +123,5 @@ const PriceFilterContents = () => {
 };
 
 export function PriceFilter() {
-  return <FilterItem flex={1} title="Price" renderContentWidth="360px" renderContent={<PriceFilterContents />} />;
+  return <FilterItem renderContentPosition="left" flex={1} title="Price" renderContentWidth="360px" renderContent={<PriceFilterContents />} />;
 }

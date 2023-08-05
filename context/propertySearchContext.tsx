@@ -1,3 +1,4 @@
+import { ListingTypeTab, MaxHoa } from "components/BodyContent/PropertySearch/Filters/MoreFilter/MoreFilter";
 import { IPriceFilterCurrentTab, IPriceFilterDownPayment } from "components/BodyContent/PropertySearch/Filters/PriceFilter/PriceFilter";
 import { atom } from "recoil";
 
@@ -65,6 +66,33 @@ const homeType: HomeFilterContext = {
   },
 };
 
+interface MoreFilterContext {
+  key: string;
+  default: {
+    maxHoa: MaxHoa;
+    listingType: ListingTypeTab;
+    agentListed: boolean;
+    newConstruction: boolean;
+    preForeclosure: boolean;
+    auction: boolean;
+    foreclosed: boolean;
+  };
+}
+
+const moreFilterContext: MoreFilterContext = {
+  key: "moreFilterContext",
+  default: {
+    maxHoa: MaxHoa.ANY,
+    listingType: ListingTypeTab.BY_AGENT,
+    agentListed: true,
+    newConstruction: false,
+    preForeclosure: false,
+    auction: false,
+    foreclosed: false,
+  },
+};
+
 export const forSaleFilter = atom(forSaleContext);
 export const priceFilter = atom(priceFilterContext);
 export const homeTypeFilter = atom(homeType);
+export const moreFilter = atom(moreFilterContext);

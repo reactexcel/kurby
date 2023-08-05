@@ -32,5 +32,5 @@ const ForSaleContents = () => {
 };
 
 export function ForSaleFilter() {
-  return <FilterItem flex={1} title="For sale" renderContent={ForSaleContents()} />;
+  return <FilterItem renderContentPosition="left" flex={1} title="For sale" renderContent={ForSaleContents()} />;
 }

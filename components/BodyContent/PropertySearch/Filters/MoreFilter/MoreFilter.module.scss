@@ -1,0 +1,48 @@
+.selector {
+  width: 100%;
+  background-color: #f1f4f6;
+  padding: 8px;
+}
+
+.tabs {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #4242;
+  border-radius: 10px;
+}
+
+.tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+  cursor: pointer;
+  user-select: none;
+  padding: 5.5px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.tab:nth-child(1) {
+  border-radius: 10px 0px 0px 10px;
+}
+
+.tab:nth-child(2) {
+  border-radius: 0px 10px 10px 0px;
+}
+
+.listingTypeCheckboxesRow {
+  display: flex;
+  flex-direction: row;
+  align-items: self-start;
+  justify-content: center;
+}
+
+.column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}

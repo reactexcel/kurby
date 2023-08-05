@@ -10,13 +10,23 @@ interface IFilterItemProps {
   readonly title: string;
   readonly renderContentWidth?: string;
   readonly renderContent?: React.ReactNode;
+  readonly renderContentPosition: "left" | "right";
   readonly flex: number;
 }
 
-export function FilterItem({ title, renderContent, renderContentWidth, flex }: IFilterItemProps) {
+export function FilterItem({ title, renderContent, renderContentWidth, renderContentPosition, flex }: IFilterItemProps) {
   const [isOpen, setOpen] = useState<boolean>(false);
+
+  const renderStyle = {
+    ...(flex && { flex }),
+  };
+
+  const renderContentCore = {
+    ...(renderContentWidth && { width: renderContentWidth }),
+    ...(renderContentPosition && { [renderContentPosition]: 0 }),
+  };
   return (
-    <div style={flex ? { flex } : {}} className={styles.root}>
+    <div style={renderStyle} className={styles.root}>
       <div
         onClick={() => {
           setOpen(!isOpen);
@@ -29,7 +39,7 @@ export function FilterItem({ title, renderContent, renderContentWidth, flex }: I
         </div>
       </div>
       {isOpen && renderContent ? (
-        <div style={renderContentWidth ? { width: renderContentWidth } : {}} className={styles.content}>
+        <div style={renderContentCore} className={styles.content}>
           {renderContent}
         </div>
       ) : (

@@ -60,5 +60,5 @@ const HomeTypeContents = () => {
 };
 
 export function HomeTypeFilter() {
-  return <FilterItem flex={1} title="Home Type" renderContent={<HomeTypeContents />} />;
+  return <FilterItem renderContentPosition="left" flex={1} title="Home Type" renderContent={<HomeTypeContents />} />;
 }
