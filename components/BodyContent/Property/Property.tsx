@@ -37,7 +37,7 @@ export default function Property() {
   const [propertyInfo, setPropertyInfoV2] = useRecoilState(propertyInfoV2Context);
   const [propertyDetail, setPropertyDetail] = useRecoilState(propertyDetailContext);
 
-  const isNotLoaded = !Boolean(propertyDetail && propertyInfo);
+  const isNotLoaded = !Boolean(propertyDetail || propertyInfo);
 
   const [loading, setLoading] = useState<boolean>(isNotLoaded);
   const [isTabAvailable, setTabAvailable] = useRecoilState(propertyDetailAvailable);
