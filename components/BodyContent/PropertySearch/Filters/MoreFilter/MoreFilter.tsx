@@ -382,14 +382,41 @@ function MoreFilterContent() {
         </select>
       </div>
       {/* Loan Type */}
-      <div style={spaceBottom(10)}>Loan Types</div>
-      <select value={moreFilterState.loanType || ""} className={styles.selector} onChange={(e) => handleSelectChange(e.target.value, "loanType")}>
-        {loanTypes.map((code) => (
-          <option key={code.id} value={code.id}>
-            {code.id} - {code.description}
-          </option>
-        ))}
-      </select>
+      <div style={defaultSpacing}>
+        <div style={spaceBottom(10)}>Loan Types</div>
+        <select value={moreFilterState.loanType || ""} className={styles.selector} onChange={(e) => handleSelectChange(e.target.value, "loanType")}>
+          {loanTypes.map((code) => (
+            <option key={code.id} value={code.id}>
+              {code.id} - {code.description}
+            </option>
+          ))}
+        </select>
+      </div>
+      {/* Interest Rate */}
+      <div style={defaultSpacing}>
+        <div style={spaceBottom(0)}>Interest Rate</div>
+        <div className={styles.minMaxSelector}>
+          <div className={styles.min}>
+            <small className={styles.minMaxSelectorPlaceholder}>Minimum</small>
+            <input
+              value={moreFilterState.interestRateMin !== null ? moreFilterState.interestRateMin.toString() : ""}
+              onChange={(event) => handleNumberChange(event.target.value, "interestRateMin")}
+              placeholder="No Min"
+              className={styles.input}
+            />
+          </div>
+          <small className={styles.to}>to</small>
+          <div className={styles.max}>
+            <small className={styles.minMaxSelectorPlaceholder}>Maximum</small>
+            <input
+              value={moreFilterState.interestRateMax !== null ? moreFilterState.interestRateMax.toString() : ""}
+              onChange={(event) => handleNumberChange(event.target.value, "interestRateMax")}
+              placeholder="No Max"
+              className={styles.input}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
