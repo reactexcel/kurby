@@ -28,7 +28,7 @@ import { IAppPlans } from "context/plansContext";
  * @description: Displays everything below the filters
  */
 
-export default function RecordV2({ description }: { description: string }) {
+export default function RecordV2({ description }: { description?: string }) {
   const [filterVal] = useRecoilState(filterState);
   const { isMobileTablet } = useContext(WindowSizeContext);
   const [propertyInfo] = useRecoilState(propertyInfoV2Context);

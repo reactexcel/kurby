@@ -25,7 +25,6 @@ import KurbyPaidPlanLimit, { TabLimitMessage } from "components/AIWarningTooltip
 import { useAuth } from "providers/AuthProvider";
 import { propertyV2Mock } from "mock/freePlanPropertyMock";
 import { usePlanChecker } from "hooks/plans";
-import { useOpenAi } from "hooks/use-open-ai";
 
 /**
  * Body Content
@@ -129,7 +128,7 @@ export default function Property() {
           <div className={styles.wrapper}>
             <Grid>
               <GridItem>
-                <RecordV2 description={""} />
+                <RecordV2 />
               </GridItem>
               <GridItem>
                 <FinancialMortgage />
