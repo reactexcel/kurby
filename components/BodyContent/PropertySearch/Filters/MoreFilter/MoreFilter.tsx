@@ -3,6 +3,7 @@ import { FilterCheckboxOption, FilterItem } from "../../FilterItem/FilterItem";
 import styles from "./MoreFilter.module.scss";
 import { moreFilter } from "context/propertySearchContext";
 import { codes } from "./codes";
+import { loanTypes } from "./loanTypes";
 
 export enum ListingTypeTab {
   BY_AGENT = "by-agent",
@@ -375,11 +376,20 @@ function MoreFilterContent() {
         <select value={moreFilterState.deedType || ""} className={styles.selector} onChange={(e) => handleSelectChange(e.target.value, "deedType")}>
           {codes.map((code) => (
             <option key={code.value} value={code.value}>
-              {code.label}
+              {code.value} - {code.label}
             </option>
           ))}
         </select>
       </div>
+      {/* Loan Type */}
+      <div style={spaceBottom(10)}>Loan Types</div>
+      <select value={moreFilterState.loanType || ""} className={styles.selector} onChange={(e) => handleSelectChange(e.target.value, "loanType")}>
+        {loanTypes.map((code) => (
+          <option key={code.id} value={code.id}>
+            {code.id} - {code.description}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }

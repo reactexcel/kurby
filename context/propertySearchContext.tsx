@@ -109,6 +109,7 @@ interface MoreFilterContext {
     openMortgageBalanceMin: number | null;
     openMortgageBalanceMax: number | null;
     deedType: string | null;
+    loanType: string | null;
   };
 }
 
@@ -155,6 +156,7 @@ const moreFilterContext: MoreFilterContext = {
     openMortgageBalanceMin: null,
     openMortgageBalanceMax: null,
     deedType: null,
+    loanType: null,
   },
 };
 
