@@ -106,6 +106,8 @@ interface MoreFilterContext {
     estimatedEquityMax: number | null;
     estimatedValueMin: number | null;
     estimatedValueMax: number | null;
+    openMortgageBalanceMin: number | null;
+    openMortgageBalanceMax: number | null;
   };
 }
 
@@ -149,6 +151,8 @@ const moreFilterContext: MoreFilterContext = {
     estimatedEquityMax: null,
     estimatedValueMin: null,
     estimatedValueMax: null,
+    openMortgageBalanceMin: null,
+    openMortgageBalanceMax: null,
   },
 };
 

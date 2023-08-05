@@ -337,6 +337,31 @@ function MoreFilterContent() {
           </div>
         </div>
       </div>
+      {/* Open Mortgage Balance */}
+      <div style={defaultSpacing}>
+        <div style={spaceBottom(0)}>Open Mortgage Balance</div>
+        <div className={styles.minMaxSelector}>
+          <div className={styles.min}>
+            <small className={styles.minMaxSelectorPlaceholder}>Minimum</small>
+            <input
+              value={moreFilterState.openMortgageBalanceMin !== null ? moreFilterState.openMortgageBalanceMin.toString() : ""}
+              onChange={(event) => handleNumberChange(event.target.value, "openMortgageBalanceMin")}
+              placeholder="No Min"
+              className={styles.input}
+            />
+          </div>
+          <small className={styles.to}>to</small>
+          <div className={styles.max}>
+            <small className={styles.minMaxSelectorPlaceholder}>Maximum</small>
+            <input
+              value={moreFilterState.openMortgageBalanceMax !== null ? moreFilterState.openMortgageBalanceMax.toString() : ""}
+              onChange={(event) => handleNumberChange(event.target.value, "openMortgageBalanceMax")}
+              placeholder="No Max"
+              className={styles.input}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
