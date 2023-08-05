@@ -62,6 +62,13 @@ function MoreFilterContent() {
       [fieldName]: value,
     }));
   };
+
+  const handleDateChange = (value: string, fieldName: string) => {
+    setMoreFilter((prevState) => ({
+      ...prevState,
+      [fieldName]: value === "" ? null : new Date(value),
+    }));
+  };
   return (
     <div className={styles.main}>
       {/* Listing Type */}
@@ -412,6 +419,56 @@ function MoreFilterContent() {
               value={moreFilterState.interestRateMax !== null ? moreFilterState.interestRateMax.toString() : ""}
               onChange={(event) => handleNumberChange(event.target.value, "interestRateMax")}
               placeholder="No Max"
+              className={styles.input}
+            />
+          </div>
+        </div>
+      </div>
+      {/* Load Date */}
+      <div style={defaultSpacing}>
+        <div style={spaceBottom(0)}>Load Date</div>
+        <div className={styles.minMaxSelector}>
+          <div className={styles.min}>
+            <small className={styles.minMaxSelectorPlaceholder}>After</small>
+            <input
+              type="date"
+              value={moreFilterState.loadDateAfter !== null ? moreFilterState.loadDateAfter.toISOString().split("T")[0] : ""}
+              onChange={(event) => handleDateChange(event.target.value, "loadDateAfter")}
+              className={styles.input}
+            />
+          </div>
+          <small className={styles.to}>to</small>
+          <div className={styles.max}>
+            <small className={styles.minMaxSelectorPlaceholder}>Before</small>
+            <input
+              type="date"
+              value={moreFilterState.loadDateBefore !== null ? moreFilterState.loadDateBefore.toISOString().split("T")[0] : ""}
+              onChange={(event) => handleDateChange(event.target.value, "loadDateBefore")}
+              className={styles.input}
+            />
+          </div>
+        </div>
+      </div>
+      {/* Maturity Date */}
+      <div style={defaultSpacing}>
+        <div style={spaceBottom(0)}>Maturity Date</div>
+        <div className={styles.minMaxSelector}>
+          <div className={styles.min}>
+            <small className={styles.minMaxSelectorPlaceholder}>After</small>
+            <input
+              type="date"
+              value={moreFilterState.maturityDateAfter !== null ? moreFilterState.maturityDateAfter.toISOString().split("T")[0] : ""}
+              onChange={(event) => handleDateChange(event.target.value, "maturityDateAfter")}
+              className={styles.input}
+            />
+          </div>
+          <small className={styles.to}>to</small>
+          <div className={styles.max}>
+            <small className={styles.minMaxSelectorPlaceholder}>Before</small>
+            <input
+              type="date"
+              value={moreFilterState.maturityDateBefore !== null ? moreFilterState.maturityDateBefore.toISOString().split("T")[0] : ""}
+              onChange={(event) => handleDateChange(event.target.value, "maturityDateBefore")}
               className={styles.input}
             />
           </div>

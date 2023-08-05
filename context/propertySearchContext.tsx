@@ -5,18 +5,18 @@ import { atom } from "recoil";
 interface SaleContext {
   key: string;
   default: {
-    for_sale: boolean;
-    off_market: boolean;
-    sold: boolean;
+    for_sale: boolean | null;
+    off_market: boolean | null;
+    sold: boolean | null;
   };
 }
 
 const forSaleContext: SaleContext = {
   key: "propertySearchContext",
   default: {
-    for_sale: false,
-    off_market: false,
-    sold: false,
+    for_sale: null,
+    off_market: null,
+    sold: null,
   },
 };
 
@@ -70,36 +70,36 @@ interface MoreFilterContext {
   key: string;
   default: {
     listingType: ListingTypeTab;
-    agentListed: boolean;
-    newConstruction: boolean;
-    preForeclosure: boolean;
-    auction: boolean;
-    foreclosed: boolean;
-    propertyStatusActive: boolean;
-    propertyStatusPending: boolean;
-    propertyStatusOffMarket: boolean;
-    propertyStatusCancelled: boolean;
-    propertyStatusFailed: boolean;
-    propertyStatusSold: boolean;
-    nonOwnerOccupied: boolean;
-    absenteeOwner: boolean;
-    outOfStateAbsenteeOwner: boolean;
-    inStateAbsenteeOwner: boolean;
-    corporateOwner: boolean;
-    investorBuyer: boolean;
-    inherited: boolean;
-    ownerDeath: boolean;
-    spousalDeath: boolean;
+    agentListed: boolean | null;
+    newConstruction: boolean | null;
+    preForeclosure: boolean | null;
+    auction: boolean | null;
+    foreclosed: boolean | null;
+    propertyStatusActive: boolean | null;
+    propertyStatusPending: boolean | null;
+    propertyStatusOffMarket: boolean | null;
+    propertyStatusCancelled: boolean | null;
+    propertyStatusFailed: boolean | null;
+    propertyStatusSold: boolean | null;
+    nonOwnerOccupied: boolean | null;
+    absenteeOwner: boolean | null;
+    outOfStateAbsenteeOwner: boolean | null;
+    inStateAbsenteeOwner: boolean | null;
+    corporateOwner: boolean | null;
+    investorBuyer: boolean | null;
+    inherited: boolean | null;
+    ownerDeath: boolean | null;
+    spousalDeath: boolean | null;
     yearsOwnedMin: number | null;
     yearsOwnedMax: number | null;
-    cashBuyer: boolean;
-    equity: boolean;
-    highEquity: boolean;
-    negativeEquity: boolean;
-    reo: boolean;
-    privateLender: boolean;
-    adjustableRate: boolean;
-    freeClear: boolean;
+    cashBuyer: boolean | null;
+    equity: boolean | null;
+    highEquity: boolean | null;
+    negativeEquity: boolean | null;
+    reo: boolean | null;
+    privateLender: boolean | null;
+    adjustableRate: boolean | null;
+    freeClear: boolean | null;
     equityPercentMin: number | null;
     equityPercentMax: number | null;
     estimatedEquityMin: number | null;
@@ -112,6 +112,10 @@ interface MoreFilterContext {
     loanType: string | null;
     interestRateMin: number | null;
     interestRateMax: number | null;
+    loadDateAfter: null | Date;
+    loadDateBefore: null | Date;
+    maturityDateAfter: null | Date;
+    maturityDateBefore: null | Date;
   };
 }
 
@@ -120,35 +124,35 @@ const moreFilterContext: MoreFilterContext = {
   default: {
     listingType: ListingTypeTab.BY_AGENT,
     agentListed: true,
-    newConstruction: false,
-    preForeclosure: false,
-    auction: false,
-    foreclosed: false,
-    propertyStatusActive: false,
-    propertyStatusPending: false,
-    propertyStatusOffMarket: false,
-    propertyStatusCancelled: false,
-    propertyStatusFailed: false,
-    propertyStatusSold: false,
-    nonOwnerOccupied: false,
-    absenteeOwner: false,
-    outOfStateAbsenteeOwner: false,
-    inStateAbsenteeOwner: false,
-    corporateOwner: false,
-    investorBuyer: false,
-    inherited: false,
-    ownerDeath: false,
-    spousalDeath: false,
+    newConstruction: null,
+    preForeclosure: null,
+    auction: null,
+    foreclosed: null,
+    propertyStatusActive: null,
+    propertyStatusPending: null,
+    propertyStatusOffMarket: null,
+    propertyStatusCancelled: null,
+    propertyStatusFailed: null,
+    propertyStatusSold: null,
+    nonOwnerOccupied: null,
+    absenteeOwner: null,
+    outOfStateAbsenteeOwner: null,
+    inStateAbsenteeOwner: null,
+    corporateOwner: null,
+    investorBuyer: null,
+    inherited: null,
+    ownerDeath: null,
+    spousalDeath: null,
     yearsOwnedMin: null,
     yearsOwnedMax: null,
-    cashBuyer: false,
-    equity: false,
-    highEquity: false,
-    negativeEquity: false,
-    reo: false,
-    privateLender: false,
-    adjustableRate: false,
-    freeClear: false,
+    cashBuyer: null,
+    equity: null,
+    highEquity: null,
+    negativeEquity: null,
+    reo: null,
+    privateLender: null,
+    adjustableRate: null,
+    freeClear: null,
     equityPercentMin: null,
     equityPercentMax: null,
     estimatedEquityMin: null,
@@ -161,6 +165,10 @@ const moreFilterContext: MoreFilterContext = {
     loanType: null,
     interestRateMin: null,
     interestRateMax: null,
+    loadDateAfter: null,
+    loadDateBefore: null,
+    maturityDateAfter: null,
+    maturityDateBefore: null,
   },
 };
 
