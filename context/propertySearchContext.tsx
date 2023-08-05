@@ -92,6 +92,14 @@ interface MoreFilterContext {
     spousalDeath: boolean;
     yearsOwnedMin: number | null;
     yearsOwnedMax: number | null;
+    cashBuyer: boolean;
+    equity: boolean;
+    highEquity: boolean;
+    negativeEquity: boolean;
+    reo: boolean;
+    privateLender: boolean;
+    adjustableRate: boolean;
+    freeClear: boolean;
   };
 }
 
@@ -121,6 +129,14 @@ const moreFilterContext: MoreFilterContext = {
     spousalDeath: false,
     yearsOwnedMin: null,
     yearsOwnedMax: null,
+    cashBuyer: false,
+    equity: false,
+    highEquity: false,
+    negativeEquity: false,
+    reo: false,
+    privateLender: false,
+    adjustableRate: false,
+    freeClear: false,
   },
 };
 

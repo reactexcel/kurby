@@ -225,6 +225,41 @@ function MoreFilterContent() {
           </div>
         </div>
       </div>
+      {/* Financial Information */}
+      <div style={defaultSpacing}>
+        <div style={spaceBottom(10)}>Financial Information</div>
+        <div className={styles.row}>
+          <div className={styles.column}>
+            <FilterCheckboxOption id="cashBuyer" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.cashBuyer)} isSelected={moreFilterState.cashBuyer}>
+              Cash Buyer
+            </FilterCheckboxOption>
+
+            <FilterCheckboxOption id="equity" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.equity)} isSelected={moreFilterState.equity}>
+              Equity
+            </FilterCheckboxOption>
+            <FilterCheckboxOption id="highEquity" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.highEquity)} isSelected={moreFilterState.highEquity}>
+              High Equity
+            </FilterCheckboxOption>
+            <FilterCheckboxOption id="negativeEquity" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.negativeEquity)} isSelected={moreFilterState.negativeEquity}>
+              Negative Equity
+            </FilterCheckboxOption>
+          </div>
+          <div className={styles.column}>
+            <FilterCheckboxOption id="reo" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.reo)} isSelected={moreFilterState.reo}>
+              REO
+            </FilterCheckboxOption>
+            <FilterCheckboxOption id="privateLender" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.privateLender)} isSelected={moreFilterState.privateLender}>
+              Private Lender
+            </FilterCheckboxOption>
+            <FilterCheckboxOption id="adjustableRate" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.adjustableRate)} isSelected={moreFilterState.adjustableRate}>
+              Adjustable Rate
+            </FilterCheckboxOption>
+            <FilterCheckboxOption id="freeClear" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.freeClear)} isSelected={moreFilterState.freeClear}>
+              Free Clear
+            </FilterCheckboxOption>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
