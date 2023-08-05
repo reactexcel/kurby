@@ -82,3 +82,15 @@
   border-radius: 7px;
   background-color: #f1f4f6;
 }
+
+.applyButton {
+  width: 120px;
+  margin-left: 10px;
+}
+
+.buttonWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}

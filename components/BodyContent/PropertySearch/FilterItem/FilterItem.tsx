@@ -81,9 +81,19 @@ export function FilterOption({
   );
 }
 
-export function FilterCheckboxOption({ id, onSelect, isSelected, children }: { id: string; onSelect: (id: string) => void; isSelected: boolean; children: React.ReactNode }) {
+export function FilterCheckboxOption({
+  id,
+  onSelect,
+  isSelected,
+  children,
+}: {
+  id: string;
+  onSelect: (id: string) => void;
+  isSelected: boolean | null;
+  children: React.ReactNode;
+}) {
   return (
-    <FilterOption id={id} onSelect={onSelect} isSelected={isSelected} selectedIcon={<Checkmark />} unselectedIcon={<CheckmarkUnchecked />}>
+    <FilterOption id={id} onSelect={onSelect} isSelected={Boolean(isSelected)} selectedIcon={<Checkmark />} unselectedIcon={<CheckmarkUnchecked />}>
       {children}
     </FilterOption>
   );

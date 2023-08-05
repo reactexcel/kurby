@@ -4,6 +4,7 @@ import styles from "./MoreFilter.module.scss";
 import { moreFilter } from "context/propertySearchContext";
 import { codes } from "./codes";
 import { loanTypes } from "./loanTypes";
+import { Button } from "components/Button/Button";
 
 export enum ListingTypeTab {
   BY_AGENT = "by-agent",
@@ -68,6 +69,11 @@ function MoreFilterContent() {
       ...prevState,
       [fieldName]: value === "" ? null : new Date(value),
     }));
+  };
+
+  const endSpace = {
+    marginTop: 20,
+    marginBottom: 10,
   };
   return (
     <div className={styles.main}>
@@ -472,6 +478,15 @@ function MoreFilterContent() {
               className={styles.input}
             />
           </div>
+        </div>
+      </div>
+
+      <div style={endSpace}>
+        <div className={styles.buttonWrapper}>
+          <Button variant="outlined">Reset Filters</Button>
+          <Button variant="filled" className={styles.applyButton}>
+            Apply
+          </Button>
         </div>
       </div>
     </div>
