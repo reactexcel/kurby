@@ -12,7 +12,7 @@ import Property from "../Property/Property";
 import { Location } from "../Location/Location";
 import { loadingContext } from "context/loadingContext";
 import styles from "./Tabs.module.scss";
-import { propertyDetailAvailable } from "context/propertyContext";
+import CityStatePropertiesFilters from "../PropertySearch/PropertySearch";
 
 export function Tabs() {
   const [activeTab, setActiveTab] = useRecoilState(activeTabState);
@@ -80,6 +80,13 @@ export function Tabs() {
     getOpenAiData();
   }, [filterVal.address, filterVal.selectedPlace]);
 
+  const PropertySceneManager = () => {
+    if (filterVal.placeCategory === "address") {
+      return <Property explainedLikeAlocal={explainedLikeAlocal} />;
+    }
+    return <CityStatePropertiesFilters />;
+  };
+
   return (
     <>
       <NextSeo description={explainedLikeAlocal.split(".")[0] || "Kurby uses location data to estimate property value like never before."} />
@@ -90,7 +97,7 @@ export function Tabs() {
           </ToggleButton>
 
           <ToggleButton className={styles.button} value="property">
-            Property data
+            {filterVal.placeCategory === "address" ? "Property data" : "Properties"}
           </ToggleButton>
 
           <ToggleButton className={styles.button} value="neighborhood">
@@ -101,7 +108,7 @@ export function Tabs() {
         <Box className={styles.tabsWrapper}>
           {activeTab === "location" && <Location explainedLikeAlocal={explainedLikeAlocal} greenFlags={greenFlags} redFlags={redFlags} />}
           {activeTab == "nearby" && <Nearby />}
-          {activeTab == "property" && <Property explainedLikeAlocal={explainedLikeAlocal} />}
+          {activeTab == "property" && <PropertySceneManager />}
 
           {activeTab == "neighborhood" && <Neighborhood filterVal={filterVal} />}
         </Box>

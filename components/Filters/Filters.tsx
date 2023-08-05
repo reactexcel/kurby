@@ -147,6 +147,13 @@ export default function Filters() {
 
   //   })()
   // }, [filterVal.mapCenter, typesOfPlace]);
+  const getPlaceCategory = (addressComponents: any[]) => {
+    const hasLocality = addressComponents.some((component) => component.types.includes("locality"));
+    const hasStreetNumber = addressComponents.some((component) => component.types.includes("street_number"));
+    if (hasStreetNumber) return "address";
+    if (hasLocality) return "city";
+    return "";
+  };
 
   const handleAddressChange = async (place: any) => {
     const getScore = (address: string, location: any) => WalkscoreListApi({ address, location });
@@ -168,12 +175,16 @@ export default function Filters() {
         : { open: false }),
     }));
     setLoading((prevState) => ({ ...prevState, walkscore: false }));
+    // Determine if the place is a city or an address
+    const placeCategory = getPlaceCategory(place.address_components);
+
     setFilterVal((prevVal: any) => ({
       ...prevVal,
       latlong: place.geometry.location,
       address: place.formatted_address,
       selectedPlace: place,
       mapCenter: location,
+      placeCategory,
       walkscore,
     }));
   };
