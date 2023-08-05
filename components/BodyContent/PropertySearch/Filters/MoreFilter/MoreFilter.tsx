@@ -8,8 +8,8 @@ export enum MaxHoa {
 }
 
 export enum ListingTypeTab {
-  BY_AGENT,
-  BY_OWNER_OTHER,
+  BY_AGENT = "by-agent",
+  BY_OWNER_OTHER = "by-owner&other",
 }
 
 function MoreFilterContent() {
@@ -51,14 +51,14 @@ function MoreFilterContent() {
   return (
     <div>
       {/* Max HOA  */}
-      <div>
+      <>
         <div>Max HOA</div>
         <select style={defaultSpacing} className={styles.selector}>
           <option>Any</option>
         </select>
-      </div>
+      </>
       {/* Listing Type */}
-      <div>
+      <div style={defaultSpacing}>
         <div style={spaceBottom(10)}>Listing Type</div>
         <div style={spaceBottom(10)} className={styles.tabs}>
           <div
@@ -76,7 +76,7 @@ function MoreFilterContent() {
             Monthly Payment
           </div>
         </div>
-        <div className={styles.listingTypeCheckboxesRow}>
+        <div className={styles.row}>
           <div className={styles.column}>
             <FilterCheckboxOption id="agentListed" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.agentListed)} isSelected={moreFilterState.agentListed}>
               Agent Listed
@@ -93,7 +93,7 @@ function MoreFilterContent() {
             </FilterCheckboxOption>
           </div>
           <div className={styles.column}>
-            <FilterCheckboxOption id="agentListed" onSelect={() => handleCheckboxSelect("auction", !moreFilterState.auction)} isSelected={moreFilterState.auction}>
+            <FilterCheckboxOption id="auction" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.auction)} isSelected={moreFilterState.auction}>
               Auction
             </FilterCheckboxOption>
             <FilterCheckboxOption id="foreclosed" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.foreclosed)} isSelected={moreFilterState.foreclosed}>
@@ -102,6 +102,58 @@ function MoreFilterContent() {
           </div>
         </div>
       </div>
+      {/* Property Status  */}
+      <>
+        <div style={spaceBottom(10)}>Property Status</div>
+        <div className={styles.row}>
+          <div className={styles.column}>
+            <FilterCheckboxOption
+              id="propertyStatusActive"
+              onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.propertyStatusActive)}
+              isSelected={moreFilterState.propertyStatusActive}
+            >
+              Active
+            </FilterCheckboxOption>
+            <FilterCheckboxOption
+              id="propertyStatusPending"
+              onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.propertyStatusPending)}
+              isSelected={moreFilterState.propertyStatusPending}
+            >
+              Pending
+            </FilterCheckboxOption>
+            <FilterCheckboxOption
+              id="propertyStatusOffMarket"
+              onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.propertyStatusOffMarket)}
+              isSelected={moreFilterState.propertyStatusOffMarket}
+            >
+              Off-Market
+            </FilterCheckboxOption>
+          </div>
+          <div className={styles.column}>
+            <FilterCheckboxOption
+              id="propertyStatusCancelled"
+              onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.propertyStatusCancelled)}
+              isSelected={moreFilterState.propertyStatusCancelled}
+            >
+              Cancelled
+            </FilterCheckboxOption>
+            <FilterCheckboxOption
+              id="propertyStatusFailed"
+              onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.propertyStatusFailed)}
+              isSelected={moreFilterState.propertyStatusFailed}
+            >
+              Failed
+            </FilterCheckboxOption>
+            <FilterCheckboxOption
+              id="propertyStatusSold"
+              onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.propertyStatusSold)}
+              isSelected={moreFilterState.propertyStatusSold}
+            >
+              Sold
+            </FilterCheckboxOption>
+          </div>
+        </div>
+      </>
     </div>
   );
 }

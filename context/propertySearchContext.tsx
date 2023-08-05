@@ -76,6 +76,12 @@ interface MoreFilterContext {
     preForeclosure: boolean;
     auction: boolean;
     foreclosed: boolean;
+    propertyStatusActive: boolean;
+    propertyStatusPending: boolean;
+    propertyStatusOffMarket: boolean;
+    propertyStatusCancelled: boolean;
+    propertyStatusFailed: boolean;
+    propertyStatusSold: boolean;
   };
 }
 
@@ -89,6 +95,12 @@ const moreFilterContext: MoreFilterContext = {
     preForeclosure: false,
     auction: false,
     foreclosed: false,
+    propertyStatusActive: false,
+    propertyStatusPending: false,
+    propertyStatusOffMarket: false,
+    propertyStatusCancelled: false,
+    propertyStatusFailed: false,
+    propertyStatusSold: false,
   },
 };
 
