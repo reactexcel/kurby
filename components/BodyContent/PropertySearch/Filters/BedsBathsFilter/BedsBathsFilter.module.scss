@@ -1,0 +1,41 @@
+.scrollViewSelector {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border: 1px solid #bdbdbd;
+  border-radius: 10px;
+  padding: 2px;
+}
+
+.scrollViewSelectorItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 10px;
+  border-left: 1px solid #bdbdbd;
+}
+
+.scrollViewSelectorItem:nth-child(1) {
+  padding: 10px;
+  border-left: none;
+}
+
+.scrollViewSelectorItem:hover {
+  background-color: #00a13c;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+}
+
+.scrollViewSelectorItem:active {
+  background-color: #008932;
+}
+
+.buttonWrapper {
+  margin-top: 20px;
+  width: 100%;
+}
