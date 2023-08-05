@@ -2,6 +2,7 @@ import { useRecoilState } from "recoil";
 import { FilterCheckboxOption, FilterItem } from "../../FilterItem/FilterItem";
 import styles from "./MoreFilter.module.scss";
 import { moreFilter } from "context/propertySearchContext";
+import { codes } from "./codes";
 
 export enum ListingTypeTab {
   BY_AGENT = "by-agent",
@@ -54,6 +55,12 @@ function MoreFilterContent() {
     }
   };
 
+  const handleSelectChange = (value: string, fieldName: string) => {
+    setMoreFilter((prevState) => ({
+      ...prevState,
+      [fieldName]: value,
+    }));
+  };
   return (
     <div className={styles.main}>
       {/* Listing Type */}
@@ -361,6 +368,17 @@ function MoreFilterContent() {
             />
           </div>
         </div>
+      </div>
+      {/* Deed Type */}
+      <div style={defaultSpacing}>
+        <div style={spaceBottom(10)}>Deed Type</div>
+        <select value={moreFilterState.deedType || ""} className={styles.selector} onChange={(e) => handleSelectChange(e.target.value, "deedType")}>
+          {codes.map((code) => (
+            <option key={code.value} value={code.value}>
+              {code.label}
+            </option>
+          ))}
+        </select>
       </div>
     </div>
   );

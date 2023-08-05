@@ -31,6 +31,10 @@
   max-height: 420px;
 }
 
+.content:hover {
+  z-index: 1000;
+}
+
 .arrowContent {
   padding: 0px;
   margin-bottom: -5px;
