@@ -50,7 +50,17 @@ export function FilterItem({ title, renderContent, renderContentWidth, renderCon
 }
 
 // eslint-disable-next-line no-unused-vars
-export function FilterRadioOption({ id, onSelect, isSelected, children }: { id: string; onSelect: (id: string) => void; isSelected: boolean; children: React.ReactNode }) {
+export function FilterRadioOption({
+  id,
+  onSelect,
+  isSelected,
+  children,
+}: {
+  id: string;
+  onSelect: (id: string) => void;
+  isSelected: boolean | null;
+  children: React.ReactNode;
+}) {
   return (
     <FilterOption id={id} onSelect={onSelect} isSelected={isSelected} selectedIcon={<Selected />} unselectedIcon={<UnSelected />}>
       {children}
@@ -68,7 +78,7 @@ export function FilterOption({
 }: {
   id: string;
   onSelect: (id: string) => void;
-  isSelected: boolean;
+  isSelected: boolean | null;
   children: React.ReactNode;
   selectedIcon: React.ReactNode;
   unselectedIcon: React.ReactNode;
