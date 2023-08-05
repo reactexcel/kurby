@@ -57,6 +57,18 @@ const PriceFilterContents = () => {
     color: "black",
   };
 
+  const handleApply = () => {
+    setPriceFilter((prevState) => ({
+      ...prevState,
+      __meta__: {
+        isFilterApplied: !prevState.__meta__.isFilterApplied,
+        createdAt: new Date(),
+      },
+    }));
+  };
+
+  const isFilterApplied = priceFilterState.__meta__.isFilterApplied;
+
   return (
     <div className={styles.main}>
       <div className={styles.tabs}>
@@ -115,7 +127,9 @@ const PriceFilterContents = () => {
         )}
 
         <div className={styles.buttonParentLayout}>
-          <Button className={styles.buttonWrapper}>Apply</Button>
+          <Button variant={isFilterApplied ? "outlined" : "filled"} onClick={handleApply} className={styles.buttonWrapper}>
+            {isFilterApplied ? "Applied" : "Apply"}
+          </Button>
         </div>
       </div>
     </div>

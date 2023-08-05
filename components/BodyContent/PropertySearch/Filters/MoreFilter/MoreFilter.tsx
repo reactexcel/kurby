@@ -75,6 +75,77 @@ function MoreFilterContent() {
     marginTop: 20,
     marginBottom: 10,
   };
+
+  const handleApply = () => {
+    setMoreFilter((prevState) => ({
+      ...prevState,
+      __meta__: {
+        isFilterApplied: !prevState.__meta__.isFilterApplied,
+        createdAt: new Date(),
+      },
+    }));
+  };
+
+  const isFilterApplied = moreFilterState.__meta__.isFilterApplied;
+
+  const handleResetFilters = () => {
+    setMoreFilter(() => {
+      return {
+        listingType: ListingTypeTab.BY_AGENT,
+        agentListed: null,
+        newConstruction: null,
+        preForeclosure: null,
+        auction: null,
+        foreclosed: null,
+        propertyStatusActive: null,
+        propertyStatusPending: null,
+        propertyStatusOffMarket: null,
+        propertyStatusCancelled: null,
+        propertyStatusFailed: null,
+        propertyStatusSold: null,
+        nonOwnerOccupied: null,
+        absenteeOwner: null,
+        outOfStateAbsenteeOwner: null,
+        inStateAbsenteeOwner: null,
+        corporateOwner: null,
+        investorBuyer: null,
+        inherited: null,
+        ownerDeath: null,
+        spousalDeath: null,
+        yearsOwnedMin: null,
+        yearsOwnedMax: null,
+        cashBuyer: null,
+        equity: null,
+        highEquity: null,
+        negativeEquity: null,
+        reo: null,
+        privateLender: null,
+        adjustableRate: null,
+        freeClear: null,
+        equityPercentMin: null,
+        equityPercentMax: null,
+        estimatedEquityMin: null,
+        estimatedEquityMax: null,
+        estimatedValueMin: null,
+        estimatedValueMax: null,
+        openMortgageBalanceMin: null,
+        openMortgageBalanceMax: null,
+        deedType: null,
+        loanType: null,
+        interestRateMin: null,
+        interestRateMax: null,
+        loadDateAfter: null,
+        loadDateBefore: null,
+        maturityDateAfter: null,
+        maturityDateBefore: null,
+        __meta__: {
+          isFilterApplied: false,
+          createdAt: new Date(),
+        },
+      };
+    });
+  };
+
   return (
     <div className={styles.main}>
       {/* Listing Type */}
@@ -483,9 +554,11 @@ function MoreFilterContent() {
 
       <div style={endSpace}>
         <div className={styles.buttonWrapper}>
-          <Button variant="outlined">Reset Filters</Button>
-          <Button variant="filled" className={styles.applyButton}>
-            Apply
+          <Button onClick={handleResetFilters} variant="outlined">
+            Reset Filters
+          </Button>
+          <Button variant={isFilterApplied ? "outlined" : "filled"} onClick={handleApply} className={styles.applyButton}>
+            {isFilterApplied ? "Applied" : "Apply"}
           </Button>
         </div>
       </div>

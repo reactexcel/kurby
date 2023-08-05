@@ -2,6 +2,10 @@ import { ListingTypeTab } from "components/BodyContent/PropertySearch/Filters/Mo
 import { IPriceFilterCurrentTab, IPriceFilterDownPayment } from "components/BodyContent/PropertySearch/Filters/PriceFilter/PriceFilter";
 import { atom } from "recoil";
 
+interface IFilterMetaProps {
+  readonly createdAt: Date;
+  readonly isFilterApplied: boolean;
+}
 interface SaleContext {
   key: string;
   default: {
@@ -23,6 +27,7 @@ const forSaleContext: SaleContext = {
 interface PriceContext {
   key: string;
   default: {
+    __meta__: IFilterMetaProps;
     tab: IPriceFilterCurrentTab;
     minimum: number;
     maximum: number;
@@ -33,6 +38,10 @@ interface PriceContext {
 const priceFilterContext: PriceContext = {
   key: "priceFilterContext",
   default: {
+    __meta__: {
+      createdAt: new Date(),
+      isFilterApplied: false,
+    },
     tab: IPriceFilterCurrentTab.LIST_PRICE_TAB,
     minimum: 0,
     maximum: 0,
@@ -69,6 +78,7 @@ const homeType: HomeFilterContext = {
 interface MoreFilterContext {
   key: string;
   default: {
+    __meta__: IFilterMetaProps;
     listingType: ListingTypeTab;
     agentListed: boolean | null;
     newConstruction: boolean | null;
@@ -122,6 +132,10 @@ interface MoreFilterContext {
 const moreFilterContext: MoreFilterContext = {
   key: "moreFilterContext",
   default: {
+    __meta__: {
+      createdAt: new Date(),
+      isFilterApplied: false,
+    },
     listingType: ListingTypeTab.BY_AGENT,
     agentListed: true,
     newConstruction: null,
