@@ -3,7 +3,6 @@ import React, { useMemo, useState } from "react";
 import { Rating } from "react-simple-star-rating";
 import CarIcon from "/public/images/car-white.svg";
 import styles from "./NearbyPlace.module.scss";
-import StreetView from "../../StreetView/StreetView";
 import LocationSvg from "/public/icons/location.svg";
 import { Button } from "components/Button/Button";
 
@@ -17,10 +16,6 @@ export default function NearbyPlaceCard({ place, loadDrivingDistance }: NearbyPl
   const [loading, setLoading] = useState<boolean>(false);
 
   const { name: placeName, vicinity, user_ratings_total: userRatingsTotal, rating, photos } = place;
-  const position = {
-    lat: place.geometry.location.lat,
-    lng: place.geometry.location.lng,
-  };
   const formatPlaceType = (type: string) => {
     return type && type.charAt(0).toUpperCase() + type.replaceAll("_", " ").slice(1);
   };
@@ -61,7 +56,7 @@ export default function NearbyPlaceCard({ place, loadDrivingDistance }: NearbyPl
     <div className={styles.main}>
       <div className={styles.flex}>
         <div className={styles.container}>
-          {photo ? <img className={styles.image} src={photo} alt="Picture of the author" width={200} height={200} /> : <StreetView position={position} />}
+          <img className={styles.image} src={photo || "/images/placeholder-image.avif"} alt="Picture of the author" width={200} height={200} />
           <div className={styles.info}>
             <Typography variant="h6">{placeName}</Typography>
             <div style={{ display: "flex", alignItems: "center", paddingTop: "2px" }}>

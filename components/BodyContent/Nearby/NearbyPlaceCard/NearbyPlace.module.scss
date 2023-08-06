@@ -61,6 +61,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0rem 0.5rem;
+  width: fit-content;
 
   &:hover {
     background-color: #00a13d;
@@ -77,4 +78,18 @@
   width: 1.75rem !important;
   height: 1.75rem !important;
   color: #ffffff !important;
+}
+
+.placeholderIconWrapper {
+  width: 200px;
+  height: 200px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  svg {
+    width: 100px;
+    height: 100px;
+  }
 }

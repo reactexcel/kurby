@@ -1,5 +1,5 @@
 import GLOBAL_SETTINGS from "../../globals/GLOBAL_SETTINGS";
-const { MILES_TO_METERS, MAP_ZOOM_MILES, PLACE_TYPES } = GLOBAL_SETTINGS;
+const { MILES_TO_METERS, MAP_ZOOM_MILES } = GLOBAL_SETTINGS;
 //TODO make this file typesafe
 
 interface searchNearbyParams {

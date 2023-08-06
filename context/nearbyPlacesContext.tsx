@@ -5,16 +5,14 @@ interface NearbyState {
   default: {
     address: string;
     places: any[];
-    loadedOnScroll: number;
   };
 }
 
 const nearbyState: NearbyState = {
   key: "nearbyContext",
   default: {
-    address: "Miami, FL, USA",
+    address: "",
     places: [],
-    loadedOnScroll: 0,
   },
 };
 

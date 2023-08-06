@@ -5,7 +5,7 @@ import { SelectChangeEvent } from "@mui/material/Select";
 import { useState, useRef, useEffect, use } from "react";
 import { useRecoilState } from "recoil";
 import { addressState, filterState } from "../../context/filterContext";
-import GLOBAL_SETTINGS from "../../globals/GLOBAL_SETTINGS";
+import GLOBAL_SETTINGS, { PlacesType } from "../../globals/GLOBAL_SETTINGS";
 import { searchNearbyApi } from "./searchNearbyApi";
 import WalkscoreListApi from "../BodyContent/Walkscore/WalkscoreListApi";
 import snackbarContext from "../../context/snackbarContext";
@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import { addressToUrl } from "utils/address";
 import { loadingContext } from "context/loadingContext";
 import { useSearchCounter } from "hooks/use-search-counter";
-import { Checkbox, Dialog, DialogContent, FormControl, InputLabel, ListItemText, MenuItem, Select } from "@mui/material";
+import { Checkbox, Dialog, DialogContent, FormControl, ListItemText, MenuItem, Select } from "@mui/material";
 import { LoginSignupButton } from "components/LoginSignupButton/LoginSignupButton";
 import { mapClicksCounter, visitorStayLimit } from "context/visitorContext";
 import { usePersistentRecoilState } from "hooks/recoil-persist-state";
@@ -25,7 +25,8 @@ import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import { activeTabState } from "context/activeTab";
 import { nearbyContext } from "context/nearbyPlacesContext";
-import { filter } from "lodash";
+import { isEqual } from "lodash";
+import { nearbyPlacesCache } from "context/nearbyPlacesCacheContext";
 
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
@@ -53,12 +54,15 @@ export default function Filters() {
   const [address] = useRecoilState(addressState);
   const [, setSnackbar] = useRecoilState(snackbarContext);
   const [isSelectAll, setSelectAll] = useState<boolean>(true);
-  const [loading, setLoading] = useRecoilState(loadingContext);
+  const [, setLoading] = useRecoilState(loadingContext);
   const { searchLimit, incrementCounter } = useSearchCounter();
   const [nearby, setNearby] = useRecoilState(nearbyContext);
+  const nearbyCallRef = useRef<string[]>(["School"]);
+  const [nearbyCache, setNearbyCache] = useRecoilState(nearbyPlacesCache);
+  const { user } = useAuth();
 
   //* State for the place select element
-  const [typesOfPlace, setTypesOfPlace] = useState<any[]>(PLACE_TYPES);
+  const [typesOfPlace, setTypesOfPlace] = useState<string[]>(["School"]);
 
   const router = useRouter();
 
@@ -85,11 +89,25 @@ export default function Filters() {
       target: { value },
     } = event;
 
-    setTypesOfPlace(value as any[]);
+    if (!user) {
+      return;
+    } else {
+      setTypesOfPlace(typeof value === "string" ? [value] : value.sort());
+    }
 
     //* If not all are selected show the 'select all' option
     const allItemsSelected = value.length == PLACE_TYPES.length;
     setSelectAll(allItemsSelected);
+  };
+
+  const handleClose = async () => {
+    if (typesOfPlace.length && filterVal.mapCenter && !isEqual(nearbyCallRef.current, typesOfPlace)) {
+      await getNearby({
+        lat: filterVal.mapCenter?.lat,
+        lng: filterVal.mapCenter?.lng,
+      });
+      nearbyCallRef.current = typesOfPlace;
+    }
   };
 
   const getNearby = async ({ lat, lng }: { lat: number; lng: number }) => {
@@ -102,37 +120,75 @@ export default function Filters() {
         nearby: true,
       }));
 
-      const searchNearbyPayload = {
-        typesOfPlace,
-        request: {
-          location: {
-            lat,
-            lng,
+      const typesOfPlacesSnakeCase = typesOfPlace.map((type) => type.toLowerCase().replace(" ", "_"));
+      let types: string[] = [];
+
+      if (nearbyCache[filterVal.address as string]) {
+        const keys = Object.keys(nearbyCache[filterVal.address as string]);
+
+        types = typesOfPlacesSnakeCase.filter((type) => !keys.includes(type));
+      } else {
+        types = typesOfPlacesSnakeCase;
+      }
+
+      let goodPlaceListings: any[] = [];
+
+      if (types.length) {
+        const searchNearbyPayload = {
+          typesOfPlace: types,
+          request: {
+            location: {
+              lat,
+              lng,
+            },
+            radius: MILES_TO_METERS(MAP_ZOOM_MILES),
           },
-          radius: MILES_TO_METERS(MAP_ZOOM_MILES),
-        },
-      };
-      const nearbyLocations = await searchNearbyApi(searchNearbyPayload);
+        };
+        const nearbyLocations = await searchNearbyApi(searchNearbyPayload);
 
-      //* remove duplciates
-      const noDups = nearbyLocations.filter((place: { reference: string }, index: any, array: any) => {
-        return index === array.findIndex((x: any) => place.reference === x.reference);
-      });
+        //* remove duplciates
+        const noDups = nearbyLocations.filter((place: { reference: string }, index: any, array: any) => {
+          return index === array.findIndex((x: any) => place.reference === x.reference);
+        });
 
-      //*filter out certain data / incorrect info
-      const goodPlaceListings = noDups.filter((place: any) => {
-        const operational = "OPERATIONAL";
+        //*filter out certain data / incorrect info
+        goodPlaceListings = noDups.filter((place: any) => {
+          const operational = "OPERATIONAL";
 
-        const isNotLocality = !place.types.includes("locality");
-        const isOpen = place.business_status === operational;
+          const isNotLocality = !place.types.includes("locality");
+          const isOpen = place.business_status === operational;
 
-        return isNotLocality && isOpen;
-      });
+          return isNotLocality && isOpen;
+        });
+      }
+
+      const cachedPlaces = typesOfPlacesSnakeCase
+        .reduce((acc: any, type: string) => {
+          return [...acc, ...(nearbyCache[filterVal.address as string]?.[type as PlacesType] || [])];
+        }, [])
+        .filter((place) => place);
 
       setNearby((prev) => ({
         ...prev,
         address: filterVal.address || "",
-        places: goodPlaceListings,
+        places: cachedPlaces ? [...cachedPlaces, ...goodPlaceListings] : goodPlaceListings,
+      }));
+
+      setNearbyCache((prevState) => ({
+        ...prevState,
+        [filterVal.address as string]: {
+          ...prevState[filterVal.address as string],
+          ...goodPlaceListings.reduce((acc: any, place: any) => {
+            if (place._type) {
+              return {
+                ...acc,
+                [place._type]: [...(acc[place._type] || []), place],
+              };
+            } else {
+              return acc;
+            }
+          }, {}),
+        },
       }));
     } catch (error) {
       //TODO error handling - errors should be displayed to end user
@@ -175,7 +231,7 @@ export default function Filters() {
         });
       }
     })();
-  }, [filterVal.mapCenter, typesOfPlace, activeTab, nearby.places]);
+  }, [filterVal.mapCenter, activeTab, filterVal.address]);
 
   const handleAddressChange = async (place: any) => {
     const getScore = (address: string, location: any) => WalkscoreListApi({ address, location });
@@ -269,7 +325,6 @@ export default function Filters() {
     }
   }, [address]);
 
-  const { user } = useAuth();
   const { isVisitor, isFree } = usePlanChecker();
 
   const [visitorStayLimitLaunched] = usePersistentRecoilState("visitorStayLimit", visitorStayLimit);
@@ -297,37 +352,42 @@ export default function Filters() {
           <input placeholder="Search Property Here" className={styles.input} type="text" ref={inputRef} />
         </div>
 
-        <div className={styles.searchBlock}>
-          <div className={styles.typeOfPlace}>
-            <div className={styles.row}>
-              <form style={{ width: "100%" }}>
-                <FormControl fullWidth className={styles.formControl}>
-                  <Select
-                    id="demo-multiple-checkbox"
-                    multiple
-                    value={typesOfPlace}
-                    onChange={handleSelectChange}
-                    renderValue={(selected) => `Places of Interest (${selected.length})`}
-                    MenuProps={MenuProps}
-                    style={{ fontSize: "16px" }}
-                    autoWidth={true}
-                  >
-                    <MenuItem key="toggleAll" onClick={handleToggleAll}>
-                      <Checkbox icon={<RadioButtonUncheckedIcon />} checkedIcon={<RadioButtonCheckedIcon />} onChange={handleToggleAll} checked={isSelectAll} />
-                      <ListItemText primary={isSelectAll ? "Deselect All" : "Select All"} />
-                    </MenuItem>
-                    {PLACE_TYPES.map((name) => (
-                      <MenuItem key={name} value={name} style={{ padding: "0px" }}>
-                        <Checkbox checked={typesOfPlace.indexOf(name) > -1} />
-                        <ListItemText primary={name} />
+        {activeTab === "nearby" && (
+          <div className={styles.searchBlock}>
+            <div className={styles.typeOfPlace}>
+              <div className={styles.row}>
+                <form style={{ width: "100%" }}>
+                  <FormControl fullWidth className={styles.formControl}>
+                    <Select
+                      id="demo-multiple-checkbox"
+                      multiple
+                      value={typesOfPlace}
+                      onChange={handleSelectChange}
+                      onClose={handleClose}
+                      displayEmpty
+                      renderValue={(selected) => `Places of Interest (${selected.length})`}
+                      MenuProps={MenuProps}
+                      style={{ fontSize: "16px" }}
+                      autoWidth={true}
+                    >
+                      <MenuItem key="toggleAll" onClick={handleToggleAll}>
+                        <Checkbox icon={<RadioButtonUncheckedIcon />} checkedIcon={<RadioButtonCheckedIcon />} onChange={handleToggleAll} checked={isSelectAll} />
+                        <ListItemText primary={isSelectAll ? "Deselect All" : "Select All"} />
                       </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </form>
+                      {PLACE_TYPES.map((name) => (
+                        <MenuItem key={name} value={name} style={{ padding: "0px" }}>
+                          <Checkbox checked={typesOfPlace.indexOf(name) > -1} />
+                          <ListItemText primary={name} />
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </form>
+              </div>
             </div>
           </div>
-        </div>
+        )}
+
         {showDialog && (
           <Dialog open className={styles.dialog}>
             <h2 className={styles.dialogTitle}>Daily {(searchLimit && "Search") || ""} Limit Reached</h2>

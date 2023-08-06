@@ -1,3 +1,15 @@
+export type PlacesType =
+  | "school"
+  | "primary_school"
+  | "secondary_school"
+  | "university"
+  | "park"
+  | "hospital"
+  | "shopping_mall"
+  | "tourist_attraction"
+  | "restaurant"
+  | "supermarket";
+
 //TODO split this file into multiples each for it's own purpose
 const GLOBAL_SETTINGS = {
   MAP_ZOOM_MILES: 1,
@@ -17,10 +29,7 @@ const GLOBAL_SETTINGS = {
     return isNaN(distance) ? "/" : (distance * 0.000621371).toFixed(1);
   },
   MAP_ZOOM_DEFAULT: 14,
-  PLACE_TYPES: [
-    "School",
-    // "Primary School", "Secondary School", "University", "Park", "Hospital", "Shopping mall", "Tourist Attraction", "Restaurant", "Supermarket"
-  ],
+  PLACE_TYPES: ["School", "Primary School", "Secondary School", "University", "Park", "Hospital", "Shopping mall", "Tourist Attraction", "Restaurant", "Supermarket"],
 };
 
 export default GLOBAL_SETTINGS;
