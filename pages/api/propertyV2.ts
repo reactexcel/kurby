@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
+import { SaleContext } from "context/propertySearchContext";
 
 export interface IPropertySearchResponse {
   readonly live: boolean;
@@ -108,28 +109,34 @@ export interface IPropertyHouse {
 }
 
 export interface Address {
-  address: string;
-  city: string;
-  county: string;
-  state: string;
-  street: string;
-  zip: string;
+  readonly address: string;
+  readonly city: string;
+  readonly county: string;
+  readonly state: string;
+  readonly street: string;
+  readonly zip: string;
 }
 
 export interface MailAddress {
-  address?: string;
-  city?: string;
-  county?: string;
-  state?: string;
-  street?: string;
-  zip?: string;
+  readonly address?: string;
+  readonly city?: string;
+  readonly county?: string;
+  readonly state?: string;
+  readonly street?: string;
+  readonly zip?: string;
 }
 
 export interface Neighborhood {
-  center: string;
-  id: string;
-  name: string;
-  type: string;
+  readonly center: string;
+  readonly id: string;
+  readonly name: string;
+  readonly type: string;
+}
+
+interface IFilterSearchProps {
+  readonly location: string;
+  readonly locationType: "city" | "address";
+  readonly forSale: SaleContext["default"];
 }
 
 class PropertySearchApiV2 {
@@ -149,11 +156,11 @@ class PropertySearchApiV2 {
     };
   }
 
-  async getPropertyDataByAddress(address: string) {
+  async getPropertiesByAddress(address: string) {
     if (",#-/ !@$%^*(){}|[]\\".indexOf(address) >= 0) {
       throw new Error("Please enter an valid US State address");
     }
-    console.log(address);
+
     let config = {
       method: "post",
       maxBodyLength: Infinity,
@@ -161,6 +168,39 @@ class PropertySearchApiV2 {
       ...this.headers(),
       data: {
         address,
+      },
+    };
+
+    return (await axios.request<IPropertySearchResponse>(config)).data;
+  }
+
+  async getPropertiesByFilters({ location, forSale }: IFilterSearchProps) {
+    console.log("TEST", forSale.for_sale);
+
+    const filtersObject = {
+      for_sale: forSale.for_sale,
+      sold: forSale.sold,
+    };
+
+    const filters = Object.keys(filtersObject)
+      // @ts-ignore
+      .filter((key) => Boolean(filtersObject[key])) // Filtering keys with non-null and non-undefined values
+      .reduce((acc, key) => {
+        // @ts-ignore
+        acc[key] = filtersObject[key]; // Adding keys with non-null and non-undefined values to the new object
+        return acc;
+      }, {});
+
+    console.log(filters);
+
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: this.BASE_URL,
+      ...this.headers(),
+      data: {
+        address: location,
+        ...filters,
       },
     };
 
@@ -178,6 +218,12 @@ export const createPropertySearchApi = () => {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const api = createPropertySearchApi();
-  const response = await api.getPropertyDataByAddress(req.body.address);
+  if (req.body?.filters) {
+    const response = await api.getPropertiesByFilters(req.body.filters);
+    console.log(response);
+    return res.status(200).json(response);
+  }
+
+  const response = await api.getPropertiesByAddress(req.body.address);
   return res.status(200).json(response);
 }
