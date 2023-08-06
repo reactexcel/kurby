@@ -1,0 +1,22 @@
+.houseGrid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap; /* Allows items to wrap to the next line */
+  align-items: center;
+  justify-content: center;
+  max-width: 100%; /* Width enough to fit two houses */
+  overflow: auto;
+}
+
+.house {
+  flex: 500px;
+  background-color: #bebebe1a;
+  border: 1px solid #e0e0e0;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 8px;
+}
+
+.houseTitle {
+  font-size: 16px;
+}

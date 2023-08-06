@@ -1,12 +1,13 @@
 import { ListingTypeTab } from "components/BodyContent/PropertySearch/Filters/MoreFilter/MoreFilter";
 import { IPriceFilterCurrentTab, IPriceFilterDownPayment } from "components/BodyContent/PropertySearch/Filters/PriceFilter/PriceFilter";
+import { IPropertyHouse } from "pages/api/propertyV2";
 import { atom } from "recoil";
 
 interface IFilterMetaProps {
   readonly createdAt: Date;
   readonly isFilterApplied: boolean;
 }
-interface SaleContext {
+export interface SaleContext {
   key: string;
   default: {
     for_sale: boolean | null;
@@ -186,7 +187,22 @@ const moreFilterContext: MoreFilterContext = {
   },
 };
 
+interface SearchResultContext {
+  key: string;
+  default: {
+    results: IPropertyHouse[] | null;
+  };
+}
+
+const propertySearchResultContext: SearchResultContext = {
+  key: "propertyFilterResults",
+  default: {
+    results: null,
+  },
+};
+
 export const forSaleFilter = atom(forSaleContext);
 export const priceFilter = atom(priceFilterContext);
 export const homeTypeFilter = atom(homeType);
 export const moreFilter = atom(moreFilterContext);
+export const propertySearch = atom(propertySearchResultContext);
