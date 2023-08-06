@@ -10,6 +10,7 @@ import { loadingContext } from "context/loadingContext";
 import { useRouter } from "next/router";
 import { nearbyContext } from "context/nearbyPlacesContext";
 import { Button } from "components/Button/Button";
+import { usePlanChecker } from "hooks/plans";
 
 async function loadDrivingDistance(place: any, origin: any): Promise<{ driving: any }> {
   try {
@@ -34,9 +35,9 @@ async function loadDrivingDistance(place: any, origin: any): Promise<{ driving: 
 export default function Nearby() {
   const [filterVal] = useRecoilState(filterState);
   const [loading] = useRecoilState(loadingContext);
-  const { user } = useAuth();
   const router = useRouter();
   const [nearby] = useRecoilState(nearbyContext);
+  const { isGrowth, isPro } = usePlanChecker();
 
   const nearbyPlaces = useMemo(
     () =>
@@ -54,7 +55,7 @@ export default function Nearby() {
         </div>
       ) : nearby.places.length ? (
         <>
-          {user ? (
+          {isGrowth || isPro ? (
             nearbyPlaces
           ) : (
             <>
