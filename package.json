@@ -32,7 +32,6 @@
     "moment": "^2.29.4",
     "next": "^13.4.12",
     "next-seo": "^5.15.0",
-    "openai": "^3.1.0",
     "outseta-api-client": "^1.1.0",
     "parse-address": "^1.1.2",
     "openai": "^3.3.0",
