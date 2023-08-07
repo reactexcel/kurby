@@ -33,5 +33,5 @@ function BedsBathsFilterContent() {
 }
 
 export function BedBathsFilter() {
-  return <FilterItem flex={1} title="Beds & Baths" renderContentPosition={"left"} renderContentWidth="300px" renderContent={<BedsBathsFilterContent />} />;
+  return <FilterItem flex={1} title="Beds & Baths" renderContentPosition={"left"} renderContentWidth="420px" renderContent={<BedsBathsFilterContent />} />;
 }

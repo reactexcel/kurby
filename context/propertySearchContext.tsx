@@ -198,7 +198,7 @@ const moreFilterContext: MoreFilterContext = {
 interface SearchResultContext {
   key: string;
   default: {
-    results: IPropertyHouse[] | null;
+    results: IPropertyHouse[] | null | true; // True indicating that isLoading;
   };
 }
 

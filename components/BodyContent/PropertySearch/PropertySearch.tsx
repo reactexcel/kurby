@@ -5,6 +5,7 @@ import styles from "./PropertySearch.module.scss";
 import { Properties } from "./Properties/Properties";
 import { propertySearch } from "context/propertySearchContext";
 import { useRecoilState } from "recoil";
+import { CircularProgress } from "@mui/material";
 /**
  * Body Content
  * @description: Displays everything below the filters
@@ -12,13 +13,19 @@ import { useRecoilState } from "recoil";
 export default function CityStatePropertiesFilters() {
   const [propertyData] = useRecoilState(propertySearch);
   const noResultsFound = Array.isArray(propertyData.results) && propertyData.results?.length;
+  const isPropertiesLoading = propertyData.results === true;
   return (
     <TabLayout className={styles.tabLayout}>
       <PropertyFilter />
-      <Properties />
+      {Array.isArray(propertyData.results) && <Properties />}
       {!propertyData.results && (
         <div className={styles.filterInfoBody}>
           <p>Please select a filter to list properties in this zone.</p>
+        </div>
+      )}
+      {isPropertiesLoading && (
+        <div className={styles.filterInfoBody}>
+          <CircularProgress sx={{ marginTop: 12 }} />
         </div>
       )}
       {noResultsFound === 0 && (

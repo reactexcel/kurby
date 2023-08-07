@@ -4,16 +4,17 @@
   flex-wrap: wrap; /* Allows items to wrap to the next line */
   align-items: center;
   justify-content: center;
-  max-width: 100%; /* Width enough to fit two houses */
+  max-width: 100%;
   overflow: auto;
 }
 
 .house {
-  flex: 500px;
+  flex: calc(50% - 20px); /* 50% of the container width minus the margins */
   height: 170px;
   padding: 10px;
   margin: 10px;
   border-radius: 8px;
+  box-sizing: border-box; /* Ensures padding and border are included in the width calculation */
 }
 
 .houseTitle {
