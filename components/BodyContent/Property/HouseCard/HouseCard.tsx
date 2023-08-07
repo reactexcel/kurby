@@ -79,7 +79,8 @@ export default function HouseCard({ cardInfo }: { cardInfo: Root }) {
           </Box>
           <Box>
             <ProTypography fontSize="12px" color={KBColor.GREEN}>
-              ${convertUSNumberFormat(cardInfo?.price)}
+              {cardInfo.price > 0 && "$"}
+              {convertUSNumberFormat(cardInfo?.price) || ""}
             </ProTypography>
           </Box>
         </Box>
