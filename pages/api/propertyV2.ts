@@ -177,7 +177,7 @@ class PropertySearchApiV2 {
 
   async getPropertiesByFilters({ latitude, longitude, radius, forSale }: IFilterSearchProps) {
     const filtersObject = {
-      mls_active: forSale?.for_sale,
+      mls_active: forSale?.for_sale || forSale.off_market,
       mls_cancelled: forSale?.for_sale,
     };
 

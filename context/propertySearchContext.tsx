@@ -209,8 +209,30 @@ const propertySearchResultContext: SearchResultContext = {
   },
 };
 
+interface BedsBathsContext {
+  key: "bedsBathsFilter";
+  default: {
+    __meta__: IFilterMetaProps;
+    bedrooms: number;
+    bathrooms: number;
+  };
+}
+
+const bedsBathsFilterContext: BedsBathsContext = {
+  key: "bedsBathsFilter",
+  default: {
+    __meta__: {
+      createdAt: new Date(),
+      isFilterApplied: false,
+    },
+    bedrooms: 0,
+    bathrooms: 0,
+  },
+};
+
 export const forSaleFilter = atom(forSaleContext);
 export const priceFilter = atom(priceFilterContext);
 export const homeTypeFilter = atom(homeType);
 export const moreFilter = atom(moreFilterContext);
 export const propertySearch = atom(propertySearchResultContext);
+export const bedsBathsFilter = atom(bedsBathsFilterContext);
