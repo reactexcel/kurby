@@ -39,7 +39,7 @@ export default function Property() {
   const isNotLoaded = !Boolean(propertyDetail || propertyInfo);
 
   const [loading, setLoading] = useState<boolean>(isNotLoaded);
-  const [isTabAvailable, setTabAvailable] = useRecoilState(propertyDetailAvailable);
+  const [isTabAvailable] = useRecoilState(propertyDetailAvailable);
 
   const { isFree, isStarter, isGrowth } = usePlanChecker();
   // const { explainedLikeAlocal } = useOpenAi();
@@ -63,7 +63,6 @@ export default function Property() {
       setLoading(false);
       if (data) {
         setPropertyDetail(data.data);
-        setTabAvailable(Boolean(Object.keys(data.data).length > 0));
       }
     }
 

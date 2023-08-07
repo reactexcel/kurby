@@ -10,6 +10,10 @@ interface IFilterMetaProps {
 export interface SaleContext {
   key: string;
   default: {
+    __meta__: {
+      createdAt: Date;
+      isFilterApplied: boolean;
+    };
     for_sale: boolean | null;
     off_market: boolean | null;
     sold: boolean | null;
@@ -19,6 +23,10 @@ export interface SaleContext {
 const forSaleContext: SaleContext = {
   key: "propertySearchContext",
   default: {
+    __meta__: {
+      createdAt: new Date(),
+      isFilterApplied: false,
+    },
     for_sale: null,
     off_market: null,
     sold: null,

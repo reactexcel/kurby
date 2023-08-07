@@ -11,6 +11,7 @@ import { useRecoilState } from "recoil";
  */
 export default function CityStatePropertiesFilters() {
   const [propertyData] = useRecoilState(propertySearch);
+  const noResultsFound = Array.isArray(propertyData.results) && propertyData.results?.length;
   return (
     <TabLayout className={styles.tabLayout}>
       <PropertyFilter />
@@ -18,6 +19,11 @@ export default function CityStatePropertiesFilters() {
       {!propertyData.results && (
         <div className={styles.filterInfoBody}>
           <p>Please select a filter to list properties in this zone.</p>
+        </div>
+      )}
+      {noResultsFound === 0 && (
+        <div className={styles.filterInfoBody}>
+          <p>No results found according to your search criteria.</p>
         </div>
       )}
     </TabLayout>

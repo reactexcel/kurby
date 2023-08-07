@@ -134,9 +134,10 @@ export interface Neighborhood {
 }
 
 interface IFilterSearchProps {
-  readonly location: string;
-  readonly locationType: "city" | "address";
+  readonly latitude: number;
+  readonly longitude: number;
   readonly forSale: SaleContext["default"];
+  readonly radius: number;
 }
 
 class PropertySearchApiV2 {
@@ -174,12 +175,10 @@ class PropertySearchApiV2 {
     return (await axios.request<IPropertySearchResponse>(config)).data;
   }
 
-  async getPropertiesByFilters({ location, forSale }: IFilterSearchProps) {
-    console.log("TEST", forSale.for_sale);
-
+  async getPropertiesByFilters({ latitude, longitude, radius, forSale }: IFilterSearchProps) {
     const filtersObject = {
-      for_sale: forSale.for_sale,
-      sold: forSale.sold,
+      for_sale: forSale?.for_sale,
+      sold: forSale?.sold,
     };
 
     const filters = Object.keys(filtersObject)
@@ -199,8 +198,10 @@ class PropertySearchApiV2 {
       url: this.BASE_URL,
       ...this.headers(),
       data: {
-        address: location,
         ...filters,
+        latitude,
+        longitude,
+        radius: radius | 25,
       },
     };
 

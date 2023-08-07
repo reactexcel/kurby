@@ -18,9 +18,13 @@ export function PropertyFilter() {
   const [filterVal] = useRecoilState(filterState);
   const [, setPropertyData] = useRecoilState(propertySearch);
 
+  const searchCriteria = {
+    ...(forSale.__meta__.isFilterApplied ? { forSale } : { forSale: null }),
+  };
+
   const handleSearch = async () => {
     const { data } = await axios.post<IPropertySearchResponse>("/api/propertyV2", {
-      filters: { location: filterVal.address, forSale },
+      filters: { latitude: filterVal.mapCenter?.lat, longitude: filterVal.mapCenter?.lng, ...searchCriteria },
     });
     setPropertyData({ results: data.data });
   };
