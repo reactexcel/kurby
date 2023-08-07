@@ -5,6 +5,7 @@ import Selected from "../../../../public/icons/button-selected.svg";
 import UnSelected from "../../../../public/icons/button-unselected.svg";
 import Checkmark from "../../../../public/icons/checkmark.svg";
 import CheckmarkUnchecked from "../../../../public/icons/checkmark-unchecked.svg";
+import { Popover } from "@mui/material";
 
 interface IFilterItemProps {
   readonly title: string;
@@ -16,35 +17,43 @@ interface IFilterItemProps {
 
 export function FilterItem({ title, renderContent, renderContentWidth, renderContentPosition, flex }: IFilterItemProps) {
   const [isOpen, setOpen] = useState<boolean>(false);
+  const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
 
   const renderStyle = {
     ...(flex && { flex }),
   };
 
-  const renderContentCore = {
-    ...(renderContentWidth && { width: renderContentWidth }),
-    ...(renderContentPosition && { [renderContentPosition]: 0 }),
+  const handleToggle = (event: React.MouseEvent<HTMLDivElement>) => {
+    setAnchorEl(event.currentTarget);
+    setOpen(!isOpen);
   };
   return (
     <div style={renderStyle} className={styles.root}>
-      <div
-        onClick={() => {
-          setOpen(!isOpen);
-        }}
-        className={styles.filterItem}
-      >
+      <div onClick={handleToggle} className={styles.filterItem}>
         {title}
         <div className={styles.arrowContent} style={isOpen ? { rotate: "180deg", marginTop: -10 } : {}}>
           <ArrowDown />
         </div>
       </div>
-      {isOpen && renderContent ? (
-        <div style={renderContentCore} className={styles.content}>
-          {renderContent}
-        </div>
-      ) : (
-        <></>
-      )}
+      <Popover
+        open={isOpen}
+        onClose={handleToggle}
+        anchorEl={anchorEl}
+        className={styles.content}
+        style={
+          renderContentWidth
+            ? {
+                width: renderContentWidth,
+              }
+            : {}
+        }
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: renderContentPosition,
+        }}
+      >
+        <div className={styles.content}>{renderContent}</div>
+      </Popover>
     </div>
   );
 }

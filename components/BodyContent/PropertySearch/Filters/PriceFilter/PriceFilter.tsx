@@ -137,5 +137,5 @@ const PriceFilterContents = () => {
 };
 
 export function PriceFilter() {
-  return <FilterItem renderContentPosition="left" flex={1} title="Price" renderContentWidth="360px" renderContent={<PriceFilterContents />} />;
+  return <FilterItem renderContentPosition="left" flex={1} title="Price" renderContentWidth="700px" renderContent={<PriceFilterContents />} />;
 }

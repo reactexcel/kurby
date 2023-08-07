@@ -1,5 +1,4 @@
 .root {
-  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%; // adjust as necessary
@@ -20,14 +19,8 @@
 }
 
 .content {
-  position: absolute;
-  background-color: white;
-  top: 68px;
-  border-radius: 0px 0px 6px 6px;
-  border: 1px solid #e3e3e3;
-  padding: 10px;
   z-index: 100;
-  overflow: auto;
+  padding: 10px;
   max-height: 420px;
 }
 

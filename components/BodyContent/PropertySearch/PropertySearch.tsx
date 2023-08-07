@@ -23,7 +23,7 @@ export default function CityStatePropertiesFilters() {
       )}
       {noResultsFound === 0 && (
         <div className={styles.filterInfoBody}>
-          <p>No results found according to your search criteria.</p>
+          <p>No results found</p>
         </div>
       )}
     </TabLayout>
