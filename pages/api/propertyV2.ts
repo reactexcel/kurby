@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
-import { SaleContext } from "context/propertySearchContext";
+import { BedsBathsContext, SaleContext } from "context/propertySearchContext";
 
 export interface IPropertySearchResponse {
   readonly live: boolean;
@@ -137,6 +137,7 @@ interface IFilterSearchProps {
   readonly latitude: number;
   readonly longitude: number;
   readonly forSale: SaleContext["default"];
+  readonly bedsFilter: BedsBathsContext["default"];
   readonly radius: number;
 }
 
@@ -175,10 +176,14 @@ class PropertySearchApiV2 {
     return (await axios.request<IPropertySearchResponse>(config)).data;
   }
 
-  async getPropertiesByFilters({ latitude, longitude, radius, forSale }: IFilterSearchProps) {
+  async getPropertiesByFilters({ latitude, longitude, radius, forSale, bedsFilter }: IFilterSearchProps) {
     const filtersObject = {
-      mls_active: forSale?.for_sale || forSale.off_market,
+      mls_active: forSale?.for_sale || forSale?.off_market,
       mls_cancelled: forSale?.for_sale,
+      beds_min: bedsFilter?.bedrooms,
+      beds_max: bedsFilter?.bedrooms,
+      baths_min: bedsFilter?.bathrooms,
+      baths_max: bedsFilter?.bathrooms,
     };
 
     const filters = Object.keys(filtersObject)

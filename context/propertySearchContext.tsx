@@ -209,7 +209,7 @@ const propertySearchResultContext: SearchResultContext = {
   },
 };
 
-interface BedsBathsContext {
+export interface BedsBathsContext {
   key: "bedsBathsFilter";
   default: {
     __meta__: IFilterMetaProps;

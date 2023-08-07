@@ -8,7 +8,7 @@ import { PriceFilter } from "./PriceFilter/PriceFilter";
 import { HomeTypeFilter } from "./HomeType/HomeType";
 import { MoreFilter } from "./MoreFilter/MoreFilter";
 import { BedBathsFilter } from "./BedsBathsFilter/BedsBathsFilter";
-import { forSaleFilter, propertySearch } from "context/propertySearchContext";
+import { bedsBathsFilter, forSaleFilter, propertySearch } from "context/propertySearchContext";
 import { SearchButton } from "../SearchButton/SearchButton";
 import { IPropertySearchResponse } from "pages/api/propertyV2";
 import { filterState } from "context/filterContext";
@@ -16,10 +16,12 @@ import { filterState } from "context/filterContext";
 export function PropertyFilter() {
   const [forSale] = useRecoilState(forSaleFilter);
   const [filterVal] = useRecoilState(filterState);
+  const [bedsFilter] = useRecoilState(bedsBathsFilter);
   const [, setPropertyData] = useRecoilState(propertySearch);
 
   const searchCriteria = {
     ...(forSale.__meta__.isFilterApplied ? { forSale } : { forSale: null }),
+    ...(bedsFilter.__meta__.isFilterApplied ? { bedsFilter } : { bedsFilter: null }),
   };
 
   const handleSearch = async () => {
