@@ -211,6 +211,11 @@ class PropertySearchApiV2 {
       property_type: homeFilter && parseHomeType(homeFilter),
       mls_listing_price_min: priceFilter?.minimum,
       mls_listing_price_max: priceFilter?.maximum,
+      years_owned_min: moreFilter?.yearsOwnedMin,
+      years_owned_max: moreFilter?.yearsOwnedMax,
+      auction: moreFilter?.auction,
+      pre_foreclosure: moreFilter?.preForeclosure,
+      foreclosure: moreFilter?.foreclosed,
     };
 
     const filters = Object.keys(filtersObject)
@@ -221,8 +226,6 @@ class PropertySearchApiV2 {
         acc[key] = filtersObject[key]; // Adding keys with non-null and non-undefined values to the new object
         return acc;
       }, {});
-
-    console.log(filters);
 
     let config = {
       method: "post",
