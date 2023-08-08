@@ -150,7 +150,7 @@ function MoreFilterContent() {
     <div className={styles.main}>
       {/* Listing Type */}
       <div style={defaultSpacing}>
-        <div style={spaceBottom(10)}>Listing Type</div>
+        {/* <div style={spaceBottom(10)}>Listing Type</div>
         <div style={spaceBottom(10)} className={styles.tabs}>
           <div
             onClick={() => setCurrentListingTab(ListingTypeTab.BY_AGENT)}
@@ -166,7 +166,7 @@ function MoreFilterContent() {
           >
             Monthly Payment
           </div>
-        </div>
+        </div> */}
         <div className={styles.row}>
           <div className={styles.column}>
             <FilterCheckboxOption id="agentListed" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.agentListed)} isSelected={moreFilterState.agentListed}>
@@ -567,5 +567,5 @@ function MoreFilterContent() {
 }
 
 export function MoreFilter() {
-  return <FilterItem flex={1} title="More" renderContentPosition="right" renderContentWidth="500px" renderContent={<MoreFilterContent />} />;
+  return <FilterItem flex={1} title="More" renderContentPosition="right" renderContentWidth="550px" renderContent={<MoreFilterContent />} />;
 }

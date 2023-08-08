@@ -89,7 +89,7 @@ const homeType: HomeFilterContext = {
   },
 };
 
-interface MoreFilterContext {
+export interface MoreFilterContext {
   key: string;
   default: {
     __meta__: IFilterMetaProps;

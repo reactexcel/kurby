@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
-import { BedsBathsContext, HomeFilterContext, PriceContext, SaleContext } from "context/propertySearchContext";
+import { BedsBathsContext, HomeFilterContext, MoreFilterContext, PriceContext, SaleContext } from "context/propertySearchContext";
 
 export interface IPropertySearchResponse {
   readonly live: boolean;
@@ -142,6 +142,7 @@ interface IFilterSearchProps {
   readonly radius: number;
   readonly homeFilter: HomeFilterContext["default"];
   readonly priceFilter: PriceContext["default"];
+  readonly moreFilter: MoreFilterContext["default"];
 }
 
 class PropertySearchApiV2 {
@@ -179,7 +180,7 @@ class PropertySearchApiV2 {
     return (await axios.request<IPropertySearchResponse>(config)).data;
   }
 
-  async getPropertiesByFilters({ latitude, longitude, forSale, bedsFilter, homeFilter, priceFilter }: IFilterSearchProps) {
+  async getPropertiesByFilters({ latitude, longitude, forSale, bedsFilter, homeFilter, priceFilter, moreFilter }: IFilterSearchProps) {
     const parseHomeType = (property_type: IFilterSearchProps["homeFilter"]) => {
       const types: string[] = [];
       if (property_type.houses) types.push("SFR");

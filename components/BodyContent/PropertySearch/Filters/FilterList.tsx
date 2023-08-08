@@ -1,8 +1,7 @@
-import { useRecoilState } from "recoil";
 import axios from "axios";
-// import { FilterItem } from "../FilterItem/FilterItem";
-import styles from "./Filter.module.scss";
 import { bedsBathsFilter, forSaleFilter, homeTypeFilter, moreFilter, priceFilter, propertySearch } from "context/propertySearchContext";
+import { useRecoilState } from "recoil";
+import styles from "./Filter.module.scss";
 import { ForSaleFilter } from "./ForSaleFilter/ForSaleFilter";
 import { PriceFilter } from "./PriceFilter/PriceFilter";
 import { HomeTypeFilter } from "./HomeType/HomeType";
@@ -26,6 +25,7 @@ export function PropertyFilter() {
     ...(bedsFilter.__meta__.isFilterApplied ? { bedsFilter } : { bedsFilter: null }),
     ...(homeFilter.__meta__.isFilterApplied ? { homeFilter } : { homeFilter: null }),
     ...(price.__meta__.isFilterApplied ? { priceFilter: price } : { priceFilter: null }),
+    ...(moreFilterState.__meta__.isFilterApplied ? { moreFilter: moreFilterState } : { moreFilter: null }),
   };
 
   const handleSearch = async () => {
