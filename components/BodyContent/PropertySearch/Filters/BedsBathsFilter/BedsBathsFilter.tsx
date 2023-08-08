@@ -135,11 +135,31 @@ function BedsBathsFilterContent() {
 }
 
 export function BedBathsFilter() {
+  const [bedsBathsState] = useRecoilState(bedsBathsFilter);
+  const renderThumb = () => {
+    let bedroomString = bedsBathsState.bedrooms ? `${bedsBathsState.bedrooms} bed${bedsBathsState.bedrooms > 1 ? "s" : ""}` : "";
+    let bathroomString = bedsBathsState.bathrooms ? `${bedsBathsState.bathrooms} bath${bedsBathsState.bathrooms > 1 ? "s" : ""}` : "";
+
+    if (bedroomString && !bathroomString) {
+      return bedroomString;
+    }
+
+    if (!bedroomString && bathroomString) {
+      return bathroomString;
+    }
+
+    if (bedroomString && bathroomString) {
+      return `${bedroomString} | ${bathroomString}`;
+    }
+
+    return "Beds & Baths";
+  };
+
   return (
     <FilterItem
       recoilOpenState={bedsBathsPopover as any}
       flex={1}
-      title="Beds & Baths"
+      title={renderThumb()}
       renderContentPosition={"left"}
       renderContentWidth="420px"
       renderContent={<BedsBathsFilterContent />}

@@ -99,5 +99,9 @@ const HomeTypeContents = () => {
 };
 
 export function HomeTypeFilter() {
-  return <FilterItem recoilOpenState={homeTypePopover as any} renderContentPosition="left" flex={1} title="Home Type" renderContent={<HomeTypeContents />} />;
+  const renderThumb = () => {
+    return "Home Type";
+  };
+
+  return <FilterItem recoilOpenState={homeTypePopover as any} renderContentPosition="left" flex={1} title={renderThumb()} renderContent={<HomeTypeContents />} />;
 }

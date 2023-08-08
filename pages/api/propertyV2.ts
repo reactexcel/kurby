@@ -236,7 +236,7 @@ class PropertySearchApiV2 {
         ...filters,
         latitude,
         longitude,
-        size: 100,
+        size: 10,
         radius: 10,
       },
     };
