@@ -1,6 +1,7 @@
+/* eslint-disable camelcase */
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
-import { BedsBathsContext, SaleContext } from "context/propertySearchContext";
+import { BedsBathsContext, HomeFilterContext, PriceContext, SaleContext } from "context/propertySearchContext";
 
 export interface IPropertySearchResponse {
   readonly live: boolean;
@@ -139,6 +140,8 @@ interface IFilterSearchProps {
   readonly forSale: SaleContext["default"];
   readonly bedsFilter: BedsBathsContext["default"];
   readonly radius: number;
+  readonly homeFilter: HomeFilterContext["default"];
+  readonly priceFilter: PriceContext["default"];
 }
 
 class PropertySearchApiV2 {
@@ -176,7 +179,27 @@ class PropertySearchApiV2 {
     return (await axios.request<IPropertySearchResponse>(config)).data;
   }
 
-  async getPropertiesByFilters({ latitude, longitude, radius, forSale, bedsFilter }: IFilterSearchProps) {
+  async getPropertiesByFilters({ latitude, longitude, forSale, bedsFilter, homeFilter, priceFilter }: IFilterSearchProps) {
+    const parseHomeType = (property_type: IFilterSearchProps["homeFilter"]) => {
+      const types: string[] = [];
+      if (property_type.houses) types.push("SFR");
+      if (property_type.multiFamily) types.push("MFR");
+      if (property_type.lotsLands) types.push("LAND");
+      if (property_type.condosCoOps) types.push("CONDO");
+      if (property_type.manufactured) types.push("MANUFACTURED");
+      // Add other cases as needed
+
+      // Only allow one type to be selected
+      if (types.length > 1) {
+        // Handle the error, or just return the first selected type
+        return types[0];
+      } else if (types.length === 1) {
+        return types[0];
+      } else {
+        return "OTHER";
+      }
+    };
+
     const filtersObject = {
       mls_active: forSale?.for_sale || forSale?.off_market,
       mls_cancelled: forSale?.for_sale,
@@ -184,6 +207,9 @@ class PropertySearchApiV2 {
       beds_max: bedsFilter?.bedrooms,
       baths_min: bedsFilter?.bathrooms,
       baths_max: bedsFilter?.bathrooms,
+      property_type: homeFilter && parseHomeType(homeFilter),
+      mls_listing_price_min: priceFilter?.minimum,
+      mls_listing_price_max: priceFilter?.maximum,
     };
 
     const filters = Object.keys(filtersObject)
@@ -206,7 +232,8 @@ class PropertySearchApiV2 {
         ...filters,
         latitude,
         longitude,
-        radius: radius | 25,
+        size: 100,
+        radius: 10,
       },
     };
 
@@ -226,7 +253,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const api = createPropertySearchApi();
   if (req.body?.filters) {
     const response = await api.getPropertiesByFilters(req.body.filters);
-    console.log(response);
     return res.status(200).json(response);
   }
 

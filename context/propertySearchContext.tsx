@@ -33,7 +33,7 @@ const forSaleContext: SaleContext = {
   },
 };
 
-interface PriceContext {
+export interface PriceContext {
   key: string;
   default: {
     __meta__: IFilterMetaProps;
@@ -58,9 +58,10 @@ const priceFilterContext: PriceContext = {
   },
 };
 
-interface HomeFilterContext {
+export interface HomeFilterContext {
   key: string;
   default: {
+    __meta__: IFilterMetaProps;
     houses: boolean;
     townHouse: boolean;
     multiFamily: boolean;
@@ -74,6 +75,10 @@ interface HomeFilterContext {
 const homeType: HomeFilterContext = {
   key: "homeTypeFilter",
   default: {
+    __meta__: {
+      createdAt: new Date(),
+      isFilterApplied: false,
+    },
     houses: false,
     townHouse: false,
     multiFamily: false,

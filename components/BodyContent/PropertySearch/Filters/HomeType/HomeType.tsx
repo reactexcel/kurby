@@ -2,6 +2,8 @@ import React from "react";
 import { FilterCheckboxOption, FilterItem, FilterRadioOption } from "../../FilterItem/FilterItem";
 import { useRecoilState } from "recoil";
 import { homeTypeFilter } from "context/propertySearchContext";
+import { Button } from "components/Button/Button";
+import styles from "./HomeType.module.scss";
 
 const HomeTypeContents = () => {
   const [filter, setFilter] = useRecoilState(homeTypeFilter);
@@ -15,7 +17,8 @@ const HomeTypeContents = () => {
   };
 
   const handleSelectAll = () => {
-    setFilter({
+    setFilter((prevState) => ({
+      ...prevState,
       houses: true,
       townHouse: true,
       multiFamily: true,
@@ -23,12 +26,25 @@ const HomeTypeContents = () => {
       lotsLands: true,
       apartment: true,
       manufactured: true,
-    });
+    }));
   };
 
+  const { isFilterApplied } = filter.__meta__;
+
+  const handleApply = () => {
+    setFilter((prevState) => ({
+      ...prevState,
+      __meta__: {
+        createdAt: new Date(),
+        isFilterApplied: !prevState.__meta__.isFilterApplied,
+      },
+    }));
+  };
+
+  const { __meta__, ...filterFields } = filter;
   return (
     <div>
-      <FilterRadioOption id={"sold"} onSelect={() => handleSelectAll()} isSelected={Object.values(filter).every((field) => field === true)}>
+      <FilterRadioOption id={"sold"} onSelect={() => handleSelectAll()} isSelected={Object.values(filterFields).every((field) => field === true)}>
         All
       </FilterRadioOption>
       <FilterCheckboxOption id={"for_sale"} onSelect={() => handleSelect("houses")} isSelected={filter.houses}>
@@ -55,6 +71,11 @@ const HomeTypeContents = () => {
       <FilterCheckboxOption id={"sold"} onSelect={() => handleSelect("manufactured")} isSelected={filter.manufactured}>
         Manufactured
       </FilterCheckboxOption>
+      {Object.values(filter).some((field) => field === true) && (
+        <Button variant={isFilterApplied ? "outlined" : "filled"} onClick={handleApply} className={styles.buttonWrapper}>
+          {isFilterApplied ? "Applied" : "Apply"}
+        </Button>
+      )}
     </div>
   );
 };

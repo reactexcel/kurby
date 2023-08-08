@@ -71,7 +71,7 @@ const PriceFilterContents = () => {
 
   return (
     <div className={styles.main}>
-      <div className={styles.tabs}>
+      {/* <div className={styles.tabs}>
         <div
           onClick={() => setCurrentTab(IPriceFilterCurrentTab.LIST_PRICE_TAB)}
           style={currentTab === IPriceFilterCurrentTab.LIST_PRICE_TAB ? activeTabStyle : inactiveTab}
@@ -86,7 +86,7 @@ const PriceFilterContents = () => {
         >
           Monthly Payment
         </div>
-      </div>
+      </div> */}
       <div className={styles.content}>
         <div className={styles.priceSelector}>
           <div className={styles.min}>
@@ -110,7 +110,7 @@ const PriceFilterContents = () => {
           </div>
         </div>
 
-        {currentTab === IPriceFilterCurrentTab.MONTHLY_PAYMENT_TAB && (
+        {/* {currentTab === IPriceFilterCurrentTab.MONTHLY_PAYMENT_TAB && (
           <>
             <p className={styles.monthlyPaymentDescription}>Includes estimated principal and interest, mortgage insurance, property taxes, home insurance and HOA fees.</p>
             <div className={styles.downPayment}>
@@ -124,7 +124,7 @@ const PriceFilterContents = () => {
               </select>
             </div>
           </>
-        )}
+        )} */}
 
         <div className={styles.buttonParentLayout}>
           <Button variant={isFilterApplied ? "outlined" : "filled"} onClick={handleApply} className={styles.buttonWrapper}>
