@@ -207,58 +207,6 @@ function MoreFilterContent() {
           </div>
         </div>
       </div>
-      {/* Property Status  */}
-      <div style={defaultSpacing}>
-        <div style={spaceBottom(10)}>Property Status</div>
-        <div className={styles.row}>
-          <div className={styles.column}>
-            <FilterCheckboxOption
-              id="propertyStatusActive"
-              onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.propertyStatusActive)}
-              isSelected={moreFilterState.propertyStatusActive}
-            >
-              Active
-            </FilterCheckboxOption>
-            <FilterCheckboxOption
-              id="propertyStatusPending"
-              onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.propertyStatusPending)}
-              isSelected={moreFilterState.propertyStatusPending}
-            >
-              Pending
-            </FilterCheckboxOption>
-            <FilterCheckboxOption
-              id="propertyStatusOffMarket"
-              onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.propertyStatusOffMarket)}
-              isSelected={moreFilterState.propertyStatusOffMarket}
-            >
-              Off-Market
-            </FilterCheckboxOption>
-          </div>
-          <div className={styles.column}>
-            <FilterCheckboxOption
-              id="propertyStatusCancelled"
-              onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.propertyStatusCancelled)}
-              isSelected={moreFilterState.propertyStatusCancelled}
-            >
-              Cancelled
-            </FilterCheckboxOption>
-            <FilterCheckboxOption
-              id="propertyStatusFailed"
-              onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.propertyStatusFailed)}
-              isSelected={moreFilterState.propertyStatusFailed}
-            >
-              Failed
-            </FilterCheckboxOption>
-            <FilterCheckboxOption
-              id="propertyStatusSold"
-              onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.propertyStatusSold)}
-              isSelected={moreFilterState.propertyStatusSold}
-            >
-              Sold
-            </FilterCheckboxOption>
-          </div>
-        </div>
-      </div>
       {/* Owner Information */}
       <div style={defaultSpacing}>
         <div style={spaceBottom(10)}>Owner Information</div>

@@ -17,6 +17,12 @@ export interface SaleContext {
     for_sale: boolean | null;
     off_market: boolean | null;
     sold: boolean | null;
+    propertyStatusActive: boolean | null;
+    propertyStatusPending: boolean | null;
+    propertyStatusOffMarket: boolean | null;
+    propertyStatusCancelled: boolean | null;
+    propertyStatusFailed: boolean | null;
+    propertyStatusSold: boolean | null;
   };
 }
 
@@ -30,6 +36,12 @@ const forSaleContext: SaleContext = {
     for_sale: null,
     off_market: null,
     sold: null,
+    propertyStatusActive: null,
+    propertyStatusPending: null,
+    propertyStatusOffMarket: null,
+    propertyStatusCancelled: null,
+    propertyStatusFailed: null,
+    propertyStatusSold: null,
   },
 };
 
@@ -99,12 +111,6 @@ export interface MoreFilterContext {
     preForeclosure: boolean | null;
     auction: boolean | null;
     foreclosed: boolean | null;
-    propertyStatusActive: boolean | null;
-    propertyStatusPending: boolean | null;
-    propertyStatusOffMarket: boolean | null;
-    propertyStatusCancelled: boolean | null;
-    propertyStatusFailed: boolean | null;
-    propertyStatusSold: boolean | null;
     nonOwnerOccupied: boolean | null;
     absenteeOwner: boolean | null;
     outOfStateAbsenteeOwner: boolean | null;
@@ -156,12 +162,6 @@ const moreFilterContext: MoreFilterContext = {
     preForeclosure: null,
     auction: null,
     foreclosed: null,
-    propertyStatusActive: null,
-    propertyStatusPending: null,
-    propertyStatusOffMarket: null,
-    propertyStatusCancelled: null,
-    propertyStatusFailed: null,
-    propertyStatusSold: null,
     nonOwnerOccupied: null,
     absenteeOwner: null,
     outOfStateAbsenteeOwner: null,

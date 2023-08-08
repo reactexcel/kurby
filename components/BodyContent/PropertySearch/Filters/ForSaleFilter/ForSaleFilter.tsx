@@ -1,5 +1,5 @@
 import { atom, useRecoilState } from "recoil";
-import { FilterItem, FilterRadioOption } from "../../FilterItem/FilterItem";
+import { FilterCheckboxOption, FilterItem, FilterRadioOption } from "../../FilterItem/FilterItem";
 import { forSaleFilter } from "context/propertySearchContext";
 import { Button } from "components/Button/Button";
 import styles from "./ForSaleFilter.module.scss";
@@ -56,7 +56,7 @@ const ForSaleContents = () => {
   const isFilterApplied = search.__meta__.isFilterApplied;
 
   return (
-    <div>
+    <div className={styles.main}>
       <FilterRadioOption id={"for_sale"} onSelect={() => handleSelect("for_sale")} isSelected={search.for_sale}>
         For Sale
       </FilterRadioOption>
@@ -68,6 +68,34 @@ const ForSaleContents = () => {
       <FilterRadioOption id={"sold"} onSelect={() => handleSelect("sold")} isSelected={search.sold}>
         Sold
       </FilterRadioOption>
+      {/* Property Status  */}
+      <div>
+        <div> Property Status</div>
+        <div className={styles.row}>
+          <div className={styles.column}>
+            <FilterCheckboxOption id="propertyStatusActive" onSelect={() => {}} isSelected={false}>
+              Active
+            </FilterCheckboxOption>
+            <FilterCheckboxOption id="propertyStatusPending" onSelect={() => {}} isSelected={false}>
+              Pending
+            </FilterCheckboxOption>
+            <FilterCheckboxOption id="propertyStatusOffMarket" onSelect={() => {}} isSelected={false}>
+              Off-Market
+            </FilterCheckboxOption>
+          </div>
+          <div className={styles.column}>
+            <FilterCheckboxOption id="propertyStatusCancelled" onSelect={() => {}} isSelected={false}>
+              Cancelled
+            </FilterCheckboxOption>
+            <FilterCheckboxOption id="propertyStatusFailed" onSelect={() => {}} isSelected={false}>
+              Failed
+            </FilterCheckboxOption>
+            <FilterCheckboxOption id="propertyStatusSold" onSelect={() => {}} isSelected={false}>
+              Sold
+            </FilterCheckboxOption>
+          </div>
+        </div>
+      </div>
       {(search.for_sale || search.off_market || search.sold) && (
         <Button variant={isFilterApplied ? "outlined" : "filled"} onClick={handleApply} className={styles.buttonWrapper}>
           {isFilterApplied ? "Applied" : "Apply"}
