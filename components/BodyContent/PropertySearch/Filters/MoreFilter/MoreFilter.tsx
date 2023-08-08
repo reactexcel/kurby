@@ -1,4 +1,4 @@
-import { useRecoilState } from "recoil";
+import { atom, useRecoilState } from "recoil";
 import { FilterCheckboxOption, FilterItem } from "../../FilterItem/FilterItem";
 import styles from "./MoreFilter.module.scss";
 import { moreFilter } from "context/propertySearchContext";
@@ -11,7 +11,17 @@ export enum ListingTypeTab {
   BY_OWNER_OTHER = "by-owner&other",
 }
 
+const moreFilterSelector = {
+  key: "moreFilterSelector",
+  default: {
+    isOpen: false,
+  },
+};
+
+export const moreFilterPopover = atom(moreFilterSelector);
+
 function MoreFilterContent() {
+  const [, setPopover] = useRecoilState(moreFilterPopover);
   const [moreFilterState, setMoreFilter] = useRecoilState(moreFilter);
 
   const defaultSpacing = {
@@ -77,6 +87,10 @@ function MoreFilterContent() {
   };
 
   const handleApply = () => {
+    // Hide the popover on apply
+    setPopover({
+      isOpen: moreFilterState.__meta__.isFilterApplied === true,
+    });
     setMoreFilter((prevState) => ({
       ...prevState,
       __meta__: {
@@ -567,5 +581,14 @@ function MoreFilterContent() {
 }
 
 export function MoreFilter() {
-  return <FilterItem flex={1} title="More" renderContentPosition="right" renderContentWidth="550px" renderContent={<MoreFilterContent />} />;
+  return (
+    <FilterItem
+      recoilOpenState={moreFilterPopover as any}
+      flex={1}
+      title="More"
+      renderContentPosition="right"
+      renderContentWidth="550px"
+      renderContent={<MoreFilterContent />}
+    />
+  );
 }

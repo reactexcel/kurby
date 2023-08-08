@@ -6,17 +6,22 @@ import UnSelected from "../../../../public/icons/button-unselected.svg";
 import Checkmark from "../../../../public/icons/checkmark.svg";
 import CheckmarkUnchecked from "../../../../public/icons/checkmark-unchecked.svg";
 import { Popover } from "@mui/material";
+import { RecoilState, useRecoilState } from "recoil";
 
+interface ToggleState {
+  isOpen: boolean | null;
+}
 interface IFilterItemProps {
   readonly title: string;
   readonly renderContentWidth?: string;
   readonly renderContent?: React.ReactNode;
   readonly renderContentPosition: "left" | "right";
   readonly flex: number;
+  readonly recoilOpenState: RecoilState<ToggleState>;
 }
 
-export function FilterItem({ title, renderContent, renderContentWidth, renderContentPosition, flex }: IFilterItemProps) {
-  const [isOpen, setOpen] = useState<boolean>(false);
+export function FilterItem({ title, renderContent, recoilOpenState, renderContentWidth, renderContentPosition, flex }: IFilterItemProps) {
+  const [recoilState, setOpenState] = useRecoilState(recoilOpenState);
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
 
   const renderStyle = {
@@ -25,18 +30,18 @@ export function FilterItem({ title, renderContent, renderContentWidth, renderCon
 
   const handleToggle = (event: React.MouseEvent<HTMLDivElement>) => {
     setAnchorEl(event.currentTarget);
-    setOpen(!isOpen);
+    setOpenState((prevState) => ({ isOpen: !prevState.isOpen }));
   };
   return (
     <div style={renderStyle} className={styles.root}>
       <div onClick={handleToggle} className={styles.filterItem}>
         {title}
-        <div className={styles.arrowContent} style={isOpen ? { rotate: "180deg", marginTop: -10 } : {}}>
+        <div className={styles.arrowContent} style={recoilState.isOpen ? { rotate: "180deg", marginTop: -10 } : {}}>
           <ArrowDown />
         </div>
       </div>
       <Popover
-        open={isOpen}
+        open={recoilState.isOpen || false}
         onClose={handleToggle}
         anchorEl={anchorEl}
         className={styles.content}

@@ -14,6 +14,8 @@ export default function CityStatePropertiesFilters() {
   const [propertyData] = useRecoilState(propertySearch);
   const noResultsFound = Array.isArray(propertyData.results) && propertyData.results?.length;
   const isPropertiesLoading = propertyData.results === true;
+
+  console.log("RENDER");
   return (
     <TabLayout className={styles.tabLayout}>
       <PropertyFilter />

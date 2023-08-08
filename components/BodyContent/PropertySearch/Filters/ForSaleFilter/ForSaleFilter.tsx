@@ -1,10 +1,20 @@
-import { useRecoilState } from "recoil";
+import { atom, useRecoilState } from "recoil";
 import { FilterItem, FilterRadioOption } from "../../FilterItem/FilterItem";
 import { forSaleFilter } from "context/propertySearchContext";
 import { Button } from "components/Button/Button";
 import styles from "./ForSaleFilter.module.scss";
 
+const forSaleSelector = {
+  key: "forSaleSelector",
+  default: {
+    isOpen: false,
+  },
+};
+
+export const forSalePopover = atom(forSaleSelector);
+
 const ForSaleContents = () => {
+  const [, setPopover] = useRecoilState(forSalePopover);
   const [search, setSearch] = useRecoilState(forSaleFilter);
   const prepareObject = (key: string) => ({
     // eslint-disable-next-line camelcase
@@ -18,11 +28,22 @@ const ForSaleContents = () => {
 
   const handleSelect = (key: string) => {
     setSearch((prevState) => {
-      return { ...prevState, ...prepareObject(key) };
+      return {
+        ...prevState,
+        __meta__: {
+          createdAt: new Date(),
+          isFilterApplied: false,
+        },
+        ...prepareObject(key),
+      };
     });
   };
 
   const handleApply = () => {
+    // Hide the popover on apply
+    setPopover({
+      isOpen: search.__meta__.isFilterApplied === true,
+    });
     setSearch((prevState) => ({
       ...prevState,
       __meta__: {
@@ -57,5 +78,20 @@ const ForSaleContents = () => {
 };
 
 export function ForSaleFilter() {
-  return <FilterItem renderContentPosition="left" flex={1} title="For sale" renderContent={ForSaleContents()} />;
+  const [search] = useRecoilState(forSaleFilter);
+  const renderThumbText = () => {
+    if (search.for_sale) {
+      return "For sale";
+    }
+    if (search.off_market) {
+      return "Off market";
+    }
+
+    if (search.sold) {
+      return "Sold";
+    }
+
+    return "For sale";
+  };
+  return <FilterItem recoilOpenState={forSalePopover as any} renderContentPosition="left" flex={1} title={renderThumbText()} renderContent={ForSaleContents()} />;
 }

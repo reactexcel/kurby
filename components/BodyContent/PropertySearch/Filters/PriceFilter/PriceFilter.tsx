@@ -1,9 +1,11 @@
 import { FilterItem } from "../../FilterItem/FilterItem";
 import styles from "./PriceFilter.module.scss";
 import { Button } from "components/Button/Button";
-import { useRecoilState } from "recoil";
+import { atom, useRecoilState } from "recoil";
 import { priceFilter } from "context/propertySearchContext";
 import React from "react";
+import { Collapse, Fade } from "@mui/material";
+import { toUSDField } from "components/BodyContent/Property/utils";
 
 export enum IPriceFilterCurrentTab {
   LIST_PRICE_TAB,
@@ -18,16 +20,26 @@ export enum IPriceFilterDownPayment {
   TWENTY = 20,
 }
 
-const PriceFilterContents = () => {
-  const [priceFilterState, setPriceFilter] = useRecoilState(priceFilter);
-  const currentTab = priceFilterState.tab;
+const priceFilterSelector = {
+  key: "priceFilterSelector",
+  default: {
+    isOpen: false,
+  },
+};
 
-  const setCurrentTab = (tab: IPriceFilterCurrentTab) => {
-    setPriceFilter({
-      ...priceFilterState,
-      tab,
-    });
-  };
+export const priceFilterPopover = atom(priceFilterSelector);
+
+const PriceFilterContents = () => {
+  const [, setPopover] = useRecoilState(priceFilterPopover);
+  const [priceFilterState, setPriceFilter] = useRecoilState(priceFilter);
+  // const currentTab = priceFilterState.tab;
+
+  // const setCurrentTab = (tab: IPriceFilterCurrentTab) => {
+  //   setPriceFilter({
+  //     ...priceFilterState,
+  //     tab,
+  //   });
+  // };
 
   type InputKeyTypes = "min" | "max";
   const handleInputChange = (value: string, key: InputKeyTypes) => {
@@ -36,28 +48,36 @@ const PriceFilterContents = () => {
 
     setPriceFilter({
       ...priceFilterState,
+      __meta__: {
+        createdAt: new Date(),
+        isFilterApplied: false,
+      },
       [keyToUse]: isNaN(numericValue) ? 0 : numericValue,
     });
   };
 
-  const setDownPayment = (selectOption: IPriceFilterDownPayment) => {
-    setPriceFilter({
-      ...priceFilterState,
-      downPayment: selectOption,
-    });
-  };
+  // const setDownPayment = (selectOption: IPriceFilterDownPayment) => {
+  //   setPriceFilter({
+  //     ...priceFilterState,
+  //     downPayment: selectOption,
+  //   });
+  // };
 
-  const activeTabStyle = {
-    color: "white",
-    background: "#00A13C",
-  };
+  // const activeTabStyle = {
+  //   color: "white",
+  //   background: "#00A13C",
+  // };
 
-  const inactiveTab = {
-    background: "#F1F4F6",
-    color: "black",
-  };
+  // const inactiveTab = {
+  //   background: "#F1F4F6",
+  //   color: "black",
+  // };
 
   const handleApply = () => {
+    // Hide the popover on apply
+    setPopover({
+      isOpen: priceFilterState.__meta__.isFilterApplied === true,
+    });
     setPriceFilter((prevState) => ({
       ...prevState,
       __meta__: {
@@ -127,9 +147,11 @@ const PriceFilterContents = () => {
         )} */}
 
         <div className={styles.buttonParentLayout}>
-          <Button variant={isFilterApplied ? "outlined" : "filled"} onClick={handleApply} className={styles.buttonWrapper}>
-            {isFilterApplied ? "Applied" : "Apply"}
-          </Button>
+          <Collapse timeout={200} in={Boolean(priceFilterState.minimum || priceFilterState.maximum)}>
+            <Button variant={isFilterApplied ? "outlined" : "filled"} onClick={handleApply} className={styles.buttonWrapper}>
+              {isFilterApplied ? "Applied" : "Apply"}
+            </Button>
+          </Collapse>
         </div>
       </div>
     </div>
@@ -137,5 +159,34 @@ const PriceFilterContents = () => {
 };
 
 export function PriceFilter() {
-  return <FilterItem renderContentPosition="left" flex={1} title="Price" renderContentWidth="700px" renderContent={<PriceFilterContents />} />;
+  const [priceFilterState] = useRecoilState(priceFilter);
+  const renderThumb = () => {
+    if (!priceFilterState.__meta__.isFilterApplied) {
+      return "Price";
+    }
+
+    if (priceFilterState.minimum && !priceFilterState.maximum) {
+      return `${toUSDField(priceFilterState.minimum)}`;
+    }
+
+    if (!priceFilterState.minimum && priceFilterState.maximum) {
+      return `${toUSDField(priceFilterState.maximum)}`;
+    }
+
+    if (priceFilterState.minimum && priceFilterState.maximum) {
+      return `${toUSDField(priceFilterState.minimum)} to ${toUSDField(priceFilterState.maximum)}`;
+    }
+
+    return "Price";
+  };
+  return (
+    <FilterItem
+      recoilOpenState={priceFilterPopover as any}
+      renderContentPosition="left"
+      flex={1}
+      title={renderThumb()}
+      renderContentWidth="700px"
+      renderContent={<PriceFilterContents />}
+    />
+  );
 }

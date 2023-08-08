@@ -16,9 +16,9 @@ export function Properties() {
   return (
     <div className={styles.houseGrid}>
       {Array.isArray(propertyData?.results) &&
-        propertyData?.results?.map((property: IPropertyHouse) => {
+        propertyData?.results?.map((property: IPropertyHouse, index) => {
           return (
-            <Fade key={property.address.street} in={Array.isArray(propertyData?.results)}>
+            <Fade timeout={100 * index} key={property.address.street} in={Array.isArray(propertyData?.results)}>
               <div className={styles.house}>
                 <HouseCard
                   key={property.address.address}

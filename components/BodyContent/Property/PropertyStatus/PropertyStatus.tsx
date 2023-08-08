@@ -6,6 +6,7 @@ import { toUSDField } from "../utils";
 
 export default function PropertyStatus() {
   const [propertyInfo] = useRecoilState(propertyInfoV2Context);
+  console.log(propertyInfo?.mlsActive);
   const propertyDataHouse = [
     createData("MLS Active", propertyInfo?.mlsActive),
     createData("Auction", propertyInfo?.auction),

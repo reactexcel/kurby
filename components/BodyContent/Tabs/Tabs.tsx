@@ -15,6 +15,8 @@ import { searchContext } from "context/searchCounter";
 import { useOpenAi } from "hooks/use-open-ai";
 import CityStatePropertiesFilters from "../PropertySearch/PropertySearch";
 
+const CityStatePropertiesFiltersMemo = React.memo(CityStatePropertiesFilters);
+
 export function Tabs() {
   const [activeTab, setActiveTab] = useRecoilState(activeTabState);
   const { explainedLikeAlocal, greenFlags, redFlags } = useOpenAi();
@@ -31,7 +33,7 @@ export function Tabs() {
     if (filterVal.placeCategory === "address") {
       return <Property />;
     }
-    return <CityStatePropertiesFilters />;
+    return <CityStatePropertiesFiltersMemo />;
   };
 
   return (

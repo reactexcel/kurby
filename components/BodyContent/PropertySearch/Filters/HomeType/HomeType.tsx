@@ -1,16 +1,30 @@
 import React from "react";
 import { FilterCheckboxOption, FilterItem, FilterRadioOption } from "../../FilterItem/FilterItem";
-import { useRecoilState } from "recoil";
+import { atom, useRecoilState } from "recoil";
 import { homeTypeFilter } from "context/propertySearchContext";
 import { Button } from "components/Button/Button";
 import styles from "./HomeType.module.scss";
 
+const homeTypeSelector = {
+  key: "homeTypeSelector",
+  default: {
+    isOpen: false,
+  },
+};
+
+export const homeTypePopover = atom(homeTypeSelector);
+
 const HomeTypeContents = () => {
+  const [, setPopover] = useRecoilState(homeTypePopover);
   const [filter, setFilter] = useRecoilState(homeTypeFilter);
 
   const handleSelect = (id: string) => {
     setFilter({
       ...filter,
+      __meta__: {
+        createdAt: new Date(),
+        isFilterApplied: false,
+      },
       // @ts-ignore
       [id]: !filter[id],
     });
@@ -32,6 +46,10 @@ const HomeTypeContents = () => {
   const { isFilterApplied } = filter.__meta__;
 
   const handleApply = () => {
+    // Hide the popover on apply
+    setPopover({
+      isOpen: filter.__meta__.isFilterApplied === true,
+    });
     setFilter((prevState) => ({
       ...prevState,
       __meta__: {
@@ -81,5 +99,5 @@ const HomeTypeContents = () => {
 };
 
 export function HomeTypeFilter() {
-  return <FilterItem renderContentPosition="left" flex={1} title="Home Type" renderContent={<HomeTypeContents />} />;
+  return <FilterItem recoilOpenState={homeTypePopover as any} renderContentPosition="left" flex={1} title="Home Type" renderContent={<HomeTypeContents />} />;
 }

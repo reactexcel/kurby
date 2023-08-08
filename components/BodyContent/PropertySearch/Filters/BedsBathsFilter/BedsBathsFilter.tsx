@@ -1,10 +1,20 @@
 import { Button } from "components/Button/Button";
 import { FilterItem } from "../../FilterItem/FilterItem";
 import styles from "./BedsBathsFilter.module.scss";
-import { useRecoilState } from "recoil";
+import { atom, useRecoilState } from "recoil";
 import { bedsBathsFilter } from "context/propertySearchContext";
 
+const bedsBathsSelector = {
+  key: "bedsBathsSelector",
+  default: {
+    isOpen: false,
+  },
+};
+
+export const bedsBathsPopover = atom(bedsBathsSelector);
+
 function BedsBathsFilterContent() {
+  const [, setPopover] = useRecoilState(bedsBathsPopover);
   const [bedsBathsState, setBedsBathsFilter] = useRecoilState(bedsBathsFilter);
 
   const spaceBottom = (marginBottom: number) => ({
@@ -17,6 +27,10 @@ function BedsBathsFilterContent() {
 
     setBedsBathsFilter((prevState) => ({
       ...prevState,
+      __meta__: {
+        createdAt: new Date(),
+        isFilterApplied: false,
+      },
       bedrooms: parseFloat(bedroomsValue),
     }));
   };
@@ -27,6 +41,10 @@ function BedsBathsFilterContent() {
 
     setBedsBathsFilter((prevState) => ({
       ...prevState,
+      __meta__: {
+        createdAt: new Date(),
+        isFilterApplied: false,
+      },
       bathrooms: parseFloat(bathroomsValue),
     }));
   };
@@ -38,6 +56,10 @@ function BedsBathsFilterContent() {
   };
 
   const handleApply = () => {
+    // Hide the popover on apply
+    setPopover({
+      isOpen: bedsBathsState.__meta__.isFilterApplied === true,
+    });
     setBedsBathsFilter((prevState) => ({
       ...prevState,
       __meta__: {
@@ -113,5 +135,14 @@ function BedsBathsFilterContent() {
 }
 
 export function BedBathsFilter() {
-  return <FilterItem flex={1} title="Beds & Baths" renderContentPosition={"left"} renderContentWidth="420px" renderContent={<BedsBathsFilterContent />} />;
+  return (
+    <FilterItem
+      recoilOpenState={bedsBathsPopover as any}
+      flex={1}
+      title="Beds & Baths"
+      renderContentPosition={"left"}
+      renderContentWidth="420px"
+      renderContent={<BedsBathsFilterContent />}
+    />
+  );
 }
