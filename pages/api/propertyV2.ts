@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import { BedsBathsContext, HomeFilterContext, MoreFilterContext, PriceContext, SaleContext } from "context/propertySearchContext";
+import { DateTime } from "luxon";
 
 export interface IPropertySearchResponse {
   readonly live: boolean;
@@ -201,6 +202,9 @@ class PropertySearchApiV2 {
       }
     };
 
+    const now = DateTime.now();
+    const oneYearAgo = now.minus({ years: 1 });
+
     const filtersObject = {
       mls_active: forSale?.for_sale || forSale?.off_market,
       mls_cancelled: forSale?.for_sale,
@@ -216,6 +220,7 @@ class PropertySearchApiV2 {
       auction: moreFilter?.auction,
       pre_foreclosure: moreFilter?.preForeclosure,
       foreclosure: moreFilter?.foreclosed,
+      last_sale_date: oneYearAgo.toFormat("yyyy-MM-dd"),
     };
 
     const filters = Object.keys(filtersObject)
