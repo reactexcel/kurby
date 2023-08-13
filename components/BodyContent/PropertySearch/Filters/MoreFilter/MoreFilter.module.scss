@@ -95,3 +95,10 @@
   justify-content: center;
   padding: 20px;
 }
+
+.endButtons {
+  position: sticky;
+  bottom: 0;
+  z-index: 100000;
+  background: linear-gradient(180deg, transparent, #ffffff);
+}

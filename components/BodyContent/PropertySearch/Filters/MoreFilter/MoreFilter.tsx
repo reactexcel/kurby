@@ -33,13 +33,13 @@ function MoreFilterContent() {
     marginBottom,
   });
 
-  const currentListingTab = moreFilterState.listingType;
-  const setCurrentListingTab = (id: ListingTypeTab) => {
-    setMoreFilter({
-      ...moreFilterState,
-      listingType: id,
-    });
-  };
+  // const currentListingTab = moreFilterState.listingType;
+  // const setCurrentListingTab = (id: ListingTypeTab) => {
+  //   setMoreFilter({
+  //     ...moreFilterState,
+  //     listingType: id,
+  //   });
+  // };
 
   const activeTabStyle = {
     color: "white",
@@ -51,10 +51,18 @@ function MoreFilterContent() {
     color: "black",
   };
 
+  const disableFilter = {
+    __meta__: {
+      isFilterApplied: false,
+      createdAt: new Date(),
+    },
+  };
+
   const handleCheckboxSelect = (id: string, value: boolean) => {
     setMoreFilter((prevState) => ({
       ...prevState,
       [id]: value,
+      ...disableFilter,
     }));
   };
 
@@ -63,6 +71,7 @@ function MoreFilterContent() {
       setMoreFilter((prevState) => ({
         ...prevState,
         [fieldName]: value === "" ? null : Number(value),
+        ...disableFilter,
       }));
     }
   };
@@ -71,6 +80,7 @@ function MoreFilterContent() {
     setMoreFilter((prevState) => ({
       ...prevState,
       [fieldName]: value,
+      ...disableFilter,
     }));
   };
 
@@ -78,6 +88,7 @@ function MoreFilterContent() {
     setMoreFilter((prevState) => ({
       ...prevState,
       [fieldName]: value === "" ? null : new Date(value),
+      ...disableFilter,
     }));
   };
 
@@ -110,7 +121,7 @@ function MoreFilterContent() {
         newConstruction: null,
         preForeclosure: null,
         auction: null,
-        foreclosed: null,
+        foreclosure: null,
         propertyStatusActive: null,
         propertyStatusPending: null,
         propertyStatusOffMarket: null,
@@ -183,26 +194,26 @@ function MoreFilterContent() {
         </div> */}
         <div className={styles.row}>
           <div className={styles.column}>
-            <FilterCheckboxOption id="agentListed" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.agentListed)} isSelected={moreFilterState.agentListed}>
+            {/* <FilterCheckboxOption id="agentListed" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.agentListed)} isSelected={moreFilterState.agentListed}>
               Agent Listed
-            </FilterCheckboxOption>
-            <FilterCheckboxOption
+            </FilterCheckboxOption> */}
+            {/* <FilterCheckboxOption
               id="newConstruction"
               onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.newConstruction)}
               isSelected={moreFilterState.newConstruction}
             >
               New construction
+            </FilterCheckboxOption> */}
+            <FilterCheckboxOption id="auction" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.auction)} isSelected={moreFilterState.auction}>
+              Auction
             </FilterCheckboxOption>
             <FilterCheckboxOption id="preForeclosure" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.preForeclosure)} isSelected={moreFilterState.preForeclosure}>
               Pre-Foreclosure
             </FilterCheckboxOption>
           </div>
           <div className={styles.column}>
-            <FilterCheckboxOption id="auction" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.auction)} isSelected={moreFilterState.auction}>
-              Auction
-            </FilterCheckboxOption>
-            <FilterCheckboxOption id="foreclosed" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.foreclosed)} isSelected={moreFilterState.foreclosed}>
-              Foreclosed
+            <FilterCheckboxOption id="foreclosure" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.foreclosure)} isSelected={moreFilterState.foreclosure}>
+              Foreclosure
             </FilterCheckboxOption>
           </div>
         </div>
@@ -514,7 +525,7 @@ function MoreFilterContent() {
         </div>
       </div>
 
-      <div style={endSpace}>
+      <div className={styles.endButtons} style={endSpace}>
         <div className={styles.buttonWrapper}>
           <Button onClick={handleResetFilters} variant="outlined">
             Reset Filters

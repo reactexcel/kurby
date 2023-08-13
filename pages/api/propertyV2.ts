@@ -196,6 +196,17 @@ class PropertySearchApiV2 {
     const oneYearAgo = now.minus({ years: 1 });
     const isPricingFilterOn = Boolean(priceFilter?.minimum || priceFilter?.maximum);
 
+    let equityPercentMin = moreFilter?.equityPercentMin || 0;
+    let equityPercentMax = moreFilter?.equityPercentMax || 0;
+    let equityPercentMedian;
+
+    if (equityPercentMin || equityPercentMax) {
+      equityPercentMedian = (equityPercentMin + equityPercentMax) / 2;
+      equityPercentMedian = Math.max(0, Math.min(100, equityPercentMedian)); // Ensure that the median is between 0 and 100
+    } else {
+      equityPercentMedian = null; // You can assign a default value here if needed
+    }
+
     const filtersObject = {
       // For Sale Filter:
       mls_active: isPricingFilterOn || forSale?.forSaleByAgent,
@@ -205,7 +216,7 @@ class PropertySearchApiV2 {
       mls_cancelled: forSale?.propertyStatusCancelled,
       // Price Filter
       mls_listing_price_min: priceFilter?.minimum,
-      mls_listing_price_max: priceFilter?.maximum * (1 - 0.3),
+      mls_listing_price_max: priceFilter?.maximum * (1 - 0.1),
       // Beds & Baths Filter
       beds_min: bedsFilter?.bedrooms,
       beds_max: 5,
@@ -216,7 +227,7 @@ class PropertySearchApiV2 {
       // More Filter
       auction: moreFilter?.auction,
       pre_foreclosure: moreFilter?.preForeclosure,
-      foreclosure: moreFilter?.foreclosed,
+      foreclosure: moreFilter?.foreclosure,
       // More Filter - Owner Information
       absentee_owner: moreFilter?.nonOwnerOccupied || moreFilter?.absenteeOwner,
       out_of_state_owner: moreFilter?.outOfStateAbsenteeOwner,
@@ -225,8 +236,26 @@ class PropertySearchApiV2 {
       investor_buyer: moreFilter?.investorBuyer,
       inherited: moreFilter?.inherited,
       death: moreFilter?.ownerDeath || moreFilter?.spousalDeath,
+      // More Filter - Years Owned
       years_owned_min: moreFilter?.yearsOwnedMin,
       years_owned_max: moreFilter?.yearsOwnedMax,
+      // More Filter - Financial Information
+      cash_buyer: moreFilter?.cashBuyer,
+      equity: moreFilter?.equity,
+      high_equity: moreFilter?.highEquity,
+      negative_equity: moreFilter?.negativeEquity,
+      reo: moreFilter?.reo,
+      private_lender: moreFilter?.privateLender,
+      adjustable_rate: moreFilter?.adjustableRate,
+      free_clear: moreFilter?.freeClear,
+      // Equity Percent
+      equity_percent:
+        moreFilter?.equityPercentMin && !moreFilter?.equityPercentMax
+          ? moreFilter?.equityPercentMin
+          : moreFilter?.equityPercentMax && !moreFilter?.equityPercentMin
+          ? moreFilter?.equityPercentMax
+          : equityPercentMedian,
+      equity_percent_operator: "gt",
     };
 
     const trueFilters = Object.keys(filtersObject)
@@ -256,8 +285,8 @@ class PropertySearchApiV2 {
         ...filter,
         latitude,
         longitude,
-        size: 10,
-        radius: 10,
+        size: 25,
+        radius: 5,
       },
     };
 
