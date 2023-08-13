@@ -216,7 +216,7 @@ class PropertySearchApiV2 {
       mls_cancelled: forSale?.propertyStatusCancelled,
       // Price Filter
       mls_listing_price_min: priceFilter?.minimum,
-      mls_listing_price_max: priceFilter?.maximum * (1 - 0.2),
+      mls_listing_price_max: priceFilter?.maximum * (1 - 0.3),
       // Beds & Baths Filter
       beds_min: bedsFilter?.bedrooms,
       beds_max: 5,
