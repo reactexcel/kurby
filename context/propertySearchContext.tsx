@@ -76,7 +76,7 @@ export interface HomeFilterContext {
     condosCoOps: boolean;
     lotsLands: boolean;
     apartment: boolean;
-    manufactured: boolean;
+    mobile: boolean;
   };
 }
 
@@ -93,7 +93,7 @@ const homeType: HomeFilterContext = {
     condosCoOps: false,
     lotsLands: false,
     apartment: false,
-    manufactured: false,
+    mobile: false,
   },
 };
 

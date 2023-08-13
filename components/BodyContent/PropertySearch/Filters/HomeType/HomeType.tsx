@@ -31,7 +31,7 @@ const HomeTypeContents = () => {
       condosCoOps: false,
       lotsLands: false,
       apartment: false,
-      manufactured: false,
+      mobile: false,
       // @ts-ignore
       [id]: !filter[id],
     });
@@ -79,21 +79,21 @@ const HomeTypeContents = () => {
         Town House
       </FilterRadioOption>
 
-      <FilterRadioOption id={"sold"} onSelect={() => handleSelect("multiFamily")} isSelected={filter.multiFamily}>
+      <FilterRadioOption id={"multiFamily"} onSelect={() => handleSelect("multiFamily")} isSelected={filter.multiFamily}>
         Multi family
       </FilterRadioOption>
 
-      <FilterRadioOption id={"sold"} onSelect={() => handleSelect("condosCoOps")} isSelected={filter.condosCoOps}>
+      <FilterRadioOption id={"condosCoOps"} onSelect={() => handleSelect("condosCoOps")} isSelected={filter.condosCoOps}>
         Condos/co-ops
       </FilterRadioOption>
-      <FilterRadioOption id={"sold"} onSelect={() => handleSelect("lotsLands")} isSelected={filter.lotsLands}>
+      <FilterRadioOption id={"lotsLands"} onSelect={() => handleSelect("lotsLands")} isSelected={filter.lotsLands}>
         Lots/land
       </FilterRadioOption>
-      <FilterRadioOption id={"sold"} onSelect={() => handleSelect("apartment")} isSelected={filter.apartment}>
+      <FilterRadioOption id={"apartment"} onSelect={() => handleSelect("apartment")} isSelected={filter.apartment}>
         Apartment
       </FilterRadioOption>
-      <FilterRadioOption id={"sold"} onSelect={() => handleSelect("manufactured")} isSelected={filter.manufactured}>
-        Manufactured
+      <FilterRadioOption id={"mobile"} onSelect={() => handleSelect("mobile")} isSelected={filter.mobile}>
+        Mobile
       </FilterRadioOption>
       {Object.values(filter).some((field) => field === true) && (
         <Button variant={isFilterApplied ? "outlined" : "filled"} onClick={handleApply} className={styles.buttonWrapper}>
@@ -125,8 +125,8 @@ export function HomeTypeFilter() {
     if (search.apartment) {
       return "Apartment";
     }
-    if (search.manufactured) {
-      return "Manufactured";
+    if (search.mobile) {
+      return "Mobile";
     }
 
     return "Home Type";

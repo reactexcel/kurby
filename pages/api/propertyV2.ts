@@ -183,23 +183,13 @@ class PropertySearchApiV2 {
 
   async getPropertiesByFilters({ latitude, longitude, forSale, bedsFilter, homeFilter, priceFilter, moreFilter }: IFilterSearchProps) {
     const parseHomeType = (property_type: IFilterSearchProps["homeFilter"]) => {
-      const types: string[] = [];
-      if (property_type.houses) types.push("SFR");
-      if (property_type.multiFamily) types.push("MFR");
-      if (property_type.lotsLands) types.push("LAND");
-      if (property_type.condosCoOps) types.push("CONDO");
-      if (property_type.manufactured) types.push("MANUFACTURED");
-      // Add other cases as needed
+      if (property_type.houses) return "SFR";
+      if (property_type.multiFamily) return "MFR";
+      if (property_type.lotsLands) return "LAND";
+      if (property_type.condosCoOps) return "CONDO";
+      if (property_type.mobile) return "MOBILE";
 
-      // Only allow one type to be selected
-      if (types.length > 1) {
-        // Handle the error, or just return the first selected type
-        return types[0];
-      } else if (types.length === 1) {
-        return types[0];
-      } else {
-        return "OTHER";
-      }
+      return "OTHER";
     };
 
     const now = DateTime.now();
@@ -211,7 +201,7 @@ class PropertySearchApiV2 {
       // For Sale Filter:
       mls_active: isPricingFilterOn || forSale?.forSaleByAgent,
       last_sale_date: forSale?.sold && oneYearAgo.toFormat("yyyy-MM-dd"),
-      for_sale: forSale?.forSaleByOwner,
+      for_sale: !forSale?.forSaleByAgent ? forSale?.forSaleByOwner : false,
       mls_pending: forSale?.propertyStatusPending,
       mls_cancelled: forSale?.propertyStatusCancelled,
       // Price Filter
