@@ -50,8 +50,6 @@ const ForSaleContents = () => {
 
   const isFilterApplied = search.__meta__.isFilterApplied;
 
-  const { __meta__, ...fields } = search;
-
   return (
     <div className={styles.main}>
       <FilterCheckboxOption id={"forSaleByAgent"} onSelect={() => handleSelect("forSaleByAgent")} isSelected={search.forSaleByAgent}>

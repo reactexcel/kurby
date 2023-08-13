@@ -194,7 +194,6 @@ class PropertySearchApiV2 {
 
     const now = DateTime.now();
     const oneYearAgo = now.minus({ years: 1 });
-
     const isPricingFilterOn = Boolean(priceFilter?.minimum || priceFilter?.maximum);
 
     const filtersObject = {
@@ -222,7 +221,7 @@ class PropertySearchApiV2 {
       foreclosure: moreFilter?.foreclosed,
     };
 
-    const filters = Object.keys(filtersObject)
+    const trueFilters = Object.keys(filtersObject)
       // @ts-ignore
       .filter((key) => Boolean(filtersObject[key])) // Filtering keys with non-null and non-undefined values
       .reduce((acc, key) => {
@@ -231,13 +230,22 @@ class PropertySearchApiV2 {
         return acc;
       }, {});
 
+    const filter = {
+      ...trueFilters,
+      ...(forSale?.offMarket && {
+        mls_active: false,
+        mls_pending: false,
+        mls_cancelled: false,
+      }),
+    };
+
     let config = {
       method: "post",
       maxBodyLength: Infinity,
       url: this.BASE_URL,
       ...this.headers(),
       data: {
-        ...filters,
+        ...filter,
         latitude,
         longitude,
         size: 10,
