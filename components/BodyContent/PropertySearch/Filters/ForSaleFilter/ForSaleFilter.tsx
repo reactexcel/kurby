@@ -50,10 +50,15 @@ const ForSaleContents = () => {
 
   const isFilterApplied = search.__meta__.isFilterApplied;
 
+  const { __meta__, ...fields } = search;
+
   return (
     <div className={styles.main}>
       <FilterCheckboxOption id={"for_sale_by_agent"} onSelect={() => handleSelect("for_sale_by_agent")} isSelected={search.for_sale_by_agent}>
         For Sale by agent
+      </FilterCheckboxOption>
+      <FilterCheckboxOption id={"for_sale_by_owner"} onSelect={() => handleSelect("for_sale_by_owner")} isSelected={search.for_sale_by_owner}>
+        For Sale by owner
       </FilterCheckboxOption>
 
       <FilterCheckboxOption id={"off_market"} onSelect={() => handleSelect("off_market")} isSelected={search.off_market}>
@@ -62,9 +67,6 @@ const ForSaleContents = () => {
 
       <FilterCheckboxOption id={"sold"} onSelect={() => handleSelect("sold")} isSelected={search.sold}>
         Sold
-      </FilterCheckboxOption>
-      <FilterCheckboxOption id="propertyStatusActive" onSelect={() => handleSelect("propertyStatusActive")} isSelected={search.propertyStatusActive}>
-        Active
       </FilterCheckboxOption>
       <FilterCheckboxOption id="propertyStatusPending" onSelect={() => handleSelect("propertyStatusPending")} isSelected={search.propertyStatusPending}>
         Pending
@@ -75,7 +77,7 @@ const ForSaleContents = () => {
       <FilterCheckboxOption id="propertyStatusFailed" onSelect={() => handleSelect("propertyStatusFailed")} isSelected={search.propertyStatusFailed}>
         Failed
       </FilterCheckboxOption>
-      {(search.for_sale_by_agent || search.off_market || search.sold) && (
+      {Object.values(fields).filter((field) => field === true).length > 0 && (
         <Button variant={isFilterApplied ? "outlined" : "filled"} onClick={handleApply} className={styles.buttonWrapper}>
           {isFilterApplied ? "Applied" : "Apply"}
         </Button>
@@ -98,7 +100,7 @@ export function ForSaleFilter() {
       return defaultValue;
     }
 
-    if (search.for_sale_by_agent) {
+    if (search.for_sale_by_agent || search.for_sale_by_owner) {
       if (isMoreThanOne) {
         return `For sale + ${fieldsActive} more`;
       }
@@ -117,13 +119,6 @@ export function ForSaleFilter() {
         return `Sold + ${fieldsActive} more`;
       }
       return "Sold";
-    }
-
-    if (search.propertyStatusActive) {
-      if (isMoreThanOne) {
-        return `Active + ${fieldsActive} more`;
-      }
-      return "Active";
     }
 
     if (search.propertyStatusPending) {

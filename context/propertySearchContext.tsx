@@ -15,9 +15,9 @@ export interface SaleContext {
       isFilterApplied: boolean;
     };
     for_sale_by_agent: boolean | null;
+    for_sale_by_owner: boolean | null;
     off_market: boolean | null;
     sold: boolean | null;
-    propertyStatusActive: boolean | null;
     propertyStatusPending: boolean | null;
     propertyStatusCancelled: boolean | null;
     propertyStatusFailed: boolean | null;
@@ -32,9 +32,9 @@ const forSaleContext: SaleContext = {
       isFilterApplied: false,
     },
     for_sale_by_agent: null,
+    for_sale_by_owner: null,
     off_market: null,
     sold: null,
-    propertyStatusActive: null,
     propertyStatusPending: null,
     propertyStatusCancelled: null,
     propertyStatusFailed: null,
