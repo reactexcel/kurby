@@ -316,7 +316,7 @@ class PropertySearchApiV2 {
         latitude,
         longitude,
         size: 25,
-        radius: 5,
+        radius: 10,
       },
     };
 
