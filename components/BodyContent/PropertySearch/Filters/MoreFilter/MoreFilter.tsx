@@ -5,6 +5,7 @@ import { moreFilter } from "context/propertySearchContext";
 import { codes } from "./codes";
 import { loanTypes } from "./loanTypes";
 import { Button } from "components/Button/Button";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 export enum ListingTypeTab {
   BY_AGENT = "by-agent",
@@ -403,7 +404,7 @@ function MoreFilterContent() {
         </div>
       </div>
       {/* Open Mortgage Balance */}
-      <div style={defaultSpacing}>
+      <div style={spaceBottom(30)}>
         <div style={spaceBottom(0)}>Open Mortgage Balance</div>
         <div className={styles.minMaxSelector}>
           <div className={styles.min}>
@@ -428,26 +429,30 @@ function MoreFilterContent() {
         </div>
       </div>
       {/* Deed Type */}
-      <div style={defaultSpacing}>
-        <div style={spaceBottom(10)}>Deed Type</div>
-        <select value={moreFilterState.deedType || ""} className={styles.selector} onChange={(e) => handleSelectChange(e.target.value, "deedType")}>
-          {codes.map((code) => (
-            <option key={code.value} value={code.value}>
-              {code.value} - {code.label}
-            </option>
-          ))}
-        </select>
+      <div style={spaceBottom(30)}>
+        <FormControl size="small" className={styles.selector} variant="outlined" fullWidth>
+          <InputLabel>Deed Type</InputLabel>
+          <Select value={moreFilterState.deedType || ""} onChange={(e) => handleSelectChange(e.target.value, "deedType")} label="Deed Type">
+            {codes.map((code) => (
+              <MenuItem key={code.value} value={code.value}>
+                {code.value} - {code.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </div>
       {/* Loan Type */}
       <div style={defaultSpacing}>
-        <div style={spaceBottom(10)}>Loan Types</div>
-        <select value={moreFilterState.loanType || ""} className={styles.selector} onChange={(e) => handleSelectChange(e.target.value, "loanType")}>
-          {loanTypes.map((code) => (
-            <option key={code.id} value={code.id}>
-              {code.id} - {code.description}
-            </option>
-          ))}
-        </select>
+        <FormControl size="small" className={styles.selector} variant="outlined" fullWidth>
+          <InputLabel>Loan Types</InputLabel>
+          <Select value={moreFilterState.loanType || ""} onChange={(e) => handleSelectChange(e.target.value, "loanType")} label="Loan Types">
+            {loanTypes.map((code) => (
+              <MenuItem key={code.id} value={code.id}>
+                {code.id} - {code.description}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </div>
       {/* Interest Rate */}
       <div style={defaultSpacing}>
@@ -475,7 +480,7 @@ function MoreFilterContent() {
         </div>
       </div>
       {/* Load Date */}
-      <div style={defaultSpacing}>
+      {/* <div style={defaultSpacing}>
         <div style={spaceBottom(0)}>Load Date</div>
         <div className={styles.minMaxSelector}>
           <div className={styles.min}>
@@ -498,9 +503,9 @@ function MoreFilterContent() {
             />
           </div>
         </div>
-      </div>
+      </div> */}
       {/* Maturity Date */}
-      <div style={defaultSpacing}>
+      {/* <div style={defaultSpacing}>
         <div style={spaceBottom(0)}>Maturity Date</div>
         <div className={styles.minMaxSelector}>
           <div className={styles.min}>
@@ -523,8 +528,7 @@ function MoreFilterContent() {
             />
           </div>
         </div>
-      </div>
-
+      </div> */}
       <div className={styles.endButtons} style={endSpace}>
         <div className={styles.buttonWrapper}>
           <Button onClick={handleResetFilters} variant="outlined">

@@ -207,6 +207,16 @@ class PropertySearchApiV2 {
       equityPercentMedian = null; // You can assign a default value here if needed
     }
 
+    let estimatedEquityMin = moreFilter?.estimatedEquityMin || 0;
+    let estimatedEquityMax = moreFilter?.estimatedEquityMax || 0;
+    let estimatedEquityMedian;
+
+    if (estimatedEquityMin || estimatedEquityMax) {
+      estimatedEquityMedian = (estimatedEquityMin + estimatedEquityMax) / 2;
+    } else {
+      estimatedEquityMedian = null; // You can assign a default value here if needed
+    }
+
     const filtersObject = {
       // For Sale Filter:
       mls_active: isPricingFilterOn || forSale?.forSaleByAgent,
@@ -248,14 +258,34 @@ class PropertySearchApiV2 {
       private_lender: moreFilter?.privateLender,
       adjustable_rate: moreFilter?.adjustableRate,
       free_clear: moreFilter?.freeClear,
-      // Equity Percent
+      // More Filter - Equity Percent
       equity_percent:
         moreFilter?.equityPercentMin && !moreFilter?.equityPercentMax
           ? moreFilter?.equityPercentMin
           : moreFilter?.equityPercentMax && !moreFilter?.equityPercentMin
           ? moreFilter?.equityPercentMax
           : equityPercentMedian,
-      equity_percent_operator: "gt",
+      equity_percent_operator: moreFilter?.equityPercentMin || moreFilter?.equityPercentMax ? "gt" : null,
+      // More Filter - Estimated Equity
+      estimated_equity:
+        moreFilter?.estimatedEquityMin && !moreFilter?.estimatedEquityMax
+          ? moreFilter?.estimatedEquityMin
+          : moreFilter?.estimatedEquityMax && !moreFilter?.estimatedEquityMin
+          ? moreFilter?.estimatedEquityMax
+          : estimatedEquityMedian,
+      equity_operator: moreFilter?.estimatedEquityMin || moreFilter?.estimatedEquityMax ? "lt" : null,
+      // More Filter - Estiamted Value
+      value_min: moreFilter?.estimatedValueMin,
+      value_max: moreFilter?.estimatedValueMax,
+      // More Filter - Open Mortgage Balance
+      mortgage_min: moreFilter?.openMortgageBalanceMin,
+      mortgage_max: moreFilter?.openMortgageBalanceMax,
+      document_type: moreFilter?.deedType,
+      // More Filter - Loan Types
+      loan_type_code_first: moreFilter?.loanType,
+      // More Filter - Interest Rate
+      portfolio_equity_min: moreFilter?.interestRateMin,
+      portfolio_equity_max: moreFilter?.interestRateMax,
     };
 
     const trueFilters = Object.keys(filtersObject)
