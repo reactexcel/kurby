@@ -57,6 +57,28 @@ const ForSaleContents = () => {
 
   return (
     <div className={styles.main}>
+      {/* Property Status  */}
+      <div style={{ marginTop: 10 }}>
+        <div>Property Status</div>
+        <div className={styles.row}>
+          <div className={styles.column}>
+            <FilterCheckboxOption id="propertyStatusActive" onSelect={() => {}} isSelected={false}>
+              Active
+            </FilterCheckboxOption>
+            <FilterCheckboxOption id="propertyStatusPending" onSelect={() => {}} isSelected={false}>
+              Pending
+            </FilterCheckboxOption>
+            <FilterCheckboxOption id="propertyStatusCancelled" onSelect={() => {}} isSelected={false}>
+              Cancelled
+            </FilterCheckboxOption>
+          </div>
+          <div className={styles.column}>
+            <FilterCheckboxOption id="propertyStatusFailed" onSelect={() => {}} isSelected={false}>
+              Failed
+            </FilterCheckboxOption>
+          </div>
+        </div>
+      </div>
       <FilterRadioOption id={"for_sale"} onSelect={() => handleSelect("for_sale")} isSelected={search.for_sale}>
         For Sale
       </FilterRadioOption>
@@ -68,34 +90,7 @@ const ForSaleContents = () => {
       <FilterRadioOption id={"sold"} onSelect={() => handleSelect("sold")} isSelected={search.sold}>
         Sold
       </FilterRadioOption>
-      {/* Property Status  */}
-      <div>
-        <div> Property Status</div>
-        <div className={styles.row}>
-          <div className={styles.column}>
-            <FilterCheckboxOption id="propertyStatusActive" onSelect={() => {}} isSelected={false}>
-              Active
-            </FilterCheckboxOption>
-            <FilterCheckboxOption id="propertyStatusPending" onSelect={() => {}} isSelected={false}>
-              Pending
-            </FilterCheckboxOption>
-            <FilterCheckboxOption id="propertyStatusOffMarket" onSelect={() => {}} isSelected={false}>
-              Off-Market
-            </FilterCheckboxOption>
-          </div>
-          <div className={styles.column}>
-            <FilterCheckboxOption id="propertyStatusCancelled" onSelect={() => {}} isSelected={false}>
-              Cancelled
-            </FilterCheckboxOption>
-            <FilterCheckboxOption id="propertyStatusFailed" onSelect={() => {}} isSelected={false}>
-              Failed
-            </FilterCheckboxOption>
-            <FilterCheckboxOption id="propertyStatusSold" onSelect={() => {}} isSelected={false}>
-              Sold
-            </FilterCheckboxOption>
-          </div>
-        </div>
-      </div>
+
       {(search.for_sale || search.off_market || search.sold) && (
         <Button variant={isFilterApplied ? "outlined" : "filled"} onClick={handleApply} className={styles.buttonWrapper}>
           {isFilterApplied ? "Applied" : "Apply"}

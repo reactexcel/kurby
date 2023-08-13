@@ -205,8 +205,10 @@ class PropertySearchApiV2 {
     const now = DateTime.now();
     const oneYearAgo = now.minus({ years: 1 });
 
+    const isPricingFilterOn = Boolean(priceFilter.minimum || priceFilter.maximum);
+
     const filtersObject = {
-      mls_active: forSale?.for_sale || forSale?.off_market,
+      mls_active: isPricingFilterOn || forSale?.off_market,
       mls_cancelled: forSale?.for_sale,
       beds_min: bedsFilter?.bedrooms,
       beds_max: 5,
@@ -214,7 +216,7 @@ class PropertySearchApiV2 {
       baths_max: 4,
       property_type: homeFilter && parseHomeType(homeFilter),
       mls_listing_price_min: priceFilter?.minimum,
-      mls_listing_price_max: priceFilter?.maximum,
+      mls_listing_price_max: priceFilter?.maximum * (1 - 0.2),
       years_owned_min: moreFilter?.yearsOwnedMin,
       years_owned_max: moreFilter?.yearsOwnedMax,
       auction: moreFilter?.auction,
