@@ -205,24 +205,31 @@ class PropertySearchApiV2 {
     const now = DateTime.now();
     const oneYearAgo = now.minus({ years: 1 });
 
-    const isPricingFilterOn = Boolean(priceFilter.minimum || priceFilter.maximum);
+    const isPricingFilterOn = Boolean(priceFilter?.minimum || priceFilter?.maximum);
 
     const filtersObject = {
-      mls_active: isPricingFilterOn || forSale?.for_sale_by_agent,
-      mls_cancelled: !forSale?.for_sale_by_agent,
+      // For Sale Filter:
+      mls_active: isPricingFilterOn || forSale?.forSaleByAgent,
+      last_sale_date: forSale.sold && oneYearAgo.toFormat("yyyy-MM-dd"),
+      for_sale: forSale?.forSaleByOwner,
+      mls_pending: forSale?.propertyStatusPending,
+      mls_cancelled: forSale?.propertyStatusCancelled,
+      // Price Filter
+      mls_listing_price_min: priceFilter?.minimum,
+      mls_listing_price_max: priceFilter?.maximum * (1 - 0.2),
+      // Beds & Baths Filter
       beds_min: bedsFilter?.bedrooms,
       beds_max: 5,
       baths_min: bedsFilter?.bathrooms,
       baths_max: 4,
+      // Home Type Filter:
       property_type: homeFilter && parseHomeType(homeFilter),
-      mls_listing_price_min: priceFilter?.minimum,
-      mls_listing_price_max: priceFilter?.maximum * (1 - 0.2),
+      // More Filter
       years_owned_min: moreFilter?.yearsOwnedMin,
       years_owned_max: moreFilter?.yearsOwnedMax,
       auction: moreFilter?.auction,
       pre_foreclosure: moreFilter?.preForeclosure,
       foreclosure: moreFilter?.foreclosed,
-      last_sale_date: oneYearAgo.toFormat("yyyy-MM-dd"),
     };
 
     const filters = Object.keys(filtersObject)

@@ -1,5 +1,5 @@
 import { atom, useRecoilState } from "recoil";
-import { FilterCheckboxOption, FilterItem, FilterRadioOption } from "../../FilterItem/FilterItem";
+import { FilterCheckboxOption, FilterItem } from "../../FilterItem/FilterItem";
 import { forSaleFilter } from "context/propertySearchContext";
 import { Button } from "components/Button/Button";
 import styles from "./ForSaleFilter.module.scss";
@@ -54,14 +54,14 @@ const ForSaleContents = () => {
 
   return (
     <div className={styles.main}>
-      <FilterCheckboxOption id={"for_sale_by_agent"} onSelect={() => handleSelect("for_sale_by_agent")} isSelected={search.for_sale_by_agent}>
+      <FilterCheckboxOption id={"forSaleByAgent"} onSelect={() => handleSelect("forSaleByAgent")} isSelected={search.forSaleByAgent}>
         For Sale by agent
       </FilterCheckboxOption>
-      <FilterCheckboxOption id={"for_sale_by_owner"} onSelect={() => handleSelect("for_sale_by_owner")} isSelected={search.for_sale_by_owner}>
+      <FilterCheckboxOption id={"forSaleByOwner"} onSelect={() => handleSelect("forSaleByOwner")} isSelected={search.forSaleByOwner}>
         For Sale by owner
       </FilterCheckboxOption>
 
-      <FilterCheckboxOption id={"off_market"} onSelect={() => handleSelect("off_market")} isSelected={search.off_market}>
+      <FilterCheckboxOption id={"offMarket"} onSelect={() => handleSelect("offMarket")} isSelected={search.offMarket}>
         Off Market
       </FilterCheckboxOption>
 
@@ -100,44 +100,50 @@ export function ForSaleFilter() {
       return defaultValue;
     }
 
-    if (search.for_sale_by_agent || search.for_sale_by_owner) {
+    if (search.forSaleByAgent) {
       if (isMoreThanOne) {
-        return `For sale + ${fieldsActive} more`;
+        return `For sale by agent +${fieldsActive - 1}`;
       }
-      return "For sale";
+      return "For sale by agent";
+    }
+    if (search.forSaleByOwner) {
+      if (isMoreThanOne) {
+        return `For sale by owner +${fieldsActive - 1}`;
+      }
+      return "For sale by owner";
     }
 
-    if (search.off_market) {
+    if (search.offMarket) {
       if (isMoreThanOne) {
-        return `Off market + ${fieldsActive} more`;
+        return `Off market + ${fieldsActive - 1} more`;
       }
       return "Off market";
     }
 
     if (search.sold) {
       if (isMoreThanOne) {
-        return `Sold + ${fieldsActive} more`;
+        return `Sold + ${fieldsActive - 1} more`;
       }
       return "Sold";
     }
 
     if (search.propertyStatusPending) {
       if (isMoreThanOne) {
-        return `Pending + ${fieldsActive} more`;
+        return `Pending + ${fieldsActive - 1} more`;
       }
       return "Pending";
     }
 
     if (search.propertyStatusCancelled) {
       if (isMoreThanOne) {
-        return `Cancelled + ${fieldsActive} more`;
+        return `Cancelled + ${fieldsActive - 1} more`;
       }
       return "Cancelled";
     }
 
     if (search.propertyStatusFailed) {
       if (isMoreThanOne) {
-        return `Failed + ${fieldsActive} more`;
+        return `Failed + ${fieldsActive - 1} more`;
       }
       return "Failed";
     }
