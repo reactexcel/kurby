@@ -208,8 +208,8 @@ class PropertySearchApiV2 {
     const isPricingFilterOn = Boolean(priceFilter.minimum || priceFilter.maximum);
 
     const filtersObject = {
-      mls_active: isPricingFilterOn || forSale?.off_market,
-      mls_cancelled: forSale?.for_sale,
+      mls_active: isPricingFilterOn || forSale?.for_sale_by_agent,
+      mls_cancelled: !forSale?.for_sale_by_agent,
       beds_min: bedsFilter?.bedrooms,
       beds_max: 5,
       baths_min: bedsFilter?.bathrooms,

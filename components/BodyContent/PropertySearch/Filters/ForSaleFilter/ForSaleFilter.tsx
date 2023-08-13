@@ -17,11 +17,6 @@ const ForSaleContents = () => {
   const [, setPopover] = useRecoilState(forSalePopover);
   const [search, setSearch] = useRecoilState(forSaleFilter);
   const prepareObject = (key: string) => ({
-    // eslint-disable-next-line camelcase
-    for_sale: false,
-    // eslint-disable-next-line camelcase
-    off_market: false,
-    sold: false,
     // @ts-ignore
     [key]: !search[key],
   });
@@ -57,41 +52,30 @@ const ForSaleContents = () => {
 
   return (
     <div className={styles.main}>
-      {/* Property Status  */}
-      <div style={{ marginTop: 10 }}>
-        <div>Property Status</div>
-        <div className={styles.row}>
-          <div className={styles.column}>
-            <FilterCheckboxOption id="propertyStatusActive" onSelect={() => {}} isSelected={false}>
-              Active
-            </FilterCheckboxOption>
-            <FilterCheckboxOption id="propertyStatusPending" onSelect={() => {}} isSelected={false}>
-              Pending
-            </FilterCheckboxOption>
-            <FilterCheckboxOption id="propertyStatusCancelled" onSelect={() => {}} isSelected={false}>
-              Cancelled
-            </FilterCheckboxOption>
-          </div>
-          <div className={styles.column}>
-            <FilterCheckboxOption id="propertyStatusFailed" onSelect={() => {}} isSelected={false}>
-              Failed
-            </FilterCheckboxOption>
-          </div>
-        </div>
-      </div>
-      <FilterRadioOption id={"for_sale"} onSelect={() => handleSelect("for_sale")} isSelected={search.for_sale}>
-        For Sale
-      </FilterRadioOption>
+      <FilterCheckboxOption id={"for_sale_by_agent"} onSelect={() => handleSelect("for_sale_by_agent")} isSelected={search.for_sale_by_agent}>
+        For Sale by agent
+      </FilterCheckboxOption>
 
-      <FilterRadioOption id={"off_market"} onSelect={() => handleSelect("off_market")} isSelected={search.off_market}>
+      <FilterCheckboxOption id={"off_market"} onSelect={() => handleSelect("off_market")} isSelected={search.off_market}>
         Off Market
-      </FilterRadioOption>
+      </FilterCheckboxOption>
 
-      <FilterRadioOption id={"sold"} onSelect={() => handleSelect("sold")} isSelected={search.sold}>
+      <FilterCheckboxOption id={"sold"} onSelect={() => handleSelect("sold")} isSelected={search.sold}>
         Sold
-      </FilterRadioOption>
-
-      {(search.for_sale || search.off_market || search.sold) && (
+      </FilterCheckboxOption>
+      <FilterCheckboxOption id="propertyStatusActive" onSelect={() => handleSelect("propertyStatusActive")} isSelected={search.propertyStatusActive}>
+        Active
+      </FilterCheckboxOption>
+      <FilterCheckboxOption id="propertyStatusPending" onSelect={() => handleSelect("propertyStatusPending")} isSelected={search.propertyStatusPending}>
+        Pending
+      </FilterCheckboxOption>
+      <FilterCheckboxOption id="propertyStatusCancelled" onSelect={() => handleSelect("propertyStatusCancelled")} isSelected={search.propertyStatusCancelled}>
+        Cancelled
+      </FilterCheckboxOption>
+      <FilterCheckboxOption id="propertyStatusFailed" onSelect={() => handleSelect("propertyStatusFailed")} isSelected={search.propertyStatusFailed}>
+        Failed
+      </FilterCheckboxOption>
+      {(search.for_sale_by_agent || search.off_market || search.sold) && (
         <Button variant={isFilterApplied ? "outlined" : "filled"} onClick={handleApply} className={styles.buttonWrapper}>
           {isFilterApplied ? "Applied" : "Apply"}
         </Button>
@@ -102,19 +86,68 @@ const ForSaleContents = () => {
 
 export function ForSaleFilter() {
   const [search] = useRecoilState(forSaleFilter);
+  const defaultValue = "Status";
   const renderThumbText = () => {
-    if (search.for_sale) {
+    const { __meta__, ...fields } = search;
+    const fieldsActiveValue = Object.values(fields).filter((field) => Boolean(field));
+    const fieldsActive = fieldsActiveValue.length;
+
+    const isMoreThanOne = fieldsActive > 1;
+
+    if (fieldsActive === 0) {
+      return defaultValue;
+    }
+
+    if (search.for_sale_by_agent) {
+      if (isMoreThanOne) {
+        return `For sale + ${fieldsActive} more`;
+      }
       return "For sale";
     }
+
     if (search.off_market) {
+      if (isMoreThanOne) {
+        return `Off market + ${fieldsActive} more`;
+      }
       return "Off market";
     }
 
     if (search.sold) {
+      if (isMoreThanOne) {
+        return `Sold + ${fieldsActive} more`;
+      }
       return "Sold";
     }
 
-    return "For sale";
+    if (search.propertyStatusActive) {
+      if (isMoreThanOne) {
+        return `Active + ${fieldsActive} more`;
+      }
+      return "Active";
+    }
+
+    if (search.propertyStatusPending) {
+      if (isMoreThanOne) {
+        return `Pending + ${fieldsActive} more`;
+      }
+      return "Pending";
+    }
+
+    if (search.propertyStatusCancelled) {
+      if (isMoreThanOne) {
+        return `Cancelled + ${fieldsActive} more`;
+      }
+      return "Cancelled";
+    }
+
+    if (search.propertyStatusFailed) {
+      if (isMoreThanOne) {
+        return `Failed + ${fieldsActive} more`;
+      }
+      return "Failed";
+    }
+
+    return defaultValue;
   };
   return <FilterItem recoilOpenState={forSalePopover as any} renderContentPosition="left" flex={1} title={renderThumbText()} renderContent={ForSaleContents()} />;
 }

@@ -14,15 +14,13 @@ export interface SaleContext {
       createdAt: Date;
       isFilterApplied: boolean;
     };
-    for_sale: boolean | null;
+    for_sale_by_agent: boolean | null;
     off_market: boolean | null;
     sold: boolean | null;
     propertyStatusActive: boolean | null;
     propertyStatusPending: boolean | null;
-    propertyStatusOffMarket: boolean | null;
     propertyStatusCancelled: boolean | null;
     propertyStatusFailed: boolean | null;
-    propertyStatusSold: boolean | null;
   };
 }
 
@@ -33,15 +31,13 @@ const forSaleContext: SaleContext = {
       createdAt: new Date(),
       isFilterApplied: false,
     },
-    for_sale: null,
+    for_sale_by_agent: null,
     off_market: null,
     sold: null,
     propertyStatusActive: null,
     propertyStatusPending: null,
-    propertyStatusOffMarket: null,
     propertyStatusCancelled: null,
     propertyStatusFailed: null,
-    propertyStatusSold: null,
   },
 };
 
