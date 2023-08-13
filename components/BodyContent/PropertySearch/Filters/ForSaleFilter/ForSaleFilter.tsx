@@ -86,7 +86,7 @@ const ForSaleContents = () => {
 
 export function ForSaleFilter() {
   const [search] = useRecoilState(forSaleFilter);
-  const defaultValue = "Status";
+  const defaultValue = "For sale";
   const renderThumbText = () => {
     const { __meta__, ...fields } = search;
     const fieldsActiveValue = Object.values(fields).filter((field) => Boolean(field));
