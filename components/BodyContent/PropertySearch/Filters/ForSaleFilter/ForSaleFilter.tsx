@@ -74,10 +74,10 @@ const ForSaleContents = () => {
       <FilterCheckboxOption id="propertyStatusCancelled" onSelect={() => handleSelect("propertyStatusCancelled")} isSelected={search.propertyStatusCancelled}>
         Cancelled
       </FilterCheckboxOption>
-      <FilterCheckboxOption id="propertyStatusFailed" onSelect={() => handleSelect("propertyStatusFailed")} isSelected={search.propertyStatusFailed}>
+      {/* <FilterCheckboxOption id="propertyStatusFailed" onSelect={() => handleSelect("propertyStatusFailed")} isSelected={search.propertyStatusFailed}>
         Failed
-      </FilterCheckboxOption>
-      {Object.values(fields).filter((field) => field === true).length > 0 && (
+      </FilterCheckboxOption> */}
+      {Object.values(search).some((field) => field === true) && (
         <Button variant={isFilterApplied ? "outlined" : "filled"} onClick={handleApply} className={styles.buttonWrapper}>
           {isFilterApplied ? "Applied" : "Apply"}
         </Button>
@@ -141,12 +141,12 @@ export function ForSaleFilter() {
       return "Cancelled";
     }
 
-    if (search.propertyStatusFailed) {
-      if (isMoreThanOne) {
-        return `Failed + ${fieldsActive - 1} more`;
-      }
-      return "Failed";
-    }
+    // if (search.propertyStatusFailed) {
+    //   if (isMoreThanOne) {
+    //     return `Failed + ${fieldsActive - 1} more`;
+    //   }
+    //   return "Failed";
+    // }
 
     return defaultValue;
   };

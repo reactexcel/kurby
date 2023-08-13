@@ -20,7 +20,7 @@ export interface SaleContext {
     sold: boolean | null;
     propertyStatusPending: boolean | null;
     propertyStatusCancelled: boolean | null;
-    propertyStatusFailed: boolean | null;
+    // propertyStatusFailed: boolean | null;
   };
 }
 
@@ -37,7 +37,7 @@ const forSaleContext: SaleContext = {
     sold: null,
     propertyStatusPending: null,
     propertyStatusCancelled: null,
-    propertyStatusFailed: null,
+    // propertyStatusFailed: null,
   },
 };
 

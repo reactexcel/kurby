@@ -25,23 +25,30 @@ const HomeTypeContents = () => {
         createdAt: new Date(),
         isFilterApplied: false,
       },
+      houses: false,
+      townHouse: false,
+      multiFamily: false,
+      condosCoOps: false,
+      lotsLands: false,
+      apartment: false,
+      manufactured: false,
       // @ts-ignore
       [id]: !filter[id],
     });
   };
 
-  const handleSelectAll = () => {
-    setFilter((prevState) => ({
-      ...prevState,
-      houses: true,
-      townHouse: true,
-      multiFamily: true,
-      condosCoOps: true,
-      lotsLands: true,
-      apartment: true,
-      manufactured: true,
-    }));
-  };
+  // const handleSelectAll = () => {
+  //   setFilter((prevState) => ({
+  //     ...prevState,
+  //     houses: true,
+  //     townHouse: true,
+  //     multiFamily: true,
+  //     condosCoOps: true,
+  //     lotsLands: true,
+  //     apartment: true,
+  //     manufactured: true,
+  //   }));
+  // };
 
   const { isFilterApplied } = filter.__meta__;
 
@@ -59,36 +66,35 @@ const HomeTypeContents = () => {
     }));
   };
 
-  const { __meta__, ...filterFields } = filter;
   return (
     <div>
-      <FilterRadioOption id={"sold"} onSelect={() => handleSelectAll()} isSelected={Object.values(filterFields).every((field) => field === true)}>
+      {/* <FilterRadioOption id={"sold"} onSelect={() => handleSelectAll()} isSelected={Object.values(filterFields).every((field) => field === true)}>
         All
-      </FilterRadioOption>
-      <FilterCheckboxOption id={"for_sale"} onSelect={() => handleSelect("houses")} isSelected={filter.houses}>
+      </FilterRadioOption> */}
+      <FilterRadioOption id={"for_sale"} onSelect={() => handleSelect("houses")} isSelected={filter.houses}>
         Houses
-      </FilterCheckboxOption>
+      </FilterRadioOption>
 
-      <FilterCheckboxOption id={"off_market"} onSelect={() => handleSelect("townHouse")} isSelected={filter.townHouse}>
+      <FilterRadioOption id={"off_market"} onSelect={() => handleSelect("townHouse")} isSelected={filter.townHouse}>
         Town House
-      </FilterCheckboxOption>
+      </FilterRadioOption>
 
-      <FilterCheckboxOption id={"sold"} onSelect={() => handleSelect("multiFamily")} isSelected={filter.multiFamily}>
+      <FilterRadioOption id={"sold"} onSelect={() => handleSelect("multiFamily")} isSelected={filter.multiFamily}>
         Multi family
-      </FilterCheckboxOption>
+      </FilterRadioOption>
 
-      <FilterCheckboxOption id={"sold"} onSelect={() => handleSelect("condosCoOps")} isSelected={filter.condosCoOps}>
+      <FilterRadioOption id={"sold"} onSelect={() => handleSelect("condosCoOps")} isSelected={filter.condosCoOps}>
         Condos/co-ops
-      </FilterCheckboxOption>
-      <FilterCheckboxOption id={"sold"} onSelect={() => handleSelect("lotsLands")} isSelected={filter.lotsLands}>
+      </FilterRadioOption>
+      <FilterRadioOption id={"sold"} onSelect={() => handleSelect("lotsLands")} isSelected={filter.lotsLands}>
         Lots/land
-      </FilterCheckboxOption>
-      <FilterCheckboxOption id={"sold"} onSelect={() => handleSelect("apartment")} isSelected={filter.apartment}>
+      </FilterRadioOption>
+      <FilterRadioOption id={"sold"} onSelect={() => handleSelect("apartment")} isSelected={filter.apartment}>
         Apartment
-      </FilterCheckboxOption>
-      <FilterCheckboxOption id={"sold"} onSelect={() => handleSelect("manufactured")} isSelected={filter.manufactured}>
+      </FilterRadioOption>
+      <FilterRadioOption id={"sold"} onSelect={() => handleSelect("manufactured")} isSelected={filter.manufactured}>
         Manufactured
-      </FilterCheckboxOption>
+      </FilterRadioOption>
       {Object.values(filter).some((field) => field === true) && (
         <Button variant={isFilterApplied ? "outlined" : "filled"} onClick={handleApply} className={styles.buttonWrapper}>
           {isFilterApplied ? "Applied" : "Apply"}
@@ -99,7 +105,30 @@ const HomeTypeContents = () => {
 };
 
 export function HomeTypeFilter() {
+  const [search] = useRecoilState(homeTypeFilter);
   const renderThumb = () => {
+    if (search.houses) {
+      return "Houses";
+    }
+    if (search.townHouse) {
+      return "Town House";
+    }
+    if (search.multiFamily) {
+      return "Multi family";
+    }
+    if (search.condosCoOps) {
+      return "Condos/co-ops";
+    }
+    if (search.lotsLands) {
+      return "Lots/land";
+    }
+    if (search.apartment) {
+      return "Apartment";
+    }
+    if (search.manufactured) {
+      return "Manufactured";
+    }
+
     return "Home Type";
   };
 

@@ -210,7 +210,7 @@ class PropertySearchApiV2 {
     const filtersObject = {
       // For Sale Filter:
       mls_active: isPricingFilterOn || forSale?.forSaleByAgent,
-      last_sale_date: forSale.sold && oneYearAgo.toFormat("yyyy-MM-dd"),
+      last_sale_date: forSale?.sold && oneYearAgo.toFormat("yyyy-MM-dd"),
       for_sale: forSale?.forSaleByOwner,
       mls_pending: forSale?.propertyStatusPending,
       mls_cancelled: forSale?.propertyStatusCancelled,
