@@ -121,7 +121,7 @@ function MoreFilterContent() {
         absenteeOwner: null,
         outOfStateAbsenteeOwner: null,
         inStateAbsenteeOwner: null,
-        corporateOwner: null,
+        corporateOwned: null,
         investorBuyer: null,
         inherited: null,
         ownerDeath: null,
@@ -236,7 +236,7 @@ function MoreFilterContent() {
             >
               In State Absentee Owner
             </FilterCheckboxOption>
-            <FilterCheckboxOption id="corporateOwner" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.corporateOwner)} isSelected={moreFilterState.corporateOwner}>
+            <FilterCheckboxOption id="corporateOwned" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.corporateOwned)} isSelected={moreFilterState.corporateOwned}>
               Corporate Owned
             </FilterCheckboxOption>
           </div>

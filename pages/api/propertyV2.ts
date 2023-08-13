@@ -214,11 +214,19 @@ class PropertySearchApiV2 {
       // Home Type Filter:
       property_type: homeFilter && parseHomeType(homeFilter),
       // More Filter
-      years_owned_min: moreFilter?.yearsOwnedMin,
-      years_owned_max: moreFilter?.yearsOwnedMax,
       auction: moreFilter?.auction,
       pre_foreclosure: moreFilter?.preForeclosure,
       foreclosure: moreFilter?.foreclosed,
+      // More Filter - Owner Information
+      absentee_owner: moreFilter?.nonOwnerOccupied || moreFilter?.absenteeOwner,
+      out_of_state_owner: moreFilter?.outOfStateAbsenteeOwner,
+      in_state_owner: moreFilter?.inStateAbsenteeOwner,
+      corporate_owned: moreFilter?.corporateOwned,
+      investor_buyer: moreFilter?.investorBuyer,
+      inherited: moreFilter?.inherited,
+      death: moreFilter?.ownerDeath || moreFilter?.spousalDeath,
+      years_owned_min: moreFilter?.yearsOwnedMin,
+      years_owned_max: moreFilter?.yearsOwnedMax,
     };
 
     const trueFilters = Object.keys(filtersObject)

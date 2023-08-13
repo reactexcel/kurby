@@ -111,7 +111,7 @@ export interface MoreFilterContext {
     absenteeOwner: boolean | null;
     outOfStateAbsenteeOwner: boolean | null;
     inStateAbsenteeOwner: boolean | null;
-    corporateOwner: boolean | null;
+    corporateOwned: boolean | null;
     investorBuyer: boolean | null;
     inherited: boolean | null;
     ownerDeath: boolean | null;
@@ -162,7 +162,7 @@ const moreFilterContext: MoreFilterContext = {
     absenteeOwner: null,
     outOfStateAbsenteeOwner: null,
     inStateAbsenteeOwner: null,
-    corporateOwner: null,
+    corporateOwned: null,
     investorBuyer: null,
     inherited: null,
     ownerDeath: null,
