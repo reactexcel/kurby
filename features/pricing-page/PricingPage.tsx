@@ -7,6 +7,7 @@ import { ProsConsSection } from "./pricing-page-sections/ProsConsSection/ProsCon
 import { Footer } from "../Footer/Footer";
 
 import { MyContextProvider } from "../../context/priceContext";
+import { HomepageFooter } from "features/homepage/Footer/Footer";
 
 export const PricingPage = () => {
   const paramValue = false;
@@ -19,7 +20,7 @@ export const PricingPage = () => {
       <TracingSection />
       <FaqsSection />
       <ProsConsSection />
-      <Footer />
+      <HomepageFooter />
     </MyContextProvider>
   );
 };
