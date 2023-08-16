@@ -7,6 +7,7 @@ import { MainSection } from "../homepage-sections/MainSection/MainSection";
 import { Footer } from "../../Footer/Footer";
 import { useRouter } from "next/router";
 import { SuccessSignupDialog } from "components/SuccessSignupDialog/SuccessSignupDialog";
+import { HomepageFooter } from "../Footer/Footer";
 
 export const Homepage = () => {
   const router = useRouter();
@@ -20,7 +21,7 @@ export const Homepage = () => {
       <FirstSection />
       <SecondSection />
       {/* <ThirdSection /> */}
-      <Footer />
+      <HomepageFooter />
       {isSuccessPage && <SuccessSignupDialog />}
     </>
   );

@@ -10,9 +10,10 @@ interface Props {
   linkText: string;
   link?: string;
   onClick?: () => void;
+  style?: object;
 }
 
-export const Footer = () => {
+export const HomepageFooter = () => {
   const router = useRouter();
 
   const handleClick = () => {
@@ -26,9 +27,9 @@ export const Footer = () => {
     }
   };
 
-  const Link = ({ linkText, link, onClick }: Props) => {
+  const Link = ({ linkText, link, onClick, style }: Props) => {
     return (
-      <p className={styles.link} onClick={() => (onClick ? onClick() : link && router.push(link))}>
+      <p style={style} className={styles.link} onClick={() => (onClick ? onClick() : link && router.push(link))}>
         <span
           style={{
             color: "#00A13D",
@@ -39,19 +40,36 @@ export const Footer = () => {
     );
   };
 
+  const privacyLinkStyle = { opacity: 1, textDecoration: "underline", fontWeight: 800 };
+
   return (
     <>
       <div className={styles.container}>
         <div className={styles.upperSection}>
-          <img src="/images/logo.png" className={styles.logo} onClick={() => router.push("/")} alt="" />
+          <img draggable={false} src="/images/logo.png" className={styles.logo} onClick={() => router.push("/")} alt="" />
           <div className={styles.textWrapper}>
             <Paragraph className={styles.paragraph}>
-              Find the most livable home in the neighborhood and save time and effort during the home-buying process with Kurby’s
-              <span className={styles.homeValueLink}> home value </span>
-              estimator tools.
+              Kurby is the first and only real estate platform that provides AI-powered insights on any property or location in the world.
             </Paragraph>
           </div>
-          <div className={styles.linksWrapper}>
+          <div className={styles.row}>
+            <div className={styles.column}>
+              <h4 className={styles.columnText}>Solutions</h4>
+              <Link linkText="Property Location Data" link="https://kurby.ai/location-data" />
+              <Link linkText="Home Value Estimator" link="https://kurby.ai/home-value-estimator" />
+            </div>
+            <div className={styles.column}>
+              <h4 className={styles.columnText}>Resources</h4>
+              <Link linkText="Blog" link="https://blog.kurby.ai" />
+              <Link linkText="Knowledge Base" link="https://help.kurby.ai/" />
+            </div>
+            <div className={styles.column}>
+              <h4 className={styles.columnText}>Company</h4>
+              <Link linkText="Pricing" link="https://kurby.ai/pricing" />
+              <Link linkText="Contact Us" link="https://kurby.ai/contact-us" />
+            </div>
+          </div>
+          {/* <div className={styles.linksWrapper}>
             <Link linkText="Home" link="/" />
             <Link linkText="About Us" onClick={() => handleClick()} />
             <Link linkText="Blog" link="https://blog.kurby.ai/" />
@@ -59,9 +77,15 @@ export const Footer = () => {
             <Link linkText="Pricing" link="https://kurby.ai/pricing/" />
             <Link linkText="Privacy Policy" link="https://blog.kurby.ai/privacy-policy/" />
             <Link linkText="Terms & Conditions" link="https://blog.kurby.ai/terms-and-conditions/" />
+          </div> */}
+        </div>
+        <div>
+          <Paragraph className={styles.mailingAddress}>7969 NW 2nd Street #1185, Miami, FL 33126, United States</Paragraph>
+          <div className={styles.links}>
+            <Link style={privacyLinkStyle} linkText="Privacy Policy" link="https://blog.kurby.ai" />
+            <Link style={privacyLinkStyle} linkText="Terms of Services" link="https://blog.kurby.ai" />
           </div>
         </div>
-        <Paragraph className={styles.mailingAddress}>7969 NW 2nd Street #1185, Miami, FL 33126, United States</Paragraph>
       </div>
       <div className={styles.social}>
         <IconButton className={styles.iconWrapper}>
