@@ -45,7 +45,7 @@ export const HomepageFooter = () => {
             <div className={styles.column}>
               <h4 className={styles.columnText}>Solutions</h4>
               <Link linkText="Property Location Data" link="https://kurby.ai/location-data" />
-              <Link linkText="Home Value Estimator" link="https://kurby.ai/home-value-estimator" />
+              <Link linkText="Home Value Estimator" link="https://kurby.ai/home-value-estimate" />
             </div>
             <div className={styles.column}>
               <h4 className={styles.columnText}>Resources</h4>
