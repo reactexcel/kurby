@@ -56,6 +56,7 @@ export const Footer = () => {
             <Link linkText="About Us" onClick={() => handleClick()} />
             <Link linkText="Blog" link="https://blog.kurby.ai/" />
             <Link linkText="Contact Us" link="https://blog.kurby.ai/contact/" />
+            <Link linkText="Pricing" link="https://kurby.ai/pricing/" />
             <Link linkText="Privacy Policy" link="https://blog.kurby.ai/privacy-policy/" />
             <Link linkText="Terms & Conditions" link="https://blog.kurby.ai/terms-and-conditions/" />
           </div>

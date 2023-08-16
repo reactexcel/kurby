@@ -53,6 +53,9 @@ const TopToolbar = () => {
               <Button variant="plain" onClick={() => scrollToElement()}>
                 About Us
               </Button>
+              <Button variant={window.location.href.includes("/pricing") ? "outlined" : "plain"} onClick={() => router.push("/pricing")}>
+                Pricing
+              </Button>
             </Box>
           </Box>
           <Box>

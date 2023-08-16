@@ -1,0 +1,42 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  padding: 80px 10%;
+
+  @media (max-width: 1200px) {
+    margin: 40px auto;
+  }
+  @media (max-width: 520px) {
+    padding: 60px 5%;
+  }
+  @media (max-width: 330px) {
+    padding: 60px 0;
+  }
+}
+.headCard {
+  display: flex;
+  width: 80%;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  @media (max-width: 1620px) {
+   width: 90%;
+  }
+  @media (max-width: 1000px) {
+    justify-content: center;
+  }
+}
+.bodyCard {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  @media (max-width: 1200px) {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+}

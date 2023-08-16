@@ -21,7 +21,7 @@ export const RecordRow = ({ title, data }: RecordRowProps) => {
   );
 };
 
-const Field = ({ className = "", value }: FieldProps) => {
+export const Field = ({ className = "", value }: FieldProps) => {
   return (
     <td>
       <Typography className={className}>{value}</Typography>

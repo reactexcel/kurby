@@ -77,4 +77,7 @@
   width: 2rem;
   height: 3px;
   margin: 0;
+  @media (max-width: 960px) {
+    align-self: center;
+  }
 }

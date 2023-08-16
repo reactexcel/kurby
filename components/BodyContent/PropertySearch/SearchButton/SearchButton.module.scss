@@ -1,0 +1,18 @@
+.searchButton {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #00a13c;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s linear;
+}
+
+.searchButton:active {
+  background-color: #006826;
+  transition: 0s linear;
+}

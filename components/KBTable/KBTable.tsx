@@ -4,11 +4,11 @@ import { TableDataType, TableFieldType } from "types/table";
 import { KBColor } from "constants/color";
 import styles from "./KBTable.module.scss";
 
-type KBTableProp = {
+type KBTableProp<T> = {
   children?: JSX.Element | JSX.Element[];
   sx?: SxProps<Theme> | undefined;
   fields: TableFieldType[];
-  data: TableDataType[];
+  data: T[];
   lineColor?: string;
   maxHeight?: string | number;
 };
@@ -17,7 +17,7 @@ const ProTypography = styled(Typography)({
   fontFamily: "FilsonPro !important",
 });
 
-export default function KBTable({ sx, fields, data, lineColor, maxHeight }: KBTableProp) {
+export default function KBTable({ sx, fields, data, lineColor, maxHeight }: KBTableProp<TableDataType>) {
   return (
     <Box className={styles.main}>
       <TableContainer component={Paper} sx={{ ...sx, maxHeight: maxHeight ? maxHeight : "unset" }}>

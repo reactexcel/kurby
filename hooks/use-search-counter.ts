@@ -32,26 +32,21 @@ export const useSearchCounter = () => {
   const resetCounter = useCallback(() => setCounter(() => ({ searchLimit: false, count: "0" })), []);
 
   useEffect(() => {
-    if (!user && !isDev) {
-      const item = window.localStorage.getItem("searchCounter");
-      let searchCounterStorage = JSON.parse(item || "null");
+    const item = window.localStorage.getItem("searchCounter");
+    let searchCounterStorage = JSON.parse(item || "null");
 
-      if (!searchCounterStorage) {
-        resetCounterStorage();
-        searchCounterStorage = initialValues();
-      }
+    if (!searchCounterStorage) {
+      resetCounterStorage();
+      searchCounterStorage = initialValues();
+    }
 
-      if (searchCounterStorage?.date && hasDateExpired(new Date(searchCounterStorage.date))) {
-        setDate(new Date());
-        resetCounter();
-        resetCounterStorage();
-      } else {
-        setDate(searchCounterStorage.date);
-        setCounterCallback("count", searchCounterStorage.count || "0");
-      }
-    } else {
+    if (searchCounterStorage?.date && hasDateExpired(new Date(searchCounterStorage.date))) {
+      setDate(new Date());
       resetCounter();
-      window.localStorage.removeItem("searchCounter");
+      resetCounterStorage();
+    } else {
+      setDate(searchCounterStorage.date);
+      setCounterCallback("count", searchCounterStorage.count || "0");
     }
   }, [user]);
 

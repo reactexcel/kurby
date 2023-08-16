@@ -12,17 +12,13 @@ import { loadingContext } from "context/loadingContext";
 import { TabLayout } from "components/layouts/TabLayout/TabLayout";
 import styles from "./Location.module.scss";
 import { IsDevContext } from "context/isDevContext";
+import { useOpenAi } from "hooks/use-open-ai";
 
-interface LocationProps {
-  explainedLikeAlocal?: string;
-  greenFlags: any;
-  redFlags: any;
-}
-
-export const Location = ({ explainedLikeAlocal, greenFlags, redFlags }: LocationProps) => {
+export const Location = () => {
   const [filterVal] = useRecoilState(filterState);
   const [loading] = useRecoilState(loadingContext);
   const { isDev, message } = useContext(IsDevContext);
+  const { explainedLikeAlocal, greenFlags, redFlags } = useOpenAi();
 
   const separateMessage = useMemo(() => explainedLikeAlocal?.split("- ").filter((part) => part), [explainedLikeAlocal]);
 
@@ -66,8 +62,8 @@ export const Location = ({ explainedLikeAlocal, greenFlags, redFlags }: Location
           </Box>
         </Box>
         <Box className={styles.flags}>
-          <Flags color="Green" flagsMessage={greenFlags} loading={loading.openai.greenFlags} />
-          <Flags color="Red" flagsMessage={redFlags} loading={loading.openai.redFlags} />
+          <Flags color="Green" flagsMessage={greenFlags || ""} loading={loading.openai.greenFlags} />
+          <Flags color="Red" flagsMessage={redFlags || ""} loading={loading.openai.redFlags} />
         </Box>
       </Box>
     </TabLayout>

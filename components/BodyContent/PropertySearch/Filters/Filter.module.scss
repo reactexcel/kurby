@@ -1,0 +1,14 @@
+.propertyFilter {
+  width: 100%;
+  padding: 14px;
+  background-color: #f1f4f6;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+
+  @media screen and (max-width: 1200px) {
+    flex-direction: column;
+  }
+}

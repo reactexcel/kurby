@@ -12,11 +12,12 @@ import Property from "../Property/Property";
 import { Location } from "../Location/Location";
 import styles from "./Tabs.module.scss";
 import { searchContext } from "context/searchCounter";
-import { useOpenAi } from "hooks/use-open-ai";
+import CityStatePropertiesFilters from "../PropertySearch/PropertySearch";
+
+const CityStatePropertiesFiltersMemo = React.memo(CityStatePropertiesFilters);
 
 export function Tabs() {
   const [activeTab, setActiveTab] = useRecoilState(activeTabState);
-  const { explainedLikeAlocal, greenFlags, redFlags } = useOpenAi();
   const [{ searchLimit }] = useRecoilState(searchContext);
   const [filterVal] = useRecoilState(filterState);
 
@@ -26,9 +27,16 @@ export function Tabs() {
     }
   };
 
+  const PropertySceneManager = () => {
+    if (filterVal.placeCategory === "address") {
+      return <Property />;
+    }
+    return <CityStatePropertiesFiltersMemo />;
+  };
+
   return (
     <>
-      <NextSeo description={explainedLikeAlocal?.split(".")[0] || "Kurby uses location data to estimate property value like never before."} />
+      <NextSeo description={"Kurby uses location data to estimate property value like never before."} />
       <Box className={styles.main}>
         <ToggleButtonGroup className={styles.toggleButtonGroupLayout} color="success" value={activeTab} exclusive onChange={handleTabChange} aria-label="Platform">
           <ToggleButton className={styles.button} value="location">
@@ -36,7 +44,7 @@ export function Tabs() {
           </ToggleButton>
 
           <ToggleButton className={styles.button} value="property">
-            Home
+            {filterVal.placeCategory === "address" ? "Property data" : "Properties"}
           </ToggleButton>
 
           <ToggleButton className={styles.button} value="neighborhood">
@@ -46,9 +54,9 @@ export function Tabs() {
 
         {!searchLimit && (
           <Box className={styles.tabsWrapper}>
-            {activeTab === "location" && <Location explainedLikeAlocal={explainedLikeAlocal} greenFlags={greenFlags} redFlags={redFlags} />}
+            {activeTab === "location" && <Location />}
             {activeTab == "nearby" && <Nearby />}
-            {activeTab == "property" && <Property />}
+            {activeTab == "property" && <PropertySceneManager />}
 
             {activeTab == "neighborhood" && <Neighborhood filterVal={filterVal} />}
           </Box>
