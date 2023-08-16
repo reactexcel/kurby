@@ -16,17 +16,6 @@ interface Props {
 export const HomepageFooter = () => {
   const router = useRouter();
 
-  const handleClick = () => {
-    const scrollToElement = document.getElementById("firstSection");
-
-    if (scrollToElement) {
-      window.scrollTo({
-        top: scrollToElement.offsetTop - 40,
-        behavior: "smooth",
-      });
-    }
-  };
-
   const Link = ({ linkText, link, onClick, style }: Props) => {
     return (
       <p style={style} className={styles.link} onClick={() => (onClick ? onClick() : link && router.push(link))}>
@@ -82,8 +71,8 @@ export const HomepageFooter = () => {
         <div>
           <Paragraph className={styles.mailingAddress}>7969 NW 2nd Street #1185, Miami, FL 33126, United States</Paragraph>
           <div className={styles.links}>
-            <Link style={privacyLinkStyle} linkText="Privacy Policy" link="https://blog.kurby.ai" />
-            <Link style={privacyLinkStyle} linkText="Terms of Services" link="https://blog.kurby.ai" />
+            <Link style={privacyLinkStyle} linkText="Privacy Policy" link="https://blog.kurby.ai/privacy-policy/" />
+            <Link style={privacyLinkStyle} linkText="Terms of Services" link="https://blog.kurby.ai/terms-and-conditions/" />
           </div>
         </div>
       </div>
