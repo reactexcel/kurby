@@ -1,16 +1,20 @@
 import { useRecoilState } from "recoil";
 import { filterState } from "../../../context/filterContext";
 import NearbyPlaceCard from "./NearbyPlaceCard/NearbyPlaceCard";
-import { useMemo } from "react";
+import { useContext, useMemo, useEffect } from "react";
 import loadDirectionsApi from "./loadDirectionsApi";
-import { CircularProgress, Typography } from "@mui/material";
+import { CircularProgress, Typography, Dialog, DialogContent } from "@mui/material";
 import styles from "./Nearby.module.scss";
-import { useAuth } from "providers/AuthProvider";
 import { loadingContext } from "context/loadingContext";
 import { useRouter } from "next/router";
 import { nearbyContext } from "context/nearbyPlacesContext";
 import { Button } from "components/Button/Button";
 import { usePlanChecker } from "hooks/plans";
+import { nearbyPlacesCallCountContext } from "context/nearbyPlacesCallCountContext";
+import { DialogContext } from "context/limitDialogContext";
+import { nearbyPlacesCache } from "context/nearbyPlacesCacheContext";
+import { typesOfPlaceContext } from "context/typesOfPlaceContext";
+import { PlacesType } from "globals/GLOBAL_SETTINGS";
 
 async function loadDrivingDistance(place: any, origin: any): Promise<{ driving: any }> {
   try {
@@ -36,8 +40,12 @@ export default function Nearby() {
   const [filterVal] = useRecoilState(filterState);
   const [loading] = useRecoilState(loadingContext);
   const router = useRouter();
-  const [nearby] = useRecoilState(nearbyContext);
+  const [nearby, setNearby] = useRecoilState(nearbyContext);
   const { isGrowth, isPro } = usePlanChecker();
+  const [{ hasReachedLimit }] = useRecoilState(nearbyPlacesCallCountContext);
+  const { isOpen, setIsOpen } = useContext(DialogContext);
+  const [nearbyCache] = useRecoilState(nearbyPlacesCache);
+  const [typesOfPlace] = useRecoilState(typesOfPlaceContext);
 
   const nearbyPlaces = useMemo(
     () =>
@@ -46,6 +54,31 @@ export default function Nearby() {
       }),
     [nearby.places],
   );
+
+  useEffect(() => {
+    if (hasReachedLimit && !nearby.places.length) {
+      if (filterVal.address && filterVal.address in nearbyCache) {
+        const typesOfPlacesSnakeCase = typesOfPlace.map((type) => type.toLowerCase().replace(" ", "_"));
+
+        setNearby((prevState) => ({
+          ...prevState,
+          places: typesOfPlacesSnakeCase
+            .reduce((acc: any, type: string) => {
+              return [...acc, ...(nearbyCache[filterVal.address as string]?.[type as PlacesType] || [])];
+            }, [])
+            .filter((place) => place),
+        }));
+      }
+    }
+  }, [hasReachedLimit, nearbyCache, filterVal.address, typesOfPlace]);
+
+  if (hasReachedLimit && !nearby.places.length) {
+    return (
+      <div className={styles.main}>
+        <Typography>You’ve reached the monthly limit.</Typography>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.main}>
@@ -75,6 +108,14 @@ export default function Nearby() {
       ) : (
         <Typography>Please select a place of interest.</Typography>
       )}
+
+      <Dialog open={isOpen} onClose={() => setIsOpen(false)} className={styles.dialog}>
+        <DialogContent className={styles.dialogContent}>
+          <h2 className={styles.dialogTitle}>Monthly Limit Reached</h2>
+          You’ve reached the monthly limit.
+          <Button onClick={() => setIsOpen(false)}>Close</Button>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

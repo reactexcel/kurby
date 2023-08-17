@@ -1,4 +1,4 @@
-import { useEffect, useState, createContext, useRef, useContext } from "react";
+import { useEffect, useState, createContext, useContext } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useOutseta } from "hooks/use-outseta";
@@ -9,6 +9,8 @@ interface AuthContextType {
   openLoginSignup: () => void;
   openProfile: () => void;
   logout: () => void;
+  outsetaToken: string;
+  xanoToken: string;
 }
 
 const AuthContext = createContext({} as AuthContextType);
@@ -27,6 +29,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [status, setStatus] = useState("init");
   const [user, setUser] = useState<any>();
   const [outsetaToken, setOutsetaToken] = useState<string>("");
+  const [xanoToken, setXanoToken] = useState<string>("");
   const outsetaRef = useOutseta();
 
   const handleLogin = () => {
@@ -68,6 +71,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       if (!xanoToken) {
         getXanoToken(outsetaToken);
+      } else {
+        setXanoToken(xanoToken);
       }
     }
   }, [outsetaToken]);
@@ -83,6 +88,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     });
 
     sessionStorage.setItem("xanoToken", data.authToken);
+    setXanoToken(data.authToken);
   };
 
   const handleOutsetaUserEvents = (onEvent: any) => {
@@ -123,6 +129,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         logout,
         openLoginSignup,
         openProfile,
+        outsetaToken,
+        xanoToken,
       }}
     >
       {children}

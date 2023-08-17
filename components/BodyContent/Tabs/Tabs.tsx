@@ -48,16 +48,16 @@ export function Tabs() {
             Location
           </ToggleButton>
 
-          <ToggleButton className={styles.button} value="nearby">
-            Nearby
-          </ToggleButton>
-
           <ToggleButton className={styles.button} value="property">
             {filterVal.placeCategory === "address" ? "Property data" : "Properties"}
           </ToggleButton>
 
           <ToggleButton className={styles.button} value="neighborhood">
             Neighborhood
+          </ToggleButton>
+
+          <ToggleButton className={styles.button} value="nearby">
+            Nearby
           </ToggleButton>
         </ToggleButtonGroup>
 

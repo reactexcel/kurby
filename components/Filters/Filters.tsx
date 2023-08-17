@@ -2,7 +2,7 @@ import styles from "./Filters.module.scss";
 import Box from "@mui/material/Box";
 import Illustration from "../../public/icons/search.svg";
 import { SelectChangeEvent } from "@mui/material/Select";
-import { useState, useRef, useEffect, use } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import { useRecoilState } from "recoil";
 import { addressState, filterState } from "../../context/filterContext";
 import GLOBAL_SETTINGS, { PlacesType } from "../../globals/GLOBAL_SETTINGS";
@@ -18,7 +18,6 @@ import { LoginSignupButton } from "components/LoginSignupButton/LoginSignupButto
 import { mapClicksCounter, visitorStayLimit } from "context/visitorContext";
 import { usePersistentRecoilState } from "hooks/recoil-persist-state";
 import { useAuth } from "providers/AuthProvider";
-import { IAppPlans } from "context/plansContext";
 import { GetStarted } from "components/GetStartedPricing/GetStartedPricing";
 import { usePlanChecker } from "hooks/plans";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
@@ -27,6 +26,10 @@ import { activeTabState } from "context/activeTab";
 import { nearbyContext } from "context/nearbyPlacesContext";
 import { isEqual } from "lodash";
 import { nearbyPlacesCache } from "context/nearbyPlacesCacheContext";
+import { useNearbyPlacesCallCount } from "hooks/use-nearby-places-call-count";
+import { nearbyPlacesCallCountContext } from "context/nearbyPlacesCallCountContext";
+import { DialogContext } from "context/limitDialogContext";
+import { typesOfPlaceContext } from "context/typesOfPlaceContext";
 
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
@@ -60,9 +63,12 @@ export default function Filters() {
   const nearbyCallRef = useRef<string[]>(["School"]);
   const [nearbyCache, setNearbyCache] = useRecoilState(nearbyPlacesCache);
   const { user } = useAuth();
+  const { hasBeenCalled, incrementCallCount } = useNearbyPlacesCallCount();
+  const [{ hasReachedLimit }] = useRecoilState(nearbyPlacesCallCountContext);
+  const { setIsOpen } = useContext(DialogContext);
 
   //* State for the place select element
-  const [typesOfPlace, setTypesOfPlace] = useState<string[]>(["School"]);
+  const [typesOfPlace, setTypesOfPlace] = useRecoilState(typesOfPlaceContext);
 
   const router = useRouter();
 
@@ -111,6 +117,11 @@ export default function Filters() {
   };
 
   const getNearby = async ({ lat, lng }: { lat: number; lng: number }) => {
+    if (hasReachedLimit) {
+      setIsOpen(true);
+      return;
+    }
+
     try {
       //Verify that we have a latlong value before trying to search api
       if (!lat) return;
@@ -145,6 +156,7 @@ export default function Filters() {
           },
         };
         const nearbyLocations = await searchNearbyApi(searchNearbyPayload);
+        incrementCallCount(types.length);
 
         //* remove duplciates
         const noDups = nearbyLocations.filter((place: { reference: string }, index: any, array: any) => {
@@ -170,7 +182,6 @@ export default function Filters() {
 
       setNearby((prev) => ({
         ...prev,
-        address: filterVal.address || "",
         places: cachedPlaces ? [...cachedPlaces, ...goodPlaceListings] : goodPlaceListings,
       }));
 
@@ -223,7 +234,7 @@ export default function Filters() {
     //* this use effect only runs when the map center or type of place changes
     //* Searching a different place will change map center
     (async () => {
-      if (filterVal.mapCenter && activeTab === "nearby" && (!nearby.places.length || filterVal.address !== nearby.address)) {
+      if (filterVal.mapCenter && activeTab === "nearby" && (!nearby.places.length || filterVal.address !== nearby.address) && hasBeenCalled) {
         //* Retreive all of the nearby places
         await getNearby({
           lat: filterVal.mapCenter.lat,
@@ -231,7 +242,7 @@ export default function Filters() {
         });
       }
     })();
-  }, [filterVal.mapCenter, activeTab, filterVal.address]);
+  }, [filterVal.mapCenter, activeTab, filterVal.address, hasBeenCalled]);
 
   const handleAddressChange = async (place: any) => {
     const getScore = (address: string, location: any) => WalkscoreListApi({ address, location });
@@ -273,6 +284,10 @@ export default function Filters() {
       mapCenter: location,
       placeCategory,
       walkscore,
+    }));
+    setNearby(() => ({
+      address: place.formatted_address,
+      places: [],
     }));
   };
 
@@ -325,7 +340,7 @@ export default function Filters() {
     }
   }, [address]);
 
-  const { isVisitor, isFree } = usePlanChecker();
+  const { isVisitor, isFree, isGrowth, isPro } = usePlanChecker();
 
   const [visitorStayLimitLaunched] = usePersistentRecoilState("visitorStayLimit", visitorStayLimit);
   const visitorSearchLimit = isVisitor && searchLimit;
@@ -352,7 +367,7 @@ export default function Filters() {
           <input placeholder="Search Property Here" className={styles.input} type="text" ref={inputRef} />
         </div>
 
-        {activeTab === "nearby" && (
+        {activeTab === "nearby" && (isGrowth || isPro) && (
           <div className={styles.searchBlock}>
             <div className={styles.typeOfPlace}>
               <div className={styles.row}>
