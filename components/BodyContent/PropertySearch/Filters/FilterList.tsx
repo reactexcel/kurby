@@ -32,6 +32,7 @@ export function PropertyFilter() {
     setPropertyData({ results: true });
     const { data } = await axios.post<IPropertySearchResponse>("/api/propertyV2", {
       filters: { latitude: filterVal.mapCenter?.lat, longitude: filterVal.mapCenter?.lng, ...searchCriteria },
+      userToken: localStorage.getItem("Outseta.nocode.accessToken"),
     });
     setPropertyData({ results: data.data });
   };

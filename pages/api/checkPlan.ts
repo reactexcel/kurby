@@ -26,7 +26,7 @@ interface IUserTokenResponse {
   readonly iat: number;
 }
 
-export default async function checkProPlan(userToken: string): Promise<boolean | void> {
+export default async function checkPlan(userToken: string) {
   try {
     if (!userToken) {
       throw new Error("No user token provided.");
@@ -41,13 +41,14 @@ export default async function checkProPlan(userToken: string): Promise<boolean |
     if ((await client.user.profile.get()).Uid !== decoded.nameid) {
       throw new Error("This user is not valid.");
     }
+    const planId = decoded["outseta:planUid"];
 
-    const hasProPlan = decoded["outseta:planUid"] === IAppPlans.PROFESSIONAL_PLAN_UID;
-    if (!hasProPlan) {
-      throw new Error("User does not have a Pro plan.");
-    }
-
-    return true;
+    return {
+      isFree: planId === IAppPlans.FREE_PLAN_UID,
+      isStarter: planId === IAppPlans.STARTER_PLAN_UID,
+      isGrowth: planId === IAppPlans.GROWTH_PLAN_UID,
+      isPro: planId === IAppPlans.PROFESSIONAL_PLAN_UID,
+    };
   } catch (error) {
     // @ts-ignore
     throw new Error(error?.message || "Unexpected error.");
