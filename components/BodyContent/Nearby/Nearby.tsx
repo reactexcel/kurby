@@ -1,28 +1,22 @@
 import { useRecoilState } from "recoil";
 import { filterState } from "../../../context/filterContext";
-import NearbyPlaceCard from "./NearbyPlaceCard";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { useEffect, useState } from "react";
+import NearbyPlaceCard from "./NearbyPlaceCard/NearbyPlaceCard";
+import { useContext, useMemo, useEffect } from "react";
 import loadDirectionsApi from "./loadDirectionsApi";
-import { Box, Typography } from "@mui/material";
+import { CircularProgress, Typography, Dialog, DialogContent } from "@mui/material";
+import styles from "./Nearby.module.scss";
+import { loadingContext } from "context/loadingContext";
+import { useRouter } from "next/router";
+import { nearbyContext } from "context/nearbyPlacesContext";
+import { Button } from "components/Button/Button";
+import { usePlanChecker } from "hooks/plans";
+import { nearbyPlacesCallCountContext } from "context/nearbyPlacesCallCountContext";
+import { DialogContext } from "context/limitDialogContext";
+import { nearbyPlacesCache } from "context/nearbyPlacesCacheContext";
+import { typesOfPlaceContext } from "context/typesOfPlaceContext";
+import { PlacesType } from "globals/GLOBAL_SETTINGS";
 
-async function prepareLoadedPlaces(places: any[], currentCenter: { lat: number; lng: number } | null): Promise<any[]> {
-  if (!places || !places.length) {
-    return [];
-  }
-  const resolved = await Promise.all(
-    places.map(async (place) => {
-      return {
-        ...place,
-        ...(await loadDirections(place, currentCenter)),
-      };
-    }),
-  );
-
-  return resolved;
-}
-
-async function loadDirections(place: any, origin: any): Promise<{ walking: any; driving: any; biclycling: any }> {
+async function loadDrivingDistance(place: any, origin: any): Promise<{ driving: any }> {
   try {
     return await loadDirectionsApi({
       origin,
@@ -33,11 +27,9 @@ async function loadDirections(place: any, origin: any): Promise<{ walking: any; 
     });
   } catch (e) {
     console.error(e);
-    return { walking: null, driving: null, biclycling: null };
+    return { driving: null };
   }
 }
-
-const PAGE_SIZE = 5;
 
 /**
  * Nearby
@@ -46,51 +38,84 @@ const PAGE_SIZE = 5;
 
 export default function Nearby() {
   const [filterVal] = useRecoilState(filterState);
-  const [loadedNearbyPlaces, setLoadedNearbyPlaces] = useState([]);
-  const fetchMoreData = () => {
-    setTimeout(async () => {
-      const newPlaces = filterVal.nearbyPlaces.slice(loadedNearbyPlaces.length, loadedNearbyPlaces.length + PAGE_SIZE);
-      const updatedPlaces: any = await prepareLoadedPlaces(newPlaces, filterVal.mapCenter);
+  const [loading] = useRecoilState(loadingContext);
+  const router = useRouter();
+  const [nearby, setNearby] = useRecoilState(nearbyContext);
+  const { isGrowth, isPro } = usePlanChecker();
+  const [{ hasReachedLimit }] = useRecoilState(nearbyPlacesCallCountContext);
+  const { isOpen, setIsOpen } = useContext(DialogContext);
+  const [nearbyCache] = useRecoilState(nearbyPlacesCache);
+  const [typesOfPlace] = useRecoilState(typesOfPlaceContext);
 
-      setLoadedNearbyPlaces(loadedNearbyPlaces.concat(updatedPlaces));
-    }, 1000);
-  };
-
-  //TODO verify that this doesn't run fetchMoreData if there is no places
-  if (!loadedNearbyPlaces.length) {
-    fetchMoreData();
-  }
+  const nearbyPlaces = useMemo(
+    () =>
+      nearby.places.map((place: any, index) => {
+        return <NearbyPlaceCard key={`placecard_${place.place_id}_${index}`} place={place} loadDrivingDistance={() => loadDrivingDistance(place, filterVal.mapCenter)} />;
+      }),
+    [nearby.places],
+  );
 
   useEffect(() => {
-    setLoadedNearbyPlaces([]);
-  }, [filterVal.nearbyPlaces]);
+    if (hasReachedLimit && !nearby.places.length) {
+      if (filterVal.address && filterVal.address in nearbyCache) {
+        const typesOfPlacesSnakeCase = typesOfPlace.map((type) => type.toLowerCase().replace(" ", "_"));
+
+        setNearby((prevState) => ({
+          ...prevState,
+          places: typesOfPlacesSnakeCase
+            .reduce((acc: any, type: string) => {
+              return [...acc, ...(nearbyCache[filterVal.address as string]?.[type as PlacesType] || [])];
+            }, [])
+            .filter((place) => place),
+        }));
+      }
+    }
+  }, [hasReachedLimit, nearbyCache, filterVal.address, typesOfPlace]);
+
+  if (hasReachedLimit && !nearby.places.length) {
+    return (
+      <div className={styles.main}>
+        <Typography>You’ve reached the monthly limit.</Typography>
+      </div>
+    );
+  }
 
   return (
-    <>
-      <Box style={{ height: "100%", width: "100%", position: "relative", marginTop: "24px" }}>
-        {filterVal.nearbyPlaces.length ? (
-          <InfiniteScroll
-            style={{ overflow: "auto", height: "100%", width: "100", position: "absolute" }}
-            dataLength={loadedNearbyPlaces.length} //This is important field to render the next data
-            // Pass setFilterV as an argument to loadMore
-            next={fetchMoreData}
-            hasMore={filterVal.nearbyPlaces.length - loadedNearbyPlaces.length !== 0}
-            loader={<h4>Loading...</h4>}
-            height="100%"
-            endMessage={
-              <p style={{ textAlign: "center" }}>
-                <b>Yay! You have seen it all</b>
-              </p>
-            }
-          >
-            {loadedNearbyPlaces.map((place: any) => {
-              return <NearbyPlaceCard key={`placecard_${place.place_id}`} place={place} />;
-            })}
-          </InfiniteScroll>
-        ) : (
-          <Typography>Please select a place of interest.</Typography>
-        )}
-      </Box>
-    </>
+    <div className={styles.main}>
+      {loading.nearby || !nearbyPlaces.length ? (
+        <div className={styles.loader}>
+          <CircularProgress />
+        </div>
+      ) : nearby.places.length ? (
+        <>
+          {isGrowth || isPro ? (
+            nearbyPlaces
+          ) : (
+            <>
+              {nearbyPlaces[0]}
+              <div className={styles.signUpNoteWrapper}>
+                {nearbyPlaces[1]}
+                {nearbyPlaces[2]}
+                <div className={styles.signUpNote}>
+                  <h2>Sign Up</h2>
+                  <p>Sign Up for a paid account to see 60 top-rated schools, hospitals, parks, grocery stores, and attractions within a 2-mile radius</p>
+                  <Button onClick={() => router.push("/?openLoginSignup=true")}>Get Started</Button>
+                </div>
+              </div>
+            </>
+          )}
+        </>
+      ) : (
+        <Typography>Please select a place of interest.</Typography>
+      )}
+
+      <Dialog open={isOpen} onClose={() => setIsOpen(false)} className={styles.dialog}>
+        <DialogContent className={styles.dialogContent}>
+          <h2 className={styles.dialogTitle}>Monthly Limit Reached</h2>
+          You’ve reached the monthly limit.
+          <Button onClick={() => setIsOpen(false)}>Close</Button>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }

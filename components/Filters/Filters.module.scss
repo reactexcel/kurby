@@ -1,3 +1,5 @@
+@import "../../styles/media.scss";
+
 .container {
   background-color: #f1f4f6;
   border-radius: 14px;
@@ -7,6 +9,12 @@
   width: 100%;
   margin-bottom: 25px;
   box-sizing: border-box;
+
+  @include mq-phone-only {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
 }
 
 .filters-row {
@@ -56,20 +64,17 @@
   display: flex;
   width: 25%;
   border-radius: 10px;
-  margin-bottom: 14px;
+
+  @include mq-phone-only {
+    width: 100%;
+    background-color: #9e9e9e1a;
+  }
 }
 
 .blockDistance {
   width: 60%;
   border-right: 1px solid rgba(135, 135, 135, 0.5);
   padding-right: 50px;
-}
-
-.row {
-  display: flex;
-  place-content: center space-between;
-  align-items: center;
-  height: 30px;
 }
 
 .label {
@@ -140,4 +145,14 @@
 
 .dialog {
   top: 30% !important;
+}
+
+.formControl {
+  & fieldset {
+    border: none;
+  }
+}
+
+.inputLabel {
+  text-align: center;
 }

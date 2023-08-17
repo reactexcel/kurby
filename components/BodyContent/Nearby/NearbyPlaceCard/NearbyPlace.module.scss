@@ -1,0 +1,95 @@
+@import "../../../../styles/media.scss";
+
+.main {
+  padding: 20px;
+  border: 1px solid rgba(38, 75, 92, 0.2);
+  box-shadow: 0 4px 4px #00000040;
+  border-radius: 14px;
+  margin-bottom: 25px;
+}
+
+.image {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 10px;
+  margin-right: 16px;
+  width: 200px;
+  object-fit: cover;
+}
+
+.distance {
+  background-color: #bebebe1a;
+  min-width: 190px;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.container {
+  display: flex;
+  gap: 0.5rem;
+
+  @include mq-tablet-landscape--down {
+    width: 100%;
+    flex-direction: column;
+
+    > * {
+      width: 100%;
+      max-width: none !important;
+    }
+  }
+}
+
+.rating {
+  display: flex;
+  padding-top: 12px;
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+
+  @include mq-tablet-landscape--down {
+    flex-direction: column;
+  }
+}
+
+.drivingDistanceButton {
+  display: flex;
+  height: fit-content;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0rem 0.5rem;
+  width: fit-content;
+
+  &:hover {
+    background-color: #00a13d;
+    color: #ffffff;
+  }
+}
+
+.icon {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.loader {
+  width: 1.75rem !important;
+  height: 1.75rem !important;
+  color: #ffffff !important;
+}
+
+.placeholderIconWrapper {
+  width: 200px;
+  height: 200px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  svg {
+    width: 100px;
+    height: 100px;
+  }
+}
