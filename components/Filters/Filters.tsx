@@ -313,7 +313,7 @@ export default function Filters() {
           </div>
         </div> */}
         {showDialog && (
-          <Dialog open className={styles.dialog}>
+          <Dialog style={{ zIndex: 90000 }} open className={styles.dialog}>
             <h2 className={styles.dialogTitle}>Daily {(searchLimit && "Search") || ""} Limit Reached</h2>
             {isFree ? (
               <DialogContent className={styles.dialogContent}>
