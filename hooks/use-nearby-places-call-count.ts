@@ -113,6 +113,9 @@ export const useNearbyPlacesCallCount = () => {
           hasReachedLimit: handleLimit(response.data.used_count),
           callCount: response.data.used_count,
         }));
+      }
+
+      if (activeTab === "nearby") {
         setIsCalled(true);
       }
     })();
