@@ -185,13 +185,14 @@ class PropertySearchApiV2 {
 
   async getPropertiesByFilters({ latitude, longitude, forSale, bedsFilter, homeFilter, priceFilter, moreFilter }: IFilterSearchProps) {
     const parseHomeType = (property_type: IFilterSearchProps["homeFilter"]) => {
-      if (property_type.houses) return "SFR";
-      if (property_type.multiFamily) return "MFR";
-      if (property_type.lotsLands) return "LAND";
-      if (property_type.condosCoOps) return "CONDO";
-      if (property_type.mobile) return "MOBILE";
+      const types = [];
 
-      return "OTHER";
+      if (property_type.houses) types.push("SFR");
+      if (property_type.multiFamily) types.push("MFR");
+      if (property_type.lotsLands) types.push("LAND");
+      if (property_type.condosCoOps) types.push("CONDO");
+      if (property_type.mobile) types.push("MOBILE");
+      return types.map((home) => ({ property_type: home }));
     };
 
     const now = DateTime.now();
@@ -234,8 +235,7 @@ class PropertySearchApiV2 {
       beds_max: 5,
       baths_min: bedsFilter?.bathrooms,
       baths_max: 4,
-      // Home Type Filter:
-      property_type: homeFilter && parseHomeType(homeFilter),
+
       // More Filter
       auction: moreFilter?.auction,
       pre_foreclosure: moreFilter?.preForeclosure,
@@ -306,7 +306,11 @@ class PropertySearchApiV2 {
         mls_pending: false,
         mls_cancelled: false,
       }),
+      // Home Type Filter:
+      ...(homeFilter && { or: parseHomeType(homeFilter) }),
     };
+
+    console.log(filter);
 
     let config = {
       method: "post",

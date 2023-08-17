@@ -25,30 +25,24 @@ const HomeTypeContents = () => {
         createdAt: new Date(),
         isFilterApplied: false,
       },
-      houses: false,
-      townHouse: false,
-      multiFamily: false,
-      condosCoOps: false,
-      lotsLands: false,
-      apartment: false,
-      mobile: false,
       // @ts-ignore
       [id]: !filter[id],
     });
   };
 
-  // const handleSelectAll = () => {
-  //   setFilter((prevState) => ({
-  //     ...prevState,
-  //     houses: true,
-  //     townHouse: true,
-  //     multiFamily: true,
-  //     condosCoOps: true,
-  //     lotsLands: true,
-  //     apartment: true,
-  //     manufactured: true,
-  //   }));
-  // };
+  const handleSelectAll = () => {
+    setFilter((prevState) => ({
+      ...prevState,
+      houses: true,
+      townHouse: true,
+      multiFamily: true,
+      condosCoOps: true,
+      lotsLands: true,
+      apartment: true,
+      manufactured: true,
+      mobile: true,
+    }));
+  };
 
   const { isFilterApplied } = filter.__meta__;
 
@@ -66,35 +60,37 @@ const HomeTypeContents = () => {
     }));
   };
 
+  const { __meta__, ...fields } = filter;
+
   return (
     <div>
-      {/* <FilterRadioOption id={"sold"} onSelect={() => handleSelectAll()} isSelected={Object.values(filterFields).every((field) => field === true)}>
+      <FilterRadioOption id={"sold"} onSelect={() => handleSelectAll()} isSelected={Object.values(fields).every((field) => field === true)}>
         All
-      </FilterRadioOption> */}
-      <FilterRadioOption id={"for_sale"} onSelect={() => handleSelect("houses")} isSelected={filter.houses}>
+      </FilterRadioOption>
+      <FilterCheckboxOption id={"for_sale"} onSelect={() => handleSelect("houses")} isSelected={filter.houses}>
         Houses
-      </FilterRadioOption>
+      </FilterCheckboxOption>
 
-      <FilterRadioOption id={"off_market"} onSelect={() => handleSelect("townHouse")} isSelected={filter.townHouse}>
+      <FilterCheckboxOption id={"off_market"} onSelect={() => handleSelect("townHouse")} isSelected={filter.townHouse}>
         Town House
-      </FilterRadioOption>
+      </FilterCheckboxOption>
 
-      <FilterRadioOption id={"multiFamily"} onSelect={() => handleSelect("multiFamily")} isSelected={filter.multiFamily}>
+      <FilterCheckboxOption id={"multiFamily"} onSelect={() => handleSelect("multiFamily")} isSelected={filter.multiFamily}>
         Multi family
-      </FilterRadioOption>
+      </FilterCheckboxOption>
 
-      <FilterRadioOption id={"condosCoOps"} onSelect={() => handleSelect("condosCoOps")} isSelected={filter.condosCoOps}>
+      <FilterCheckboxOption id={"condosCoOps"} onSelect={() => handleSelect("condosCoOps")} isSelected={filter.condosCoOps}>
         Condos/co-ops
-      </FilterRadioOption>
-      <FilterRadioOption id={"lotsLands"} onSelect={() => handleSelect("lotsLands")} isSelected={filter.lotsLands}>
+      </FilterCheckboxOption>
+      <FilterCheckboxOption id={"lotsLands"} onSelect={() => handleSelect("lotsLands")} isSelected={filter.lotsLands}>
         Lots/land
-      </FilterRadioOption>
-      <FilterRadioOption id={"apartment"} onSelect={() => handleSelect("apartment")} isSelected={filter.apartment}>
+      </FilterCheckboxOption>
+      <FilterCheckboxOption id={"apartment"} onSelect={() => handleSelect("apartment")} isSelected={filter.apartment}>
         Apartment
-      </FilterRadioOption>
-      <FilterRadioOption id={"mobile"} onSelect={() => handleSelect("mobile")} isSelected={filter.mobile}>
+      </FilterCheckboxOption>
+      <FilterCheckboxOption id={"mobile"} onSelect={() => handleSelect("mobile")} isSelected={filter.mobile}>
         Mobile
-      </FilterRadioOption>
+      </FilterCheckboxOption>
       {Object.values(filter).some((field) => field === true) && (
         <Button variant={isFilterApplied ? "outlined" : "filled"} onClick={handleApply} className={styles.buttonWrapper}>
           {isFilterApplied ? "Applied" : "Apply"}
