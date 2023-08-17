@@ -20,7 +20,7 @@ export default function CityStatePropertiesFilters() {
 
   return (
     <TabLayout className={styles.tabLayout}>
-      {!isGrowth && !isPro && <KurbyPaidPlanLimit type={TabLimitMessage.PROPERTY_DATA_TAB_STARTER} />}
+      {!isGrowth && !isPro && <KurbyPaidPlanLimit type={TabLimitMessage.FILTERS} />}
       <PropertyFilter />
       {Array.isArray(propertyData.results) && <Properties />}
       {!propertyData.results && (
