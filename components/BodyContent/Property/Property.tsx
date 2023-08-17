@@ -73,13 +73,6 @@ export default function Property() {
       return;
     }
 
-    if (isGrowth) {
-      setLoading(true);
-      preparePropertyV2Data();
-
-      return;
-    }
-
     if (isNotLoaded) {
       setLoading(true);
       preparePropertyV2Data();
