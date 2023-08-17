@@ -19,9 +19,9 @@ export const useNearbyPlacesCallCount = () => {
   const handleLimit = useCallback(
     (count: number) => {
       if (isGrowth) {
-        return count >= 20;
+        return count >= 300;
       } else if (isPro) {
-        return count >= 40;
+        return count >= 600;
       }
 
       return false;
