@@ -27,6 +27,8 @@ export function Tabs() {
     }
   };
 
+  console.log("render");
+
   const PropertySceneManager = () => {
     if (filterVal.placeCategory === "address") {
       return <Property />;
