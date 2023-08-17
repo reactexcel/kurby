@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
-import checkProPlan from "./checkProPlan";
+import checkPlan from "./checkPlan";
+import { rateLimiter } from "./rateLimiter";
 
 export interface IPropertyDetailResponse {
   readonly input: IPropertyDetailSearchInput;
@@ -384,7 +385,9 @@ export const createPropertyDetailApi = () => {
 };
 
 export default async function handler(request: NextApiRequest, res: NextApiResponse) {
-  const isPro = await checkProPlan(request.body.userToken);
+  if (!rateLimiter(request, res)) return;
+
+  const { isPro } = await checkPlan(request.body.userToken);
 
   if (!isPro) {
     return res.status(401).send(

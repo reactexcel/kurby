@@ -41,7 +41,7 @@ export default function Property() {
   const [loading, setLoading] = useState<boolean>(isNotLoaded);
   const [isTabAvailable] = useRecoilState(propertyDetailAvailable);
 
-  const { isFree, isStarter, isGrowth } = usePlanChecker();
+  const { isFree, isStarter } = usePlanChecker();
   // const { explainedLikeAlocal } = useOpenAi();
 
   useEffect(() => {

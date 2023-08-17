@@ -1,6 +1,6 @@
 import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
-import checkProPlan from "./checkProPlan";
+import checkProPlan from "./checkPlan";
 import { IPropertySearchResponse } from "./propertyV2";
 
 class PropGptAPI {
