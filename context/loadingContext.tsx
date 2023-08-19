@@ -10,6 +10,7 @@ interface LoadingState {
       redFlags: boolean;
     };
     neighborhood: boolean;
+    nearby: boolean;
   };
 }
 
@@ -23,6 +24,7 @@ const loadingState: LoadingState = {
       redFlags: true,
     },
     neighborhood: true,
+    nearby: true,
   },
 };
 

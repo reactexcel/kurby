@@ -1,5 +1,5 @@
 import GLOBAL_SETTINGS from "../../globals/GLOBAL_SETTINGS";
-const { MILES_TO_METERS, MAP_ZOOM_MILES, PLACE_TYPES } = GLOBAL_SETTINGS;
+const { MILES_TO_METERS, MAP_ZOOM_MILES } = GLOBAL_SETTINGS;
 //TODO make this file typesafe
 
 interface searchNearbyParams {
@@ -13,12 +13,12 @@ interface searchNearbyParams {
   };
 }
 
-export default async ({ request, typesOfPlace }: searchNearbyParams) => {
+export const searchNearbyApi = async ({ request, typesOfPlace }: searchNearbyParams) => {
   const { location } = request;
 
   if (!typesOfPlace.length) return [];
   const getNearbyPlace = async (req: any) => {
-    const response = await await fetch(`/api/nearby`, {
+    const response = await fetch(`/api/nearby`, {
       method: "POST",
       body: JSON.stringify({ ...req }),
       headers: {

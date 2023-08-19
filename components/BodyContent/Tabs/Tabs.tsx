@@ -55,6 +55,10 @@ export function Tabs() {
           <ToggleButton className={styles.button} value="neighborhood">
             Neighborhood
           </ToggleButton>
+
+          <ToggleButton className={styles.button} value="nearby">
+            Nearby
+          </ToggleButton>
         </ToggleButtonGroup>
 
         {!searchLimit && (

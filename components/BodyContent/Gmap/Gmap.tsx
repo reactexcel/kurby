@@ -18,6 +18,7 @@ import { usePersistentRecoilState } from "hooks/recoil-persist-state";
 import { useAuth } from "providers/AuthProvider";
 import { IAppPlans } from "context/plansContext";
 import { usePlanChecker } from "hooks/plans";
+import { nearbyContext } from "context/nearbyPlacesContext";
 
 /**
  * Gmap
@@ -83,6 +84,7 @@ function MyComponent() {
 
   const [filterVal, setFilterVal] = useRecoilState(filterState);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [nearby] = useRecoilState(nearbyContext);
 
   const [value] = useRecoilState(feature);
   const [metricsTooltip, setMetricsTooltip] = useState<IMetricsTooltipState | undefined>();
@@ -238,9 +240,9 @@ function MyComponent() {
 
   //* Get the place markers and icons for them
   const placesMarkers = React.useMemo((): any[] => {
-    if (!filterVal.nearbyPlaces?.length) return [];
+    if (!nearby.places.length) return [];
 
-    return filterVal.nearbyPlaces.reduce((a, place) => {
+    return nearby.places.reduce((a, place) => {
       if (!place || !place?.geometry || !place.geometry.location) return a;
 
       const icon = {
@@ -262,10 +264,10 @@ function MyComponent() {
       a.push(marker);
       return a;
     }, []);
-  }, [filterVal.nearbyPlaces]);
+  }, [nearby.places]);
 
   if (!isLoaded) {
-    return <div>Map error</div>;
+    return <div>Error</div>;
   }
 
   return (

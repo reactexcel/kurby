@@ -2,29 +2,48 @@ import styles from "./Filters.module.scss";
 import Box from "@mui/material/Box";
 import Illustration from "../../public/icons/search.svg";
 import { SelectChangeEvent } from "@mui/material/Select";
-import { useState, useRef, useEffect, use } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import { useRecoilState } from "recoil";
 import { addressState, filterState } from "../../context/filterContext";
-import GLOBAL_SETTINGS from "../../globals/GLOBAL_SETTINGS";
-import searchNearbyApi from "./searchNearbyApi";
+import GLOBAL_SETTINGS, { PlacesType } from "../../globals/GLOBAL_SETTINGS";
+import { searchNearbyApi } from "./searchNearbyApi";
 import WalkscoreListApi from "../BodyContent/Walkscore/WalkscoreListApi";
 import snackbarContext from "../../context/snackbarContext";
 import { useRouter } from "next/router";
 import { addressToUrl } from "utils/address";
 import { loadingContext } from "context/loadingContext";
 import { useSearchCounter } from "hooks/use-search-counter";
-import { Dialog, DialogContent } from "@mui/material";
+import { Checkbox, Dialog, DialogContent, FormControl, ListItemText, MenuItem, Select } from "@mui/material";
 import { LoginSignupButton } from "components/LoginSignupButton/LoginSignupButton";
 import { mapClicksCounter, visitorStayLimit } from "context/visitorContext";
 import { usePersistentRecoilState } from "hooks/recoil-persist-state";
 import { useAuth } from "providers/AuthProvider";
-import { IAppPlans } from "context/plansContext";
 import { GetStarted } from "components/GetStartedPricing/GetStartedPricing";
 import { usePlanChecker } from "hooks/plans";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
+import { activeTabState } from "context/activeTab";
+import { nearbyContext } from "context/nearbyPlacesContext";
+import { isEqual } from "lodash";
+import { nearbyPlacesCache } from "context/nearbyPlacesCacheContext";
+import { useNearbyPlacesCallCount } from "hooks/use-nearby-places-call-count";
+import { nearbyPlacesCallCountContext } from "context/nearbyPlacesCallCountContext";
+import { DialogContext } from "context/limitDialogContext";
+import { typesOfPlaceContext } from "context/typesOfPlaceContext";
 
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
 const { MILES_TO_METERS, MAP_ZOOM_MILES, PLACE_TYPES } = GLOBAL_SETTINGS;
+const SELECT_INPUT_DROPDOWN_HEIGHT = 100;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: SELECT_INPUT_DROPDOWN_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 /**
  * Filters
@@ -33,16 +52,23 @@ const { MILES_TO_METERS, MAP_ZOOM_MILES, PLACE_TYPES } = GLOBAL_SETTINGS;
 
 export default function Filters() {
   //* Use global state management
-  const [, setFilterVal] = useRecoilState(filterState);
+  const [filterVal, setFilterVal] = useRecoilState(filterState);
+  const [activeTab] = useRecoilState(activeTabState);
   const [address] = useRecoilState(addressState);
   const [, setSnackbar] = useRecoilState(snackbarContext);
   const [isSelectAll, setSelectAll] = useState<boolean>(true);
   const [, setLoading] = useRecoilState(loadingContext);
-  const { incrementCounter } = useSearchCounter();
-  const { searchLimit } = useSearchCounter();
+  const { searchLimit, incrementCounter } = useSearchCounter();
+  const [nearby, setNearby] = useRecoilState(nearbyContext);
+  const nearbyCallRef = useRef<string[]>(["School"]);
+  const [nearbyCache, setNearbyCache] = useRecoilState(nearbyPlacesCache);
+  const { user } = useAuth();
+  const { hasBeenCalled, incrementCallCount } = useNearbyPlacesCallCount();
+  const [{ hasReachedLimit }] = useRecoilState(nearbyPlacesCallCountContext);
+  const { setIsOpen } = useContext(DialogContext);
 
   //* State for the place select element
-  const [typesOfPlace, setTypesOfPlace] = useState<any[]>(PLACE_TYPES);
+  const [typesOfPlace, setTypesOfPlace] = useRecoilState(typesOfPlaceContext);
 
   const router = useRouter();
 
@@ -69,58 +95,121 @@ export default function Filters() {
       target: { value },
     } = event;
 
-    setTypesOfPlace(value as any[]);
+    if (!user) {
+      return;
+    } else {
+      setTypesOfPlace(typeof value === "string" ? [value] : value.sort());
+    }
 
     //* If not all are selected show the 'select all' option
     const allItemsSelected = value.length == PLACE_TYPES.length;
     setSelectAll(allItemsSelected);
   };
 
+  const handleClose = async () => {
+    if (typesOfPlace.length && filterVal.mapCenter && !isEqual(nearbyCallRef.current, typesOfPlace)) {
+      await getNearby({
+        lat: filterVal.mapCenter?.lat,
+        lng: filterVal.mapCenter?.lng,
+      });
+      nearbyCallRef.current = typesOfPlace;
+    }
+  };
+
   const getNearby = async ({ lat, lng }: { lat: number; lng: number }) => {
+    if (hasReachedLimit) {
+      setIsOpen(true);
+      return;
+    }
+
     try {
       //Verify that we have a latlong value before trying to search api
       if (!lat) return;
 
-      const searchNearbyPayload = {
-        typesOfPlace,
-        request: {
-          location: {
-            lat,
-            lng,
+      setLoading((prev) => ({
+        ...prev,
+        nearby: true,
+      }));
+
+      const typesOfPlacesSnakeCase = typesOfPlace.map((type) => type.toLowerCase().replace(" ", "_"));
+      let types: string[] = [];
+
+      if (nearbyCache[filterVal.address as string]) {
+        const keys = Object.keys(nearbyCache[filterVal.address as string]);
+
+        types = typesOfPlacesSnakeCase.filter((type) => !keys.includes(type));
+      } else {
+        types = typesOfPlacesSnakeCase;
+      }
+
+      let goodPlaceListings: any[] = [];
+
+      if (types.length) {
+        const searchNearbyPayload = {
+          typesOfPlace: types,
+          request: {
+            location: {
+              lat,
+              lng,
+            },
+            radius: MILES_TO_METERS(MAP_ZOOM_MILES),
           },
-          radius: MILES_TO_METERS(MAP_ZOOM_MILES),
-        },
-      };
-      const nearbyLocations = await searchNearbyApi(searchNearbyPayload);
-
-      //* remove duplciates
-      const noDups = nearbyLocations.filter((place: { reference: string }, index: any, array: any) => {
-        return index === array.findIndex((x: any) => place.reference === x.reference);
-      });
-
-      //*filter out certain data / incorrect info
-      const goodPlaceListings = noDups.filter((place: any) => {
-        const operational = "OPERATIONAL";
-
-        const isNotLocality = !place.types.includes("locality");
-        const isOpen = place.business_status === operational;
-
-        return isNotLocality && isOpen;
-      });
-
-      setFilterVal((prevVal: any) => {
-        //TODO save old nearby locations to prevent repeat requests
-
-        return {
-          ...prevVal,
-
-          nearbyPlaces: goodPlaceListings,
         };
-      });
+        const nearbyLocations = await searchNearbyApi(searchNearbyPayload);
+        incrementCallCount(types.length);
+
+        //* remove duplciates
+        const noDups = nearbyLocations.filter((place: { reference: string }, index: any, array: any) => {
+          return index === array.findIndex((x: any) => place.reference === x.reference);
+        });
+
+        //*filter out certain data / incorrect info
+        goodPlaceListings = noDups.filter((place: any) => {
+          const operational = "OPERATIONAL";
+
+          const isNotLocality = !place.types.includes("locality");
+          const isOpen = place.business_status === operational;
+
+          return isNotLocality && isOpen;
+        });
+      }
+
+      const cachedPlaces = typesOfPlacesSnakeCase
+        .reduce((acc: any, type: string) => {
+          return [...acc, ...(nearbyCache[filterVal.address as string]?.[type as PlacesType] || [])];
+        }, [])
+        .filter((place) => place);
+
+      setNearby((prev) => ({
+        ...prev,
+        places: cachedPlaces ? [...cachedPlaces, ...goodPlaceListings] : goodPlaceListings,
+      }));
+
+      setNearbyCache((prevState) => ({
+        ...prevState,
+        [filterVal.address as string]: {
+          ...prevState[filterVal.address as string],
+          ...goodPlaceListings.reduce((acc: any, place: any) => {
+            if (place._type) {
+              return {
+                ...acc,
+                [place._type]: [...(acc[place._type] || []), place],
+              };
+            } else {
+              return acc;
+            }
+          }, {}),
+        },
+      }));
     } catch (error) {
       //TODO error handling - errors should be displayed to end user
       console.error(error);
     }
+
+    setLoading((prev) => ({
+      ...prev,
+      nearby: false,
+    }));
   };
 
   const handleToggleAll = () => {
@@ -133,20 +222,6 @@ export default function Filters() {
     }
   };
 
-  // Commented "Nearby places"
-  // useEffect(() => {
-  //   //* this use effect only runs when the map center or type of place changes
-  //   //* Searching a different place will change map center
-  //   (async () => {
-  //     if (!filterVal.mapCenter) return;
-  //     //* Retreive all of the nearby places
-  //     await getNearby({
-  //       lat: filterVal.mapCenter.lat,
-  //       lng: filterVal.mapCenter.lng,
-  //     });
-
-  //   })()
-  // }, [filterVal.mapCenter, typesOfPlace]);
   const getPlaceCategory = (addressComponents: any[]) => {
     const hasLocality = addressComponents.some((component) => component.types.includes("locality"));
     const hasStreetNumber = addressComponents.some((component) => component.types.includes("street_number"));
@@ -154,6 +229,20 @@ export default function Filters() {
     if (hasLocality) return "city";
     return "";
   };
+
+  useEffect(() => {
+    //* this use effect only runs when the map center or type of place changes
+    //* Searching a different place will change map center
+    (async () => {
+      if (filterVal.mapCenter && activeTab === "nearby" && (!nearby.places.length || filterVal.address !== nearby.address) && hasBeenCalled) {
+        //* Retreive all of the nearby places
+        await getNearby({
+          lat: filterVal.mapCenter.lat,
+          lng: filterVal.mapCenter.lng,
+        });
+      }
+    })();
+  }, [filterVal.mapCenter, activeTab, filterVal.address, hasBeenCalled]);
 
   const handleAddressChange = async (place: any) => {
     const getScore = (address: string, location: any) => WalkscoreListApi({ address, location });
@@ -196,24 +285,27 @@ export default function Filters() {
       placeCategory,
       walkscore,
     }));
+    setNearby(() => ({
+      address: place.formatted_address,
+      places: [],
+    }));
   };
 
   useEffect(() => {
     //* This use effect runs on component render
     //* Check that input ref exists before proceeding
-    if (!inputRef.current) {
-      return;
-    }
-    //* init the autocomplete for searching addresses
-    autoCompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current, AUTOCOMPLETE_OPTIONS);
-    //* When the location changes, update the state
+    if (inputRef.current) {
+      //* init the autocomplete for searching addresses
+      autoCompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current, AUTOCOMPLETE_OPTIONS);
+      //* When the location changes, update the state
 
-    autoCompleteRef.current.addListener("place_changed", async function () {
-      //TODO handle error and display it to the client
-      const place = await autoCompleteRef.current.getPlace();
-      const encodedAddress = addressToUrl(place.formatted_address);
-      router.push(`/app/${encodedAddress}`);
-    });
+      autoCompleteRef.current.addListener("place_changed", async function () {
+        //TODO handle error and display it to the client
+        const place = await autoCompleteRef.current?.getPlace();
+        const encodedAddress = addressToUrl(place.formatted_address);
+        router.push(`/app/${encodedAddress}`);
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -248,8 +340,7 @@ export default function Filters() {
     }
   }, [address]);
 
-  const { user } = useAuth();
-  const { isVisitor, isFree } = usePlanChecker();
+  const { isVisitor, isFree, isGrowth, isPro } = usePlanChecker();
 
   const [visitorStayLimitLaunched] = usePersistentRecoilState("visitorStayLimit", visitorStayLimit);
   const visitorSearchLimit = isVisitor && searchLimit;
@@ -276,42 +367,42 @@ export default function Filters() {
           <input placeholder="Search Property Here" className={styles.input} type="text" ref={inputRef} />
         </div>
 
-        {/* <div className={styles.searchBlock}>
-          <div className={styles.typeOfPlace}>
-            <div className={styles.row}>
-              <div className={styles.label}>Places of interest</div>
-            </div>
-            <div className={styles.row} style={{ marginTop: "6px" }}>
-              <form style={{ width: "100%" }}>
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label"></InputLabel>
-                  <Select
-                    id="demo-multiple-checkbox"
-                    multiple
-                    value={typesOfPlace}
-                    onChange={handleSelectChange}
-                    renderValue={(selected) => `Places of Interest (${selected.length})`}
-                    MenuProps={MenuProps}
-                    style={{ fontSize: "16px" }}
-                    autoWidth={true}
-                    label=""
-                  >
-                    <MenuItem key="toggleAll" style={{ padding: "0px" }} onClick={handleToggleAll}>
-                      <Checkbox icon={<RadioButtonUncheckedIcon />} checkedIcon={<RadioButtonCheckedIcon />} onChange={handleToggleAll} checked={isSelectAll} />
-                      <ListItemText primary={isSelectAll ? "Deselect All" : "Select All"} />
-                    </MenuItem>
-                    {PLACE_TYPES.map((name) => (
-                      <MenuItem key={name} value={name} style={{ padding: "0px" }}>
-                        <Checkbox checked={typesOfPlace.indexOf(name) > -1} />
-                        <ListItemText primary={name} />
+        {activeTab === "nearby" && (isGrowth || isPro) && (
+          <div className={styles.searchBlock}>
+            <div className={styles.typeOfPlace}>
+              <div className={styles.row}>
+                <form style={{ width: "100%" }}>
+                  <FormControl fullWidth className={styles.formControl}>
+                    <Select
+                      id="demo-multiple-checkbox"
+                      multiple
+                      value={typesOfPlace}
+                      onChange={handleSelectChange}
+                      onClose={handleClose}
+                      displayEmpty
+                      renderValue={(selected) => `Places of Interest (${selected.length})`}
+                      MenuProps={MenuProps}
+                      style={{ fontSize: "16px" }}
+                      autoWidth={true}
+                    >
+                      <MenuItem key="toggleAll" onClick={handleToggleAll}>
+                        <Checkbox icon={<RadioButtonUncheckedIcon />} checkedIcon={<RadioButtonCheckedIcon />} onChange={handleToggleAll} checked={isSelectAll} />
+                        <ListItemText primary={isSelectAll ? "Deselect All" : "Select All"} />
                       </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </form>
+                      {PLACE_TYPES.map((name) => (
+                        <MenuItem key={name} value={name} style={{ padding: "0px" }}>
+                          <Checkbox checked={typesOfPlace.indexOf(name) > -1} />
+                          <ListItemText primary={name} />
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </form>
+              </div>
             </div>
           </div>
-        </div> */}
+        )}
+
         {showDialog && (
           <Dialog style={{ zIndex: 90000 }} open className={styles.dialog}>
             <h2 className={styles.dialogTitle}>Daily {(searchLimit && "Search") || ""} Limit Reached</h2>
