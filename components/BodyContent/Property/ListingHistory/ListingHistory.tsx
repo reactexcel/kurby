@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "../Record/Record.module.scss";
-import { IPropertyHouse } from "pages/api/propertyV2";
 import { Box } from "@mui/material";
 import KBTable from "components/KBTable/KBTable";
 import { KBColor } from "constants/color";

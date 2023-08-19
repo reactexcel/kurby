@@ -8,6 +8,7 @@ import { useRecoilState } from "recoil";
 import { CircularProgress } from "@mui/material";
 import KurbyPaidPlanLimit, { TabLimitMessage } from "components/AIWarningTooltip/KurbyPaidPlanLimit";
 import { usePlanChecker } from "hooks/plans";
+import { Button } from "components/Button/Button";
 /**
  * Body Content
  * @description: Displays everything below the filters
@@ -18,11 +19,22 @@ export default function CityStatePropertiesFilters() {
   const isPropertiesLoading = propertyData.results === true;
   const { isGrowth, isPro } = usePlanChecker();
 
+  const handleLoadMore = () => {};
+
   return (
     <TabLayout className={styles.tabLayout}>
       {!isGrowth && !isPro && <KurbyPaidPlanLimit type={TabLimitMessage.FILTERS} />}
       <PropertyFilter />
-      {Array.isArray(propertyData.results) && <Properties />}
+      {Array.isArray(propertyData.results) && (
+        <div className={styles.content}>
+          <Properties />
+          <div className={styles.buttonWrapper}>
+            <Button className={styles.loadMoreButton} onClick={handleLoadMore}>
+              Load more
+            </Button>
+          </div>
+        </div>
+      )}
       {!propertyData.results && (
         <div className={styles.filterInfoBody}>
           <p>Please select a filter to list properties in this zone.</p>
