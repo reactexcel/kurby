@@ -202,6 +202,7 @@ interface SearchResultContext {
     isLoading: boolean;
     results: IPropertyHouse[] | null | true; // True indicating that isLoading;
     isError: boolean;
+    isClientSideRendered: boolean;
   };
 }
 
@@ -211,6 +212,7 @@ const propertySearchResultContext: SearchResultContext = {
     isLoading: false,
     results: null,
     isError: false,
+    isClientSideRendered: false,
   },
 };
 

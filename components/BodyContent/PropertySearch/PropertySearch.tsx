@@ -40,10 +40,10 @@ export default function CityStatePropertiesFilters() {
         resultIndex: 1,
         userToken: localStorage.getItem("Outseta.nocode.accessToken"),
       });
-      setPropertyData({ results: data, isLoading: false, isError: false });
+      setPropertyData({ results: data, isLoading: false, isError: false, isClientSideRendered: false });
       setResultsReached(true);
     } catch (e) {
-      setPropertyData({ results: null, isLoading: false, isError: true });
+      setPropertyData({ results: null, isLoading: false, isError: true, isClientSideRendered: false });
     }
   };
 
@@ -54,7 +54,7 @@ export default function CityStatePropertiesFilters() {
       {!isPropertiesLoading && Array.isArray(propertyData.results) && !propertyData.isError && (
         <div className={styles.content}>
           <Properties />
-          {!isMaxResultsReached && propertyData.results.length > 0 && (
+          {!isMaxResultsReached && propertyData.results.length > 20 && (
             <div className={styles.buttonWrapper}>
               <Button className={styles.loadMoreButton} onClick={handleLoadMore}>
                 Load more

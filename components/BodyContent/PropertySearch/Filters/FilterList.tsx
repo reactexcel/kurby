@@ -26,9 +26,9 @@ export function PropertyFilter() {
         filters: { latitude: filterVal.mapCenter?.lat, longitude: filterVal.mapCenter?.lng, ...searchCriteria },
         userToken: localStorage.getItem("Outseta.nocode.accessToken"),
       });
-      setPropertyData({ results: data, isLoading: false, isError: false });
+      setPropertyData({ results: data, isLoading: false, isError: false, isClientSideRendered: false });
     } catch (e) {
-      setPropertyData({ results: null, isLoading: false, isError: true });
+      setPropertyData({ results: null, isLoading: false, isError: true, isClientSideRendered: true });
     }
   };
   return (

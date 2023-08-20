@@ -57,12 +57,12 @@ const filterHandler = (filters: IFilterSearchProps) => {
   }
 
   const filtersObject = {
-    // // For Sale Filter:
-    // mls_active: isPricingFilterOn || forSale?.forSaleByAgent,
-    // last_sale_date: forSale?.sold && oneYearAgo.toFormat("yyyy-MM-dd"),
-    // for_sale: !forSale?.forSaleByAgent ? forSale?.forSaleByOwner : false,
-    // mls_pending: forSale?.propertyStatusPending,
-    // mls_cancelled: forSale?.propertyStatusCancelled,
+    // For Sale Filter:
+    mls_active: isPricingFilterOn || forSale?.forSaleByAgent,
+    last_sale_date: forSale?.sold && oneYearAgo.toFormat("yyyy-MM-dd"),
+    for_sale: !forSale?.forSaleByAgent ? forSale?.forSaleByOwner : false,
+    mls_pending: forSale?.propertyStatusPending,
+    mls_cancelled: forSale?.propertyStatusCancelled,
     // Price Filter
     mls_listing_price_min: priceFilter?.minimum,
     mls_listing_price_max: priceFilter?.maximum * (1 - 0.1),
@@ -135,6 +135,8 @@ const filterHandler = (filters: IFilterSearchProps) => {
       return acc;
     }, {});
 
+  const OR_DEPS = Boolean(homeFilter);
+
   return {
     ...trueFilters,
     ...(forSale?.offMarket && {
@@ -142,14 +144,8 @@ const filterHandler = (filters: IFilterSearchProps) => {
       mls_pending: false,
       mls_cancelled: false,
     }),
-    or: [
-      ...(homeFilter ? parseHomeType(homeFilter) : []),
-      { mls_active: isPricingFilterOn || forSale?.forSaleByAgent },
-      { last_sale_date: forSale?.sold && oneYearAgo.toFormat("yyyy-MM-dd") },
-      { for_sale: !forSale?.forSaleByAgent ? forSale?.forSaleByOwner : false },
-      { mls_pending: forSale?.propertyStatusPending },
-      { mls_cancelled: forSale?.propertyStatusCancelled },
-    ],
+    // Home Type Filter:
+    ...(OR_DEPS && { or: [...parseHomeType(homeFilter)] }),
   };
 };
 
@@ -186,7 +182,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       longitude,
       size, // Using the size from body or default value
       resultIndex, // Using the resultIndex from body or default value
-      radius: 10,
+      radius: 200,
     });
     return res.status(200).json(response);
   }

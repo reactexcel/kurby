@@ -3,19 +3,42 @@ import styles from "./Properties.module.scss";
 import { propertySearch } from "context/propertySearchContext";
 import { useRecoilState } from "recoil";
 import { IPropertyHouse } from "pages/api/core/reapi/propertySearch";
+import { useSearchCriteria } from "hooks/use-search-criteria";
+import { useEffect } from "react";
 
 export function Properties() {
-  const [propertyData] = useRecoilState(propertySearch);
+  const [propertyData, setPropertyData] = useRecoilState(propertySearch);
+  console.log(propertyData.isClientSideRendered);
+  const { searchCriteria } = useSearchCriteria();
+
+  const isResultsAvailable = !propertyData || !propertyData.results || !Array.isArray(propertyData.results);
+
+  useEffect(() => {
+    if (isResultsAvailable) {
+      return;
+    }
+
+    // @ts-ignore
+    const filter = propertyData?.results?.filter((propertyInfo: IPropertyHouse) => {
+      if (searchCriteria.forSale?.sold) {
+        console.log(propertyInfo);
+        return propertyInfo.mlsSold;
+      }
+      return true;
+    });
+
+    setPropertyData((prev) => ({ ...prev, results: filter, isClientSideRendered: true }));
+  }, []);
 
   // Check if propertyData is null or undefined
-  if (!propertyData || !propertyData.results) {
-    return null; // or return a loading state or an empty div
+  if (isResultsAvailable) {
+    return <></>; // or return a loading state or an empty div
   }
 
   return (
     <div className={styles.houseGrid}>
       {Array.isArray(propertyData?.results) &&
-        propertyData?.results?.map((property: IPropertyHouse) => {
+        propertyData.results.map((property: IPropertyHouse) => {
           return (
             <div key={property.id} className={styles.house}>
               <HouseCard
