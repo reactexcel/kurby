@@ -57,12 +57,12 @@ const filterHandler = (filters: IFilterSearchProps) => {
   }
 
   const filtersObject = {
-    // For Sale Filter:
-    mls_active: isPricingFilterOn || forSale?.forSaleByAgent,
-    last_sale_date: forSale?.sold && oneYearAgo.toFormat("yyyy-MM-dd"),
-    for_sale: !forSale?.forSaleByAgent ? forSale?.forSaleByOwner : false,
-    mls_pending: forSale?.propertyStatusPending,
-    mls_cancelled: forSale?.propertyStatusCancelled,
+    // // For Sale Filter:
+    // mls_active: isPricingFilterOn || forSale?.forSaleByAgent,
+    // last_sale_date: forSale?.sold && oneYearAgo.toFormat("yyyy-MM-dd"),
+    // for_sale: !forSale?.forSaleByAgent ? forSale?.forSaleByOwner : false,
+    // mls_pending: forSale?.propertyStatusPending,
+    // mls_cancelled: forSale?.propertyStatusCancelled,
     // Price Filter
     mls_listing_price_min: priceFilter?.minimum,
     mls_listing_price_max: priceFilter?.maximum * (1 - 0.1),
@@ -142,8 +142,14 @@ const filterHandler = (filters: IFilterSearchProps) => {
       mls_pending: false,
       mls_cancelled: false,
     }),
-    // Home Type Filter:
-    ...(homeFilter && { or: parseHomeType(homeFilter) }),
+    or: [
+      ...(homeFilter ? parseHomeType(homeFilter) : []),
+      { mls_active: isPricingFilterOn || forSale?.forSaleByAgent },
+      { last_sale_date: forSale?.sold && oneYearAgo.toFormat("yyyy-MM-dd") },
+      { for_sale: !forSale?.forSaleByAgent ? forSale?.forSaleByOwner : false },
+      { mls_pending: forSale?.propertyStatusPending },
+      { mls_cancelled: forSale?.propertyStatusCancelled },
+    ],
   };
 };
 
