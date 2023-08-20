@@ -156,6 +156,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   // Check if the frontend is requesting a search criteria that should be fullfiled:
   const filters: IFilterSearchProps = req.body?.filters;
+
   if (filters) {
     const { latitude, longitude } = filters;
     const { isGrowth, isPro } = await checkPlan(req.body.userToken);
@@ -169,15 +170,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Use pagination parameters or set default values:
-    const size = req.query.size ? Number(req.query.size) : 25; // default is 25
-    const resultIndex = req.query.resultIndex ? Number(req.query.resultIndex) : 0; // default is 0
+    const size = req.body?.size ? Number(req.body?.size) : 25; // default is 25
+    console.log(size);
+    const resultIndex = req.body?.resultIndex ? Number(req.body?.resultIndex) : 0; // default is 0
 
     const response = await propertySearchApi.search({
       ...filterHandler(filters),
       latitude,
       longitude,
-      size, // Using the size from query or default value
-      resultIndex, // Using the resultIndex from query or default value
+      size, // Using the size from body or default value
+      resultIndex, // Using the resultIndex from body or default value
       radius: 10,
     });
     return res.status(200).json(response);
