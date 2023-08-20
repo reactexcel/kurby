@@ -199,14 +199,18 @@ const moreFilterContext: MoreFilterContext = {
 interface SearchResultContext {
   key: string;
   default: {
+    isLoading: boolean;
     results: IPropertyHouse[] | null | true; // True indicating that isLoading;
+    isError: boolean;
   };
 }
 
 const propertySearchResultContext: SearchResultContext = {
   key: "propertyFilterResults",
   default: {
+    isLoading: false,
     results: null,
+    isError: false,
   },
 };
 

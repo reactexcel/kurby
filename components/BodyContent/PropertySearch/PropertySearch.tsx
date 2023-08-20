@@ -16,7 +16,7 @@ import { Button } from "components/Button/Button";
 export default function CityStatePropertiesFilters() {
   const [propertyData] = useRecoilState(propertySearch);
   const noResultsFound = Array.isArray(propertyData.results) && propertyData.results?.length;
-  const isPropertiesLoading = propertyData.results === true;
+  const isPropertiesLoading = propertyData.isLoading;
   const { isGrowth, isPro } = usePlanChecker();
 
   const handleLoadMore = () => {};
@@ -25,17 +25,19 @@ export default function CityStatePropertiesFilters() {
     <TabLayout className={styles.tabLayout}>
       {!isGrowth && !isPro && <KurbyPaidPlanLimit type={TabLimitMessage.FILTERS} />}
       <PropertyFilter />
-      {Array.isArray(propertyData.results) && (
+      {!isPropertiesLoading && Array.isArray(propertyData.results) && !propertyData.isError && (
         <div className={styles.content}>
           <Properties />
-          <div className={styles.buttonWrapper}>
-            <Button className={styles.loadMoreButton} onClick={handleLoadMore}>
-              Load more
-            </Button>
-          </div>
+          {propertyData.results.length > 0 && (
+            <div className={styles.buttonWrapper}>
+              <Button className={styles.loadMoreButton} onClick={handleLoadMore}>
+                Load more
+              </Button>
+            </div>
+          )}
         </div>
       )}
-      {!propertyData.results && (
+      {!propertyData.isError && !propertyData.results && (
         <div className={styles.filterInfoBody}>
           <p>Please select a filter to list properties in this zone.</p>
         </div>
@@ -45,9 +47,14 @@ export default function CityStatePropertiesFilters() {
           <CircularProgress sx={{ marginTop: 12 }} />
         </div>
       )}
-      {noResultsFound === 0 && (
+      {noResultsFound === 0 && !isPropertiesLoading && (
         <div className={styles.filterInfoBody}>
           <p>No results found</p>
+        </div>
+      )}
+      {!isPropertiesLoading && propertyData.isError && (
+        <div className={styles.filterInfoBody}>
+          <p>An error ocurred</p>
         </div>
       )}
     </TabLayout>

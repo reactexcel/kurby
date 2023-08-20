@@ -168,11 +168,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       );
     }
 
+    // Use pagination parameters or set default values:
+    const size = req.query.size ? Number(req.query.size) : 25; // default is 25
+    const resultIndex = req.query.resultIndex ? Number(req.query.resultIndex) : 0; // default is 0
+
     const response = await propertySearchApi.search({
       ...filterHandler(filters),
       latitude,
       longitude,
-      size: 25,
+      size, // Using the size from query or default value
+      resultIndex, // Using the resultIndex from query or default value
       radius: 10,
     });
     return res.status(200).json(response);

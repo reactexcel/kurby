@@ -8,8 +8,8 @@ import { HomeTypeFilter } from "./HomeType/HomeType";
 import { MoreFilter } from "./MoreFilter/MoreFilter";
 import { BedBathsFilter } from "./BedsBathsFilter/BedsBathsFilter";
 import { SearchButton } from "../SearchButton/SearchButton";
-import { IPropertySearchResponse } from "pages/api/propertyV2";
 import { filterState } from "context/filterContext";
+import { IPropertySearchResponse } from "pages/api/core/reapi/propertySearch";
 
 export function PropertyFilter() {
   const [forSale] = useRecoilState(forSaleFilter);
@@ -29,12 +29,18 @@ export function PropertyFilter() {
   };
 
   const handleSearch = async () => {
-    setPropertyData({ results: true });
-    const { data } = await axios.post<IPropertySearchResponse>("/api/propertyV2", {
-      filters: { latitude: filterVal.mapCenter?.lat, longitude: filterVal.mapCenter?.lng, ...searchCriteria },
-      userToken: localStorage.getItem("Outseta.nocode.accessToken"),
-    });
-    setPropertyData({ results: data.data });
+    setPropertyData((prev) => ({ ...prev, isLoading: true }));
+    try {
+      const {
+        data: { data },
+      } = await axios.post<IPropertySearchResponse>("/api/propertyV2", {
+        filters: { latitude: filterVal.mapCenter?.lat, longitude: filterVal.mapCenter?.lng, ...searchCriteria },
+        userToken: localStorage.getItem("Outseta.nocode.accessToken"),
+      });
+      setPropertyData({ results: data, isLoading: false, isError: false });
+    } catch (e) {
+      setPropertyData({ results: null, isLoading: false, isError: true });
+    }
   };
 
   // const searchObject = {

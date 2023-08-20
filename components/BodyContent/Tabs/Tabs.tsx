@@ -13,17 +13,11 @@ import { Location } from "../Location/Location";
 import styles from "./Tabs.module.scss";
 import { searchContext } from "context/searchCounter";
 import CityStatePropertiesFilters from "../PropertySearch/PropertySearch";
-import { usePlanChecker } from "hooks/plans";
-
-const CityStatePropertiesFiltersMemo = React.memo(CityStatePropertiesFilters);
 
 export function Tabs() {
   const [activeTab, setActiveTab] = useRecoilState(activeTabState);
   const [{ searchLimit }] = useRecoilState(searchContext);
   const [filterVal] = useRecoilState(filterState);
-  const { isGrowth, isPro } = usePlanChecker();
-
-  console.log(isGrowth, isPro);
 
   const handleTabChange = (event: React.MouseEvent<HTMLElement>, newTab: Tab | null) => {
     if (newTab) {
@@ -35,8 +29,7 @@ export function Tabs() {
     if (filterVal.placeCategory === "address") {
       return <Property />;
     }
-
-    return <CityStatePropertiesFiltersMemo />;
+    return <CityStatePropertiesFilters />;
   };
 
   return (
