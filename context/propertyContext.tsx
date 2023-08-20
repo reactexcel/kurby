@@ -1,5 +1,6 @@
+import { IPropertyHouse } from "pages/api/core/reapi/propertySearch";
 import { IPropertyDetailHouse } from "pages/api/propertyDetail";
-import { IPropertyHouse } from "pages/api/propertyV2";
+
 import { atom } from "recoil";
 
 interface IPropertyInfoState {

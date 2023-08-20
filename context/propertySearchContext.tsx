@@ -1,6 +1,6 @@
 import { ListingTypeTab } from "components/BodyContent/PropertySearch/Filters/MoreFilter/MoreFilter";
 import { IPriceFilterCurrentTab, IPriceFilterDownPayment } from "components/BodyContent/PropertySearch/Filters/PriceFilter/PriceFilter";
-import { IPropertyHouse } from "pages/api/propertyV2";
+import { IPropertyHouse } from "pages/api/core/reapi/propertySearch";
 import { atom } from "recoil";
 
 interface IFilterMetaProps {

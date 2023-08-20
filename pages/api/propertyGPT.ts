@@ -1,7 +1,7 @@
 import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import checkProPlan from "./checkPlan";
-import { IPropertySearchResponse } from "./propertyV2";
+import { IPropertySearchResponse } from "./core/reapi/propertySearch";
 
 class PropGptAPI {
   private BASE_URL = "https://www.propgpt.com/query";

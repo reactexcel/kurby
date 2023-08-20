@@ -10,7 +10,7 @@ import Typewriter from "typewriter-effect";
 import { useEffect, useState } from "react";
 import { usePlanChecker } from "hooks/plans";
 import { useRouter } from "next/router";
-import { IPropertySearchResponse } from "pages/api/propertyV2";
+import { IPropertySearchResponse } from "pages/api/core/reapi/propertySearch";
 
 export const PropertySearch = () => {
   const plan = usePlanChecker();

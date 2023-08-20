@@ -16,12 +16,13 @@ import { AdditionalInfoField } from "./AdditionalInfoField/AdditionalInfoField";
 import { Grid } from "components/Grid/Grid";
 import { GridItem } from "components/Grid/GridItem";
 import { WindowSizeContext } from "context/windowSizeContext";
-import { IPropertyHouse } from "pages/api/propertyV2";
+
 import OwnerV2 from "../Owner/OwnerV2";
 import { InformationTable, createData } from "components/BodyContent/InformationTable/InformationTable";
 import { propertyDetailContext, propertyInfoV2Context } from "context/propertyContext";
 import { toUSDField } from "../utils";
 import { IAppPlans } from "context/plansContext";
+import { IPropertyHouse } from "pages/api/core/reapi/propertySearch";
 
 /**
  * Body Content
