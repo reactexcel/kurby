@@ -26,7 +26,9 @@ import { propertyV2Mock } from "mock/freePlanPropertyMock";
 import { usePlanChecker } from "hooks/plans";
 import { IPropertySearchResponse } from "pages/api/core/reapi/propertySearch";
 import House from "public/icons/not-found.svg";
+import ArrowLeft from "public/icons/arrow-left-green.svg";
 import { Button } from "components/Button/Button";
+import { useRouter } from "next/router";
 /**
  * Body Content
  * @description: Displays everything below the filters
@@ -128,6 +130,7 @@ export default function Property() {
           {isLimitReached && <KurbyPaidPlanLimit type={TabLimitMessage.PROPERTY_DATA_TAB} />}
           {isStarter && <KurbyPaidPlanLimit type={TabLimitMessage.PROPERTY_DATA_TAB_STARTER} />}
           <div className={styles.wrapper}>
+            <BackNavigation />
             <img
               src={
                 "https://maps.googleapis.com/maps/api/streetview?size=1600x200&location=" +
@@ -201,5 +204,20 @@ function ErrorPage({ onTryAgain }: { onTryAgain: () => void }) {
       <p>Failed to load the property</p>
       <Button onClick={onTryAgain}>Try again</Button>
     </div>
+  );
+}
+
+function BackNavigation() {
+  const router = useRouter();
+
+  const goBack = () => {
+    router.back();
+  };
+
+  return (
+    <button className={styles.backButton} onClick={goBack}>
+      <ArrowLeft />
+      Go Back
+    </button>
   );
 }

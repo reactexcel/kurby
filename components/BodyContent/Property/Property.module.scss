@@ -46,3 +46,19 @@
   justify-content: center;
   text-align: center;
 }
+
+.backButton {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+  gap: 10px;
+  background: transparent;
+  color: #00a13c;
+  font-weight: 800;
+  border: none;
+  line-height: 21.5px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  user-select: none;
+}
