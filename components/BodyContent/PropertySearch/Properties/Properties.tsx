@@ -29,10 +29,49 @@ export function Properties() {
     });
 
     const filteredProperties = uniqueProperties?.filter((propertyInfo: IPropertyHouse) => {
-      if (searchCriteria.forSale?.sold) {
-        return propertyInfo.mlsSold;
+      let condition = true;
+
+      if (searchCriteria.moreFilter?.auction) {
+        condition = condition || propertyInfo.auction;
       }
-      return true;
+      if (searchCriteria.moreFilter?.preForeclosure) {
+        condition = condition || propertyInfo.preForeclosure;
+      }
+      if (searchCriteria.moreFilter?.foreclosure) {
+        condition = condition || propertyInfo.preForeclosure;
+      }
+      if (searchCriteria.moreFilter?.outOfStateAbsenteeOwner) {
+        condition = condition || propertyInfo.outOfStateAbsenteeOwner;
+      }
+      if (searchCriteria.moreFilter?.inStateAbsenteeOwner) {
+        condition = condition || propertyInfo.inStateAbsenteeOwner;
+      }
+      if (searchCriteria.moreFilter?.corporateOwned) {
+        condition = condition || propertyInfo.corporateOwned;
+      }
+      if (searchCriteria.moreFilter?.spousalDeath) {
+        condition = condition || propertyInfo.death;
+      }
+      if (searchCriteria.moreFilter?.ownerDeath) {
+        condition = condition || propertyInfo.death;
+      }
+      if (searchCriteria.moreFilter?.nonOwnerOccupied) {
+        condition = condition || !propertyInfo.ownerOccupied;
+      }
+      if (searchCriteria.moreFilter?.inherited) {
+        condition = condition || !propertyInfo.inherited;
+      }
+
+      if (searchCriteria.forSale?.forSaleByAgent) {
+        condition = condition || propertyInfo.forSale;
+      }
+      if (searchCriteria.forSale?.offMarket) {
+        condition = condition || Boolean(!propertyInfo.mlsActive || !propertyInfo.mlsPending || !propertyInfo.mlsCancelled);
+      }
+      if (searchCriteria.forSale?.sold) {
+        condition = condition && propertyInfo.mlsSold;
+      }
+      return condition;
     });
 
     setPropertyData((prev) => ({ ...prev, results: filteredProperties, isClientSideRendered: true }));
