@@ -8,7 +8,6 @@ import { useEffect } from "react";
 
 export function Properties() {
   const [propertyData, setPropertyData] = useRecoilState(propertySearch);
-  console.log(propertyData.isClientSideRendered);
   const { searchCriteria } = useSearchCriteria();
 
   const isResultsAvailable = !propertyData || !propertyData.results || !Array.isArray(propertyData.results);
@@ -18,16 +17,25 @@ export function Properties() {
       return;
     }
 
-    // @ts-ignore
-    const filter = propertyData?.results?.filter((propertyInfo: IPropertyHouse) => {
+    const uniqueAddress = new Set();
+    const uniqueProperties: IPropertyHouse[] = [];
+
+    propertyData?.results?.forEach((property: IPropertyHouse) => {
+      const address = property?.address?.address;
+      if (!uniqueAddress.has(address)) {
+        uniqueAddress.add(address);
+        uniqueProperties.push(property);
+      }
+    });
+
+    const filteredProperties = uniqueProperties?.filter((propertyInfo: IPropertyHouse) => {
       if (searchCriteria.forSale?.sold) {
-        console.log(propertyInfo);
         return propertyInfo.mlsSold;
       }
       return true;
     });
 
-    setPropertyData((prev) => ({ ...prev, results: filter, isClientSideRendered: true }));
+    setPropertyData((prev) => ({ ...prev, results: filteredProperties, isClientSideRendered: true }));
   }, []);
 
   // Check if propertyData is null or undefined
@@ -43,6 +51,8 @@ export function Properties() {
             <div key={property.id} className={styles.house}>
               <HouseCard
                 key={property.address.address}
+                shouldUseContext
+                context={property}
                 cardInfo={{
                   id: property.id,
                   formattedAddress: property.address.address,

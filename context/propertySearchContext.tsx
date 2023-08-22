@@ -200,7 +200,7 @@ interface SearchResultContext {
   key: string;
   default: {
     isLoading: boolean;
-    results: IPropertyHouse[] | null | true; // True indicating that isLoading;
+    results: IPropertyHouse[] | null;
     isError: boolean;
     isClientSideRendered: boolean;
   };

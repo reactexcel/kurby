@@ -9,6 +9,10 @@ import { KBColor } from "constants/color";
 import { useRouter } from "next/router";
 import { addressToUrl } from "utils/address";
 import styles from "./HouseCard.module.scss";
+import { IPropertyHouse } from "pages/api/core/reapi/propertySearch";
+import { useRecoilState } from "recoil";
+import { propertyInfoV2Context } from "context/propertyContext";
+import { IPropertyQueryProps } from "../Property";
 
 const ProTypography = styled(Typography)({
   fontFamily: "FilsonPro !important",
@@ -30,10 +34,9 @@ export interface Root {
   readonly squareFootage: number;
 }
 
-export default function HouseCard({ cardInfo }: { cardInfo: Root }) {
+export default function HouseCard({ cardInfo, shouldUseContext, context }: { cardInfo: Root; shouldUseContext?: boolean; context?: IPropertyHouse }) {
   const classes = useStyles;
   const router = useRouter();
-
   if (!cardInfo) {
     return null;
   }
@@ -42,6 +45,15 @@ export default function HouseCard({ cardInfo }: { cardInfo: Root }) {
     <div
       className={styles.main}
       onClick={() => {
+        if (shouldUseContext && context) {
+          const encodedAddress = addressToUrl(cardInfo?.formattedAddress);
+          // encode context to base 64:
+          const stringContext = JSON.stringify(context);
+          const base64encodedProperty = btoa(stringContext);
+
+          router.push(`/app/${encodedAddress}?${IPropertyQueryProps.USE_IN_MEMORY}=true&${IPropertyQueryProps.BASE64PROPERTY_INFO}=${base64encodedProperty}`);
+          return;
+        }
         const encodedAddress = addressToUrl(cardInfo?.formattedAddress);
         router.push(`/app/${encodedAddress}`);
       }}

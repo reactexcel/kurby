@@ -33,7 +33,17 @@ import { useRouter } from "next/router";
  * Body Content
  * @description: Displays everything below the filters
  */
+
+export enum IPropertyQueryProps {
+  USE_IN_MEMORY = "useInMemoryObject",
+  BASE64PROPERTY_INFO = "base64prInfo",
+}
+
 export default function Property() {
+  const params = new URLSearchParams(window.location.search);
+  const useMemoryObject = Boolean(params.get(IPropertyQueryProps.USE_IN_MEMORY));
+  const base64property = params.get(IPropertyQueryProps.BASE64PROPERTY_INFO);
+
   const { user } = useAuth();
   const [filterVal] = useRecoilState(filterState);
   const [propertyInfo, setPropertyInfoV2] = useRecoilState(propertyInfoV2Context);
@@ -49,6 +59,13 @@ export default function Property() {
   // const { explainedLikeAlocal } = useOpenAi();
 
   async function preparePropertyV2Data() {
+    if (useMemoryObject && base64property) {
+      const property = JSON.parse(atob(base64property));
+      setPropertyInfoV2(property);
+      setError(false);
+      setLoading(false);
+      return;
+    }
     try {
       const { data } = await axios.post<IPropertySearchResponse>("/api/propertyV2", {
         address: filterVal.address,
