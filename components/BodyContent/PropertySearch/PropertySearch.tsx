@@ -28,9 +28,10 @@ export default function CityStatePropertiesFilters() {
   const { isGrowth, isPro } = usePlanChecker();
 
   const [isMaxResultsReached, setResultsReached] = useState<boolean>(false);
+  const [isLoadMoreLoading, setLoadMoreLoading] = useState<boolean>(false);
 
   const handleLoadMore = async () => {
-    setPropertyData((prev) => ({ ...prev, isLoading: true }));
+    setLoadMoreLoading(true);
     try {
       const {
         data: { data },
@@ -56,9 +57,13 @@ export default function CityStatePropertiesFilters() {
           <Properties />
           {!isMaxResultsReached && propertyData.results.length > 20 && (
             <div className={styles.buttonWrapper}>
-              <Button className={styles.loadMoreButton} onClick={handleLoadMore}>
-                Load more
-              </Button>
+              {!isLoadMoreLoading ? (
+                <Button className={styles.loadMoreButton} onClick={handleLoadMore}>
+                  Load more
+                </Button>
+              ) : (
+                <CircularProgress sx={{ marginTop: 12 }} />
+              )}
             </div>
           )}
         </div>

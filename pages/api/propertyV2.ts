@@ -182,7 +182,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       longitude,
       size, // Using the size from body or default value
       resultIndex, // Using the resultIndex from body or default value
-      radius: 200,
+      radius: 890,
     });
     return res.status(200).json(response);
   }
