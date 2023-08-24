@@ -8,7 +8,7 @@ import MessageBar from "services/MessageBar";
 export default function Home() {
   return (
     <>
-      <NextSeo title="Real Estate AI - Kurby" description="Kurby uses location data to estimate property value like never before." />
+      <NextSeo title="Real Estate AI - Kurby" description="Simplify your property search with our real estate AI-powered app." />
       <Homepage />
       <MessageBar />
     </>
