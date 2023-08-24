@@ -15,8 +15,7 @@ import { createHousingUnitsLegend, getVacantHousingUnits } from "components/Cens
 import { ICensusResponse } from "components/Census/GeoJSON/Census";
 import { mapClicksCounter } from "context/visitorContext";
 import { usePersistentRecoilState } from "hooks/recoil-persist-state";
-import { useAuth } from "providers/AuthProvider";
-import { IAppPlans } from "context/plansContext";
+
 import { usePlanChecker } from "hooks/plans";
 import { nearbyContext } from "context/nearbyPlacesContext";
 
