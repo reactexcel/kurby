@@ -43,6 +43,37 @@ export default function App({ Component, pageProps }: AppProps) {
         strategy="beforeInteractive"
         src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places&callback=initMap`}
       />
+      <Script strategy="beforeInteractive" id="outseta-signup-plan-tracker">
+        {`
+            function outseta_onload() {
+              Outseta.on('signup', account => {
+                const subscription = account.Subscriptions[0];
+                let planName = '';
+                
+                if (subscription.Plan.Uid === 'pWrwqamn') {
+                  planName = 'Free plan';
+                }
+                else if (subscription.Plan.Uid === 'L9nOOeWZ') {
+                  planName = 'Starter plan';
+                }
+                else if (subscription.Plan.Uid === 'BWzEkg9E') {
+                  planName = 'Growth plan';
+                }
+                else if (subscription.Plan.Uid === 'ZmN83E92') {
+                  planName = 'Professional plan';
+                }
+
+                // Push to dataLayer for Google Tag Manager
+                if (typeof window.dataLayer !== 'undefined' && planName) {
+                  window.dataLayer.push({
+                    'event': 'paidPlan',
+                    'planName': planName
+                  });
+                }
+              });
+            }
+          `}
+      </Script>
       <WindowSizeProvider>
         <IsDevProvider>
           <AuthProvider>

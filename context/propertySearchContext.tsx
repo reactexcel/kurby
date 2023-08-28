@@ -1,6 +1,6 @@
 import { ListingTypeTab } from "components/BodyContent/PropertySearch/Filters/MoreFilter/MoreFilter";
 import { IPriceFilterCurrentTab, IPriceFilterDownPayment } from "components/BodyContent/PropertySearch/Filters/PriceFilter/PriceFilter";
-import { IPropertyHouse } from "pages/api/propertyV2";
+import { IPropertyHouse } from "pages/api/core/reapi/propertySearch";
 import { atom } from "recoil";
 
 interface IFilterMetaProps {
@@ -199,14 +199,20 @@ const moreFilterContext: MoreFilterContext = {
 interface SearchResultContext {
   key: string;
   default: {
-    results: IPropertyHouse[] | null | true; // True indicating that isLoading;
+    isLoading: boolean;
+    results: IPropertyHouse[] | null;
+    isError: boolean;
+    isClientSideRendered: boolean;
   };
 }
 
 const propertySearchResultContext: SearchResultContext = {
   key: "propertyFilterResults",
   default: {
+    isLoading: false,
     results: null,
+    isError: false,
+    isClientSideRendered: false,
   },
 };
 

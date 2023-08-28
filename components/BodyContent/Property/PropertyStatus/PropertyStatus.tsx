@@ -17,6 +17,8 @@ export default function PropertyStatus() {
     createData("MLS Sold", propertyInfo?.mlsSold),
   ];
 
+  console.log(propertyInfo?.mlsSold);
+
   return (
     <div>
       <div className={styles.wrapper}>

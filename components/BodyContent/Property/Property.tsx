@@ -8,7 +8,6 @@ import styles from "./Property.module.scss";
 import { HouseList } from "./HouseList/HouseList";
 import { Grid } from "components/Grid/Grid";
 import { GridItem } from "components/Grid/GridItem";
-import { IPropertySearchResponse } from "pages/api/propertyV2";
 import RecordV2 from "./Record/RecordV2";
 import FinancialMortgage from "./FinancialMortgage/FinancialMortgage";
 import ListingHistory from "./ListingHistory/ListingHistory";
@@ -25,12 +24,26 @@ import KurbyPaidPlanLimit, { TabLimitMessage } from "components/AIWarningTooltip
 import { useAuth } from "providers/AuthProvider";
 import { propertyV2Mock } from "mock/freePlanPropertyMock";
 import { usePlanChecker } from "hooks/plans";
-
+import { IPropertySearchResponse } from "pages/api/core/reapi/propertySearch";
+import House from "public/icons/not-found.svg";
+import ArrowLeft from "public/icons/arrow-left-green.svg";
+import { Button } from "components/Button/Button";
+import { useRouter } from "next/router";
 /**
  * Body Content
  * @description: Displays everything below the filters
  */
+
+export enum IPropertyQueryProps {
+  USE_IN_MEMORY = "useInMemoryObject",
+  BASE64PROPERTY_INFO = "base64prInfo",
+}
+
 export default function Property() {
+  const params = new URLSearchParams(window.location.search);
+  const useMemoryObject = Boolean(params.get(IPropertyQueryProps.USE_IN_MEMORY));
+  const base64property = params.get(IPropertyQueryProps.BASE64PROPERTY_INFO);
+
   const { user } = useAuth();
   const [filterVal] = useRecoilState(filterState);
   const [propertyInfo, setPropertyInfoV2] = useRecoilState(propertyInfoV2Context);
@@ -39,33 +52,51 @@ export default function Property() {
   const isNotLoaded = !Boolean(propertyDetail || propertyInfo);
 
   const [loading, setLoading] = useState<boolean>(isNotLoaded);
+  const [isError, setError] = useState<boolean>(false);
   const [isTabAvailable] = useRecoilState(propertyDetailAvailable);
 
   const { isFree, isStarter } = usePlanChecker();
   // const { explainedLikeAlocal } = useOpenAi();
 
-  useEffect(() => {
-    async function preparePropertyV2Data() {
+  async function preparePropertyV2Data() {
+    if (useMemoryObject && base64property) {
+      const property = JSON.parse(atob(base64property));
+      setPropertyInfoV2(property);
+      setError(false);
+      setLoading(false);
+      return;
+    }
+    try {
       const { data } = await axios.post<IPropertySearchResponse>("/api/propertyV2", {
         address: filterVal.address,
       });
+      setError(false);
       setLoading(false);
       if (data) {
         setPropertyInfoV2(data.data[0]);
       }
+    } catch (e) {
+      setError(true);
     }
+  }
 
-    async function preparePropertyDetail() {
+  async function preparePropertyDetail() {
+    try {
       const { data } = await axios.post<IPropertyDetailResponse>("/api/propertyDetail", {
         address: filterVal.address,
         userToken: localStorage.getItem("Outseta.nocode.accessToken"),
       });
+      setError(false);
       setLoading(false);
       if (data) {
         setPropertyDetail(data.data);
       }
+    } catch (e) {
+      setError(true);
     }
+  }
 
+  const executeSearch = () => {
     if (isFree || isStarter || !Boolean(user)) {
       setPropertyInfoV2(propertyV2Mock);
       setLoading(false);
@@ -78,6 +109,10 @@ export default function Property() {
       preparePropertyV2Data();
       preparePropertyDetail();
     }
+  };
+
+  useEffect(() => {
+    executeSearch();
   }, []);
 
   const isAddressInUSA = useMemo(() => filterVal?.selectedPlace?.formatted_address?.includes("USA"), [filterVal?.selectedPlace?.formatted_address]);
@@ -92,19 +127,27 @@ export default function Property() {
 
   const isLimitReached = !Boolean(user) || isFree;
 
+  const handleTryAgain = () => {
+    setError(false);
+    executeSearch();
+  };
+
   return (
     <TabLayout
       style={isLimitReached || isStarter ? { height: "67vh", overflow: "hidden" } : {}}
       className={`${styles.tabLayout} ${!isAddressInUSA ? styles.note : ""}`}
       loading={loading || !propertyInfo}
     >
-      {loading || !propertyInfo ? (
+      {!isError && (loading || !propertyInfo) ? (
         <CircularProgress />
+      ) : isError ? (
+        <ErrorPage onTryAgain={handleTryAgain} />
       ) : isAddressInUSA ? (
         <div className={styles.main}>
           {isLimitReached && <KurbyPaidPlanLimit type={TabLimitMessage.PROPERTY_DATA_TAB} />}
           {isStarter && <KurbyPaidPlanLimit type={TabLimitMessage.PROPERTY_DATA_TAB_STARTER} />}
           <div className={styles.wrapper}>
+            <BackNavigation />
             <img
               src={
                 "https://maps.googleapis.com/maps/api/streetview?size=1600x200&location=" +
@@ -168,5 +211,30 @@ export default function Property() {
         <h3>Home data is currently only available for properties in the United States</h3>
       )}
     </TabLayout>
+  );
+}
+
+function ErrorPage({ onTryAgain }: { onTryAgain: () => void }) {
+  return (
+    <div className={styles.errorPage}>
+      <House />
+      <p>Failed to load the property</p>
+      <Button onClick={onTryAgain}>Try again</Button>
+    </div>
+  );
+}
+
+function BackNavigation() {
+  const router = useRouter();
+
+  const goBack = () => {
+    router.back();
+  };
+
+  return (
+    <button className={styles.backButton} onClick={goBack}>
+      <ArrowLeft />
+      Go Back
+    </button>
   );
 }

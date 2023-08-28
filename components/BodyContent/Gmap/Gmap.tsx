@@ -15,8 +15,7 @@ import { createHousingUnitsLegend, getVacantHousingUnits } from "components/Cens
 import { ICensusResponse } from "components/Census/GeoJSON/Census";
 import { mapClicksCounter } from "context/visitorContext";
 import { usePersistentRecoilState } from "hooks/recoil-persist-state";
-import { useAuth } from "providers/AuthProvider";
-import { IAppPlans } from "context/plansContext";
+
 import { usePlanChecker } from "hooks/plans";
 import { nearbyContext } from "context/nearbyPlacesContext";
 
@@ -89,6 +88,34 @@ function MyComponent() {
   const [value] = useRecoilState(feature);
   const [metricsTooltip, setMetricsTooltip] = useState<IMetricsTooltipState | undefined>();
 
+  const [isUS, setIsUS] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (filterVal.latlong) {
+      const lat = filterVal.latlong.lat();
+      const lng = filterVal.latlong.lng();
+      const usCoordinates = lat > 24.396308 && lat < 49.384358 && lng > -125.0 && lng < -66.93457;
+
+      setIsUS(usCoordinates);
+    }
+  }, [filterVal.latlong]);
+
+  const LegendManager = () => {
+    return (
+      <>
+        {value === DemographicFeatureSelection.MEDIAN_HOUSEHOLD_INCOME ? (
+          <HouseholdMapLegend />
+        ) : value === DemographicFeatureSelection.MEDIAN_HOME_VALUE ? (
+          <HomevalueMapLegend />
+        ) : value === DemographicFeatureSelection.POVERTY_RATE ? (
+          <PovertyRateLegend />
+        ) : (
+          value === DemographicFeatureSelection.VACANT_HOUSING_UNITS && <VacantHousingLegend />
+        )}
+      </>
+    );
+  };
+
   // Load tracts shapes using Census Cartographic
   useEffect(() => {
     const prepareTractGeometricData = async () => {
@@ -103,24 +130,24 @@ function MyComponent() {
       }
     };
     try {
-      if (filterVal.latlong) {
+      if (filterVal.latlong && isUS) {
         prepareTractGeometricData();
       }
     } catch (error) {}
-  }, [filterVal.latlong]);
+  }, [filterVal.latlong, isUS]);
 
   // Load requested to Google Maps as soon as it becomes available
   useEffect(() => {
-    if (map?.data && tractGeometricData) {
+    if (map?.data && tractGeometricData && isUS) {
       map.data.setMap(map);
       map.data.addGeoJson(tractGeometricData);
     }
-  }, [map, tractGeometricData]);
+  }, [map, tractGeometricData, isUS]);
 
   // Create the choropleth map
   useEffect(() => {
     setMetricsTooltip(undefined);
-    if (!map?.data || !filterVal.latlong) {
+    if (!map?.data || (!filterVal.latlong && !isUS)) {
       return;
     }
 
@@ -137,7 +164,7 @@ function MyComponent() {
       const housingUnits = createHousingUnitsLegend();
       map.data.setStyle(housingUnits.getGoogleMapsColor);
     }
-  }, [filterVal.latlong, value]);
+  }, [filterVal.latlong, value, isUS]);
 
   // Handle tract tooltip on hover
   const [isClickListenerSet, setClickListener] = useState(false);
@@ -307,15 +334,7 @@ function MyComponent() {
         </>
       </GoogleMap>
       <DemographicFeatureDropdown />
-      {value === DemographicFeatureSelection.MEDIAN_HOUSEHOLD_INCOME ? (
-        <HouseholdMapLegend />
-      ) : value === DemographicFeatureSelection.MEDIAN_HOME_VALUE ? (
-        <HomevalueMapLegend />
-      ) : value === DemographicFeatureSelection.POVERTY_RATE ? (
-        <PovertyRateLegend />
-      ) : (
-        value === DemographicFeatureSelection.VACANT_HOUSING_UNITS && <VacantHousingLegend />
-      )}
+      {isUS && <LegendManager />}
     </div>
   );
 }

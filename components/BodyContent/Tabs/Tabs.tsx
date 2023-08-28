@@ -17,8 +17,6 @@ import { usePlanChecker } from "hooks/plans";
 import { usePersistentRecoilState } from "hooks/recoil-persist-state";
 import { mapClicksCounter, visitorStayLimit } from "context/visitorContext";
 
-const CityStatePropertiesFiltersMemo = React.memo(CityStatePropertiesFilters);
-
 export function Tabs() {
   const [activeTab, setActiveTab] = useRecoilState(activeTabState);
   const [{ searchLimit }] = useRecoilState(searchContext);
@@ -46,8 +44,7 @@ export function Tabs() {
     if (filterVal.placeCategory === "address") {
       return <Property />;
     }
-
-    return <CityStatePropertiesFiltersMemo />;
+    return <CityStatePropertiesFilters />;
   };
 
   return (
