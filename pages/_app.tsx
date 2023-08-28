@@ -70,13 +70,6 @@ export default function App({ Component, pageProps }: AppProps) {
                     'planName': planName
                   });
                 }
-                
-                // Assuming you want to redirect based on the plan (you've mentioned redirect in your code)
-                // let redirect = 'some-url-based-on-plan';
-                // if (redirect) {
-                //   window.location.href = redirect;
-                //   return false;
-                // }
               });
             }
           `}
