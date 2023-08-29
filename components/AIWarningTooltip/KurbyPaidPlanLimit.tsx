@@ -74,7 +74,7 @@ function PropertyDataBlurLimitStarter() {
 function FiltersBlurView() {
   return (
     <div>
-      <div style={{ height: "90%", zIndex: "50000" }} className={styles.blurOverlayLayer}>
+      <div style={{ height: "90%", zIndex: "5000" }} className={styles.blurOverlayLayer}>
         <h2 className={styles.title}>Available for Growth and Pro Plan</h2>
         <p className={styles.description}>
           Sign up for Pro Plan to receive property owner information, mortgage information, home value estimates, comparable homes, and more.
