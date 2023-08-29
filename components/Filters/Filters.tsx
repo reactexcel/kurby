@@ -95,8 +95,6 @@ export default function Filters() {
   //GLOBAL_SETTINGS.PLACE_TYPES
 
   const handleOpenaiDropdownChange = (event: SelectChangeEvent) => {
-    if (!user) return;
-
     const value = event.target.value as PresetType;
 
     setOpenaiDropdownValue({
