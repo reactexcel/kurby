@@ -388,7 +388,7 @@ export default function Filters() {
         </MenuItem>
       );
     });
-  }, []);
+  }, [dropdownOptions]);
 
   return (
     <>
