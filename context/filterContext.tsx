@@ -20,6 +20,8 @@ interface FilterContext {
     mapCenter: { lat: number; lng: number } | null;
     walkscore: Walkscore | null;
     placeCategory: "city" | "address" | null;
+    city: string | null;
+    country: string | null;
   };
 }
 
@@ -34,6 +36,8 @@ const filterContext: FilterContext = {
     mapCenter: null,
     walkscore: null,
     placeCategory: null,
+    city: null,
+    country: null,
   },
 
   // default value (aka initial value)

@@ -6,17 +6,42 @@ import { useChat } from "ai/react";
 import { openaiCacheContext } from "context/openaiCacheContext";
 import { openaiIdsContext } from "context/openaiIdsContext";
 import { IsDevContext } from "context/isDevContext";
+import { PresetType } from "context/openaiDropdownContext";
+import { OpenAiResponseType, VariantType } from "types/openai";
 
-interface OpenAiResponseType {
-  explainedLikeAlocal?: string;
-  greenFlags?: string;
-  redFlags?: string;
+interface OpenAiHookType {
+  preset: PresetType;
 }
 
-type VariantType = "explainedLikeAlocal" | "greenFlags" | "redFlags";
+const openaiResponseInitialState: OpenAiResponseType = {
+  living: {
+    explainedLikeAlocal: "",
+    greenFlags: "",
+    redFlags: "",
+  },
+  domesticTourism: "",
+  internationalTourism: "",
+  shortTermRental: "",
+  buyAndHold: "",
+};
 
-export const useOpenAi = () => {
-  const [{ explainedLikeAlocal, greenFlags, redFlags }, setOpenAiResponse] = useState<OpenAiResponseType>({});
+export const useOpenAi = ({ preset }: OpenAiHookType) => {
+  const [
+    {
+      living,
+      buyAndHold,
+      shortTermRental,
+      domesticTourism,
+      internationalTourism,
+      glamping,
+      corporateRelocation,
+      luxuryEstates,
+      realEstateDeveloper,
+      retireeLiving,
+      vacationHome,
+    },
+    setOpenAiResponse,
+  ] = useState<OpenAiResponseType>(openaiResponseInitialState);
   const [filterVal] = useRecoilState(filterState);
   const [loading, setLoading] = useRecoilState(loadingContext);
   const [openaiCache, setOpenaiCache] = useRecoilState(openaiCacheContext);
@@ -24,86 +49,175 @@ export const useOpenAi = () => {
   const [openaiIds, setOpenaiIds] = useRecoilState(openaiIdsContext);
   const [variant, setVariant] = useState<VariantType>("explainedLikeAlocal");
   const { isDev } = useContext(IsDevContext);
+
+  const isLivingPreset = useMemo(() => {
+    if (preset !== "living") {
+      return null;
+    } else {
+      return {
+        explainedLikeAlocal: variant === "explainedLikeAlocal",
+        greenFlags: variant === "greenFlags",
+        redFlags: variant === "redFlags",
+      };
+    }
+  }, [preset, variant]);
+
+  const params = useMemo(() => {
+    if (!filterVal.address) {
+      return "";
+    }
+
+    const addressAndPreset = `?address=${filterVal.address}&preset=${preset}`;
+
+    if (isLivingPreset) {
+      return `${addressAndPreset}&variant=${variant}`;
+    }
+
+    if (preset === "domesticTourism") {
+      return `${addressAndPreset}&city=${filterVal.city}`;
+    }
+
+    if (preset === "internationalTourism") {
+      return `${addressAndPreset}&country=${filterVal.country}&city=${filterVal.city}`;
+    }
+
+    return `${addressAndPreset}`;
+  }, [filterVal, preset, variant, isLivingPreset]);
+
   const { messages, append, stop, setMessages } = useChat({
-    api: `/api/openai?address=${filterVal.address}&variant=${variant}`,
+    api: `/api/openai${params}`,
     body: {
-      explainedLikeAlocal: variant === "greenFlags" ? explainedLikeAlocal : undefined,
-      greenFlags: variant === "redFlags" ? greenFlags : undefined,
+      explainedLikeAlocal: isLivingPreset?.greenFlags && living?.explainedLikeAlocal,
+      greenFlags: isLivingPreset?.redFlags && living?.greenFlags,
+    },
+    onError: (error) => {
+      console.error(error);
     },
     onFinish: (message) => {
-      if (variant === "explainedLikeAlocal") {
-        setVariant("greenFlags");
-        updateOpenAiCache("explainedLikeAlocal", message.content);
-        return;
-      } else if (variant === "greenFlags") {
-        setVariant("redFlags");
-        updateOpenAiCache("greenFlags", message.content);
-        return;
-      } else if (variant === "redFlags") {
-        setVariant("explainedLikeAlocal");
-        updateOpenAiCache("redFlags", message.content);
-        return;
+      try {
+        if (JSON.parse(message.content).error) {
+          return;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+
+      if (isLivingPreset) {
+        if (isLivingPreset.explainedLikeAlocal) {
+          setVariant("greenFlags");
+          updateOpenAiCache("living", message.content, "explainedLikeAlocal");
+          return;
+        } else if (isLivingPreset.greenFlags) {
+          setVariant("redFlags");
+          updateOpenAiCache("living", message.content, "greenFlags");
+          return;
+        } else if (isLivingPreset.redFlags) {
+          setVariant("explainedLikeAlocal");
+          updateOpenAiCache("living", message.content, "redFlags");
+          return;
+        }
+      } else {
+        updateOpenAiCache(preset, message.content);
       }
     },
   });
 
-  const setOpenaiResponseCallback = useCallback((variant: VariantType | "all", state?: string) => {
-    if (variant === "all") {
-      setOpenAiResponse({
-        explainedLikeAlocal: state,
-        greenFlags: state,
-        redFlags: state,
-      });
-    }
+  useEffect(() => {
+    stop();
+  }, [preset]);
 
-    setOpenAiResponse((prevState) => ({
-      ...prevState,
-      [variant]: state,
-    }));
-  }, []);
+  const setOpenaiResponseCallback = useCallback(
+    (preset: PresetType, state?: string, variant?: VariantType) => {
+      if (isLivingPreset && variant) {
+        setOpenAiResponse((prevState) => ({
+          ...prevState,
+          living: {
+            ...prevState.living,
+            [variant]: state,
+          },
+        }));
+      } else {
+        setOpenAiResponse((prevState) => ({
+          ...prevState,
+          [preset]: state,
+        }));
+      }
+    },
+    [isLivingPreset],
+  );
 
   const updateOpenAiCache = useCallback(
-    (variant: VariantType, state?: string) => {
+    (preset: PresetType, state?: string, variant?: VariantType) => {
       if (!filterVal.address || !state) {
         return;
       }
 
-      setOpenaiCache((prevState) => ({
-        ...prevState,
-        [filterVal.address as string]: {
-          ...prevState[filterVal.address as string],
-          [variant]: state,
-        },
-      }));
+      if (isLivingPreset && variant) {
+        setOpenaiCache((prevState) => ({
+          ...prevState,
+          [filterVal.address as string]: {
+            ...prevState[filterVal.address as string],
+            living: {
+              ...prevState[filterVal.address as string]?.living,
+              [variant]: state,
+            },
+          },
+        }));
+      } else {
+        setOpenaiCache((prevState) => ({
+          ...prevState,
+          [filterVal.address as string]: {
+            ...prevState[filterVal.address as string],
+            [preset]: state,
+          },
+        }));
+      }
     },
-    [filterVal.address],
+    [filterVal.address, isLivingPreset],
   );
 
   const setLoadingCallback = useCallback(
-    (variant: VariantType) => {
-      if (!loading.openai[variant]) {
-        return;
-      }
+    (preset: PresetType, variant?: VariantType) => {
+      if (preset === "living" && variant) {
+        if (!loading.openai.living[variant]) {
+          return;
+        }
 
-      setLoading((prevState) => ({
-        ...prevState,
-        openai: {
-          ...prevState.openai,
-          [variant]: false,
-        },
-      }));
+        setLoading((prevState) => ({
+          ...prevState,
+          openai: {
+            ...prevState.openai,
+            living: {
+              ...prevState.openai.living,
+              [variant]: false,
+            },
+          },
+        }));
+      } else {
+        if (!loading.openai[preset]) {
+          return;
+        }
+
+        setLoading((prevState) => ({
+          ...prevState,
+          openai: {
+            ...prevState.openai,
+            [preset]: false,
+          },
+        }));
+      }
     },
     [loading.openai],
   );
 
   useEffect(() => {
-    if (variant === "greenFlags" || variant === "redFlags") {
+    if (isLivingPreset?.greenFlags || isLivingPreset?.redFlags) {
       append({
         content: "",
         role: "user",
       });
     }
-  }, [variant]);
+  }, [isLivingPreset]);
 
   const message = useMemo(() => {
     if (!messages.length) {
@@ -129,38 +243,53 @@ export const useOpenAi = () => {
 
       setOpenaiIds((prevState) => [...prevState, ...removedDuplicates]);
     }
-    setMessages([]);
-    setOpenaiResponseCallback("all", "");
+
+    if (message) {
+      setMessages([]);
+    }
+
+    if (living?.explainedLikeAlocal || buyAndHold || shortTermRental) {
+      setOpenAiResponse(openaiResponseInitialState);
+    }
+
     if (!filterVal.address) {
       return;
     }
 
-    const cache = openaiCache[filterVal.address as string];
+    const cache = openaiCache[filterVal.address as string] as OpenAiResponseType | undefined;
 
-    if (cache?.explainedLikeAlocal) {
-      setOpenaiResponseCallback("explainedLikeAlocal", cache?.explainedLikeAlocal);
-      setLoadingCallback("explainedLikeAlocal");
+    if (isLivingPreset) {
+      if (cache?.living?.explainedLikeAlocal) {
+        setOpenaiResponseCallback("living", cache.living?.explainedLikeAlocal, "explainedLikeAlocal");
+        setLoadingCallback("living", "explainedLikeAlocal");
 
-      if (!cache?.greenFlags) {
-        setVariant("greenFlags");
+        if (!cache.living?.greenFlags) {
+          setVariant("greenFlags");
+          return;
+        }
+      }
+
+      if (cache?.living?.greenFlags) {
+        setOpenaiResponseCallback("living", cache.living?.greenFlags, "greenFlags");
+        setLoadingCallback("living", "greenFlags");
+
+        if (!cache.living?.redFlags) {
+          setVariant("redFlags");
+          return;
+        }
+      }
+
+      if (cache?.living?.redFlags) {
+        setOpenaiResponseCallback("living", cache.living?.redFlags, "redFlags");
+        setLoadingCallback("living", "redFlags");
         return;
       }
-    }
-
-    if (cache?.greenFlags) {
-      setOpenaiResponseCallback("greenFlags", cache?.greenFlags);
-      setLoadingCallback("greenFlags");
-
-      if (!cache?.redFlags) {
-        setVariant("redFlags");
+    } else {
+      if (cache?.[preset]) {
+        setOpenaiResponseCallback(preset, cache[preset] as string);
+        setLoadingCallback(preset);
         return;
       }
-    }
-
-    if (cache?.redFlags) {
-      setOpenaiResponseCallback("redFlags", cache?.redFlags);
-      setLoadingCallback("redFlags");
-      return;
     }
 
     const timeout = setTimeout(() => {
@@ -175,20 +304,28 @@ export const useOpenAi = () => {
       setVariant("explainedLikeAlocal");
       stop();
     };
-  }, [filterVal.address]);
+  }, [filterVal.address, preset]);
 
   useEffect(() => {
     if (!message || !message.content) {
       return;
     }
 
-    setLoadingCallback(variant);
-    setOpenaiResponseCallback(variant, message.content);
+    setLoadingCallback(preset, variant);
+    setOpenaiResponseCallback(preset, message.content, variant);
   }, [message]);
 
   return {
-    explainedLikeAlocal,
-    greenFlags,
-    redFlags,
+    living,
+    buyAndHold,
+    shortTermRental,
+    domesticTourism,
+    internationalTourism,
+    glamping,
+    realEstateDeveloper,
+    vacationHome,
+    retireeLiving,
+    corporateRelocation,
+    luxuryEstates,
   };
 };
