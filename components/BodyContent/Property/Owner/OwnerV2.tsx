@@ -1,10 +1,11 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Dialog, Typography } from "@mui/material";
 import React, { useState } from "react";
 import OwnerSvg from "../../../../public/icons/owner.svg";
 import LocationSvg from "../../../../public/icons/location.svg";
 import styles from "./Owner.module.scss";
 import { Button } from "components/Button/Button";
 import { atom, useRecoilState } from "recoil";
+import Close from "../../../../public/icons/close.svg";
 
 interface OwnerProps {
   owner: {
@@ -20,14 +21,14 @@ const textState = atom({
 });
 
 export default function Owner({ owner }: OwnerProps) {
-  const [isChecked, setIsChecked] = useRecoilState(textState);
+  const [, setOpened] = useRecoilState(textState);
 
   if (!owner) {
     return null;
   }
 
   const handleContactInfo = () => {
-    setIsChecked(true);
+    setOpened(true);
   };
   return (
     <Box className={styles.wrapper}>
@@ -52,11 +53,15 @@ export default function Owner({ owner }: OwnerProps) {
 }
 
 function SkipTracingModal() {
-  const [isChecked, setIsChecked] = useRecoilState(textState);
-  const handleCheckboxChange = () => {};
+  const [isOpened, setOpened] = useRecoilState(textState);
+  const [isChecked, setChecked] = useState(false);
+
+  const handleCheckboxChange = () => {
+    setChecked((prev) => !prev);
+  };
 
   const handleCancelClick = () => {
-    // Logic to close the modal
+    setOpened(false);
   };
 
   const handleGetInfoClick = () => {
@@ -64,24 +69,28 @@ function SkipTracingModal() {
   };
 
   return (
-    <div style={{ padding: "20px", border: "1px solid black", borderRadius: "8px", width: "300px", backgroundColor: "white" }}>
-      <h3>Skip Tracing</h3>
-      <p>
-        Please note that using the skip tracing feature will incur an additional charge of $0.12 per use, which will be added to your monthly subscription and billed
-        immediately. By proceeding, you acknowledge and accept this charge.
-      </p>
-      <div style={{ display: "flex", alignItems: "center", margin: "10px 0" }}>
-        <input type="checkbox" checked={isChecked} onChange={handleCheckboxChange} />
-        <span style={{ marginLeft: "10px" }}>Don't show this message again.</span>
-      </div>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <button style={{ border: "1px solid black", padding: "5px 10px", borderRadius: "5px" }} onClick={handleCancelClick}>
-          Cancel
-        </button>
-        <button style={{ backgroundColor: "#007BFF", color: "white", padding: "5px 10px", borderRadius: "5px" }} onClick={handleGetInfoClick}>
-          Get info
-        </button>
-      </div>
-    </div>
+    <Dialog open={isOpened} sx={{ paddingTop: 30, borderRadius: 30 }}>
+      <Box className={styles.skipTracingModal}>
+        <div className={styles.header}>
+          <h3>Skip Tracing</h3>
+          <Close style={{ cursor: "pointer" }} onClick={handleCancelClick} />
+        </div>
+        <p className={styles.skipTracingDescription}>
+          Please note that using the skip tracing feature will incur an additional charge of $0.12 per use, which will be added to your monthly subscription and billed
+          immediately. By proceeding, you acknowledge and accept this charge.
+        </p>
+
+        <div onClick={handleCheckboxChange} className={styles.checkboxWrapper}>
+          <input type="checkbox" checked={isChecked} />
+          <span>Don't show this message again.</span>
+        </div>
+        <div className={styles.buttonFooter}>
+          <Button className={styles.button} onClick={handleCancelClick} variant="outlined">
+            Cancel
+          </Button>
+          <Button className={styles.button}>Get info</Button>
+        </div>
+      </Box>
+    </Dialog>
   );
 }
