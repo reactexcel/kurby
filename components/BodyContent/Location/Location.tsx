@@ -14,7 +14,7 @@ import styles from "./Location.module.scss";
 import { IsDevContext } from "context/isDevContext";
 import { useOpenAi } from "hooks/use-open-ai";
 import { openaiDropdownContext } from "context/openaiDropdownContext";
-import { useOpenaiDropdownOptions } from "hooks/use-openai-dropdown-options-hook";
+import { useOpenaiDropdownOptions } from "hooks/use-openai-dropdown-options";
 
 export const Location = () => {
   const [filterVal] = useRecoilState(filterState);

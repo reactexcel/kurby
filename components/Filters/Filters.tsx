@@ -32,7 +32,7 @@ import { DialogContext } from "context/limitDialogContext";
 import { typesOfPlaceContext } from "context/typesOfPlaceContext";
 import { PresetType, openaiDropdownContext } from "context/openaiDropdownContext";
 import { extractCityCountry } from "utils/extractCityCountry";
-import { useOpenaiDropdownOptions } from "hooks/use-openai-dropdown-options-hook";
+import { useOpenaiDropdownOptions } from "hooks/use-openai-dropdown-options";
 
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
@@ -96,6 +96,10 @@ export default function Filters() {
 
   const handleOpenaiDropdownChange = (event: SelectChangeEvent) => {
     const value = event.target.value as PresetType;
+
+    if (!dropdownOptions[value]?.includedInPlan) {
+      return;
+    }
 
     setOpenaiDropdownValue({
       label: dropdownOptions[value]?.label || "",
@@ -363,7 +367,7 @@ export default function Filters() {
     }
   }, [address]);
 
-  const { isVisitor, isFree } = usePlanChecker();
+  const { isVisitor, isFree, isPro } = usePlanChecker();
 
   const [visitorStayLimitLaunched] = usePersistentRecoilState("visitorStayLimit", visitorStayLimit);
   const visitorSearchLimit = isVisitor && searchLimit;
@@ -382,9 +386,11 @@ export default function Filters() {
 
   const dropdownMenuItems = useMemo(() => {
     return Object.keys(dropdownOptions).map((key) => {
+      const dropdownOption = dropdownOptions[key as keyof typeof dropdownOptions];
+
       return (
-        <MenuItem key={key} value={key}>
-          {dropdownOptions[key as keyof typeof dropdownOptions]?.label}
+        <MenuItem key={key} value={key} disabled={!dropdownOption.includedInPlan}>
+          {dropdownOption?.label}
         </MenuItem>
       );
     });
@@ -403,6 +409,11 @@ export default function Filters() {
         {activeTab === "location" && (
           <DropdownWrapper>
             <Select id="openai-dropdown" value={openaiDropdownValue.value} onChange={handleOpenaiDropdownChange}>
+              {!isPro && (
+                <div className={styles.dropdownUpgradeMessageWrapper}>
+                  <div className={styles.dropdownUpgradeMessage}>Upgrade Plan to Access More Options</div>
+                </div>
+              )}
               {dropdownMenuItems}
             </Select>
           </DropdownWrapper>
