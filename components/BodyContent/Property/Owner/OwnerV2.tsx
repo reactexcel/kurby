@@ -45,12 +45,18 @@ const contactInfoResponse = atom({
   default: {} as SkipTraceResponse,
 });
 
+const savedContacts = atom({
+  key: "savedContactsInfo",
+  default: [] as SkipTraceResponse[],
+});
+
 export default function Owner({ owner, address }: OwnerProps) {
   const [isLoading, setLoading] = useState<boolean>(false);
   const [, setWarningOpened] = useRecoilState(textState);
   const [, setOpened] = useRecoilState(contactInfoState);
   const [showAgain] = usePersistentRecoilState("skipTraceShowAgain", skipTraceShowAgain);
-  const [, setContactInfo] = usePersistentRecoilState("contactInfo", contactInfoResponse);
+  const [savedContactsState] = usePersistentRecoilState<SkipTraceResponse[]>("savedContacts", savedContacts);
+  const [contactInfo, setContactInfo] = usePersistentRecoilState("contactInfo", contactInfoResponse);
 
   const ownerInformationProps: IGetOwnerInformationProps = {
     firstName: owner.firstName,
@@ -59,8 +65,6 @@ export default function Owner({ owner, address }: OwnerProps) {
     zip: address.zip,
     state: address.state,
   };
-
-  console.log(ownerInformationProps);
 
   if (!owner) {
     return null;
@@ -80,7 +84,18 @@ export default function Owner({ owner, address }: OwnerProps) {
     }
   };
 
+  const savedContact = savedContactsState.find(
+    (savedContact) => savedContact.output.identity.address.formattedAddress === contactInfo.output.identity.address.formattedAddress,
+  );
+  const isContactSaved = Boolean(savedContact);
+
   const handleContactInfo = async () => {
+    if (isContactSaved && savedContact) {
+      setContactInfo(savedContact);
+      setOpened(true);
+      return;
+    }
+
     if (!showAgain) {
       setWarningOpened(true);
     } else {
@@ -94,7 +109,7 @@ export default function Owner({ owner, address }: OwnerProps) {
         <OwnerSvg />
       </Box>
       <Box className={styles.info}>
-        {!showAgain && <SkipTracingModal props={ownerInformationProps} />}
+        {(!showAgain || !savedContact) && <SkipTracingModal props={ownerInformationProps} />}
         <ContactInfoModal />
         <Typography variant="h5" component="h5" fontSize={"20px"}>
           {owner.firstName} {owner.lastName}
@@ -114,11 +129,11 @@ export default function Owner({ owner, address }: OwnerProps) {
 }
 
 function SkipTracingModal({ props }: { props: IGetOwnerInformationProps }) {
+  const [, setContactInfo] = usePersistentRecoilState("contactInfo", contactInfoResponse);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [isOpened, setOpened] = useRecoilState(textState);
   const [, setContactModalOpened] = useRecoilState(contactInfoState);
   const [showAgain, setChecked] = usePersistentRecoilState("skipTraceShowAgain", skipTraceShowAgain);
-  const [, setContactInfo] = usePersistentRecoilState("contactInfo", contactInfoResponse);
 
   const handleCheckboxChange = () => {
     setChecked(!showAgain);
@@ -174,6 +189,7 @@ function SkipTracingModal({ props }: { props: IGetOwnerInformationProps }) {
 }
 
 function ContactInfoModal() {
+  const [savedContactsState, setSavedContactsState] = usePersistentRecoilState<SkipTraceResponse[]>("savedContacts", savedContacts);
   const [contactInfo] = usePersistentRecoilState<SkipTraceResponse>("contactInfo", contactInfoResponse);
   const [isOpened, setOpened] = useRecoilState(contactInfoState);
   const [isLoading] = useState<boolean>(false);
@@ -182,6 +198,16 @@ function ContactInfoModal() {
     setOpened(false);
   };
 
+  const handleSaveContactInfo = async (contactInfo: SkipTraceResponse) => {
+    const savedContact = savedContactsState.find(
+      (savedContact) => savedContact.output.identity.address.formattedAddress === contactInfo.output.identity.address.formattedAddress,
+    );
+
+    const isContactSaved = Boolean(savedContact);
+    if (!isContactSaved) {
+      setSavedContactsState([...(savedContactsState || [{}]), contactInfo]);
+    }
+  };
   const getListOrder = (index: number) => (index === 0 ? "" : index);
   return (
     <Dialog open={isOpened} sx={{ paddingTop: 30, borderRadius: 30 }}>
@@ -208,7 +234,9 @@ function ContactInfoModal() {
           </div>
         )}
         <div className={styles.saveContactButton}>
-          <Button className={styles.button}>{isLoading ? <CircularProgress sx={{ color: "#00a13d" }} size={12} /> : "Save contact info"}</Button>
+          <Button onClick={() => handleSaveContactInfo(contactInfo)} className={styles.button}>
+            {isLoading ? <CircularProgress sx={{ color: "#00a13d" }} size={12} /> : "Save contact info"}
+          </Button>
         </div>
       </Box>
     </Dialog>
