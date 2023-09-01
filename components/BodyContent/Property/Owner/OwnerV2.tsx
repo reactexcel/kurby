@@ -7,7 +7,7 @@ import { Button } from "components/Button/Button";
 import { atom, useRecoilState } from "recoil";
 import Close from "../../../../public/icons/close.svg";
 import { usePersistentRecoilState } from "hooks/recoil-persist-state";
-import { getOwnerInformation } from "./getOwnerInformation";
+import { IGetOwnerInformationProps, getOwnerInformation } from "./getOwnerInformation";
 import { SkipTraceResponse } from "pages/api/core/reapi/skipTrace";
 
 const skipTraceShowAgainState = {
@@ -21,6 +21,12 @@ interface OwnerProps {
     firstName: string;
     lastName: string;
     address: string;
+  };
+  address: {
+    address: string;
+    city: string;
+    state: string;
+    zip: string;
   };
 }
 
@@ -39,19 +45,29 @@ const contactInfoResponse = atom({
   default: {} as SkipTraceResponse,
 });
 
-export default function Owner({ owner }: OwnerProps) {
+export default function Owner({ owner, address }: OwnerProps) {
   const [isLoading, setLoading] = useState<boolean>(false);
   const [, setWarningOpened] = useRecoilState(textState);
   const [, setOpened] = useRecoilState(contactInfoState);
   const [showAgain] = usePersistentRecoilState("skipTraceShowAgain", skipTraceShowAgain);
   const [, setContactInfo] = usePersistentRecoilState("contactInfo", contactInfoResponse);
 
+  const ownerInformationProps: IGetOwnerInformationProps = {
+    firstName: owner.firstName,
+    lastName: owner.lastName,
+    address: address.address,
+    zip: address.zip,
+    state: address.state,
+  };
+
+  console.log(ownerInformationProps);
+
   if (!owner) {
     return null;
   }
   const handleGetInfoClick = async () => {
     const prepareOwnerInformation = async () => {
-      const { data } = await getOwnerInformation();
+      const { data } = await getOwnerInformation(ownerInformationProps);
       setContactInfo(data);
     };
     try {
@@ -78,7 +94,7 @@ export default function Owner({ owner }: OwnerProps) {
         <OwnerSvg />
       </Box>
       <Box className={styles.info}>
-        {!showAgain && <SkipTracingModal />}
+        {!showAgain && <SkipTracingModal props={ownerInformationProps} />}
         <ContactInfoModal />
         <Typography variant="h5" component="h5" fontSize={"20px"}>
           {owner.firstName} {owner.lastName}
@@ -97,7 +113,7 @@ export default function Owner({ owner }: OwnerProps) {
   );
 }
 
-function SkipTracingModal() {
+function SkipTracingModal({ props }: { props: IGetOwnerInformationProps }) {
   const [isLoading, setLoading] = useState<boolean>(false);
   const [isOpened, setOpened] = useRecoilState(textState);
   const [, setContactModalOpened] = useRecoilState(contactInfoState);
@@ -115,7 +131,7 @@ function SkipTracingModal() {
 
   const handleGetInfoClick = async () => {
     const prepareOwnerInformation = async () => {
-      const { data } = await getOwnerInformation();
+      const { data } = await getOwnerInformation(props);
       setContactInfo(data);
     };
     try {
@@ -159,13 +175,14 @@ function SkipTracingModal() {
 
 function ContactInfoModal() {
   const [contactInfo] = usePersistentRecoilState<SkipTraceResponse>("contactInfo", contactInfoResponse);
-  console.log(contactInfo);
   const [isOpened, setOpened] = useRecoilState(contactInfoState);
-  const [isLoading, setLoading] = useState<boolean>(false);
+  const [isLoading] = useState<boolean>(false);
 
   const handleClose = () => {
     setOpened(false);
   };
+
+  const getListOrder = (index: number) => (index === 0 ? "" : index);
   return (
     <Dialog open={isOpened} sx={{ paddingTop: 30, borderRadius: 30 }}>
       <Box className={styles.skipTracingModal}>
@@ -176,15 +193,15 @@ function ContactInfoModal() {
         <hr style={{ opacity: 0.2 }} />
         {contactInfo?.output && (
           <div className={styles.modalBody}>
-            {contactInfo.output?.identity.emails?.map(({ email }) => (
+            {contactInfo.output?.identity.emails?.map(({ email }, index) => (
               <div key={email} className={styles.accordionHeader}>
-                <small>Email</small>
+                <small>Email {getListOrder(index)}</small>
                 <input disabled={true} className={styles.contactInput} value={email} />
               </div>
             ))}
-            {contactInfo.output?.identity.phones?.map(({ phone, phoneDisplay }) => (
+            {contactInfo.output?.identity.phones?.map(({ phone, phoneDisplay }, index) => (
               <div key={phone} className={styles.accordionHeader}>
-                <small>Phone No.</small>
+                <small>Phone No. {getListOrder(index)}</small>
                 <input disabled={true} className={styles.contactInput} value={phoneDisplay} />
               </div>
             ))}

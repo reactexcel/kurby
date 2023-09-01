@@ -126,6 +126,7 @@ export default function RecordV2({ description }: { description?: string }) {
                   lastName: propertyInfo?.owner1LastName,
                   address: propertyInfo.address.address,
                 }}
+                address={propertyInfo.address}
               />
             )}
             {propertyInfo?.owner2FirstName && propertyInfo.owner2LastName && (
@@ -135,6 +136,7 @@ export default function RecordV2({ description }: { description?: string }) {
                   lastName: propertyInfo?.owner2LastName,
                   address: propertyInfo.address.address,
                 }}
+                address={propertyInfo.address}
               />
             )}
           </div>
