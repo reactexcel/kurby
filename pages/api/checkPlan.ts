@@ -2,7 +2,7 @@ import OutsetaApiClient from "outseta-api-client";
 import jwt_decode from "jwt-decode";
 import { IAppPlans } from "context/plansContext";
 
-interface IUserTokenResponse {
+export interface IUserTokenResponse {
   readonly nbf: number;
   readonly exp: number;
   readonly iss: string;

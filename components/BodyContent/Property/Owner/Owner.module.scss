@@ -93,4 +93,39 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  padding: 0px;
+  height: 40px;
+}
+
+.getInfoButton {
+  width: 180px;
+}
+
+.accordionHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 10px 0px;
+  gap: 10px;
+}
+
+.contactInput {
+  width: 100%;
+  background-color: #9e9e9e1a;
+  padding: 10px;
+  border: 0px;
+  border-radius: 10px;
+}
+
+.modalBody {
+  margin-bottom: 20px;
+}
+
+.saveContactButton {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
