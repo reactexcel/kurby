@@ -6,6 +6,7 @@ export interface IGetOwnerInformationProps {
   readonly lastName: string;
   readonly address: string;
   readonly state: string;
+  readonly city: string;
   readonly zip: string;
 }
 

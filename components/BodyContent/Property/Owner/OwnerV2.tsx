@@ -63,6 +63,7 @@ export default function Owner({ owner, address }: OwnerProps) {
     lastName: owner.lastName,
     address: address.address,
     zip: address.zip,
+    city: address.city,
     state: address.state,
   };
 
@@ -198,17 +199,20 @@ function ContactInfoModal() {
     setOpened(false);
   };
 
-  const handleSaveContactInfo = async (contactInfo: SkipTraceResponse) => {
-    const savedContact = savedContactsState.find(
-      (savedContact) => savedContact.output.identity.address.formattedAddress === contactInfo.output.identity.address.formattedAddress,
-    );
+  const savedContact = savedContactsState.find(
+    (savedContact) => savedContact.output.identity.address.formattedAddress === contactInfo.output.identity.address.formattedAddress,
+  );
 
-    const isContactSaved = Boolean(savedContact);
+  const isContactSaved = Boolean(savedContact);
+
+  const handleSaveContactInfo = async (contactInfo: SkipTraceResponse) => {
     if (!isContactSaved) {
       setSavedContactsState([...(savedContactsState || [{}]), contactInfo]);
     }
   };
   const getListOrder = (index: number) => (index === 0 ? "" : index);
+
+  const buttonText = isContactSaved ? "Saved" : "Save contact info";
   return (
     <Dialog open={isOpened} sx={{ paddingTop: 30, borderRadius: 30 }}>
       <Box className={styles.skipTracingModal}>
@@ -234,8 +238,8 @@ function ContactInfoModal() {
           </div>
         )}
         <div className={styles.saveContactButton}>
-          <Button onClick={() => handleSaveContactInfo(contactInfo)} className={styles.button}>
-            {isLoading ? <CircularProgress sx={{ color: "#00a13d" }} size={12} /> : "Save contact info"}
+          <Button disabled={isContactSaved} variant={isContactSaved ? "outlined" : "filled"} onClick={() => handleSaveContactInfo(contactInfo)} className={styles.button}>
+            {isLoading ? <CircularProgress sx={{ color: "#00a13d" }} size={12} /> : buttonText}
           </Button>
         </div>
       </Box>

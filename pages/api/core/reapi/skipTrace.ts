@@ -120,10 +120,12 @@ interface Stats {
 }
 
 interface IGetOwnerContractsProps {
-  address: string;
-  city: string;
-  state: string;
-  zip: string;
+  readonly firstName: string;
+  readonly lastName: string;
+  readonly address: string;
+  readonly state: string;
+  readonly city: string;
+  readonly zip: string;
 }
 
 class SkipTraceApi {
@@ -134,126 +136,17 @@ class SkipTraceApi {
   }
 
   public async getOwnerContacts(props: IGetOwnerContractsProps): Promise<SkipTraceResponse> {
-    const { address, city, state, zip } = props;
-
     const headers = {
       "Content-Type": "application/json",
       "x-api-key": this.accessKey,
     };
 
-    const data = {
-      address: address,
-      city: city,
-      state: state,
-      zip: zip,
-    };
-
     try {
-      // const response = await axios.post<SkipTraceResponse>(this.BASE_URL, data, { headers: headers });
-      // return response.data;
-
-      return {
-        requestId: "af9c1964-2aa8-4356-809a-e0c2eef71e03",
-        responseCode: 0,
-        requestDate: "2023-08-31T21:30:57.154Z",
-        responseMessage: "Successful",
-        warnings: "None",
-        input: {
-          address: "17 Topeka Pass",
-          city: "Willingboro",
-          state: "NJ",
-          zip: "08046",
-        },
-        output: {
-          identity: {
-            names: [
-              {
-                firstName: "Hall",
-                middleName: "Louise",
-                lastName: "K",
-                fullName: "Hall Louise K",
-              },
-            ],
-            address: {
-              house: "17",
-              preDir: "",
-              street: "Topeka",
-              postDir: "",
-              strType: "Pass",
-              aptNbr: "",
-              aptType: "",
-              city: "Willingboro",
-              state: "Nj",
-              county: "",
-              zip: "08046",
-              z4: "",
-              latitude: "",
-              longitude: "",
-              formattedAddress: "17 Topeka Pass, Willingboro, Nj 08046",
-              lastSeen: "",
-              validSince: "",
-            },
-            addressHistory: [],
-            phones: [
-              {
-                phone: "8562224664",
-                telcoName: "",
-                phoneDisplay: "(856) 222-4664",
-                phoneExtension: "",
-                isConnected: true,
-                doNotCall: "",
-                phoneType: "landline",
-                lastSeen: "",
-                validSince: "",
-              },
-            ],
-            emails: [{ email: "kahall4664@comcast.net", emailType: "personal" }],
-          },
-          demographics: {
-            dob: "",
-            dod: "",
-            deceased: false,
-            gender: "",
-            images: [],
-            social: [],
-            education: [],
-            jobs: [],
-            names: [
-              {
-                type: "",
-                prefix: "",
-                firstName: "Hall",
-                lastName: "K",
-                middleName: "Louise",
-                suffix: "",
-                fullName: "Hall Louise K",
-                lastSeen: "",
-                validSince: "",
-              },
-            ],
-          },
-          relationships: [],
-          stats: {
-            searchResults: 1,
-            names: 1,
-            addresses: 1,
-            phoneNumbers: 1,
-            emailAddresses: 1,
-            associates: 0,
-            jobs: 0,
-            socialProfiles: 0,
-            images: 0,
-          },
-        },
-        match: true,
-        cached: true,
-        statusCode: 200,
-        statusMessage: "Success",
-        credits: 0,
-        live: true,
-        requestExecutionTimeMS: "160ms",
-      };
+      const response = await axios.post<SkipTraceResponse>(this.BASE_URL, props, { headers: headers });
+      console.log(response.data);
+      return response.data;
     } catch (error) {
+      console.log(error);
       throw new Error(`Failed to get owner contacts`);
     }
   }
