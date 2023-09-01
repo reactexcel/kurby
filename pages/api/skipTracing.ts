@@ -38,6 +38,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(401).send("Sorry you cannot make this transaction");
   }
 
+  const firstName: string = req.body.firstName;
+  const lastName: string = req.body.lastName;
   const address: string = req.body.address;
   const city: string = req.body.city;
   const state: string = req.body.state;
@@ -46,7 +48,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const isValidField = (input: string) => typeof input !== "string" || input?.length > 0;
 
   // Validate input parameters:
-  [address, city, state, zip].map((field) => {
+  [firstName, lastName, address, city, state, zip].map((field) => {
     const errorMessage = JSON.stringify({
       message: "Please input correct parameters",
     });
