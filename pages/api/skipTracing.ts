@@ -76,7 +76,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   // Create request to the SkipTrace Api:
   const skipTraceApi = createSkipTraceApiInstance();
-  const response = await skipTraceApi.getOwnerContacts({ address, city, state, zip });
+  const response = await skipTraceApi.getOwnerContacts({ first_name: firstName, last_name: lastName, address, city, state, zip });
 
   res.status(200).send(response);
 }

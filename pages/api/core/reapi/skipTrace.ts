@@ -120,8 +120,8 @@ interface Stats {
 }
 
 interface IGetOwnerContractsProps {
-  // readonly firstName: string;
-  // readonly lastName: string;
+  readonly first_name: string;
+  readonly last_name: string;
   readonly address: string;
   readonly state: string;
   readonly city: string;
