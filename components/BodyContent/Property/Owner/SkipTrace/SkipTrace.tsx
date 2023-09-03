@@ -34,7 +34,12 @@ export default function SkipTrace({ ownerInformation }: ISkipTrace) {
 
   const [isWarningModalOpened, setWarningInfoModalOpened] = useState<boolean>(false);
   const [savedContactsState] = usePersistentRecoilState<SkipTraceResponse[]>("savedContacts", savedContacts);
-  const [showAgain] = useRecoilState(showAgainState);
+  const [showAgain] = usePersistentRecoilState("showSkipTraceMessageAgain", showAgainState);
+
+  const [isError, setErrorMessage] = useState({
+    isError: false,
+    message: "",
+  });
 
   const handleGetInfoClick = async () => {
     const prepareOwnerInformation = async () => {
@@ -43,9 +48,20 @@ export default function SkipTrace({ ownerInformation }: ISkipTrace) {
     };
     try {
       setLoading(true);
-      await prepareOwnerInformation();
-      setWarningInfoModalOpened(false);
-      setContactInfoOpened(true);
+      setErrorMessage({
+        isError: false,
+        message: "",
+      });
+      try {
+        await prepareOwnerInformation();
+        setWarningInfoModalOpened(false);
+        setContactInfoOpened(true);
+      } catch {
+        setErrorMessage({
+          isError: true,
+          message: "Contact not found",
+        });
+      }
       setLoading(false);
     } catch (e) {
       setLoading(false);
@@ -72,13 +88,13 @@ export default function SkipTrace({ ownerInformation }: ISkipTrace) {
     }
   };
 
-  const buttonText = isContactSaved ? "See saved contact" : "Get contact info";
+  const buttonText = isContactSaved ? "See saved contact" : isError.isError ? isError.message : "Get contact info";
 
   return (
     <>
       <SkipTracingInfoNoteModal isInfoNoteOpen={isWarningModalOpened} setIsInfoNoteOpen={setWarningInfoModalOpened} handleGetInfoClick={handleGetInfoClick} />
       <ContactInfoModal isContactModalOpened={isContactInfoOpened} setContactModalOpen={setContactInfoOpened} ownerInformation={ownerInformation} />
-      <Button variant={isContactSaved ? "outlined" : "filled"} className={styles.getInfoButton} onClick={handleContactInfo}>
+      <Button variant={isContactSaved ? "outlined" : "filled"} className={isError.isError ? styles.getErrorButton : styles.getInfoButton} onClick={handleContactInfo}>
         {isLoading ? <CircularProgress sx={{ color: "white" }} size={12} /> : buttonText}
       </Button>
     </>
@@ -129,6 +145,7 @@ function SkipTracingInfoNoteModal({
             className={styles.button}
             onClick={() => {
               handleGetInfoClick();
+              setIsInfoNoteOpen(false);
             }}
           >
             {isLoading ? <CircularProgress sx={{ color: "#00a13d" }} size={12} /> : "Get info"}
@@ -165,7 +182,7 @@ function ContactInfoModal({
   const isContactSaved = Boolean(savedContact);
 
   const handleSaveContactInfo = async (contactInfo: SkipTraceResponse) => {
-    if (!isContactSaved) {
+    if (!isContactSaved && contactInfoState.output) {
       setSavedContactsState([...(savedContactsState || [{}]), contactInfo]);
     }
   };

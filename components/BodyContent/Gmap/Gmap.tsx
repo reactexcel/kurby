@@ -130,6 +130,7 @@ function MyComponent() {
         setTractGeometricData(dataLayer);
         setLoading(false);
       }
+      setLoading(false);
     };
     try {
       if (filterVal.latlong && isUS) {
@@ -151,6 +152,7 @@ function MyComponent() {
   useEffect(() => {
     setMetricsTooltip(undefined);
     if (!map?.data || (!filterVal.latlong && !isUS)) {
+      setLoading(false);
       return;
     }
 
