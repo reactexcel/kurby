@@ -13,14 +13,18 @@ import { TabLayout } from "components/layouts/TabLayout/TabLayout";
 import styles from "./Location.module.scss";
 import { IsDevContext } from "context/isDevContext";
 import { useOpenAi } from "hooks/use-open-ai";
+import { openaiDropdownContext } from "context/openaiDropdownContext";
+import { useOpenaiDropdownOptions } from "hooks/use-openai-dropdown-options";
 
 export const Location = () => {
   const [filterVal] = useRecoilState(filterState);
   const [loading] = useRecoilState(loadingContext);
   const { isDev, message } = useContext(IsDevContext);
-  const { explainedLikeAlocal, greenFlags, redFlags } = useOpenAi();
+  const [dropdownValue] = useRecoilState(openaiDropdownContext);
+  const openaiResponse = useOpenAi({ preset: dropdownValue.value });
+  const dropdownOptions = useOpenaiDropdownOptions();
 
-  const separateMessage = useMemo(() => explainedLikeAlocal?.split("- ").filter((part) => part), [explainedLikeAlocal]);
+  const separateMessage = useMemo(() => openaiResponse.living && openaiResponse.living.explainedLikeAlocal?.split("- ").filter((part) => part), [openaiResponse.living]);
 
   if (loading.walkscore) {
     return (
@@ -29,6 +33,36 @@ export const Location = () => {
       </TabLayout>
     );
   }
+
+  const FormattedMessage = ({ message }: { message?: string }) => {
+    if (!message) return null;
+
+    const formatPart = (part: string, index: number) => {
+      const matchedParts = part.split(/^(\d+\.\s[^:]+):/).filter(Boolean);
+
+      if (matchedParts.length === 1) {
+        const numberSplit = matchedParts[0].split(/^(\d+\.\s)/).filter(Boolean);
+
+        return (
+          <p className={styles.part} key={index}>
+            <strong>{numberSplit.length > 1 ? numberSplit[0] : null}</strong>
+            {numberSplit.length > 1 ? numberSplit[1] : matchedParts[0]}
+          </p>
+        );
+      } else if (matchedParts.length > 1) {
+        return (
+          <p className={styles.part} key={index}>
+            <strong>{matchedParts[0]}:</strong>
+            {matchedParts[1]}
+          </p>
+        );
+      }
+    };
+
+    const parts = message.split("\n").map(formatPart);
+
+    return <>{parts}</>;
+  };
 
   return (
     <TabLayout>
@@ -41,30 +75,32 @@ export const Location = () => {
               <h3 className={styles.address}>{filterVal.address}</h3>
             </div>
             <Typography className={styles.margin} variant="subtitle1">
-              Explain it like a local:
+              {dropdownValue.value === "living" ? "Explained like a local" : dropdownOptions[dropdownValue.value]?.label}:
               <AIWarningToolTip />
             </Typography>
             {isDev && <Typography className={styles.margin}>{message("Location")}</Typography>}
-            {loading.openai.explainedLikeAlocal ? (
+            {(dropdownValue.value === "living" && loading.openai.living.explainedLikeAlocal) || (dropdownValue.value !== "living" && loading.openai[dropdownValue.value]) ? (
               <ParagraphSkeleton />
+            ) : dropdownValue.value === "living" ? (
+              separateMessage?.map((part, index) => (
+                <p className={styles.part} key={index}>
+                  {part}
+                </p>
+              ))
             ) : (
-              <Typography className={styles.explainedLikeAlocal}>
-                {separateMessage?.map((part, index) => (
-                  <p className={styles.part} key={index}>
-                    {part}
-                  </p>
-                ))}
-              </Typography>
+              <FormattedMessage message={openaiResponse[dropdownValue.value]} />
             )}
             <Box className={styles.margin}>
               <WalkscoreList />
             </Box>
           </Box>
         </Box>
-        <Box className={styles.flags}>
-          <Flags color="Green" flagsMessage={greenFlags || ""} loading={loading.openai.greenFlags} />
-          <Flags color="Red" flagsMessage={redFlags || ""} loading={loading.openai.redFlags} />
-        </Box>
+        {dropdownValue.value === "living" && (
+          <Box className={styles.flags}>
+            <Flags color="Green" flagsMessage={openaiResponse.living?.greenFlags || ""} loading={loading.openai.living.greenFlags} />
+            <Flags color="Red" flagsMessage={openaiResponse.living?.redFlags || ""} loading={loading.openai.living.redFlags} />
+          </Box>
+        )}
       </Box>
     </TabLayout>
   );

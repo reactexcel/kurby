@@ -2,7 +2,7 @@ import styles from "./Filters.module.scss";
 import Box from "@mui/material/Box";
 import Illustration from "../../public/icons/search.svg";
 import { SelectChangeEvent } from "@mui/material/Select";
-import { useState, useRef, useEffect, useContext } from "react";
+import { useState, useRef, useEffect, useContext, useMemo } from "react";
 import { useRecoilState } from "recoil";
 import { addressState, filterState } from "../../context/filterContext";
 import GLOBAL_SETTINGS, { PlacesType } from "../../globals/GLOBAL_SETTINGS";
@@ -30,6 +30,9 @@ import { useNearbyPlacesCallCount } from "hooks/use-nearby-places-call-count";
 import { nearbyPlacesCallCountContext } from "context/nearbyPlacesCallCountContext";
 import { DialogContext } from "context/limitDialogContext";
 import { typesOfPlaceContext } from "context/typesOfPlaceContext";
+import { PresetType, openaiDropdownContext } from "context/openaiDropdownContext";
+import { extractCityCountry } from "utils/extractCityCountry";
+import { useOpenaiDropdownOptions } from "hooks/use-openai-dropdown-options";
 
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
@@ -66,6 +69,8 @@ export default function Filters() {
   const { hasBeenCalled, incrementCallCount } = useNearbyPlacesCallCount();
   const [{ hasReachedLimit }] = useRecoilState(nearbyPlacesCallCountContext);
   const { setIsOpen } = useContext(DialogContext);
+  const [openaiDropdownValue, setOpenaiDropdownValue] = useRecoilState(openaiDropdownContext);
+  const dropdownOptions = useOpenaiDropdownOptions();
 
   //* State for the place select element
   const [typesOfPlace, setTypesOfPlace] = useRecoilState(typesOfPlaceContext);
@@ -88,6 +93,19 @@ export default function Filters() {
   //* All the types that the select element can be
   //TODO map these to values that the client requests
   //GLOBAL_SETTINGS.PLACE_TYPES
+
+  const handleOpenaiDropdownChange = (event: SelectChangeEvent) => {
+    const value = event.target.value as PresetType;
+
+    if (!dropdownOptions[value]?.includedInPlan) {
+      return;
+    }
+
+    setOpenaiDropdownValue({
+      label: dropdownOptions[value]?.label || "",
+      value,
+    });
+  };
 
   //* Handle the change of the select element
   const handleSelectChange = (event: SelectChangeEvent<typeof typesOfPlace>) => {
@@ -244,6 +262,23 @@ export default function Filters() {
     })();
   }, [filterVal.mapCenter, activeTab, filterVal.address, hasBeenCalled]);
 
+  const getCityAndCountry = (addressComponents: any[], address: string) => {
+    let city = addressComponents.find((component) => component.types.includes("locality"));
+    let country = addressComponents.find((component) => component.types.includes("country"));
+
+    if (!city || !country) {
+      const extracted = extractCityCountry(address);
+
+      city = extracted.city;
+      country = extracted.country;
+    }
+
+    return {
+      city: city?.long_name,
+      country: country?.long_name,
+    };
+  };
+
   const handleAddressChange = async (place: any) => {
     const getScore = (address: string, location: any) => WalkscoreListApi({ address, location });
 
@@ -267,15 +302,6 @@ export default function Filters() {
     // Determine if the place is a city or an address
     const placeCategory = getPlaceCategory(place.address_components);
 
-    setLoading((prevState) => ({
-      ...prevState,
-      walkscore: false,
-      openai: {
-        explainedLikeAlocal: true,
-        greenFlags: true,
-        redFlags: true,
-      },
-    }));
     setFilterVal((prevVal: any) => ({
       ...prevVal,
       latlong: place.geometry.location,
@@ -284,6 +310,7 @@ export default function Filters() {
       mapCenter: location,
       placeCategory,
       walkscore,
+      ...getCityAndCountry(place.address_components, place.formatted_address),
     }));
     setNearby(() => ({
       address: place.formatted_address,
@@ -340,7 +367,7 @@ export default function Filters() {
     }
   }, [address]);
 
-  const { isVisitor, isFree, isGrowth, isPro } = usePlanChecker();
+  const { isVisitor, isFree, isPro } = usePlanChecker();
 
   const [visitorStayLimitLaunched] = usePersistentRecoilState("visitorStayLimit", visitorStayLimit);
   const visitorSearchLimit = isVisitor && searchLimit;
@@ -357,6 +384,18 @@ export default function Filters() {
     }
   }, [visitorStayLimitReached, visitorSearchLimit, visitorMapReachedClickLimit, user]);
 
+  const dropdownMenuItems = useMemo(() => {
+    return Object.keys(dropdownOptions).map((key) => {
+      const dropdownOption = dropdownOptions[key as keyof typeof dropdownOptions];
+
+      return (
+        <MenuItem key={key} value={key} disabled={!dropdownOption.includedInPlan}>
+          {dropdownOption?.label}
+        </MenuItem>
+      );
+    });
+  }, [dropdownOptions]);
+
   return (
     <>
       <Box className={styles.container}>
@@ -367,40 +406,45 @@ export default function Filters() {
           <input placeholder="Search Property Here" className={styles.input} type="text" ref={inputRef} />
         </div>
 
-        {activeTab === "nearby" && (isGrowth || isPro) && (
-          <div className={styles.searchBlock}>
-            <div className={styles.typeOfPlace}>
-              <div className={styles.row}>
-                <form style={{ width: "100%" }}>
-                  <FormControl fullWidth className={styles.formControl}>
-                    <Select
-                      id="demo-multiple-checkbox"
-                      multiple
-                      value={typesOfPlace}
-                      onChange={handleSelectChange}
-                      onClose={handleClose}
-                      displayEmpty
-                      renderValue={(selected) => `Places of Interest (${selected.length})`}
-                      MenuProps={MenuProps}
-                      style={{ fontSize: "16px" }}
-                      autoWidth={true}
-                    >
-                      <MenuItem key="toggleAll" onClick={handleToggleAll}>
-                        <Checkbox icon={<RadioButtonUncheckedIcon />} checkedIcon={<RadioButtonCheckedIcon />} onChange={handleToggleAll} checked={isSelectAll} />
-                        <ListItemText primary={isSelectAll ? "Deselect All" : "Select All"} />
-                      </MenuItem>
-                      {PLACE_TYPES.map((name) => (
-                        <MenuItem key={name} value={name} style={{ padding: "0px" }}>
-                          <Checkbox checked={typesOfPlace.indexOf(name) > -1} />
-                          <ListItemText primary={name} />
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </form>
-              </div>
-            </div>
-          </div>
+        {activeTab === "location" && (
+          <DropdownWrapper>
+            <Select id="openai-dropdown" value={openaiDropdownValue.value} onChange={handleOpenaiDropdownChange}>
+              {!isPro && (
+                <div className={styles.dropdownUpgradeMessageWrapper}>
+                  <div className={styles.dropdownUpgradeMessage}>Upgrade Plan to Access More Options</div>
+                </div>
+              )}
+              {dropdownMenuItems}
+            </Select>
+          </DropdownWrapper>
+        )}
+
+        {activeTab === "nearby" && (
+          <DropdownWrapper>
+            <Select
+              id="demo-multiple-checkbox"
+              multiple
+              value={typesOfPlace}
+              onChange={handleSelectChange}
+              onClose={handleClose}
+              displayEmpty
+              renderValue={(selected) => `Places of Interest (${selected.length})`}
+              MenuProps={MenuProps}
+              style={{ fontSize: "16px" }}
+              autoWidth={true}
+            >
+              <MenuItem key="toggleAll" onClick={handleToggleAll}>
+                <Checkbox icon={<RadioButtonUncheckedIcon />} checkedIcon={<RadioButtonCheckedIcon />} onChange={handleToggleAll} checked={isSelectAll} />
+                <ListItemText primary={isSelectAll ? "Deselect All" : "Select All"} />
+              </MenuItem>
+              {PLACE_TYPES.map((name) => (
+                <MenuItem key={name} value={name} style={{ padding: "0px" }}>
+                  <Checkbox checked={typesOfPlace.indexOf(name) > -1} />
+                  <ListItemText primary={name} />
+                </MenuItem>
+              ))}
+            </Select>
+          </DropdownWrapper>
         )}
 
         {showDialog && (
@@ -423,3 +467,17 @@ export default function Filters() {
     </>
   );
 }
+
+const DropdownWrapper = ({ children }: { children: React.ReactNode }) => (
+  <div className={styles.searchBlock}>
+    <div className={styles.typeOfPlace}>
+      <div className={styles.row}>
+        <form style={{ width: "100%" }}>
+          <FormControl fullWidth className={styles.formControl}>
+            {children}
+          </FormControl>
+        </form>
+      </div>
+    </div>
+  </div>
+);
