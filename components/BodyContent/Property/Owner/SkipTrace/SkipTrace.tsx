@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "../Owner.module.scss";
-import { Box, CircularProgress, Dialog } from "@mui/material";
+import { Box, CircularProgress, Dialog, Tooltip } from "@mui/material";
 import { SkipTraceResponse } from "pages/api/core/reapi/skipTrace";
 import { IGetOwnerInformationProps, getOwnerInformation } from "../getOwnerInformation";
 import { usePersistentRecoilState } from "hooks/recoil-persist-state";
@@ -94,9 +94,15 @@ export default function SkipTrace({ ownerInformation }: ISkipTrace) {
     <>
       <SkipTracingInfoNoteModal isInfoNoteOpen={isWarningModalOpened} setIsInfoNoteOpen={setWarningInfoModalOpened} handleGetInfoClick={handleGetInfoClick} />
       <ContactInfoModal isContactModalOpened={isContactInfoOpened} setContactModalOpen={setContactInfoOpened} ownerInformation={ownerInformation} />
-      <Button variant={isContactSaved ? "outlined" : "filled"} className={isError.isError ? styles.getErrorButton : styles.getInfoButton} onClick={handleContactInfo}>
-        {isLoading ? <CircularProgress sx={{ color: "white" }} size={12} /> : buttonText}
-      </Button>
+      {isError.isError ? (
+        <Tooltip title="If no contact info is found then you will not be charged.">
+          <small style={{ color: "red" }}>Failed to get contact</small>
+        </Tooltip>
+      ) : (
+        <Button variant={isContactSaved ? "outlined" : "filled"} className={isError.isError ? styles.getErrorButton : styles.getInfoButton} onClick={handleContactInfo}>
+          {isLoading ? <CircularProgress sx={{ color: "white" }} size={12} /> : buttonText}
+        </Button>
+      )}
     </>
   );
 }

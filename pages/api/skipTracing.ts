@@ -61,7 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // Create request to the SkipTrace Api:
   const skipTraceApi = createSkipTraceApiInstance();
   const response = await skipTraceApi.getOwnerContacts({ first_name: firstName, last_name: lastName, address, city, state, zip });
-  if (!Boolean(response?.credits) || response?.credits <= 0) {
+  if (!response.output) {
     const errorMessage = JSON.stringify({
       message: "Sorry something went wrong. You won't be charged for this request.",
     });
