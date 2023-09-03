@@ -45,3 +45,93 @@
   padding: 0;
   margin: 0;
 }
+
+.getInfo {
+  margin-top: 10px;
+}
+
+.skipTracingModal {
+  width: 500px;
+  background-color: white;
+  padding: 30px;
+}
+
+.skipTracingDescription {
+  font-size: 15px;
+}
+
+.buttonFooter {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 0px 80px;
+}
+
+.checkboxWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  font-size: 13px;
+  margin-bottom: 30px;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  margin-top: 20px;
+}
+
+.button {
+  flex: 0.5;
+  padding: 10px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px;
+  height: 40px;
+}
+
+.getInfoButton {
+  width: 180px;
+}
+
+.accordionHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 10px 0px;
+  gap: 10px;
+}
+
+.contactInput {
+  width: 100%;
+  background-color: #9e9e9e1a;
+  padding: 10px;
+  border: 0px;
+  border-radius: 10px;
+}
+
+.modalBody {
+  margin-bottom: 20px;
+}
+
+.saveContactButton {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.getErrorButton {
+  width: 200px;
+  background-color: red;
+  border: 0px;
+}

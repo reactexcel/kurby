@@ -4,7 +4,7 @@ import { filterState } from "../../../context/filterContext";
 import { atom, useRecoilState } from "recoil";
 import GLOBAL_SETTINGS from "../../../globals/GLOBAL_SETTINGS";
 import styles from "./Gmap.module.scss";
-import { FormControl, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { CircularProgress, Fade, FormControl, Grow, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { createMedianHouseholdIncomeLegend } from "components/Census/Legends/MedianHouseholdIncome";
 import { createMedianHomeValueLegend } from "components/Census/Legends/MedianHomeValue";
 import { getCenusTractGeometricData } from "components/Census/GeoJSON/getCensusCartographic";
@@ -117,6 +117,7 @@ function MyComponent() {
   };
 
   // Load tracts shapes using Census Cartographic
+  const [isLoading, setLoading] = React.useState<boolean>(false);
   useEffect(() => {
     const prepareTractGeometricData = async () => {
       const dataLayer = await getCenusTractGeometricData({
@@ -127,10 +128,13 @@ function MyComponent() {
       });
       if (dataLayer?.features.length !== tractGeometricData?.features?.length) {
         setTractGeometricData(dataLayer);
+        setLoading(false);
       }
+      setLoading(false);
     };
     try {
       if (filterVal.latlong && isUS) {
+        setLoading(true);
         prepareTractGeometricData();
       }
     } catch (error) {}
@@ -148,6 +152,7 @@ function MyComponent() {
   useEffect(() => {
     setMetricsTooltip(undefined);
     if (!map?.data || (!filterVal.latlong && !isUS)) {
+      setLoading(false);
       return;
     }
 
@@ -311,6 +316,11 @@ function MyComponent() {
       >
         {/* Child components, such as markers, info windows, etc. */}
         <>
+          {isUS && isLoading && (
+            <div className={styles.loadingBox}>
+              <>{isLoading && <CircularProgress sx={{ color: "white" }} />}</>
+            </div>
+          )}
           {filterVal.latlong && (
             <>
               <MarkerF position={filterVal.latlong} onLoad={onMarkerLoad} key={"addressMarker"} />

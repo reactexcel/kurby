@@ -1,8 +1,9 @@
-import { Box, Typography } from "@mui/material";
 import React from "react";
+import styles from "./Owner.module.scss";
+import SkipTrace from "./SkipTrace/SkipTrace";
+import { Box, Typography } from "@mui/material";
 import OwnerSvg from "../../../../public/icons/owner.svg";
 import LocationSvg from "../../../../public/icons/location.svg";
-import styles from "./Owner.module.scss";
 
 interface OwnerProps {
   owner: {
@@ -10,9 +11,15 @@ interface OwnerProps {
     lastName: string;
     address: string;
   };
+  address: {
+    address: string;
+    city: string;
+    state: string;
+    zip: string;
+  };
 }
 
-export default function Owner({ owner }: OwnerProps) {
+export default function Owner({ owner, address }: OwnerProps) {
   if (!owner) {
     return null;
   }
@@ -29,6 +36,18 @@ export default function Owner({ owner }: OwnerProps) {
         <div className={styles.address}>
           <LocationSvg style={{ minWidth: "17px" }} />
           <p className={styles.ownerAddress}>{owner.address}</p>
+        </div>
+        <div className={styles.getInfo}>
+          <SkipTrace
+            ownerInformation={{
+              firstName: owner.firstName,
+              lastName: owner.lastName,
+              address: address.address,
+              zip: address.zip,
+              city: address.city,
+              state: address.state,
+            }}
+          />
         </div>
       </Box>
     </Box>
