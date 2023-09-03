@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { rateLimiter } from "./rateLimiter";
 import checkPlan from "./checkPlan";
-import { createSkipTraceApiInstance } from "./core/reapi/skipTrace";
+import { SkipTraceResponse, createSkipTraceApiInstance } from "./core/reapi/skipTrace";
 import OutsetaApiClient from "outseta-api-client";
 
 export interface IUserTokenResponse {
@@ -60,8 +60,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   // Create request to the SkipTrace Api:
   const skipTraceApi = createSkipTraceApiInstance();
-  const response = await skipTraceApi.getOwnerContacts({ first_name: firstName, last_name: lastName, address, city, state, zip });
-  if (!response.output) {
+
+  let response: SkipTraceResponse;
+
+  try {
+    response = await skipTraceApi.getOwnerContacts({ first_name: firstName, last_name: lastName, address, city, state, zip });
+    if (!response.output) {
+      const errorMessage = JSON.stringify({
+        message: "Sorry something went wrong. You won't be charged for this request.",
+      });
+      res.status(401).send(errorMessage);
+      return;
+    }
+  } catch (e) {
     const errorMessage = JSON.stringify({
       message: "Sorry something went wrong. You won't be charged for this request.",
     });
