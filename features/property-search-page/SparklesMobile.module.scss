@@ -1,0 +1,45 @@
+.rectangleVector {
+  display: none;
+}
+
+.starVectorSemi {
+  display: none;
+}
+
+.starVector {
+  display: none;
+}
+
+.rectangleVector2 {
+  display: none;
+}
+
+@media screen and (max-width: 500px) {
+  .rectangleVector {
+    display: block;
+    position: absolute;
+    top: 55px;
+    left: 70px;
+  }
+
+  .starVectorSemi {
+    display: block;
+    position: absolute;
+    top: 25px;
+    right: 30px;
+  }
+
+  .starVector {
+    display: block;
+    position: absolute;
+    top: 225px;
+    left: 1px;
+  }
+
+  .rectangleVector2 {
+    display: block;
+    position: absolute;
+    top: 375px;
+    right: 30px;
+  }
+}

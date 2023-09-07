@@ -7,16 +7,25 @@ import { propertySearch } from "context/propertySearchPage";
 import axios from "axios";
 import { Sparkles } from "./Sparkles";
 import Typewriter from "typewriter-effect";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { usePlanChecker } from "hooks/plans";
 import { useRouter } from "next/router";
 import { IPropertySearchResponse } from "pages/api/core/reapi/propertySearch";
+import { IsDevContext } from "context/isDevContext";
+import { SparklesMobile } from "./SparklesMobile";
 
 export const PropertySearch = () => {
+  const { isDev } = useContext(IsDevContext);
   const plan = usePlanChecker();
   const router = useRouter();
   const [isCheckPlan, setIsCheckPlan] = useState(false); // New state variable
 
+  useEffect(() => {
+    const bodyElement = document.getElementById("body");
+    if (bodyElement && bodyElement.style) {
+      bodyElement.style.backgroundColor = "#f0faf4";
+    }
+  }, []);
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsCheckPlan(true);
@@ -29,7 +38,7 @@ export const PropertySearch = () => {
     router.back();
   }
 
-  if (isCheckPlan && !plan.isVisitor && !plan.isPro) {
+  if (!isDev && isCheckPlan && !plan.isVisitor && !plan.isPro) {
     return (
       <Box className={styles.main}>
         <>Sorry this page is not available for your plan.</>
@@ -40,12 +49,13 @@ export const PropertySearch = () => {
   return (
     <Box className={styles.main}>
       <Sparkles />
+      <SparklesMobile />
       <h2 className={styles.title}>
         Discover <span className={styles.green}>Properties</span>
       </h2>
       <p className={styles.description}>Conversational AI Search Engine for the Real Estate Industry</p>
       <SearchBox />
-      <Button className={styles.submitButton}>Submit</Button>
+      <Button className={styles.submitButton}>Search</Button>
       <SuggestionsSection />
     </Box>
   );
@@ -75,7 +85,7 @@ function SearchBox() {
   };
   return (
     <div className={styles.searchBoxMain}>
-      <input value={payload.searchPayload} onChange={handleInputChange} className={styles.searchBoxStyle} placeholder="Can I help you with your property search?" />
+      <input value={payload.searchPayload} onChange={handleInputChange} className={styles.searchBoxStyle} placeholder="Search any address, city, or landmark" />
       <div onClick={handleSearch} className={styles.searchBox}>
         <SearchLoupe />
       </div>
