@@ -14,6 +14,7 @@
     min-height: 100%; /* If you want the main to shrink on small screens */
   }
 }
+
 .title {
   padding: 0;
   margin: 0;
@@ -96,8 +97,10 @@
 
 .submitButton {
   width: 176px;
-  margin-top: 40px;
-  padding: 10px;
+  margin-top: 25px;
+  padding: 13px;
+  border-radius: 10px;
+  font-size: 16px;
 }
 
 .suggestionsSection {
@@ -136,4 +139,74 @@
   user-select: none;
   opacity: 0.25;
   transition: 0s linear;
+}
+
+@media screen and (max-width: 500px) {
+  .main {
+    padding-top: 50px;
+  }
+
+  .title {
+    text-transform: uppercase;
+    width: 50%;
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 36px;
+    letter-spacing: 0.01em;
+    text-align: center;
+  }
+
+  .description {
+    font-size: 16px;
+    font-style: italic;
+    font-weight: 250;
+    line-height: 19px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #b0b0b0;
+    margin-bottom: 20px;
+  }
+
+  .searchBoxStyle {
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 14px;
+    font-style: italic;
+    font-weight: 100;
+    line-height: 26px;
+    letter-spacing: 0em;
+    text-align: left;
+  }
+
+  .searchBox {
+    width: 40px;
+    top: 5px;
+    bottom: 5px;
+    right: 5px;
+    border-radius: 5px;
+  }
+
+  .submitButton {
+    font-family: Filson Pro;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 19px;
+    letter-spacing: 0em;
+    text-align: center;
+  }
+
+  .searchSuggestion {
+    padding: 15px;
+    font-size: 14px;
+    font-weight: 100;
+    line-height: 14px;
+    letter-spacing: 0em;
+    text-align: center;
+  }
+
+  .main {
+    position: relative;
+    background-color: #f0faf4;
+    min-height: calc(100vh - 76.5px); /* Assuming navbar  */
+  }
 }
