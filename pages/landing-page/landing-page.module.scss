@@ -1,0 +1,30 @@
+@import "../../styles/media.scss";
+
+.main {
+  display: flex;
+  width: 100vw;
+  flex-direction: column;
+  background-color: rgb(240, 239, 235);
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+
+  .first_section {
+    padding-right: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .empty_box {
+      width: 50%;
+      height: 23rem;
+      border-radius: 1rem;
+      border: 2px solid rgb(191, 182, 182);
+
+      @include mq-desktop--down {
+        display: none;
+        padding-right: 0;
+      }
+    }
+  }
+}
