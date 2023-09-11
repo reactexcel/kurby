@@ -50,19 +50,5 @@
         // flex: 1;
       }
     }
-
-    .try_kurby_button {
-      padding: 0.9rem 2.3rem;
-      background-color: rgb(33, 162, 70);
-      border: none;
-      border-radius: 0.3rem;
-      color: white;
-      cursor: pointer;
-
-      &:hover {
-        background-color: rgb(34, 137, 64);
-        transition: 0.1s ease-in-out;
-      }
-    }
   }
 }

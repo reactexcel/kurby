@@ -1,15 +1,26 @@
 @import "../../../../styles/media.scss";
 
 .main {
-  width: 100%;
+  width: 90%;
+  margin: 0 auto;
   background-color: white;
-  padding: 5rem;
+  padding: 3.2rem 5rem;
+
+  @include mq-tablet-landscape--down {
+    border-radius: 1.5rem;
+    padding: 2.5rem 1rem;
+  }
+
+  @include mq-tablet-landscape--up {
+    width: 100%;
+  }
 
   .facts {
     display: flex;
     justify-content: space-evenly;
+    flex-wrap: wrap;
 
-    gap: 3rem;
+    gap: 2.7rem;
 
     .fact {
       width: 10rem;
@@ -20,6 +31,12 @@
       align-items: center;
       font-size: 0.9rem;
       font-weight: 100;
+
+      .stats {
+        font-size: 2.1rem;
+        font-weight: 100;
+        color: green;
+      }
     }
   }
 }

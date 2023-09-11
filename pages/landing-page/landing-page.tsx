@@ -6,6 +6,8 @@ import GoogleMapBox from "./components/GoogleMapBox/GoogleMapBox";
 import { Box, Container } from "@mui/material";
 import Intro from "./components/Intro/Intro";
 import Facts from "./components/Facts/Facts";
+import Chatgpt from "./components/Chatgpt/Chatgpt";
+import Abilities from "./components/Abilities/Abilies";
 
 const raleway = Raleway({ subsets: ["latin"] });
 const mainClassName = `${styles.main} ${raleway.className}`;
@@ -20,7 +22,10 @@ export default function LandingPage() {
       </Box>
       {/* <GoogleMapBox /> */}
       <Facts />
-      <div>bye</div>
+      <Box className={styles.third_section}>
+        <Chatgpt />
+      </Box>
+      <Abilities />
     </Container>
   );
 }

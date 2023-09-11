@@ -1,0 +1,30 @@
+@import "../../../../styles/media.scss";
+
+.main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 1.3rem;
+  align-items: center;
+
+  @include mq-tablet-landscape--up {
+    width: 50%;
+    margin: 0 auto;
+  }
+
+  .property {
+    font-weight: 600;
+    font-size: 1.8rem;
+    padding: 0 1rem;
+    width: 100%;
+    text-align: center;
+    font-weight: 500;
+  }
+
+  .generated_with {
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+}

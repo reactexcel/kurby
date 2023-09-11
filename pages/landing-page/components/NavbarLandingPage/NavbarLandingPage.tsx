@@ -1,12 +1,30 @@
 import Image from "next/image";
 import styles from "./NavbarLandingPage.module.scss";
 import { Box, Button } from "@mui/material";
+import { useState, useEffect } from "react";
+import CustomButton from "../CustomButton/CustomButton";
 
 export default function NavbarLandingPage() {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [mobileScreen, setMobileScreen] = useState(false);
+
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      setWindowWidth(window.innerWidth);
+      console.log(window.innerWidth);
+
+      if (window.innerWidth < 960) {
+        setMobileScreen(true);
+      } else {
+        setMobileScreen(false);
+      }
+    });
+  }, []);
+
   return (
     <>
       <nav className={styles.main}>
-        <Image style={{ maxWidth: "40" }} alt="logo" src="/images/logo-dark.png" width={100} height={30} />
+        <Image style={{ maxWidth: "40" }} alt="logo" src={mobileScreen ? "/images/logo.png" : "/images/logo-dark.png"} width={110} height={33} />
         <Box className={styles.icon_options}>
           <Image alt="options" src="/icons/list.svg" width={30} height={30} />
         </Box>
@@ -18,7 +36,7 @@ export default function NavbarLandingPage() {
             <div className={styles.option}>Blog</div>
             <div className={styles.option}>Contact</div>
           </Box>
-          <button className={styles.try_kurby_button}>Try Kurby Now</button>
+          <CustomButton text="Try Kurby Now" />
         </Box>
       </nav>
     </>

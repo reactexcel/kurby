@@ -5,7 +5,6 @@
   width: 100vw;
   flex-direction: column;
   background-color: rgb(240, 239, 235);
-  gap: 2rem;
   align-items: center;
   justify-content: center;
 
@@ -26,5 +25,9 @@
         padding-right: 0;
       }
     }
+  }
+
+  .third_section {
+    padding: 4.3rem 0;
   }
 }
