@@ -8,6 +8,9 @@ import Intro from "./components/Intro/Intro";
 import Facts from "./components/Facts/Facts";
 import Chatgpt from "./components/Chatgpt/Chatgpt";
 import Abilities from "./components/Abilities/Abilies";
+import Reviews from "./components/Reviews/Reviews";
+import AdditionalAbility from "./components/AdditionalAbility/AdditionalAbility";
+import Questions from "./components/Questions/Questions";
 
 const raleway = Raleway({ subsets: ["latin"] });
 const mainClassName = `${styles.main} ${raleway.className}`;
@@ -26,6 +29,9 @@ export default function LandingPage() {
         <Chatgpt />
       </Box>
       <Abilities />
+      <Reviews />
+      <AdditionalAbility />
+      <Questions />
     </Container>
   );
 }
