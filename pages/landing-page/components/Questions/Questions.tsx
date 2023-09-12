@@ -2,7 +2,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from "
 import styles from "./Questions.module.scss";
 import AddCircleIcon from "@mui/icons-material/AddCircleRounded";
 
-const AccordionStyle = {
+export const AccordionStyle = {
   "&:before": {
     backgroundColor: "transparent !important",
   },
@@ -12,12 +12,12 @@ function Question({ header, content }: { header: string; content: string }) {
   return (
     <Accordion className={styles.question} sx={AccordionStyle}>
       <AccordionSummary expandIcon={<AddCircleIcon color="success" />} aria-controls="panel1a-content" id="panel1a-header">
-        <Typography className={styles.summary}>
+        <div className={styles.summary}>
           <strong>{header}</strong>
-        </Typography>
+        </div>
       </AccordionSummary>
       <AccordionDetails>
-        <Typography className={styles.content}>{content}</Typography>
+        <div className={styles.content}>{content}</div>
       </AccordionDetails>
     </Accordion>
   );

@@ -11,6 +11,8 @@ import Abilities from "./components/Abilities/Abilies";
 import Reviews from "./components/Reviews/Reviews";
 import AdditionalAbility from "./components/AdditionalAbility/AdditionalAbility";
 import Questions from "./components/Questions/Questions";
+import Neighborhoods from "./components/Neighborhoods/Neighborhoods";
+import Footer from "./components/Footer/Footer";
 
 const raleway = Raleway({ subsets: ["latin"] });
 const mainClassName = `${styles.main} ${raleway.className}`;
@@ -32,6 +34,8 @@ export default function LandingPage() {
       <Reviews />
       <AdditionalAbility />
       <Questions />
+      <Neighborhoods />
+      <Footer />
     </Container>
   );
 }
