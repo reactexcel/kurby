@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 1.3rem;
+  gap: 1.6rem;
   align-items: center;
 
   @include mq-tablet-landscape--up {
@@ -14,16 +14,37 @@
 
   .property {
     font-size: 1.8rem;
-    padding: 0 1rem;
-    width: 100%;
+    width: 90%;
     text-align: center;
-    font-family: "FilsonPro";
+
+    @include mq-tablet-portrait--up {
+      width: 40rem;
+    }
   }
 
   .generated_with {
-    font-size: 1.1rem;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 1.5rem;
+
+    .generated {
+      font-size: 1.1rem;
+    }
+  }
+
+  .button {
+    padding: 1.2rem 3.2rem;
+    background-color: rgb(33, 162, 70);
+    font-size: 1.1rem;
+    width: fit-content;
+    border: none;
+    border-radius: 0.6rem;
+    color: white;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgb(34, 137, 64);
+      transition: 0.1s ease-in-out;
+    }
   }
 }

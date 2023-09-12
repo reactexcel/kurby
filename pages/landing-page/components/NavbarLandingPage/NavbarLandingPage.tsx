@@ -36,7 +36,7 @@ export default function NavbarLandingPage() {
             <div className={styles.option}>Blog</div>
             <div className={styles.option}>Contact</div>
           </Box>
-          <CustomButton text="Try Kurby Now" />
+          <CustomButton text="Try Kurby Now" font_size="0.95rem" />
         </Box>
       </nav>
     </>

@@ -9,7 +9,6 @@
 
   @include mq-tablet-landscape--up {
     flex-direction: row;
-    align-items: center;
     gap: 2rem;
   }
 
@@ -18,22 +17,14 @@
   }
 
   .image_block {
-    position: relative;
-    width: 100%;
+    padding: 2rem 0;
     margin: 0 auto;
-    height: 32rem;
-    margin: 2rem 0rem 0rem 0rem;
-    // border: 1px solid black;
-
-    @include mq-tablet-portrait--up {
-      height: 43rem;
-    }
 
     @include mq-tablet-landscape--up {
       margin: 0;
       order: 2;
-      height: 46.4rem;
-      width: 50%;
+      width: 40rem;
+      padding: 0.5rem 0.5rem 0 0;
     }
   }
 
@@ -43,14 +34,18 @@
     flex-direction: column;
     gap: 1.5rem;
     width: 92%;
+    justify-content: end;
     margin: 0 auto;
-    // border: 1px solid black;
 
     @include mq-tablet-landscape--up {
       order: 1;
       width: 50%;
-      margin: 2rem;
       gap: 3rem;
+      margin: 2rem;
+    }
+
+    @include mq-desktop--up {
+      margin: 2rem 6rem;
     }
 
     .review {
@@ -58,15 +53,21 @@
 
       @include mq-tablet-landscape--up {
         order: 2;
+        // width: 90%;
+      }
+
+      @include mq-desktop--up {
+        width: 80%;
       }
     }
 
     .client_name {
       font-size: 1.4rem;
-      font-weight: 100;
+      color: rgba(255, 255, 255, 0.9);
 
       @include mq-tablet-landscape--up {
         order: 3;
+        font-size: 1rem;
       }
     }
 
@@ -95,7 +96,6 @@
 
       .current_page {
         font-size: 1.4rem;
-        font-weight: bold;
       }
     }
   }

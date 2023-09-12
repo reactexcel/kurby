@@ -13,11 +13,12 @@
 
   @include mq-tablet-landscape--up {
     width: 100%;
+    margin: 1.8rem 0;
   }
 
   .facts {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
     flex-wrap: wrap;
 
     gap: 2.7rem;
@@ -30,12 +31,10 @@
       gap: 1rem;
       align-items: center;
       font-size: 0.9rem;
-      font-weight: 100;
 
       .stats {
         font-size: 2.1rem;
-        font-weight: 100;
-        color: green;
+        color: rgb(20, 173, 20);
       }
     }
   }

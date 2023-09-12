@@ -1,6 +1,6 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box } from "@mui/material";
 import styles from "./Questions.module.scss";
-import AddCircleIcon from "@mui/icons-material/AddCircleRounded";
+import ExpandCircleDownIcon from "@mui/icons-material/ExpandCircleDown";
 
 export const AccordionStyle = {
   "&:before": {
@@ -11,10 +11,8 @@ export const AccordionStyle = {
 function Question({ header, content }: { header: string; content: string }) {
   return (
     <Accordion className={styles.question} sx={AccordionStyle}>
-      <AccordionSummary expandIcon={<AddCircleIcon color="success" />} aria-controls="panel1a-content" id="panel1a-header">
-        <div className={styles.summary}>
-          <strong>{header}</strong>
-        </div>
+      <AccordionSummary expandIcon={<ExpandCircleDownIcon color="success" />}>
+        <div className={styles.summary}>{header}</div>
       </AccordionSummary>
       <AccordionDetails>
         <div className={styles.content}>{content}</div>

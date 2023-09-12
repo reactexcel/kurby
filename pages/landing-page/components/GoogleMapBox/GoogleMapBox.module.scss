@@ -4,6 +4,7 @@ $rounded-gray-border: 1px solid rgba(0, 0, 0, 0.1);
 
 .main {
   padding: 2rem;
+  margin: 5rem 0;
   padding-bottom: 0px;
   display: flex;
   flex-direction: column;
@@ -55,7 +56,6 @@ $rounded-gray-border: 1px solid rgba(0, 0, 0, 0.1);
       @include mq-tablet-landscape--down {
         width: 100%;
         max-height: 30rem;
-        overflow-y: auto;
       }
 
       .tabs {
@@ -69,11 +69,11 @@ $rounded-gray-border: 1px solid rgba(0, 0, 0, 0.1);
       }
 
       .results {
-        width: 85%;
+        overflow-y: auto;
+        width: 100%;
         max-width: 100%;
         overflow-wrap: break-word;
         font-size: 1rem;
-        font-weight: 200;
         opacity: 0.85;
       }
     }

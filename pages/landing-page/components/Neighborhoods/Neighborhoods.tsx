@@ -1,7 +1,7 @@
-import { Box, Button, Card, CardActions, CardContent, CardMedia, Typography } from "@mui/material";
+import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 import styles from "./Neighborhoods.module.scss";
-import CustomButton from "../CustomButton/CustomButton";
 import { ImageIcon } from "../Facts/Facts";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 function Neighborhood({ img_src, city, properties }: { img_src: string; city: string; properties: number }) {
   return (
@@ -31,15 +31,18 @@ export default function Neighborhoods() {
     <Box className={styles.main}>
       <Box className={styles.header_with_button}>
         <div className={styles.header}>Explore Neighborhoods on Kurby</div>
-        <button className={styles.button}>View all</button>
-        {/* <CustomButton text="View All" font_size="1.5rem" /> */}
+
+        <button className={styles.button}>
+          <div>View all</div>
+          <ArrowForwardIcon />
+        </button>
       </Box>
       <Box className={styles.scroll_body}>
         <Box className={styles.neighborhoods}>
-          <Neighborhood img_src="/images/neighborhoods/chicago.png" city="Chicago" properties={1234} />
-          <Neighborhood img_src="/images/neighborhoods/chicago.png" city="Miami" properties={1234} />
-          <Neighborhood img_src="/images/neighborhoods/chicago.png" city="Boston" properties={1234} />
-          <Neighborhood img_src="/images/neighborhoods/chicago.png" city="Austin" properties={1234} />
+          <Neighborhood img_src="/images/neighborhoods/chicago.webp" city="Chicago" properties={1234} />
+          <Neighborhood img_src="/images/neighborhoods/miami.webp" city="Miami" properties={1234} />
+          <Neighborhood img_src="/images/neighborhoods/boston.webp" city="Boston" properties={1234} />
+          <Neighborhood img_src="/images/neighborhoods/austin.webp" city="Austin" properties={1234} />
         </Box>
       </Box>
     </Box>

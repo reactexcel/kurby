@@ -1,8 +1,6 @@
 import styles from "./landing-page.module.scss";
-
 import { Raleway } from "next/font/google";
 import NavbarLandingPage from "./components/NavbarLandingPage/NavbarLandingPage";
-import GoogleMapBox from "./components/GoogleMapBox/GoogleMapBox";
 import { Box, Container } from "@mui/material";
 import Intro from "./components/Intro/Intro";
 import Facts from "./components/Facts/Facts";
@@ -13,19 +11,20 @@ import AdditionalAbility from "./components/AdditionalAbility/AdditionalAbility"
 import Questions from "./components/Questions/Questions";
 import Neighborhoods from "./components/Neighborhoods/Neighborhoods";
 import Footer from "./components/Footer/Footer";
-
-const raleway = Raleway({ subsets: ["latin"] });
-const mainClassName = `${styles.main} ${raleway.className}`;
+import Image from "next/image";
+import NavbarMobile from "./components/NavbarMobile/NavbarMobile";
 
 export default function LandingPage() {
   return (
     <Container disableGutters={true} maxWidth={false} className={styles.main}>
+      <NavbarMobile />
       <NavbarLandingPage />
       <Box className={styles.first_section}>
         <Intro />
-        <Box className={styles.empty_box}></Box>
+        <Box className={styles.empty_box}>
+          <Image className={styles.image} src="/images/googlemap.webp" fill objectFit="contain" alt="googlemap" />
+        </Box>
       </Box>
-      {/* <GoogleMapBox /> */}
       <Facts />
       <Box className={styles.third_section}>
         <Chatgpt />

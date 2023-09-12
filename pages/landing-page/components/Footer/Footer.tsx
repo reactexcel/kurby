@@ -5,9 +5,19 @@ import { AccordionStyle } from "../Questions/Questions";
 import ArrowDropDownTwoToneIcon from "@mui/icons-material/ArrowDropDownTwoTone";
 import { useContext } from "react";
 import { WindowSizeContext } from "context/windowSizeContext";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import Image from "next/image";
 
-function SocialMediaIcon() {
-  return <Box className={styles.social_icon}></Box>;
+export function SocialMediaIcons() {
+  return (
+    <Box className={styles.social_media_icons}>
+      <TwitterIcon className={styles.social_icon} />
+      <FacebookIcon className={styles.social_icon} />
+      <InstagramIcon className={styles.social_icon} />
+    </Box>
+  );
 }
 
 function FooterContent({ options }: { options: string[] }) {
@@ -51,10 +61,10 @@ export default function Footer() {
             <button className={styles.button}>Submit</button>
           </Box>
           <Box className={styles.social_media_icons}>
-            <SocialMediaIcon />
-            <SocialMediaIcon />
-            <SocialMediaIcon />
-            <SocialMediaIcon />
+            <TwitterIcon className={styles.social_icon} />
+            <FacebookIcon className={styles.social_icon} />
+            <InstagramIcon className={styles.social_icon} />
+            {/* <Image src="/icons/social_media/discord.png" alt="discord_image" width={20} height={20} /> */}
           </Box>
         </Box>
         <hr className={styles.line} />

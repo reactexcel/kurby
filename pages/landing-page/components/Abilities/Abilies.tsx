@@ -14,7 +14,7 @@ export default function Abilities() {
           {/* Comprehensive list of pros and cons */}
           <Box className={styles.ability}>
             <div className={styles.image}>
-              <AbilityImage src="/images/abilities_images/comp_list.png" alt="comp_list" objectFit="contain" />
+              <AbilityImage src="/images/abilities_images/comp_list.webp" alt="comp_list" objectFit="contain" />
             </div>
             <Box className={styles.info}>
               <div className={styles.header}>Comprehensive list of pros and cons</div>
@@ -24,7 +24,7 @@ export default function Abilities() {
           {/* Conversational Real Estate AI Search */}
           <Box className={styles.ability}>
             <div className={styles.image}>
-              <AbilityImage src="/images/abilities_images/conv.png" alt="conv" objectFit="contain" />
+              <AbilityImage src="/images/abilities_images/conv.webp" alt="conv" objectFit="contain" />
             </div>
             <Box className={styles.info}>
               <div className={styles.header}>Conversational Real Estate AI Search</div>
@@ -46,7 +46,7 @@ export default function Abilities() {
               </div>
             </div>
             <div className={styles.image}>
-              <AbilityImage src="/images/abilities_images/ai.png" alt="ai" objectFit="contain" />
+              <AbilityImage src="/images/abilities_images/ai.webp" alt="ai" objectFit="contain" />
             </div>
           </Box>
         </Box>
@@ -55,7 +55,7 @@ export default function Abilities() {
       <Box className={styles.second_section}>
         <Box className={styles.ability}>
           <div className={styles.image}>
-            <AbilityImage src="/images/abilities_images/prop.png" alt="prop" objectFit="contain" />
+            <AbilityImage src="/images/abilities_images/prop.webp" alt="prop" objectFit="contain" />
           </div>
           <div className={styles.info}>
             <div className={styles.header}>Property & Owner data on 150M+ U.S. homes</div>

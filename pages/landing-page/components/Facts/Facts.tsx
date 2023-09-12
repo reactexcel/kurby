@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export function ImageIcon({ src, size, alt }: { src: string; size: number; alt: string }) {
-  return <Image src={src} width={size} height={size} alt={alt} />;
+  return <Image src={src} width={size} height={size * 0.8} alt={alt} />;
 }
 
 export default function Facts() {
@@ -14,25 +14,25 @@ export default function Facts() {
     <Box className={styles.main}>
       <Box className={styles.facts}>
         <Box className={styles.fact}>
-          <ImageIcon src="/icons/globe.svg" size={41} alt="globe-image" />
+          <Image src="/icons/globe_search.png" width={50} height={40} alt="globe-image" />
           <div>Worldwide Location Insights</div>
         </Box>
 
         <Box className={styles.fact}>
-          <ImageIcon src="/icons/globe.svg" size={41} alt="globe-image" />
+          <Image src="/icons/globe_house.png" width={50} height={40} alt="globe-image" />
           <div>Worldwide Nearby Places</div>
         </Box>
         <Box className={styles.fact}>
           <div className={styles.stats}>150+</div>
-          <div>million properties</div>
+          <div>Million properties</div>
         </Box>
         <Box className={styles.fact}>
           <div className={styles.stats}>100+</div>
-          <div>million sales transactions</div>
+          <div>Million sales transactions</div>
         </Box>
         <Box className={styles.fact}>
           <div className={styles.stats}>85+</div>
-          <div>millions morgages/deeds</div>
+          <div>Millions morgages/deeds</div>
         </Box>
 
         <Box className={styles.fact}>
