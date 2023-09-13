@@ -1,0 +1,156 @@
+@import "../../../../styles/media.scss";
+
+.main {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 0 5rem 0;
+  gap: 2rem;
+
+  .header_with_button {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+
+    @include mq-tablet-landscape--up {
+      flex-direction: row;
+      justify-content: space-between;
+      width: 90%;
+      margin: 0 auto;
+    }
+
+    .header {
+      font-size: 2rem;
+      //   font-family: "FilsonPro";
+      text-align: center;
+
+      @include mq-tablet-landscape--up {
+        font-size: 2rem;
+      }
+    }
+
+    .button {
+      padding: 1.5rem 5rem;
+      background-color: rgb(33, 162, 70);
+      width: fit-content;
+      display: flex;
+      gap: 0.7rem;
+      align-items: center;
+      border: none;
+      border-radius: 0.7rem;
+      color: white;
+      cursor: pointer;
+      font-size: 1.4rem;
+
+      &:hover {
+        background-color: rgb(34, 137, 64);
+        transition: 0.1s ease-in-out;
+
+        @include mq-tablet-landscape--up {
+          text-decoration: underline;
+          background-color: transparent;
+          // font-size: 0.7rem;
+        }
+      }
+
+      @include mq-tablet-landscape--up {
+        background-color: transparent;
+        color: black;
+        font-size: 1.3rem;
+        font-weight: 100;
+      }
+    }
+  }
+
+  .scroll_body {
+    padding: 1rem;
+    max-width: 100%;
+    overflow-x: auto;
+
+    @include mq-desktop--up {
+      padding: 1rem 0 0 2.8rem;
+    }
+
+    .neighborhoods {
+      display: flex;
+      gap: 2rem;
+      padding: 1rem;
+      min-width: max-content;
+
+      .neighborhood {
+        margin: 0 auto;
+        border-radius: 0.5rem;
+        box-shadow: none;
+        max-width: 100%;
+        overflow-x: auto;
+        width: 20rem;
+        height: 25rem;
+        border-radius: 2rem;
+
+        .image_container {
+          height: 68%;
+
+          @include mq-tablet-portrait--up {
+            height: 72%;
+          }
+
+          .image {
+            height: 100%;
+          }
+        }
+
+        .below_image {
+          padding: 2rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          .text {
+            .city {
+              font-size: 1.6rem;
+
+              @include mq-tablet-portrait--up {
+                font-size: 1.4rem;
+              }
+
+              @include mq-desktop--up {
+                font-size: 1.1rem;
+              }
+            }
+
+            .properties {
+              font-size: 1.2rem;
+
+              @include mq-desktop--up {
+                font-size: 1rem;
+              }
+            }
+          }
+
+          .arrow {
+            padding: 1.2rem;
+            height: fit-content;
+            border-radius: 50%;
+            background-color: #eafaf0;
+            display: none;
+            align-items: center;
+            transition: 0.2s ease-in-out;
+            cursor: pointer;
+
+            @include mq-tablet-landscape--up {
+              display: flex;
+            }
+
+            @include mq-desktop--up {
+              padding: 1rem;
+            }
+
+            &:hover {
+              background-color: rgb(234, 244, 222);
+            }
+          }
+        }
+      }
+    }
+  }
+}

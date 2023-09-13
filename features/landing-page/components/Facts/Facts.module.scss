@@ -1,0 +1,41 @@
+@import "../../../../styles/media.scss";
+
+.main {
+  width: 90%;
+  margin: 0 auto;
+  background-color: white;
+  padding: 3.2rem 5rem;
+
+  @include mq-tablet-landscape--down {
+    border-radius: 1.5rem;
+    padding: 2.5rem 1rem;
+  }
+
+  @include mq-tablet-landscape--up {
+    width: 100%;
+    margin: 1.8rem 0;
+  }
+
+  .facts {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+
+    gap: 2.7rem;
+
+    .fact {
+      width: 10rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+      font-size: 0.9rem;
+
+      .stats {
+        font-size: 2.1rem;
+        color: rgb(20, 173, 20);
+      }
+    }
+  }
+}

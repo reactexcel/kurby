@@ -1,0 +1,102 @@
+@import "../../../../styles/media.scss";
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  background-color: rgb(38, 54, 44);
+  color: white;
+
+  @include mq-tablet-landscape--up {
+    flex-direction: row;
+    gap: 2rem;
+  }
+
+  @include mq-desktop--up {
+    gap: 0;
+  }
+
+  .image_block {
+    padding: 2rem 0;
+    margin: 0 auto;
+
+    @include mq-tablet-landscape--up {
+      margin: 0;
+      order: 2;
+      width: 40rem;
+      padding: 0.5rem 0.5rem 0 0;
+    }
+  }
+
+  .review_block {
+    padding: 0rem 0rem 3rem 0rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 92%;
+    justify-content: end;
+    margin: 0 auto;
+
+    @include mq-tablet-landscape--up {
+      order: 1;
+      width: 50%;
+      gap: 3rem;
+      margin: 2rem;
+    }
+
+    @include mq-desktop--up {
+      margin: 2rem 6rem;
+    }
+
+    .review {
+      font-size: 1.5rem;
+
+      @include mq-tablet-landscape--up {
+        order: 2;
+        // width: 90%;
+      }
+
+      @include mq-desktop--up {
+        width: 80%;
+      }
+    }
+
+    .client_name {
+      font-size: 1.4rem;
+      color: rgba(255, 255, 255, 0.9);
+
+      @include mq-tablet-landscape--up {
+        order: 3;
+        font-size: 1rem;
+      }
+    }
+
+    .page_navigation {
+      display: flex;
+      align-items: center;
+      gap: 1.75rem;
+
+      @include mq-tablet-landscape--up {
+        order: 1;
+      }
+
+      .arrow {
+        padding: 0.7rem;
+        border-radius: 50%;
+        background-color: white;
+        display: flex;
+        align-items: center;
+        transition: 0.2s ease-in-out;
+        cursor: pointer;
+
+        &:hover {
+          background-color: wheat;
+        }
+      }
+
+      .current_page {
+        font-size: 1.4rem;
+      }
+    }
+  }
+}
