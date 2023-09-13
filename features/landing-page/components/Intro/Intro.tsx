@@ -2,6 +2,9 @@ import { Avatar, AvatarGroup, Box } from "@mui/material";
 import styles from "./Intro.module.scss";
 import { useContext } from "react";
 import { WindowSizeContext } from "context/windowSizeContext";
+import { useRouter } from "next/router";
+import { addressToUrl } from "utils/address";
+import GoogleAddressInput from "components/GoogleAddressInput";
 
 function HappyInvestors() {
   const { isMobile } = useContext(WindowSizeContext);
@@ -36,6 +39,50 @@ function HappyInvestors() {
   );
 }
 
+function GoogleInput() {
+  const router = useRouter();
+
+  const handleSelectedAddress = (address: any) => {
+    const encodedAddress = addressToUrl(address.formatted_address);
+    router.push(`/app/${encodedAddress}`);
+  };
+
+  const inputPropsStyle = {
+    width: "95%",
+    height: "2rem",
+    borderBottom: "none !important",
+    margin: "0.25rem 0",
+    "&::before": {
+      borderBottom: "none !important",
+    },
+    "&::after": {
+      borderBottom: "none !important",
+    },
+  };
+
+  return (
+    <div className={styles.formWrapper}>
+      <div className={styles.formContainer}>
+        <GoogleAddressInput
+          label=""
+          inputProps={{
+            autoComplete: "off",
+          }}
+          InputProps={{
+            sx: inputPropsStyle,
+          }}
+          className={styles.input}
+          placeholder="Search property, city, or state worldwide"
+          handleSelectedAddress={handleSelectedAddress}
+        />
+        {/* <button className={styles.searchButton}>
+          <SearchIcon className={styles.searchIcon} />
+        </button> */}
+      </div>
+    </div>
+  );
+}
+
 export default function Intro() {
   return (
     <Box className={styles.main}>
@@ -44,7 +91,8 @@ export default function Intro() {
         <div className={styles.unlock}>Unlock The Power of Real Estate Intelligence</div>
         <div className={styles.simplify}>Simplify your property search with our real estate AI app.</div>
       </Box>
-      <input type="text" placeholder="Search property, city, or state worldwide" />
+      <GoogleInput />
+      {/* <input type="text" placeholder="Search property, city, or state worldwide" /> */}
       <HappyInvestors />
     </Box>
   );

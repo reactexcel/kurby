@@ -68,20 +68,20 @@
     }
   }
 
-  input {
-    background-color: white;
-    border-radius: 10px;
-    width: 100%;
-    border: none;
-    font-size: 1rem;
-    padding: 1.2rem 1.2rem;
-    outline: none;
+  // input {
+  //   background-color: white;
+  //   border-radius: 10px;
+  //   width: 100%;
+  //   border: none;
+  //   font-size: 1rem;
+  //   padding: 1.2rem 1.2rem;
+  //   outline: none;
 
-    &::placeholder {
-      color: rgba(0, 0, 0, 0.8);
-      font-size: 1.1rem;
-    }
-  }
+  //   &::placeholder {
+  //     color: rgba(0, 0, 0, 0.8);
+  //     font-size: 1.1rem;
+  //   }
+  // }
 
   .happy_investors {
     display: flex;
@@ -97,4 +97,73 @@
       margin: 0;
     }
   }
+}
+
+.formContainer {
+  background-color: white;
+  border-radius: 1rem;
+  display: flex;
+  padding-left: 10px;
+}
+
+.formWrapper {
+  padding: 0.5rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  width: 30rem;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+
+  @include mq-tablet-landscape--down {
+    width: 70%;
+  }
+
+  @include mq-phone-only {
+    width: 80%;
+  }
+}
+
+.input {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  display: inline-block;
+  vertical-align: middle;
+  white-space: normal;
+  background: none;
+  line-height: 1;
+  flex-basis: 100%;
+  padding-left: 10px;
+}
+
+.input input {
+  width: 100%;
+  font-size: 1.1rem;
+}
+
+.input:focus {
+  outline: 0;
+}
+.input::placeholder {
+  color: #999999;
+}
+
+.searchButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  --e-search-form-submit-text-color: #ffffff;
+  background-color: #00a13d;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.searchButton > svg {
+  margin: 0;
+}
+
+.searchIcon {
+  color: white;
+  width: 1.75rem;
 }
