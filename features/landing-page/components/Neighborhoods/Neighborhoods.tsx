@@ -3,7 +3,7 @@ import styles from "./Neighborhoods.module.scss";
 import { ImageIcon } from "../Facts/Facts";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
-function Neighborhood({ img_src, city, properties }: { img_src: string; city: string; properties: number }) {
+function Neighborhood({ img_src, city, link }: { img_src: string; city: string; link: string }) {
   return (
     <Card className={styles.neighborhood}>
       <Box className={styles.image_container}>
@@ -15,7 +15,7 @@ function Neighborhood({ img_src, city, properties }: { img_src: string; city: st
             {city}
           </Typography>
           <Typography className={styles.properties} variant="body2" color="text.secondary">
-            <a style={{ textDecoration: "none", color: "gray" }} href={`https://kurby.ai/app/${city.toLowerCase()}--usa`}>
+            <a style={{ textDecoration: "none", color: "gray" }} href={link}>
               Search Properties
             </a>
           </Typography>
@@ -41,10 +41,10 @@ export default function Neighborhoods() {
       </Box>
       <Box className={styles.scroll_body}>
         <Box className={styles.neighborhoods}>
-          <Neighborhood img_src="/images/neighborhoods/chicago.webp" city="Chicago" properties={1234} />
-          <Neighborhood img_src="/images/neighborhoods/miami.webp" city="Miami" properties={1234} />
-          <Neighborhood img_src="/images/neighborhoods/boston.webp" city="Boston" properties={1234} />
-          <Neighborhood img_src="/images/neighborhoods/austin.webp" city="Austin" properties={1234} />
+          <Neighborhood img_src="/images/neighborhoods/chicago.webp" link="https://kurby.ai/app/Chicago--IL--USA" city="Chicago" />
+          <Neighborhood img_src="/images/neighborhoods/miami.webp" link="https://kurby.ai/app/Miami--FL--USA" city="Miami" />
+          <Neighborhood img_src="/images/neighborhoods/boston.webp" link="https://kurby.ai/app/Boston--MA--USA" city="Boston" />
+          <Neighborhood img_src="/images/neighborhoods/austin.webp" link="https://kurby.ai/app/Austin--TX--USA" city="Austin" />
         </Box>
       </Box>
     </Box>

@@ -62,18 +62,18 @@
       .ability {
         display: flex;
         flex-direction: column;
-        height: 35rem;
+        height: 42rem;
         gap: 10rem;
 
         @include mq-tablet-landscape--up {
           flex-direction: row;
           width: 80%;
-          height: 20rem;
+          height: 25rem;
         }
 
         @include mq-desktop--up {
           width: 95%;
-          height: 24rem;
+          height: 29rem;
           margin: 0rem 0rem 0rem 2rem;
         }
 
