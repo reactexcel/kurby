@@ -15,7 +15,9 @@ function Neighborhood({ img_src, city, properties }: { img_src: string; city: st
             {city}
           </Typography>
           <Typography className={styles.properties} variant="body2" color="text.secondary">
-            Search Properties
+            <a style={{ textDecoration: "none", color: "gray" }} href={`https://kurby.ai/app/${city.toLowerCase()}--usa`}>
+              Search Properties
+            </a>
           </Typography>
         </Box>
         <Box className={styles.arrow}>

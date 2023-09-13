@@ -8,7 +8,7 @@ export function AbilityImage({ src, alt, objectFit }: { src: string; alt: string
 
 export default function Abilities() {
   return (
-    <Box className={styles.main}>
+    <Box id="about" className={styles.main}>
       <Box className={styles.first_section}>
         <Box className={styles.first_block}>
           {/* Comprehensive list of pros and cons */}

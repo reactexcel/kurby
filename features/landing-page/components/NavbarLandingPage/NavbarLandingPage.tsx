@@ -1,13 +1,13 @@
 import Image from "next/image";
 import styles from "./NavbarLandingPage.module.scss";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import CustomButton from "../CustomButton/CustomButton";
 import SortIcon from "@mui/icons-material/Sort";
 
 function Option({ link, option }: { link: string; option: string }) {
   return (
-    <a className={styles.option} style={{ textDecoration: "none", color: "black" }} href={link}>
+    <a href={link} className={styles.option} style={{ textDecoration: "none", color: "black" }}>
       {option}
     </a>
   );
@@ -49,11 +49,11 @@ export default function NavbarLandingPage({ mobileNavbar, setMobileNavbar }: { m
         </Box>
         <Box className={styles.nav_options}>
           <Box className={styles.options}>
-            <Option link="" option="About" />
-            <Option link="" option="Features" />
-            <Option link="" option="Why Kurby" />
-            <Option link="http://blog.kurby.ai/" option="Blog" />
+            <Option link="#about" option="About" />
             <Option link="http://kurby.ai/pricing" option="Pricing" />
+            {/* <Option link="" option="Features" /> */}
+            <Option link="#questions" option="Why Kurby" />
+            <Option link="http://blog.kurby.ai/" option="Blog" />
             <Option link="https://blog.kurby.ai/contact/" option="Contact" />
           </Box>
           <CustomButton text="Try Kurby Now" font_size="0.95rem" />

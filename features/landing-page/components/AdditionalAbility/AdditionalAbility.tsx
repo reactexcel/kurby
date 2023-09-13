@@ -12,7 +12,11 @@ export default function AdditionalAbility() {
           <span style={{ color: "black", opacity: "0.7" }}>Discover a World Tailored to You</span>: Whether you're diving into the homebuying journey or seeking your next big
           investment, our AI models have got your back. Dive in and let Kurby's real estate AI guide your every step with pinpoint precision.
         </div>
-        <button className={styles.button}>Try it - it's free, forever.</button>
+        <button className={styles.button}>
+          <a style={{ textDecoration: "none", color: "white" }} href="https://kurby.ai/app/miami--usa">
+            Try it - it's free, forever.
+          </a>
+        </button>
       </Box>
       <Box className={styles.image}>
         <AbilityImage src="/images/abilities_images/from.webp" alt="from" objectFit="contain" />

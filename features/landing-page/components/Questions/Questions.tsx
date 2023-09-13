@@ -23,7 +23,7 @@ function Question({ header, content }: { header: string; content: string }) {
 
 export default function Questions() {
   return (
-    <Box className={styles.main}>
+    <Box id="questions" className={styles.main}>
       <div className={styles.header}>Frequently asked questions</div>
       <Box className={styles.questions}>
         <Question
