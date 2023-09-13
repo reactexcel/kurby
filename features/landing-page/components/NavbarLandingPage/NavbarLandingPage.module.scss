@@ -10,13 +10,13 @@
   padding: 2.3rem 1.5rem;
   color: white;
 
-  @include mq-tablet-landscape--up {
+  @include mq-desktop--up {
     background-color: transparent;
     color: black;
   }
 
   .icon_options {
-    @include mq-tablet-landscape--up {
+    @include mq-desktop--up {
       display: none;
     }
   }
@@ -26,7 +26,7 @@
     align-items: center;
     gap: 0.3rem;
 
-    @include mq-tablet-landscape--down {
+    @include mq-desktop--down {
       display: none;
     }
 

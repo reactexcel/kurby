@@ -6,13 +6,13 @@ import { useContext, useState } from "react";
 import { WindowSizeContext } from "context/windowSizeContext";
 
 const reviews = [
-  // {
-  //   review:
-  //     "Discovering the perfect property in my local area has always been a daunting task, until I stumbled upon Kurby.I was amazed at how quickly it learned my preferences and helped me refine my search, saving me time and energy.",
-  //   first_name: "Christine",
-  //   last_name: "Ritz",
-  //   city: "Miami",
-  // },
+  {
+    review:
+      "Discovering the perfect property in my local area has always been a daunting task, until I stumbled upon Kurby.I was amazed at how quickly it learned my preferences and helped me refine my search, saving me time and energy.",
+    first_name: "Christine",
+    last_name: "Ritz",
+    city: "Miami",
+  },
   {
     review:
       "Kurby has revolutionized the way I approach real estate. The insights on median household income and school ratings gave me the confidence to invest in a neighborhood perfect for my family.",
@@ -92,7 +92,7 @@ export default function Reviews() {
   };
 
   const moveForwardReview = () => {
-    if (reviewPage !== 8) {
+    if (reviewPage !== 9) {
       setReviewPage((prev) => prev + 1);
     }
   };

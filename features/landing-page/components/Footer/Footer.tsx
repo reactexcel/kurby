@@ -22,17 +22,26 @@ export function SocialMediaIcons() {
   );
 }
 
-function FooterContent({ options }: { options: string[] }) {
+function FooterContent({ options }: { options: Option[] }) {
   return (
     <Box className={styles.content}>
       {options.map((option) => {
-        return <div className={styles.option}>{option}</div>;
+        return (
+          <a target="_blank" className={styles.option} href={option.link}>
+            <div>{option.option}</div>
+          </a>
+        );
       })}
     </Box>
   );
 }
 
-function FooterAccordion({ summary, options }: { summary: string; options: string[] }) {
+type Option = {
+  link: string;
+  option: string;
+};
+
+function FooterAccordion({ summary, options }: { summary: string; options: Option[] }) {
   return (
     <Accordion className={styles.footer_accordion} sx={AccordionStyle}>
       <AccordionSummary expandIcon={<ArrowDropDownTwoToneIcon fontSize="large" sx={{ color: "white" }} />} aria-controls="panel1a-content" id="panel1a-header">
@@ -74,22 +83,55 @@ export default function Footer() {
           <Box className={styles.second_block}>
             <Box className={styles.footer_accordion}>
               <div className={styles.summary}>Solutions</div>
-              <FooterContent options={["Property Location Data", "Home Value Estimator"]} />
+              <FooterContent
+                options={[
+                  { link: "http://kurby.ai/location-data", option: "Property Location Data" },
+                  { link: "http://kurby.ai/home-value-estimator", option: "Home Value Estimator" },
+                ]}
+              />
             </Box>
             <Box className={styles.footer_accordion}>
               <div className={styles.summary}>Kurby</div>
-              <FooterContent options={["Blog", "Knowledge Base"]} />
+              <FooterContent
+                options={[
+                  { link: "http://blog.kurby.ai/", option: "Blog" },
+                  { link: "http://help.kurby.ai/", option: "Knowledge Base" },
+                ]}
+              />
             </Box>
             <Box className={styles.footer_accordion}>
               <div className={styles.summary}>Company</div>
-              <FooterContent options={["Pricing", "Contact Us"]} />
+              <FooterContent
+                options={[
+                  { link: "http://kurby.ai/pricing", option: "Pricing" },
+                  { link: "https://blog.kurby.ai/contact/", option: "Contact Us" },
+                ]}
+              />
             </Box>
           </Box>
         ) : (
           <Box className={styles.second_block}>
-            <FooterAccordion summary="Solutions" options={["Property Location Data", "Home Value Estimator"]} />
-            <FooterAccordion summary="Kurby" options={["Blog", "Knowledge Base"]} />
-            <FooterAccordion summary="Company" options={["Pricing", "Contact Us"]} />
+            <FooterAccordion
+              summary="Solutions"
+              options={[
+                { link: "http://kurby.ai/location-data", option: "Property Location Data" },
+                { link: "http://kurby.ai/home-value-estimator", option: "Home Value Estimator" },
+              ]}
+            />
+            <FooterAccordion
+              summary="Kurby"
+              options={[
+                { link: "http://blog.kurby.ai/", option: "Blog" },
+                { link: "http://help.kurby.ai/", option: "Knowledge Base" },
+              ]}
+            />
+            <FooterAccordion
+              summary="Company"
+              options={[
+                { link: "http://kurby.ai/pricing", option: "Pricing" },
+                { link: "https://blog.kurby.ai/contact/", option: "Contact Us" },
+              ]}
+            />
           </Box>
         )}
       </Box>

@@ -12,7 +12,17 @@ function HappyInvestors() {
   const avatar_size = isMobile ? { width: 30, height: 30 } : {};
   return (
     <Box className={styles.happy_investors}>
-      <AvatarGroup style={{ alignItems: "center" }} spacing={4} total={103} max={5}>
+      <AvatarGroup
+        sx={{
+          "& .MuiAvatarGroup-avatar": {
+            bgcolor: "black",
+            fontSize: ".9rem",
+          },
+        }}
+        style={{ alignItems: "center" }}
+        spacing={4}
+        max={5}
+      >
         <Avatar
           sx={avatar_size}
           alt="Remy Sharp"
@@ -33,7 +43,12 @@ function HappyInvestors() {
           alt="Agnes Walker"
           src="https://plus.unsplash.com/premium_photo-1670884442192-7b58d513cd55?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzd8fHNtaWxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=900&q=60"
         />
+
+        <Avatar key="500+" sx={{ bgcolor: "black", fontSize: ".9rem" }}>
+          500+
+        </Avatar>
       </AvatarGroup>
+
       <div>happy investors using Kurby</div>
     </Box>
   );

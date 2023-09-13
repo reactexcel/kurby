@@ -9,6 +9,17 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import { Dispatch, SetStateAction } from "react";
 
+function Option({ link, option }: { link: string; option: string }) {
+  return (
+    <a className={styles.link} href={link}>
+      <Box className={styles.option}>
+        <div>{option}</div>
+        <ArrowRightIcon fontSize="large" />
+      </Box>
+    </a>
+  );
+}
+
 export default function NavbarMobile({ mobileNavbar, setMobileNavbar }: { mobileNavbar: boolean; setMobileNavbar: Dispatch<SetStateAction<boolean>> }) {
   return (
     <Box className={styles.main}>
@@ -22,26 +33,14 @@ export default function NavbarMobile({ mobileNavbar, setMobileNavbar }: { mobile
           </div>
         </Box>
         <Box className={styles.options}>
-          <Box className={styles.option}>
-            <div>About</div>
-            <ArrowRightIcon fontSize="large" />
-          </Box>
-          <Box className={styles.option}>
-            <div>Features</div>
-            <ArrowRightIcon fontSize="large" />
-          </Box>
-          <Box className={styles.option}>
-            <div>Why Kurby</div>
-            <ArrowRightIcon fontSize="large" />
-          </Box>
-          <Box className={styles.option}>
-            <div>Blog</div>
-            <ArrowRightIcon fontSize="large" />
-          </Box>
-          <Box className={styles.option}>
-            <div>Contact</div>
-            <ArrowRightIcon fontSize="large" />
-          </Box>
+          <Option link="" option="About" />
+          <Option link="" option="Features" />
+
+          <Option link="" option="Why Kurby" />
+          <Option link="http://blog.kurby.ai/" option="Blog" />
+
+          <Option link="http://kurby.ai/pricing" option="Pricing" />
+          <Option link="https://blog.kurby.ai/contact/" option="Contact" />
         </Box>
 
         <button className={styles.button}>Try Kurby Now</button>

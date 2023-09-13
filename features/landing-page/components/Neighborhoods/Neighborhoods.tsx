@@ -15,7 +15,7 @@ function Neighborhood({ img_src, city, properties }: { img_src: string; city: st
             {city}
           </Typography>
           <Typography className={styles.properties} variant="body2" color="text.secondary">
-            {properties} properties
+            Search Properties
           </Typography>
         </Box>
         <Box className={styles.arrow}>

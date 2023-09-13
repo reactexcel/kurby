@@ -36,12 +36,15 @@ export default function Abilities() {
         <Box className={styles.second_block}>
           <Box className={styles.ability}>
             <div className={styles.info}>
-              <div className={styles.header}>AI Location Data & Insights</div>
+              <div className={styles.header}>Data + AI: Powerful Property Insights for Homebuyers</div>
               <div className={styles.parag}>
-                <div>Stay ahead of the competition and find hidden gems and undervalued properties with Kurby’s location data and insights.</div>
                 <div>
-                  Find properties that match your investment criteria and budget, properties that have high cash flow potential in a low-cost market, unlock appreciation
-                  potential in a growing market, equity potential in a distressed market, and much more.
+                  Kurby is a real estate AI platform that uses GPT-4 refined on millions of real estate data points to generate location insights tailored to homebuyers' and
+                  investors' preferences.
+                </div>
+                <div>
+                  It’s like having a local expert on your side who can tell you everything you need to know about any property in the world, and help you find hidden gems and
+                  undervalued properties.
                 </div>
               </div>
             </div>

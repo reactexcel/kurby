@@ -28,11 +28,16 @@
       flex-direction: column;
       gap: 3.2rem;
 
-      .option {
-        display: flex;
-        justify-content: space-between;
-        font-size: 1.4rem;
-        cursor: pointer;
+      .link {
+        text-decoration: none;
+        color: white;
+
+        .option {
+          display: flex;
+          justify-content: space-between;
+          font-size: 1.4rem;
+          cursor: pointer;
+        }
       }
     }
 
