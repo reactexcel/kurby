@@ -41,13 +41,13 @@ export default function NavbarMobile({ mobileNavbar, setMobileNavbar }: { mobile
           <Option link="https://blog.kurby.ai/contact/" option="Contact" setMobileNavbar={setMobileNavbar} />
         </Box>
 
-        {user ? (
+        {/* {user ? (
           <button className={styles.logout_button} onClick={() => logout()}>
             Log out
           </button>
         ) : (
-          <CustomLoginSignUpButton />
-        )}
+          )} */}
+        <CustomLoginSignUpButton />
       </Box>
       <Box className={styles.second_section}>
         <SocialMediaIcons />
