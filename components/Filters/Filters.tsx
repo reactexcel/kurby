@@ -33,6 +33,7 @@ import { typesOfPlaceContext } from "context/typesOfPlaceContext";
 import { PresetType, openaiDropdownContext } from "context/openaiDropdownContext";
 import { extractCityCountry } from "utils/extractCityCountry";
 import { useOpenaiDropdownOptions } from "hooks/use-openai-dropdown-options";
+import CustomLoginSignUpButton from "features/landing-page/components/CustomLoginSignupButton/CustomLoginSignupButton";
 
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
@@ -458,7 +459,8 @@ export default function Filters() {
             ) : (
               <DialogContent className={styles.dialogContent}>
                 You’ve reached your daily limit. To get free unlimited access forever: Log In or Join Kurby, but you are free to accept or refuse.
-                <LoginSignupButton />
+                {/* <LoginSignupButton /> */}
+                <CustomLoginSignUpButton />
               </DialogContent>
             )}
           </Dialog>
