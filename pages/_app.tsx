@@ -7,7 +7,6 @@ import { AuthProvider } from "providers/AuthProvider";
 import { WindowSizeProvider } from "context/windowSizeContext";
 import Head from "next/head";
 import { IsDevProvider } from "context/isDevContext";
-import { useRouter } from "next/router";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
