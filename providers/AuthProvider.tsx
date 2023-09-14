@@ -103,6 +103,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     outsetaRef.current?.setAccessToken("");
     sessionStorage.removeItem("xanoToken");
     setUser(null);
+    router.push({
+      pathname: router.pathname,
+      query: {},
+    });
     window.location.reload();
   };
 
