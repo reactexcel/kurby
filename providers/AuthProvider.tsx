@@ -34,8 +34,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const handleLogin = () => {
     localStorage.removeItem("searchCounter");
-    // router.push("/app/Miami--FL--USA");
-    // router.push(window.location.href);
+    router.push("/app/Miami--FL--USA");
   };
 
   useEffect(() => {
@@ -103,10 +102,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     outsetaRef.current?.setAccessToken("");
     sessionStorage.removeItem("xanoToken");
     setUser(null);
-    router.push({
-      pathname: router.pathname,
-      query: {},
-    });
     window.location.reload();
   };
 
