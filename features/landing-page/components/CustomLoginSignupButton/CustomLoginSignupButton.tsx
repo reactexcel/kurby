@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import styles from "./CustomLoginSignupButton.module.scss";
 import { useRecoilState } from "recoil";
 import { createContext, useEffect, useState } from "react";
+import { useOutseta } from "hooks/use-outseta";
 
 export default function CustomLoginSignUpButton() {
   const { user, isLoading, openLoginSignup } = useAuth();
@@ -11,6 +12,8 @@ export default function CustomLoginSignUpButton() {
   const router = useRouter();
 
   const isHomepage = router.pathname === "/";
+
+  const outsetaRef = useOutseta();
 
   if (user && isLoading) {
     return null;
@@ -24,9 +27,11 @@ export default function CustomLoginSignUpButton() {
     <Button
       className={styles.main}
       onClick={() => {
-        // setCurrentRoute(window.location.pathname);
         // redirects to the page with authentication
-        router.push("https://kurby.outseta.com/auth");
+        outsetaRef.current?.auth?.open({
+          widgetMode: "login|register",
+          authenticationCallbackUrl: window.location.href,
+        });
 
         // if (isHomepage) {
         //   // redirects to the page with authentication
