@@ -27,15 +27,11 @@ export default function CustomLoginSignUpButton() {
     <Button
       className={styles.main}
       onClick={() => {
-        // redirects to the page with authentication
-        // router.push("https://kurby.outseta.com/auth");
-        openLoginSignup();
-
-        // if (isHomepage) {
-        //   // redirects to the page with authentication
-        // } else {
-        //   router.push("/?openLoginSignup=true");
-        // }
+        if (isHomepage) {
+          openLoginSignup();
+        } else {
+          router.push("/?openLoginSignup=true");
+        }
       }}
     >
       Login / Register
