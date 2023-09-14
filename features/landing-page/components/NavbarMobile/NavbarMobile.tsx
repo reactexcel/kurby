@@ -6,6 +6,7 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { Dispatch, SetStateAction } from "react";
 import CustomLoginSignUpButton from "../CustomLoginSignupButton/CustomLoginSignupButton";
 import SocialMediaIcons from "../SocialMediaIcons/SocialMediaIcons";
+import { useAuth } from "providers/AuthProvider";
 
 function Option({ link, option, setMobileNavbar }: { link: string; option: string; setMobileNavbar: Dispatch<SetStateAction<boolean>> }) {
   return (
@@ -19,6 +20,7 @@ function Option({ link, option, setMobileNavbar }: { link: string; option: strin
 }
 
 export default function NavbarMobile({ mobileNavbar, setMobileNavbar }: { mobileNavbar: boolean; setMobileNavbar: Dispatch<SetStateAction<boolean>> }) {
+  const { user, logout } = useAuth();
   return (
     <Box className={styles.main}>
       <Box className={styles.first_section}>
@@ -39,7 +41,13 @@ export default function NavbarMobile({ mobileNavbar, setMobileNavbar }: { mobile
           <Option link="https://blog.kurby.ai/contact/" option="Contact" setMobileNavbar={setMobileNavbar} />
         </Box>
 
-        <CustomLoginSignUpButton />
+        {user ? (
+          <button className={styles.logout_button} onClick={() => logout()}>
+            Log out
+          </button>
+        ) : (
+          <CustomLoginSignUpButton />
+        )}
       </Box>
       <Box className={styles.second_section}>
         <SocialMediaIcons />
