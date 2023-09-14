@@ -1,13 +1,11 @@
 import { Box } from "@mui/material";
 import styles from "./NavbarMobile.module.scss";
-import { SocialMediaIcons } from "../Footer/Footer";
 import Image from "next/image";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import InstagramIcon from "@mui/icons-material/Instagram";
 import { Dispatch, SetStateAction } from "react";
+import CustomLoginSignUpButton from "../CustomLoginSignupButton/CustomLoginSignupButton";
+import SocialMediaIcons from "../SocialMediaIcons/SocialMediaIcons";
 
 function Option({ link, option, setMobileNavbar }: { link: string; option: string; setMobileNavbar: Dispatch<SetStateAction<boolean>> }) {
   return (
@@ -41,15 +39,10 @@ export default function NavbarMobile({ mobileNavbar, setMobileNavbar }: { mobile
           <Option link="https://blog.kurby.ai/contact/" option="Contact" setMobileNavbar={setMobileNavbar} />
         </Box>
 
-        <button className={styles.button}>Try Kurby Now</button>
+        <CustomLoginSignUpButton />
       </Box>
       <Box className={styles.second_section}>
-        <Box className={styles.social_media_icons}>
-          <Image className={styles.social_icon} src="/icons/social_media/discord.png" alt="discord-image" width={50} height={50} />
-          <TwitterIcon className={styles.social_icon} />
-          <FacebookIcon className={styles.social_icon} />
-          <InstagramIcon className={styles.social_icon} />
-        </Box>
+        <SocialMediaIcons />
         <div className={styles.address}>7969 NW 2nd Street #1185, Miami, FL 33126, United States</div>
       </Box>
     </Box>

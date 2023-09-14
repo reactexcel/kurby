@@ -11,12 +11,14 @@ import Questions from "./components/Questions/Questions";
 import Neighborhoods from "./components/Neighborhoods/Neighborhoods";
 import Footer from "./components/Footer/Footer";
 import NavbarMobile from "./components/NavbarMobile/NavbarMobile";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Lottie from "lottie-react";
 import lottie_file from "../../public/lottie/Kurby_Lottie.json";
+import { WindowSizeContext } from "context/windowSizeContext";
 
 export default function LandingPage() {
   const [mobileNavbar, setMobileNavbar] = useState(false);
+
   return (
     <Container style={mobileNavbar ? { height: "100vh", overflow: "hidden" } : {}} disableGutters={true} maxWidth={false} className={styles.main}>
       {mobileNavbar && <NavbarMobile {...{ mobileNavbar, setMobileNavbar }} />}

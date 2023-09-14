@@ -2,8 +2,8 @@ import Image from "next/image";
 import styles from "./NavbarLandingPage.module.scss";
 import { Box } from "@mui/material";
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
-import CustomButton from "../CustomButton/CustomButton";
 import SortIcon from "@mui/icons-material/Sort";
+import CustomLoginSignUpButton from "../CustomLoginSignupButton/CustomLoginSignupButton";
 
 function Option({ link, option }: { link: string; option: string }) {
   return (
@@ -36,6 +36,7 @@ export default function NavbarLandingPage({ mobileNavbar, setMobileNavbar }: { m
         setTabletScreen(true);
       } else {
         setTabletScreen(false);
+        setMobileNavbar(false);
       }
     });
   }, []);
@@ -51,12 +52,11 @@ export default function NavbarLandingPage({ mobileNavbar, setMobileNavbar }: { m
           <Box className={styles.options}>
             <Option link="#about" option="About" />
             <Option link="http://kurby.ai/pricing" option="Pricing" />
-            {/* <Option link="" option="Features" /> */}
             <Option link="#questions" option="Why Kurby" />
             <Option link="http://blog.kurby.ai/" option="Blog" />
             <Option link="https://blog.kurby.ai/contact/" option="Contact" />
           </Box>
-          <CustomButton text="Try Kurby Now" font_size="0.95rem" />
+          <CustomLoginSignUpButton />
         </Box>
       </nav>
     </>

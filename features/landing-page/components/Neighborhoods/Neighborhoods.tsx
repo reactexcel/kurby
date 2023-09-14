@@ -2,6 +2,7 @@ import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 import styles from "./Neighborhoods.module.scss";
 import { ImageIcon } from "../Facts/Facts";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import CustomButton from "../CustomButton/CustomButton";
 
 function Neighborhood({ img_src, city, link }: { img_src: string; city: string; link: string }) {
   return (

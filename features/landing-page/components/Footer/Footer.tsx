@@ -5,22 +5,19 @@ import { AccordionStyle } from "../Questions/Questions";
 import ArrowDropDownTwoToneIcon from "@mui/icons-material/ArrowDropDownTwoTone";
 import { useContext } from "react";
 import { WindowSizeContext } from "context/windowSizeContext";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import Image from "next/image";
 import CookieIcon from "@mui/icons-material/Cookie";
+import SocialMediaIcons from "../SocialMediaIcons/SocialMediaIcons";
 
-export function SocialMediaIcons() {
-  return (
-    <Box className={styles.social_media_icons}>
-      <Image className={styles.social_icon} src="/icons/social_media/discord.png" alt="discord-image" width={50} height={50} />
-      <TwitterIcon className={styles.social_icon} />
-      <FacebookIcon className={styles.social_icon} />
-      <InstagramIcon className={styles.social_icon} />
-    </Box>
-  );
-}
+// export function SocialMediaIcons() {
+//   return (
+//     <Box className={styles.social_media_icons}>
+//       <Image className={styles.social_icon} src="/icons/social_media/discord.png" alt="discord-image" width={50} height={50} />
+//       <TwitterIcon className={styles.social_icon} />
+//       <FacebookIcon className={styles.social_icon} />
+//       <InstagramIcon className={styles.social_icon} />
+//     </Box>
+//   );
+// }
 
 function FooterContent({ options }: { options: Option[] }) {
   return (
@@ -71,12 +68,8 @@ export default function Footer() {
             <input placeholder="Email" className={styles.input} type="email" />
             <button className={styles.button}>Submit</button>
           </Box>
-          <Box className={styles.social_media_icons}>
-            <Image className={styles.social_icon} src="/icons/social_media/discord.png" alt="discord-image" width={50} height={50} />
-            <TwitterIcon className={styles.social_icon} />
-            <FacebookIcon className={styles.social_icon} />
-            <InstagramIcon className={styles.social_icon} />
-          </Box>
+
+          <SocialMediaIcons />
         </Box>
         <hr className={styles.line} />
         {isDesktop ? (
