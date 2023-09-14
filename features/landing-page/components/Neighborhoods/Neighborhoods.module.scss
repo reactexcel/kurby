@@ -36,20 +36,21 @@
       display: flex;
       gap: 0.7rem;
       align-items: center;
-      border: none;
+      border: 1px solid rgba(0, 0, 0, 0);
       border-radius: 0.7rem;
       color: white;
       cursor: pointer;
       font-size: 1.4rem;
 
       &:hover {
-        background-color: rgb(34, 137, 64);
-        transition: 0.1s ease-in-out;
+        background-color: white;
+        border: 1px solid rgb(33, 162, 70);
+        color: rgb(33, 162, 70);
+        transition: 0.2s ease-in-out;
 
         @include mq-tablet-landscape--up {
           text-decoration: underline;
           background-color: transparent;
-          // font-size: 0.7rem;
         }
       }
 

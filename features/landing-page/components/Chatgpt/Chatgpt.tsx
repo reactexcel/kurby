@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
-import CustomButton from "../CustomButton/CustomButton";
 import styles from "./Chatgpt.module.scss";
 import Image from "next/image";
+import CustomButton from "../CustomButton/CustomButton";
 
 export default function Chatgpt() {
   return (
@@ -13,11 +13,8 @@ export default function Chatgpt() {
         </Typography>
         <Image src="/images/chatgpt.png" alt="chatgpt-image" width={100} height={30} />
       </Box>
-      <button className={styles.button}>
-        <a style={{ textDecoration: "none", color: "white" }} href="https://kurby.ai/app/miami--usa">
-          Try Kurby Now
-        </a>
-      </button>
+
+      <CustomButton text="Try Kurby Now" padding="1.2rem 3.1rem" font_size="1.12rem" link="https://kurby.ai/app/miami--usa" children={undefined} />
     </Box>
   );
 }

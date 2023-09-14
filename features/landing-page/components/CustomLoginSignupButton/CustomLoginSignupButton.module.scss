@@ -1,0 +1,21 @@
+@import "../../../../styles/media.scss";
+
+.main {
+  border-radius: 0.6rem;
+  padding: 1.45rem 6.5rem;
+
+  @include mq-desktop--down {
+    border: none;
+    margin: 0 auto;
+    font-size: 1.2rem;
+    width: fit-content;
+    color: black;
+    background-color: rgb(239, 239, 239);
+  }
+
+  @include mq-desktop--up {
+    background-color: rgb(33, 162, 70);
+    border-radius: 0.3rem;
+    padding: 0.8rem 2rem;
+  }
+}
