@@ -16,6 +16,7 @@
   }
 
   .icon_options {
+    cursor: pointer;
     @include mq-desktop--up {
       display: none;
     }
