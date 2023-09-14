@@ -18,7 +18,7 @@ export default function AdditionalAbility() {
           </a>
         </button> */}
 
-        <CustomButton text="Try it - it's free, forever" padding="1rem 1rem" font_size="1rem" link="https://kurby.ai/app/miami--usa" />
+        <CustomButton children={undefined} text="Try it - it's free, forever" padding="1rem 1rem" font_size="1rem" link="https://kurby.ai/app/miami--usa" />
       </Box>
       <Box className={styles.image}>
         <AbilityImage src="/images/abilities_images/from.webp" alt="from" objectFit="contain" />
