@@ -28,14 +28,10 @@ export default function CustomLoginSignUpButton() {
       className={styles.main}
       onClick={() => {
         // redirects to the page with authentication
-        outsetaRef.current?.auth?.open({
-          widgetMode: "login|register",
-          authenticationCallbackUrl: window.location.href,
-        });
+        router.push("https://kurby.outseta.com/auth");
 
         // if (isHomepage) {
         //   // redirects to the page with authentication
-        //   router.push("https://kurby.outseta.com/auth");
         // } else {
         //   router.push("/?openLoginSignup=true");
         // }
