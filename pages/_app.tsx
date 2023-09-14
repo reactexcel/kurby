@@ -7,8 +7,10 @@ import { AuthProvider } from "providers/AuthProvider";
 import { WindowSizeProvider } from "context/windowSizeContext";
 import Head from "next/head";
 import { IsDevProvider } from "context/isDevContext";
+import { useRouter } from "next/router";
 
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -29,7 +31,10 @@ export default function App({ Component, pageProps }: AppProps) {
         {`var o_options = {
           domain: "kurby.outseta.com",
           tokenStorage: "local",
-          load: "auth,profile"
+          load: "auth,profile",
+          auth: {
+            authenticationCallbackUrl: "https://kurby.ai${router.asPath}"
+          }
         }`}
       </Script>
       <Script src="https://cdn.outseta.com/outseta.min.js" data-options="o_options" strategy="beforeInteractive" />

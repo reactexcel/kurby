@@ -4,6 +4,8 @@ import { Box } from "@mui/material";
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import SortIcon from "@mui/icons-material/Sort";
 import CustomLoginSignUpButton from "../CustomLoginSignupButton/CustomLoginSignupButton";
+import { useAuth } from "providers/AuthProvider";
+import CustomButton from "../CustomButton/CustomButton";
 
 function Option({ link, option }: { link: string; option: string }) {
   return (
@@ -16,6 +18,8 @@ function Option({ link, option }: { link: string; option: string }) {
 export default function NavbarLandingPage({ mobileNavbar, setMobileNavbar }: { mobileNavbar: boolean; setMobileNavbar: Dispatch<SetStateAction<boolean>> }) {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [tabletScreen, setTabletScreen] = useState(false);
+
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     // initial render
@@ -56,7 +60,14 @@ export default function NavbarLandingPage({ mobileNavbar, setMobileNavbar }: { m
             <Option link="http://blog.kurby.ai/" option="Blog" />
             <Option link="https://blog.kurby.ai/contact/" option="Contact" />
           </Box>
-          <CustomLoginSignUpButton />
+
+          {user ? (
+            <button className={styles.logout_button} onClick={() => logout()}>
+              Log out
+            </button>
+          ) : (
+            <CustomLoginSignUpButton />
+          )}
         </Box>
       </nav>
     </>
