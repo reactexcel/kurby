@@ -8,6 +8,7 @@ import { openaiIdsContext } from "context/openaiIdsContext";
 import { IsDevContext } from "context/isDevContext";
 import { PresetType } from "context/openaiDropdownContext";
 import { OpenAiResponseType, VariantType } from "types/openai";
+import { useAuth } from "providers/AuthProvider";
 
 interface OpenAiHookType {
   preset: PresetType;
@@ -49,6 +50,7 @@ export const useOpenAi = ({ preset }: OpenAiHookType) => {
   const [openaiIds, setOpenaiIds] = useRecoilState(openaiIdsContext);
   const [variant, setVariant] = useState<VariantType>("explainedLikeAlocal");
   const { isDev } = useContext(IsDevContext);
+  const { outsetaToken } = useAuth();
 
   const isLivingPreset = useMemo(() => {
     if (preset !== "living") {
@@ -89,6 +91,9 @@ export const useOpenAi = ({ preset }: OpenAiHookType) => {
     body: {
       explainedLikeAlocal: isLivingPreset?.greenFlags && living?.explainedLikeAlocal,
       greenFlags: isLivingPreset?.redFlags && living?.greenFlags,
+    },
+    headers: {
+      Authorization: `Bearer ${outsetaToken}`,
     },
     onError: (error) => {
       console.error(error);
