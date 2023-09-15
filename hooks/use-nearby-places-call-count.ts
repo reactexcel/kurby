@@ -59,7 +59,7 @@ export const useNearbyPlacesCallCount = () => {
     (async () => {
       let response = {} as AxiosResponse;
 
-      if (isCalled === false && activeTab === "nearby" && user && (!isGrowth || !isPro)) {
+      if (isCalled === false && activeTab === "nearby" && user && (isGrowth || isPro)) {
         try {
           response = await axios.get(`${xanoApiUrl}/user_quota/${user.Account.Uid}`, {
             headers: {
