@@ -6,6 +6,7 @@ import { activeTabState } from "context/activeTab";
 import { nearbyPlacesCallCountContext } from "context/nearbyPlacesCallCountContext";
 import { hasDatePassed } from "utils/hasDatePassed";
 import { usePlanChecker } from "./plans";
+import { calculateRenewalDate } from "utils/calculateRenewalDate";
 
 const xanoApiUrl = process.env.NEXT_PUBLIC_XANO_USER_QUOTA_API;
 
@@ -67,6 +68,8 @@ export const useNearbyPlacesCallCount = () => {
           });
         } catch (error: any) {
           if (error?.response?.status === 404) {
+            const renewalDate = calculateRenewalDate(user?.Account?.CurrentSubscription?.StartDate);
+
             try {
               response = await axios.post(
                 `${xanoApiUrl}/user_quota`,
@@ -74,7 +77,7 @@ export const useNearbyPlacesCallCount = () => {
                   user_id: user.Account.Uid,
                   quota_type: "nearby_places",
                   used_count: 0,
-                  renewal_date: user?.Account?.CurrentSubscription?.RenewalDate,
+                  renewal_date: renewalDate,
                 },
                 {
                   headers: {
@@ -96,7 +99,7 @@ export const useNearbyPlacesCallCount = () => {
               `${xanoApiUrl}/user_quota/${user.Account.Uid}/renewal_date`,
               {
                 used_count: 0,
-                renewal_date: user?.Account?.CurrentSubscription?.RenewalDate,
+                renewal_date: calculateRenewalDate(response.data.renewal_date),
               },
               {
                 headers: {
