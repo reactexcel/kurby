@@ -18,6 +18,7 @@ import { usePersistentRecoilState } from "hooks/recoil-persist-state";
 
 import { usePlanChecker } from "hooks/plans";
 import { nearbyContext } from "context/nearbyPlacesContext";
+import { useMediaQuery } from "react-responsive";
 
 /**
  * Gmap
@@ -78,6 +79,7 @@ function MyComponent() {
     // zoomControl: false,
     // minZoom: 17,
     // fullscreenControl: false,
+    gestureHandling: "greedy",
   };
   const [tractGeometricData, setTractGeometricData] = useState<ICensusResponse<object> | null>(null);
 
@@ -298,6 +300,8 @@ function MyComponent() {
     }, []);
   }, [nearby.places]);
 
+  const isMobile = useMediaQuery({ maxWidth: 600 });
+
   if (!isLoaded) {
     return <div>Error</div>;
   }
@@ -307,6 +311,7 @@ function MyComponent() {
       <GoogleMap
         center={filterVal.latlong || initialCenter}
         zoom={GLOBAL_SETTINGS.MAP_ZOOM_DEFAULT}
+        mapContainerStyle={isMobile ? { height: window.screen.availHeight - 200 } : {}}
         onLoad={onLoad}
         onUnmount={onUnmount}
         options={googleMapOptions}
@@ -343,7 +348,7 @@ function MyComponent() {
           )}
         </>
       </GoogleMap>
-      <DemographicFeatureDropdown />
+      {!isMobile && <DemographicFeatureDropdown />}
       {isUS && <LegendManager />}
     </div>
   );
@@ -398,7 +403,12 @@ function MetricsTooltip(props: IMetricsTooltipProps) {
   );
 }
 
-function DemographicFeatureDropdown() {
+interface DemographicFeatureDropdownProps {
+  background?: string;
+  color?: string;
+}
+
+export function DemographicFeatureDropdown({ background = "inherit", color = "inherit" }: DemographicFeatureDropdownProps) {
   const [value, setValue] = useRecoilState(feature);
   const handleChange = async (event: SelectChangeEvent) => {
     const value = event.target.value;
@@ -408,7 +418,7 @@ function DemographicFeatureDropdown() {
   return (
     <div className={styles.dropdownFeatureSelector}>
       <FormControl size="small" fullWidth>
-        <Select value={value} onChange={handleChange} defaultValue={DemographicFeatureSelection.MEDIAN_HOUSEHOLD_INCOME} labelId="demo-simple-select-label">
+        <Select value={value} onChange={handleChange} defaultValue={DemographicFeatureSelection.MEDIAN_HOUSEHOLD_INCOME} sx={{ background, color }}>
           <MenuItem key={DemographicFeatureSelection.MEDIAN_HOUSEHOLD_INCOME} value={DemographicFeatureSelection.MEDIAN_HOUSEHOLD_INCOME} defaultChecked>
             Median household income
           </MenuItem>
