@@ -13,7 +13,7 @@ interface IActivityProps {
   readonly headerOption?: React.ReactNode;
 }
 
-function Activity({ children, open, header, headerOption, onClose }: IActivityProps): React.ReactNode | null {
+function Activity({ children, open, header, headerOption, onClose }: IActivityProps): JSX.Element {
   return (
     <div className={`${styles.activity} ${open ? styles.open : ""}`}>
       <div className={styles.header}>
