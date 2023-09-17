@@ -465,27 +465,26 @@ export default function Filters() {
                 </Select>
               </DropdownWrapper>
             )}
-
-            {showDialog && (
-              <Dialog style={{ zIndex: 90000 }} open className={styles.dialog}>
-                <h2 className={styles.dialogTitle}>Daily {(searchLimit && "Search") || ""} Limit Reached</h2>
-                {isFree ? (
-                  <DialogContent className={styles.dialogContent}>
-                    You’ve reached your daily limit. To get unlimited access, upgrade to a paid plan.
-                    <GetStarted />
-                  </DialogContent>
-                ) : (
-                  <DialogContent className={styles.dialogContent}>
-                    You’ve reached your daily limit. To get free unlimited access forever: Log In or Join Kurby, but you are free to accept or refuse.
-                    {/* <LoginSignupButton /> */}
-                    <CustomLoginSignUpButton />
-                  </DialogContent>
-                )}
-              </Dialog>
-            )}
           </>
         )}
       </Box>
+      {showDialog && (
+        <Dialog style={{ zIndex: 90000 }} open className={styles.dialog}>
+          <h2 className={styles.dialogTitle}>Daily {(searchLimit && "Search") || ""} Limit Reached</h2>
+          {isFree ? (
+            <DialogContent className={styles.dialogContent}>
+              You’ve reached your daily limit. To get unlimited access, upgrade to a paid plan.
+              <GetStarted />
+            </DialogContent>
+          ) : (
+            <DialogContent className={styles.dialogContent}>
+              You’ve reached your daily limit. To get free unlimited access forever: Log In or Join Kurby, but you are free to accept or refuse.
+              {/* <LoginSignupButton /> */}
+              <CustomLoginSignUpButton />
+            </DialogContent>
+          )}
+        </Dialog>
+      )}
       {!searchBarMobileBreakpoint && (
         <>
           <Box onClick={handleGmapActivity} className={styles.mobileButton}>
