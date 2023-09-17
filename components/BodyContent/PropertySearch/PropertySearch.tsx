@@ -14,6 +14,7 @@ import axios from "axios";
 import { filterState } from "context/filterContext";
 import { useSearchCriteria } from "hooks/use-search-criteria";
 import { useState } from "react";
+import { useMediaQuery } from "react-responsive";
 /**
  * Body Content
  * @description: Displays everything below the filters
@@ -48,10 +49,12 @@ export default function CityStatePropertiesFilters() {
     }
   };
 
+  const isMobile = useMediaQuery({ maxWidth: 600 });
+
   return (
     <TabLayout className={styles.tabLayout}>
       {!isGrowth && !isPro && <KurbyPaidPlanLimit type={TabLimitMessage.FILTERS} />}
-      <PropertyFilter />
+      {!isMobile && <PropertyFilter />}
       {!isPropertiesLoading && Array.isArray(propertyData.results) && !propertyData.isError && (
         <div className={styles.content}>
           <Properties />
