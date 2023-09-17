@@ -1,3 +1,4 @@
+@import "../../../../styles/media.scss";
 .houseGrid {
   display: flex;
   flex-direction: row;
@@ -15,6 +16,13 @@
   margin: 10px;
   border-radius: 8px;
   box-sizing: border-box; /* Ensures padding and border are included in the width calculation */
+
+  @include mq-phone-only {
+    height: max-content;
+    margin: 0px;
+    margin-bottom: 20px;
+    padding: 0px;
+  }
 }
 
 .houseTitle {

@@ -1,8 +1,15 @@
+@import "../../../styles/media.scss";
+
 .tabLayout {
   position: relative;
   padding: 20px;
   display: flex;
   flex-direction: column;
+
+  @include mq-phone-only {
+    padding: 0px;
+    border: 0px;
+  }
 }
 
 .loading {

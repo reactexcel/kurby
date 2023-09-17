@@ -5,6 +5,7 @@ import styles from "./BodyContent.module.scss";
 import { useTenMinutesForVisitor } from "context/visitorContext";
 import { useMediaQuery } from "react-responsive";
 import MobileGmap from "./Mobile/GmapActivity/MobileGmap";
+import FiltersActivity from "./Mobile/FiltersActivity/FiltersActivity";
 
 /**
  * Body Content
@@ -29,6 +30,7 @@ export default function BodyContent() {
   return (
     <Box className={styles.main}>
       <GmapManager />
+      <FiltersActivity />
       <Box className={styles.tabs}>
         <Tabs />
       </Box>

@@ -1,6 +1,13 @@
+@import "../../../../../styles/media.scss";
+
 .main {
   width: 400px;
   padding: 8px;
+
+  @include mq-phone-only {
+    width: 100%;
+    position: static;
+  }
 }
 
 .tabs {

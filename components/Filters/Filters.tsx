@@ -407,6 +407,12 @@ export default function Filters() {
       query: { ...router.query, viewMap: "true" },
     });
   };
+  const handleFiltersActivity = () => {
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, viewFilters: "true" },
+    });
+  };
   return (
     <div className={styles.main}>
       <Box className={styles.container}>
@@ -483,7 +489,7 @@ export default function Filters() {
           <Box onClick={handleGmapActivity} className={styles.mobileButton}>
             <GoogleMapButton className={styles.icon} />
           </Box>
-          <Box className={styles.mobileButton}>
+          <Box onClick={handleFiltersActivity} className={styles.mobileButton}>
             <FilterMapButton className={styles.icon} />
           </Box>
         </>

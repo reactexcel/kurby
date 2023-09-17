@@ -1,7 +1,15 @@
+@import "../../../../styles/media.scss";
+
 .root {
   display: flex;
   flex-direction: column;
   width: 100%; // adjust as necessary
+
+  @include mq-phone-only {
+    border: 1px solid #264b5c33;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
 }
 .filterItem {
   flex: 1;
@@ -16,16 +24,25 @@
   user-select: none;
   cursor: pointer;
   transition: 1s linear;
+  pointer-events: all;
+
+  @include mq-phone-only {
+    pointer-events: none;
+  }
 }
 
 .content {
   z-index: 100;
   padding: 10px;
   max-height: 420px;
+
+  @include mq-phone-only {
+    max-height: max-content;
+  }
 }
 
 .content:hover {
-  z-index: 1000;
+  z-index: 100;
 }
 
 .arrowContent {

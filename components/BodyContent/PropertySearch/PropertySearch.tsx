@@ -49,12 +49,10 @@ export default function CityStatePropertiesFilters() {
     }
   };
 
-  const isMobile = useMediaQuery({ maxWidth: 600 });
-
   return (
     <TabLayout className={styles.tabLayout}>
       {!isGrowth && !isPro && <KurbyPaidPlanLimit type={TabLimitMessage.FILTERS} />}
-      {!isMobile && <PropertyFilter />}
+      <PropertyFilter />
       {!isPropertiesLoading && Array.isArray(propertyData.results) && !propertyData.isError && (
         <div className={styles.content}>
           <Properties />

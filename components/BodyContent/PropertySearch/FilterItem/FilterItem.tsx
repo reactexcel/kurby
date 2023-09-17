@@ -7,6 +7,7 @@ import Checkmark from "../../../../public/icons/checkmark.svg";
 import CheckmarkUnchecked from "../../../../public/icons/checkmark-unchecked.svg";
 import { Popover } from "@mui/material";
 import { RecoilState, useRecoilState } from "recoil";
+import { useMediaQuery } from "react-responsive";
 
 interface ToggleState {
   isOpen: boolean | null;
@@ -32,6 +33,8 @@ export function FilterItem({ title, renderContent, recoilOpenState, renderConten
     setAnchorEl(event.currentTarget);
     setOpenState((prevState) => ({ isOpen: !prevState.isOpen }));
   };
+
+  const isMobile = useMediaQuery({ maxWidth: 600 });
   return (
     <div style={renderStyle} className={styles.root}>
       <div onClick={handleToggle} className={styles.filterItem}>
@@ -40,25 +43,29 @@ export function FilterItem({ title, renderContent, recoilOpenState, renderConten
           <ArrowDown />
         </div>
       </div>
-      <Popover
-        open={recoilState.isOpen || false}
-        onClose={handleToggle}
-        anchorEl={anchorEl}
-        className={styles.content}
-        style={
-          renderContentWidth
-            ? {
-                width: renderContentWidth,
-              }
-            : {}
-        }
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: renderContentPosition,
-        }}
-      >
-        <div className={styles.content}>{renderContent}</div>
-      </Popover>
+      {!isMobile && (
+        <Popover
+          open={recoilState.isOpen || false}
+          onClose={handleToggle}
+          anchorEl={anchorEl}
+          className={styles.content}
+          style={
+            renderContentWidth
+              ? {
+                  width: renderContentWidth,
+                }
+              : {}
+          }
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: renderContentPosition,
+          }}
+        >
+          <div className={styles.content}>{renderContent}</div>
+        </Popover>
+      )}
+
+      {isMobile && <div className={styles.content}>{renderContent}</div>}
     </div>
   );
 }
