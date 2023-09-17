@@ -37,6 +37,7 @@ import { useMediaQuery } from "react-responsive";
 import GoogleMapButton from "public/icons/google_button_icon.svg";
 import FilterMapButton from "public/icons/filter.svg";
 import { gmapMobileScreen } from "context/mobileScreenContext";
+import CustomLoginSignUpButton from "features/landing-page/components/CustomLoginSignupButton/CustomLoginSignupButton";
 
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
@@ -476,7 +477,8 @@ export default function Filters() {
                 ) : (
                   <DialogContent className={styles.dialogContent}>
                     You’ve reached your daily limit. To get free unlimited access forever: Log In or Join Kurby, but you are free to accept or refuse.
-                    <LoginSignupButton />
+                    {/* <LoginSignupButton /> */}
+                    <CustomLoginSignUpButton />
                   </DialogContent>
                 )}
               </Dialog>

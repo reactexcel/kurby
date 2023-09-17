@@ -3,12 +3,17 @@ import { OpenAIStream, StreamingTextResponse } from "ai";
 import { PresetType } from "context/openaiDropdownContext";
 import { VariantType } from "types/openai";
 import { NextResponse } from "next/server";
+import { getPlan } from "utils/plans";
+import { isPresetValid } from "utils/isPresetValid";
+import { canUsePreset } from "utils/canUsePreset";
 
 /**
  * Stream OpenAI chat completion
  * @param message
  * @param from
  */
+
+const outsetaBaseUrl = "https://kurby.outseta.com/api/v1";
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -24,27 +29,39 @@ const handler = async (req: any) => {
   const preset: PresetType = params && params.get("preset");
   const city = params && params.get("city");
   const country = params && params.get("country");
+  const token = req.headers.get("authorization");
 
-  if (
-    ![
-      "living",
-      "shortTermRental",
-      "buyAndHold",
-      "domesticTourism",
-      "internationalTourism",
-      "glamping",
-      "realEstateDeveloper",
-      "vacationHome",
-      "retireeLiving",
-      "corporateRelocation",
-      "luxuryEstates",
-    ].includes(preset)
-  ) {
+  if (!isPresetValid(preset)) {
     return NextResponse.json({ error: "Invalid preset", status: 400 });
   }
 
   if (preset === "living" && !["explainedLikeAlocal", "greenFlags", "redFlags"].includes(variant)) {
     return NextResponse.json({ error: "Invalid variant", status: 400 });
+  }
+
+  let isPresetAllowed = ["living", "domesticTourism", "internationalTourism"].includes(preset);
+
+  if (token && !isPresetAllowed) {
+    try {
+      const response = await fetch(`${outsetaBaseUrl}/profile?fields=Account.CurrentSubscription.Plan.*`, {
+        method: "GET",
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      const data = await response.json();
+
+      const plan = getPlan(data.Account.CurrentSubscription.Plan.Uid);
+
+      isPresetAllowed = canUsePreset(preset, plan);
+    } catch (error) {
+      return NextResponse.json({ error: "Error fetching plan", status: 500 });
+    }
+  }
+
+  if (!isPresetAllowed) {
+    return NextResponse.json({ error: "Not allowed to use this preset", status: 405 });
   }
 
   let previousResponses = {

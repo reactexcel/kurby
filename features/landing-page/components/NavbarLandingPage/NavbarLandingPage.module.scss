@@ -1,0 +1,74 @@
+@import "../../../../styles/media.scss";
+
+.main {
+  width: 100%;
+  background-color: #26362c;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2.3rem 1.5rem;
+  color: white;
+
+  @include mq-desktop--up {
+    background-color: transparent;
+    color: black;
+  }
+
+  .icon_options {
+    cursor: pointer;
+    @include mq-desktop--up {
+      display: none;
+    }
+  }
+
+  .nav_options {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+
+    @include mq-desktop--down {
+      display: none;
+    }
+
+    .options {
+      display: flex;
+      background-color: white;
+      border-radius: 0.3rem;
+
+      .option {
+        // border: 1px solid black;
+        font-size: 0.9rem;
+        padding: 0.5rem 2.5rem;
+        cursor: pointer;
+
+        &:hover {
+          // background-color: rgb(232, 226, 226);
+
+          box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+          transition: 0.2s ease-in-out;
+        }
+        // flex: 1;
+      }
+    }
+  }
+  .logout_button {
+    padding: 0.75rem 2.5rem;
+    background-color: rgb(33, 162, 70);
+    width: fit-content;
+    border: 1px solid rgba(0, 0, 0, 0);
+    border-radius: 0.3rem;
+    transition: 0.2s ease-in-out;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    gap: 0.5rem;
+    font-size: 1.07rem;
+
+    &:hover {
+      background-color: white;
+      color: rgb(33, 162, 70);
+      border: 1px solid rgb(33, 162, 70);
+    }
+  }
+}

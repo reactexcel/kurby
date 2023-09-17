@@ -1,0 +1,77 @@
+@import "../../../../styles/media.scss";
+
+.main {
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: fit-content;
+  margin: 0 auto;
+  box-sizing: border-box;
+
+  @include mq-tablet-landscape--up {
+    flex-direction: row;
+    padding: 5rem 0;
+  }
+
+  @include mq-desktop--up {
+    width: 90%;
+  }
+
+  .image {
+    position: relative;
+    bottom: 0;
+    width: 90%;
+    padding: 2rem;
+    height: 31rem;
+
+    @include mq-tablet-landscape--up {
+      order: 1;
+    }
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    gap: 2rem;
+    padding: 0rem 2rem 2rem 2rem;
+
+    @include mq-tablet-portrait--up {
+      width: 80%;
+    }
+
+    @include mq-tablet-landscape--up {
+      order: 2;
+    }
+
+    .header {
+      padding: 4.5rem 0 0 0;
+      font-size: 1.8rem;
+    }
+
+    .parag {
+      font-size: 1.2rem;
+      color: rgb(117, 107, 107);
+      word-spacing: 0.2rem;
+    }
+
+    .button {
+      padding: 1.2rem 2.6rem;
+      background-color: rgb(33, 162, 70);
+      font-size: 1.1rem;
+      width: fit-content;
+      border: none;
+      border-radius: 0.6rem;
+      color: white;
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgb(34, 137, 64);
+        transition: 0.1s ease-in-out;
+      }
+    }
+  }
+}
