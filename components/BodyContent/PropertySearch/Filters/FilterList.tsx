@@ -11,11 +11,14 @@ import { SearchButton } from "../SearchButton/SearchButton";
 import { filterState } from "context/filterContext";
 import { IPropertySearchResponse } from "pages/api/core/reapi/propertySearch";
 import { useSearchCriteria } from "hooks/use-search-criteria";
+import { useMediaQuery } from "react-responsive";
 
 export function PropertyFilter() {
   const { searchCriteria } = useSearchCriteria();
   const [filterVal] = useRecoilState(filterState);
   const [, setPropertyData] = useRecoilState(propertySearch);
+
+  const isMobile = useMediaQuery({ maxWidth: 600 });
 
   const handleSearch = async () => {
     setPropertyData((prev) => ({ ...prev, isLoading: true }));
@@ -31,6 +34,9 @@ export function PropertyFilter() {
       setPropertyData({ results: null, isLoading: false, isError: true, isClientSideRendered: true });
     }
   };
+  if (isMobile) {
+    return <SearchButton onSearch={handleSearch} />;
+  }
   return (
     <div className={styles.propertyFilter}>
       <ForSaleFilter />

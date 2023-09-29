@@ -1,3 +1,5 @@
+@import "../../styles/media.scss";
+
 .blurOverlayLayer {
   position: absolute;
   width: 100%;
@@ -16,6 +18,16 @@
   justify-content: center;
   text-align: center;
   line-height: 36px;
+
+  @include mq-phone-only {
+    position: static;
+    backdrop-filter: blur(0px) contrast(102%);
+    -webkit-backdrop-filter: blur(0px);
+    background-color: rgba(255, 255, 255, 0);
+    border: 0px solid #e3e3e3;
+    border-radius: 0px;
+    margin-bottom: 15px;
+  }
 }
 
 .title {

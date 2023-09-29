@@ -33,6 +33,10 @@ import { typesOfPlaceContext } from "context/typesOfPlaceContext";
 import { PresetType, openaiDropdownContext } from "context/openaiDropdownContext";
 import { extractCityCountry } from "utils/extractCityCountry";
 import { useOpenaiDropdownOptions } from "hooks/use-openai-dropdown-options";
+import { useMediaQuery } from "react-responsive";
+import GoogleMapButton from "public/icons/google_button_icon.svg";
+import FilterMapButton from "public/icons/filter.svg";
+import { gmapMobileScreen } from "context/mobileScreenContext";
 import CustomLoginSignUpButton from "features/landing-page/components/CustomLoginSignupButton/CustomLoginSignupButton";
 
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
@@ -397,8 +401,21 @@ export default function Filters() {
     });
   }, [dropdownOptions]);
 
+  const searchBarMobileBreakpoint = useMediaQuery({ minWidth: 600 });
+  const handleGmapActivity = () => {
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, viewMap: "true" },
+    });
+  };
+  const handleFiltersActivity = () => {
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, viewFilters: "true" },
+    });
+  };
   return (
-    <>
+    <div className={styles.main}>
       <Box className={styles.container}>
         <div className={styles.searchRow}>
           <div className={styles.iconWrapper}>
@@ -406,67 +423,79 @@ export default function Filters() {
           </div>
           <input placeholder="Search Property Here" className={styles.input} type="text" ref={inputRef} />
         </div>
-
-        {activeTab === "location" && (
-          <DropdownWrapper>
-            <Select id="openai-dropdown" value={openaiDropdownValue.value} onChange={handleOpenaiDropdownChange}>
-              {!isPro && (
-                <div className={styles.dropdownUpgradeMessageWrapper}>
-                  <div className={styles.dropdownUpgradeMessage}>Upgrade Plan to Access More Options</div>
-                </div>
-              )}
-              {dropdownMenuItems}
-            </Select>
-          </DropdownWrapper>
-        )}
-
-        {activeTab === "nearby" && (
-          <DropdownWrapper>
-            <Select
-              id="demo-multiple-checkbox"
-              multiple
-              value={typesOfPlace}
-              onChange={handleSelectChange}
-              onClose={handleClose}
-              displayEmpty
-              renderValue={(selected) => `Places of Interest (${selected.length})`}
-              MenuProps={MenuProps}
-              style={{ fontSize: "16px" }}
-              autoWidth={true}
-            >
-              <MenuItem key="toggleAll" onClick={handleToggleAll}>
-                <Checkbox icon={<RadioButtonUncheckedIcon />} checkedIcon={<RadioButtonCheckedIcon />} onChange={handleToggleAll} checked={isSelectAll} />
-                <ListItemText primary={isSelectAll ? "Deselect All" : "Select All"} />
-              </MenuItem>
-              {PLACE_TYPES.map((name) => (
-                <MenuItem key={name} value={name} style={{ padding: "0px" }}>
-                  <Checkbox checked={typesOfPlace.indexOf(name) > -1} />
-                  <ListItemText primary={name} />
-                </MenuItem>
-              ))}
-            </Select>
-          </DropdownWrapper>
-        )}
-
-        {showDialog && (
-          <Dialog style={{ zIndex: 90000 }} open className={styles.dialog}>
-            <h2 className={styles.dialogTitle}>Daily {(searchLimit && "Search") || ""} Limit Reached</h2>
-            {isFree ? (
-              <DialogContent className={styles.dialogContent}>
-                You’ve reached your daily limit. To get unlimited access, upgrade to a paid plan.
-                <GetStarted />
-              </DialogContent>
-            ) : (
-              <DialogContent className={styles.dialogContent}>
-                You’ve reached your daily limit. To get free unlimited access forever: Log In or Join Kurby, but you are free to accept or refuse.
-                {/* <LoginSignupButton /> */}
-                <CustomLoginSignUpButton />
-              </DialogContent>
+        {searchBarMobileBreakpoint && (
+          <>
+            {activeTab === "location" && (
+              <DropdownWrapper>
+                <Select id="openai-dropdown" value={openaiDropdownValue.value} onChange={handleOpenaiDropdownChange}>
+                  {!isPro && (
+                    <div className={styles.dropdownUpgradeMessageWrapper}>
+                      <div className={styles.dropdownUpgradeMessage}>Upgrade Plan to Access More Options</div>
+                    </div>
+                  )}
+                  {dropdownMenuItems}
+                </Select>
+              </DropdownWrapper>
             )}
-          </Dialog>
+
+            {activeTab === "nearby" && (
+              <DropdownWrapper>
+                <Select
+                  id="demo-multiple-checkbox"
+                  multiple
+                  value={typesOfPlace}
+                  onChange={handleSelectChange}
+                  onClose={handleClose}
+                  displayEmpty
+                  renderValue={(selected) => `Places of Interest (${selected.length})`}
+                  MenuProps={MenuProps}
+                  style={{ fontSize: "16px" }}
+                  autoWidth={true}
+                >
+                  <MenuItem key="toggleAll" onClick={handleToggleAll}>
+                    <Checkbox icon={<RadioButtonUncheckedIcon />} checkedIcon={<RadioButtonCheckedIcon />} onChange={handleToggleAll} checked={isSelectAll} />
+                    <ListItemText primary={isSelectAll ? "Deselect All" : "Select All"} />
+                  </MenuItem>
+                  {PLACE_TYPES.map((name) => (
+                    <MenuItem key={name} value={name} style={{ padding: "0px" }}>
+                      <Checkbox checked={typesOfPlace.indexOf(name) > -1} />
+                      <ListItemText primary={name} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </DropdownWrapper>
+            )}
+          </>
         )}
       </Box>
-    </>
+      {showDialog && (
+        <Dialog style={{ zIndex: 90000 }} open className={styles.dialog}>
+          <h2 className={styles.dialogTitle}>Daily {(searchLimit && "Search") || ""} Limit Reached</h2>
+          {isFree ? (
+            <DialogContent className={styles.dialogContent}>
+              You’ve reached your daily limit. To get unlimited access, upgrade to a paid plan.
+              <GetStarted />
+            </DialogContent>
+          ) : (
+            <DialogContent className={styles.dialogContent}>
+              You’ve reached your daily limit. To get free unlimited access forever: Log In or Join Kurby, but you are free to accept or refuse.
+              {/* <LoginSignupButton /> */}
+              <CustomLoginSignUpButton />
+            </DialogContent>
+          )}
+        </Dialog>
+      )}
+      {!searchBarMobileBreakpoint && (
+        <>
+          <Box onClick={handleGmapActivity} className={styles.mobileButton}>
+            <GoogleMapButton className={styles.icon} />
+          </Box>
+          <Box onClick={handleFiltersActivity} className={styles.mobileButton}>
+            <FilterMapButton className={styles.icon} />
+          </Box>
+        </>
+      )}
+    </div>
   );
 }
 

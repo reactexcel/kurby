@@ -14,6 +14,7 @@ import axios from "axios";
 import { filterState } from "context/filterContext";
 import { useSearchCriteria } from "hooks/use-search-criteria";
 import { useState } from "react";
+import { useMediaQuery } from "react-responsive";
 /**
  * Body Content
  * @description: Displays everything below the filters
