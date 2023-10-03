@@ -110,7 +110,19 @@ export default function Filters() {
       label: dropdownOptions[value]?.label || "",
       value,
     });
+    router.push(`/app/${router.query?.address}/${value}`);
   };
+
+  useEffect(() => {
+    let preset = router.query?.preset as PresetType;
+    if (preset) {
+      let item = dropdownOptions[preset];
+      setOpenaiDropdownValue({
+        label: item.label,
+        value: preset,
+      });
+    }
+  }, [router]);
 
   //* Handle the change of the select element
   const handleSelectChange = (event: SelectChangeEvent<typeof typesOfPlace>) => {
@@ -414,6 +426,7 @@ export default function Filters() {
       query: { ...router.query, viewFilters: "true" },
     });
   };
+
   return (
     <div className={styles.main}>
       <Box className={styles.container}>

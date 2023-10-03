@@ -18,8 +18,8 @@ const initialValues = {
 export const IsDevContext = createContext<IsDevContext>(initialValues);
 
 export const IsDevProvider = ({ children }: { children: React.ReactNode }) => {
-  const isDev = useMemo(() => window.location.hostname === "localhost", []);
-  // const isDev = useMemo(() => true, []);
+  // const isDev = useMemo(() => window.location.hostname === "localhost", []);
+  const isDev = useMemo(() => false, []);
 
   return <IsDevContext.Provider value={{ isDev, message: initialValues.message }}>{children}</IsDevContext.Provider>;
 };
