@@ -31,7 +31,7 @@ const Address = () => {
 
   return (
     <>
-      <NextSeo title={address || "AI for Real Estate - Kurby"} description={`Living In ${address}: Everything You Need to Know Living preset URL will stay the same`} />
+      <NextSeo title={`Living In ${address}: Everything You Need to Know`} description={`Living In ${address}: Everything You Need to Know`} />
       <Resultspage />
     </>
   );

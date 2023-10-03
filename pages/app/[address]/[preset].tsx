@@ -20,47 +20,47 @@ function AIPreset() {
   const seoTitles = [
     {
       value: "living",
-      description: `Living In ${address}: Everything You Need to Know Living preset URL will stay the same`,
+      title: `Living In ${address}: Everything You Need to Know`,
     },
     {
       value: "domesticTourism",
-      description: `${address} Vacation: Everything For The Perfect Trip`,
+      title: `${address} Vacation: Everything For The Perfect Trip`,
     },
     {
       value: "internationalTourism",
-      description: `Relocating to ${address} For Work? Here’s What to Know`,
+      title: `Relocating to ${address} For Work? Here’s What to Know`,
     },
     {
       value: "vacationHome",
-      description: `${address} Retirement Home: Everything You Need to Know`,
+      title: `${address} Retirement Home: Everything You Need to Know`,
     },
     {
       value: "corporateRelocation",
-      description: `Relocating to ${address} For Work? Here’s What to Know`,
+      title: `Relocating to ${address} For Work? Here’s What to Know`,
     },
     {
       value: "retireeLiving",
-      description: `${address} Retirement Home: Everything You Need to Know`,
+      title: `${address} Retirement Home: Everything You Need to Know`,
     },
     {
       value: "shortTermRental",
-      description: `${address} Short-Term Rental: Everything You Need to Know to Be Profitable`,
+      title: `${address} Short-Term Rental: Everything You Need to Know to Be Profitable`,
     },
     {
       value: "buyAndHold",
-      description: `Investing In Real Estate In ${address}: Everything You Need to Know`,
+      title: `Investing In Real Estate In ${address}: Everything You Need to Know`,
     },
     {
       value: "glamping",
-      description: `${address} Glamping: Everything You Need to Know`,
+      title: `${address} Glamping: Everything You Need to Know`,
     },
     {
       value: "realEstateDeveloper",
-      description: `Real Estate Development In ${address}: Everything You Need to Know`,
+      title: `Real Estate Development In ${address}: Everything You Need to Know`,
     },
     {
       value: "luxuryEstates",
-      description: `Luxury Homes in ${address}: Here’s What You Need to Know`,
+      title: `Luxury Homes in ${address}: Here’s What You Need to Know`,
     },
   ];
 
@@ -85,7 +85,7 @@ function AIPreset() {
 
   return (
     <>
-      <NextSeo title={"AI for Real Estate - Kurby"} description={selectedSeo?.description || ""} />
+      <NextSeo title={selectedSeo?.title || "AI for Real Estate - Kurby"} description={selectedSeo?.title || ""} />
       <Resultspage />
     </>
   );
