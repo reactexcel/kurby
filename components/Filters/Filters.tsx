@@ -110,18 +110,22 @@ export default function Filters() {
       label: dropdownOptions[value]?.label || "",
       value,
     });
-    router.push(`/app/${router.query?.address}/${covertIntoKebabCase(value)}`);
+    router.push(`/app/${router.query?.address}/${dropdownOptions[value].url}`);
   };
 
   useEffect(() => {
     let preset = router.query?.preset as string;
     if (preset) {
-      let camelCasePreset = covertIntoCamelCase(preset) as PresetType;
-      let item = dropdownOptions[camelCasePreset];
-      setOpenaiDropdownValue({
-        label: item.label,
-        value: camelCasePreset,
-      });
+      for (const key in dropdownOptions) {
+        let item = dropdownOptions[key as PresetType];
+        if (item?.url === preset) {
+          setOpenaiDropdownValue({
+            label: item.label,
+            value: item.value as PresetType,
+          });
+          break;
+        }
+      }
     }
   }, [router]);
 
@@ -349,7 +353,6 @@ export default function Filters() {
         //TODO handle error and display it to the client
         const place = await autoCompleteRef.current?.getPlace();
         const encodedAddress = addressToUrl(place.formatted_address);
-
         const path = _preset ? `/app/${encodedAddress}/${_preset}` : `/app/${encodedAddress}`;
         router.push(path);
       });

@@ -1,11 +1,13 @@
 import Resultspage from "components/Resultspage/Resultspage";
 import { addressState, filterState } from "context/filterContext";
 import { propertyDetailAvailable, propertyDetailContext, propertyInfoV2Context } from "context/propertyContext";
+import { PresetType } from "context/openaiDropdownContext";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { urlToAddress, covertIntoCamelCase } from "utils/address";
+import { useOpenaiDropdownOptions } from "hooks/use-openai-dropdown-options";
 
 function AIPreset() {
   const router = useRouter();
@@ -15,6 +17,7 @@ function AIPreset() {
   const [, setPropertyDetail] = useRecoilState(propertyDetailContext);
   const [, setTabAvailable] = useRecoilState(propertyDetailAvailable);
   const [selectedSeo, setSelectedSeo] = useState<any>(null);
+  const dropdownOptions = useOpenaiDropdownOptions();
 
   /* SEO Tags */
   const seoTitles = [
@@ -28,11 +31,11 @@ function AIPreset() {
     },
     {
       value: "internationalTourism",
-      title: `Relocating to ${address} For Work? Here’s What to Know`,
+      title: `International Travel to ${address}: Everything to Know`,
     },
     {
       value: "vacationHome",
-      title: `${address} Retirement Home: Everything You Need to Know`,
+      title: `Buying A Vacation Home in ${address}: Here’s What to Know`,
     },
     {
       value: "corporateRelocation",
@@ -72,9 +75,14 @@ function AIPreset() {
       setAddress(originalAddress);
     }
     if (_preset) {
-      const camelCasePreset = covertIntoCamelCase(_preset);
-      const _selectedSeo = seoTitles.find((x: any) => x.value === camelCasePreset);
-      setSelectedSeo(_selectedSeo);
+      for (const key in dropdownOptions) {
+        let item = dropdownOptions[key as PresetType];
+        if (item?.url === _preset) {
+          const _selectedSeo = seoTitles.find((x: any) => x.value === item.value);
+          setSelectedSeo(_selectedSeo);
+          break;
+        }
+      }
     }
   }, [router.query]);
 
