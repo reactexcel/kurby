@@ -126,6 +126,11 @@ export default function Filters() {
           break;
         }
       }
+    } else {
+      setOpenaiDropdownValue({
+        label: dropdownOptions["living"].label,
+        value: dropdownOptions["living"].value as PresetType,
+      });
     }
   }, [router]);
 
