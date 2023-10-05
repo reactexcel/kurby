@@ -336,6 +336,7 @@ export default function Filters() {
   };
 
   useEffect(() => {
+    let _preset = router.query?.preset as PresetType;
     //* This use effect runs on component render
     //* Check that input ref exists before proceeding
     if (inputRef.current) {
@@ -347,7 +348,9 @@ export default function Filters() {
         //TODO handle error and display it to the client
         const place = await autoCompleteRef.current?.getPlace();
         const encodedAddress = addressToUrl(place.formatted_address);
-        router.push(`/app/${encodedAddress}`);
+
+        const path = _preset ? `/app/${encodedAddress}/${_preset}` : `/app/${encodedAddress}`;
+        router.push(path);
       });
     }
   }, []);
