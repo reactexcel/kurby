@@ -5,7 +5,7 @@ import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { urlToAddress } from "utils/address";
+import { urlToAddress, covertIntoCamelCase } from "utils/address";
 
 function AIPreset() {
   const router = useRouter();
@@ -66,13 +66,14 @@ function AIPreset() {
 
   useEffect(() => {
     const encodedAddress = router.query.address;
-    const preset = router.query.preset;
+    const _preset = router.query.preset as string;
     if (encodedAddress) {
       const originalAddress = urlToAddress(encodedAddress.toString());
       setAddress(originalAddress);
     }
-    if (preset) {
-      const _selectedSeo = seoTitles.find((x: any) => x.value === preset);
+    if (_preset) {
+      const camelCasePreset = covertIntoCamelCase(_preset);
+      const _selectedSeo = seoTitles.find((x: any) => x.value === camelCasePreset);
       setSelectedSeo(_selectedSeo);
     }
   }, [router.query]);

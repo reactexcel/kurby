@@ -1,28 +1,54 @@
 export const addressToUrl = (formatted_address: string) => {
-    const encodedAddress = formatted_address.replace(/ #/g, '---').replace(/, /g, '--').replace(/ /g, '-');
-    return encodedAddress;
-}
+  const encodedAddress = formatted_address.replace(/ #/g, "---").replace(/, /g, "--").replace(/ /g, "-");
+  return encodedAddress;
+};
 
 export const urlToAddress = (url: string) => {
-    const originalAddress = url.toString().replace(/---/g, ' #').replace(/--/g, ', ').replace(/-/g, ' ');
-    return originalAddress;
-}
+  const originalAddress = url.toString().replace(/---/g, " #").replace(/--/g, ", ").replace(/-/g, " ");
+  return originalAddress;
+};
 
 export const distanceBetweenTwoPlaces = (lat1: number, lon1: number, lat2: number, lon2: number) => {
-    lon1 = lon1 * Math.PI / 180;
-    lon2 = lon2 * Math.PI / 180;
-    lat1 = lat1 * Math.PI / 180;
-    lat2 = lat2 * Math.PI / 180;
+  lon1 = (lon1 * Math.PI) / 180;
+  lon2 = (lon2 * Math.PI) / 180;
+  lat1 = (lat1 * Math.PI) / 180;
+  lat2 = (lat2 * Math.PI) / 180;
 
-    let dlon = lon2 - lon1;
-    let dlat = lat2 - lat1;
-    let a = Math.pow(Math.sin(dlat / 2), 2)
-        + Math.cos(lat1) * Math.cos(lat2)
-        * Math.pow(Math.sin(dlon / 2), 2);
+  let dlon = lon2 - lon1;
+  let dlat = lat2 - lat1;
+  let a = Math.pow(Math.sin(dlat / 2), 2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(dlon / 2), 2);
 
-    let c = 2 * Math.asin(Math.sqrt(a));
+  let c = 2 * Math.asin(Math.sqrt(a));
 
-    let r = 6371;
+  let r = 6371;
 
-    return (c * r);
-}
+  return c * r;
+};
+
+// This function is converting Camel Case words into Kebab Case
+export const covertIntoKebabCase = (value: string) => {
+  if (value) {
+    const formattedValue = value.replace(/[A-Z]/g, (match: any) => `-${match.toLowerCase()}`);
+    return formattedValue;
+  }
+  return null;
+};
+
+// This function is converting Kebab Case words into Camel Case
+export const covertIntoCamelCase = (value: string) => {
+  if (value) {
+    const words = value.split("-");
+    // Capitalize the first letter of each word after the first one
+    const camelCaseValue = words
+      .map((word, index) => {
+        if (index === 0) {
+          return word;
+        }
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      })
+      .join("");
+
+    return camelCaseValue;
+  }
+  return null;
+};

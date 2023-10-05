@@ -10,7 +10,7 @@ import { searchNearbyApi } from "./searchNearbyApi";
 import WalkscoreListApi from "../BodyContent/Walkscore/WalkscoreListApi";
 import snackbarContext from "../../context/snackbarContext";
 import { useRouter } from "next/router";
-import { addressToUrl } from "utils/address";
+import { addressToUrl, covertIntoKebabCase, covertIntoCamelCase } from "utils/address";
 import { loadingContext } from "context/loadingContext";
 import { useSearchCounter } from "hooks/use-search-counter";
 import { Checkbox, Dialog, DialogContent, FormControl, ListItemText, MenuItem, Select } from "@mui/material";
@@ -110,16 +110,17 @@ export default function Filters() {
       label: dropdownOptions[value]?.label || "",
       value,
     });
-    router.push(`/app/${router.query?.address}/${value}`);
+    router.push(`/app/${router.query?.address}/${covertIntoKebabCase(value)}`);
   };
 
   useEffect(() => {
-    let preset = router.query?.preset as PresetType;
+    let preset = router.query?.preset as string;
     if (preset) {
-      let item = dropdownOptions[preset];
+      let camelCasePreset = covertIntoCamelCase(preset) as PresetType;
+      let item = dropdownOptions[camelCasePreset];
       setOpenaiDropdownValue({
         label: item.label,
-        value: preset,
+        value: camelCasePreset,
       });
     }
   }, [router]);
@@ -434,55 +435,66 @@ export default function Filters() {
     <div className={styles.main}>
       <Box className={styles.container}>
         <div className={styles.searchRow}>
-          <div className={styles.iconWrapper}>
-            <Illustration className={styles.matIcon} />
+          <div className={styles.searchField}>
+            <div className={styles.iconWrapper}>
+              <Illustration className={styles.matIcon} />
+            </div>
+            <input placeholder="Search Property Here" className={styles.input} type="text" ref={inputRef} />
           </div>
-          <input placeholder="Search Property Here" className={styles.input} type="text" ref={inputRef} />
+          {!searchBarMobileBreakpoint && (
+            <div className={styles.mobileButtons}>
+              <Box onClick={handleGmapActivity} className={styles.mobileButton}>
+                <GoogleMapButton className={styles.icon} />
+              </Box>
+              <Box onClick={handleFiltersActivity} className={styles.mobileButton}>
+                <FilterMapButton className={styles.icon} />
+              </Box>
+            </div>
+          )}
         </div>
-        {searchBarMobileBreakpoint && (
-          <>
-            {activeTab === "location" && (
-              <DropdownWrapper>
-                <Select id="openai-dropdown" value={openaiDropdownValue.value} onChange={handleOpenaiDropdownChange}>
-                  {!isPro && (
-                    <div className={styles.dropdownUpgradeMessageWrapper}>
-                      <div className={styles.dropdownUpgradeMessage}>Upgrade Plan to Access More Options</div>
-                    </div>
-                  )}
-                  {dropdownMenuItems}
-                </Select>
-              </DropdownWrapper>
-            )}
 
-            {activeTab === "nearby" && (
-              <DropdownWrapper>
-                <Select
-                  id="demo-multiple-checkbox"
-                  multiple
-                  value={typesOfPlace}
-                  onChange={handleSelectChange}
-                  onClose={handleClose}
-                  displayEmpty
-                  renderValue={(selected) => `Places of Interest (${selected.length})`}
-                  MenuProps={MenuProps}
-                  style={{ fontSize: "16px" }}
-                  autoWidth={true}
-                >
-                  <MenuItem key="toggleAll" onClick={handleToggleAll}>
-                    <Checkbox icon={<RadioButtonUncheckedIcon />} checkedIcon={<RadioButtonCheckedIcon />} onChange={handleToggleAll} checked={isSelectAll} />
-                    <ListItemText primary={isSelectAll ? "Deselect All" : "Select All"} />
+        <>
+          {activeTab === "location" && (
+            <DropdownWrapper>
+              <Select style={{ height: "42px" }} id="openai-dropdown" value={openaiDropdownValue.value} onChange={handleOpenaiDropdownChange}>
+                {!isPro && (
+                  <div className={styles.dropdownUpgradeMessageWrapper}>
+                    <div className={styles.dropdownUpgradeMessage}>Upgrade Plan to Access More Options</div>
+                  </div>
+                )}
+                {dropdownMenuItems}
+              </Select>
+            </DropdownWrapper>
+          )}
+
+          {activeTab === "nearby" && (
+            <DropdownWrapper>
+              <Select
+                id="demo-multiple-checkbox"
+                multiple
+                value={typesOfPlace}
+                onChange={handleSelectChange}
+                onClose={handleClose}
+                displayEmpty
+                renderValue={(selected) => `Places of Interest (${selected.length})`}
+                MenuProps={MenuProps}
+                style={{ fontSize: "16px", height: "42px" }}
+                autoWidth={true}
+              >
+                <MenuItem key="toggleAll" onClick={handleToggleAll}>
+                  <Checkbox icon={<RadioButtonUncheckedIcon />} checkedIcon={<RadioButtonCheckedIcon />} onChange={handleToggleAll} checked={isSelectAll} />
+                  <ListItemText primary={isSelectAll ? "Deselect All" : "Select All"} />
+                </MenuItem>
+                {PLACE_TYPES.map((name) => (
+                  <MenuItem key={name} value={name} style={{ padding: "0px" }}>
+                    <Checkbox checked={typesOfPlace.indexOf(name) > -1} />
+                    <ListItemText primary={name} />
                   </MenuItem>
-                  {PLACE_TYPES.map((name) => (
-                    <MenuItem key={name} value={name} style={{ padding: "0px" }}>
-                      <Checkbox checked={typesOfPlace.indexOf(name) > -1} />
-                      <ListItemText primary={name} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </DropdownWrapper>
-            )}
-          </>
-        )}
+                ))}
+              </Select>
+            </DropdownWrapper>
+          )}
+        </>
       </Box>
       {showDialog && (
         <Dialog style={{ zIndex: 90000 }} open className={styles.dialog}>
@@ -500,16 +512,6 @@ export default function Filters() {
             </DialogContent>
           )}
         </Dialog>
-      )}
-      {!searchBarMobileBreakpoint && (
-        <>
-          <Box onClick={handleGmapActivity} className={styles.mobileButton}>
-            <GoogleMapButton className={styles.icon} />
-          </Box>
-          <Box onClick={handleFiltersActivity} className={styles.mobileButton}>
-            <FilterMapButton className={styles.icon} />
-          </Box>
-        </>
       )}
     </div>
   );
