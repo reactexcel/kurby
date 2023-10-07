@@ -110,7 +110,13 @@ export default function Filters() {
       label: dropdownOptions[value]?.label || "",
       value,
     });
-    router.push(`/app/${router.query?.address}/${dropdownOptions[value].url}`);
+    router.push({
+      pathname: "/app/[address]/[preset]",
+      query: {
+        address: router.query?.address,
+        preset: dropdownOptions[value].url,
+      },
+    });
   };
 
   useEffect(() => {
@@ -346,7 +352,6 @@ export default function Filters() {
   };
 
   useEffect(() => {
-    let _preset = router.query?.preset as PresetType;
     //* This use effect runs on component render
     //* Check that input ref exists before proceeding
     if (inputRef.current) {
@@ -357,12 +362,21 @@ export default function Filters() {
       autoCompleteRef.current.addListener("place_changed", async function () {
         //TODO handle error and display it to the client
         const place = await autoCompleteRef.current?.getPlace();
-        const encodedAddress = addressToUrl(place.formatted_address);
-        const path = _preset ? `/app/${encodedAddress}/${_preset}` : `/app/${encodedAddress}`;
-        router.push(path);
+        const encodedAddress = addressToUrl(place?.formatted_address);
+        if (router.query.preset) {
+          router.push({
+            pathname: "/app/[address]/[preset]",
+            query: {
+              address: encodedAddress,
+              preset: router.query.preset,
+            },
+          });
+        } else {
+          router.push(`/app/${encodedAddress}`);
+        }
       });
     }
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     if (address && inputRef.current) {
