@@ -68,16 +68,25 @@
 }
 
 .searchRow {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.searchField {
   display: flex;
   flex-direction: row;
   width: 100%;
   background-color: #f1f4f6;
   border-radius: 10px;
   border: 1px solid #e0e0e0;
+  @media screen and (max-width: 600px) {
+    margin-right: 10px;
+  }
 }
 
 .input {
-  width: -webkit-fill-available;
+  width: 100%;
   /* margin-right: 32px; */
   height: 50px;
   background-color: #9e9e9e1a;
@@ -200,6 +209,12 @@
   width: 75%;
   padding: 0.25rem 0rem;
   color: #00a13c;
+}
+
+.mobileButtons {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
 }
 
 .mobileButton {

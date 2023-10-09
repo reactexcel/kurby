@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { filterState } from "context/filterContext";
 import { loadingContext } from "context/loadingContext";
 import { useState, useEffect, useCallback, useMemo, useRef, useContext } from "react";
@@ -9,6 +10,8 @@ import { IsDevContext } from "context/isDevContext";
 import { PresetType } from "context/openaiDropdownContext";
 import { OpenAiResponseType, VariantType } from "types/openai";
 import { useAuth } from "providers/AuthProvider";
+import { fetchingUrl, upsertDataForUrl } from "./url-services";
+import { useSeoTitles } from "hooks/use-openai-dropdown-options";
 
 interface OpenAiHookType {
   preset: PresetType;
@@ -24,6 +27,34 @@ const openaiResponseInitialState: OpenAiResponseType = {
   internationalTourism: "",
   shortTermRental: "",
   buyAndHold: "",
+};
+
+const isFetchedForPreset = {
+  placeId: "",
+  living: false,
+  buyAndHold: false,
+  shortTermRental: false,
+  domesticTourism: false,
+  internationalTourism: false,
+  glamping: false,
+  corporateRelocation: false,
+  luxuryEstates: false,
+  realEstateDeveloper: false,
+  retireeLiving: false,
+  vacationHome: false,
+};
+
+const createObjectForPreset = (preset: string, value: string, address: string | null) => {
+  if (preset === "buyAndHold") return { buyAndHold: value, seoTitle: useSeoTitles(preset, address) };
+  if (preset === "shortTermRental") return { shortTermRental: value, seoTitle: useSeoTitles(preset, address) };
+  if (preset === "domesticTourism") return { domesticTourism: value, seoTitle: useSeoTitles(preset, address) };
+  if (preset === "internationalTourism") return { internationalTourism: value, seoTitle: useSeoTitles(preset, address) };
+  if (preset === "glamping") return { glamping: value, seoTitle: useSeoTitles(preset, address) };
+  if (preset === "corporateRelocation") return { corporateRelocation: value, seoTitle: useSeoTitles(preset, address) };
+  if (preset === "luxuryEstates") return { luxuryEstates: value, seoTitle: useSeoTitles(preset, address) };
+  if (preset === "realEstateDeveloper") return { realEstateDeveloper: value, seoTitle: useSeoTitles(preset, address) };
+  if (preset === "retireeLiving") return { retireeLiving: value, seoTitle: useSeoTitles(preset, address) };
+  if (preset === "vacationHome") return { vacationHome: value, seoTitle: useSeoTitles(preset, address) };
 };
 
 export const useOpenAi = ({ preset }: OpenAiHookType) => {
@@ -63,6 +94,7 @@ export const useOpenAi = ({ preset }: OpenAiHookType) => {
       };
     }
   }, [preset, variant]);
+  let _fetchResponse = openaiResponseInitialState;
 
   const params = useMemo(() => {
     if (!filterVal.address) {
@@ -123,6 +155,7 @@ export const useOpenAi = ({ preset }: OpenAiHookType) => {
         }
       } else {
         updateOpenAiCache(preset, message.content);
+        upsertDataForUrl(preset, filterVal?.selectedPlace?.place_id, createObjectForPreset(preset, message.content, filterVal?.address), filterVal.city, filterVal.country);
       }
     },
   });
@@ -165,6 +198,7 @@ export const useOpenAi = ({ preset }: OpenAiHookType) => {
             living: {
               ...prevState[filterVal.address as string]?.living,
               [variant]: state,
+              seoTitle: useSeoTitles(preset, filterVal.address),
             },
           },
         }));
@@ -297,6 +331,69 @@ export const useOpenAi = ({ preset }: OpenAiHookType) => {
       }
     }
 
+    fetchingUrl(preset, filterVal.selectedPlace?.place_id).then((result) => {
+      if (result.length > 0 && result[0].cache[`${preset}`] && result[0].cache[`${preset}`] !== "") {
+        _fetchResponse = result[0].cache;
+        if (idRef.current) {
+          const removedDuplicates = idRef.current.filter((id) => !openaiIds.includes(id));
+
+          setOpenaiIds((prevState) => [...prevState, ...removedDuplicates]);
+        }
+
+        if (message) {
+          setMessages([]);
+        }
+
+        if (living?.explainedLikeAlocal || buyAndHold || shortTermRental) {
+          setOpenAiResponse(openaiResponseInitialState);
+        }
+
+        if (!filterVal.address) {
+          return;
+        }
+
+        isFetchedForPreset.placeId = filterVal.selectedPlace.place_id;
+        if (isLivingPreset) {
+          if (_fetchResponse?.living?.explainedLikeAlocal) {
+            updateOpenAiCache(preset, _fetchResponse.living?.explainedLikeAlocal, "explainedLikeAlocal");
+            setOpenaiResponseCallback("living", _fetchResponse.living?.explainedLikeAlocal, "explainedLikeAlocal");
+            setLoadingCallback("living", "explainedLikeAlocal");
+            isFetchedForPreset["living"] = true;
+            if (!_fetchResponse.living?.greenFlags) {
+              setVariant("greenFlags");
+              return;
+            }
+          }
+          if (_fetchResponse?.living?.greenFlags) {
+            setOpenaiResponseCallback("living", _fetchResponse.living?.greenFlags, "greenFlags");
+            updateOpenAiCache(preset, _fetchResponse.living?.greenFlags, "greenFlags");
+            setLoadingCallback("living", "greenFlags");
+            isFetchedForPreset["living"] = true;
+            if (!_fetchResponse.living?.redFlags) {
+              setVariant("redFlags");
+              return;
+            }
+          }
+
+          if (_fetchResponse?.living?.redFlags) {
+            updateOpenAiCache(preset, _fetchResponse.living?.redFlags, "redFlags");
+            setOpenaiResponseCallback("living", _fetchResponse.living?.redFlags, "redFlags");
+            setLoadingCallback("living", "redFlags");
+            isFetchedForPreset["living"] = true;
+            return;
+          }
+        } else {
+          if (_fetchResponse?.[preset]) {
+            updateOpenAiCache(preset, _fetchResponse[preset] as string);
+            setOpenaiResponseCallback(preset, _fetchResponse[preset] as string);
+            setLoadingCallback(preset);
+            isFetchedForPreset[preset] = true;
+            return;
+          }
+        }
+      }
+    });
+
     const timeout = setTimeout(() => {
       append({
         content: "",
@@ -312,8 +409,14 @@ export const useOpenAi = ({ preset }: OpenAiHookType) => {
   }, [filterVal.address, preset]);
 
   useEffect(() => {
+    if (isFetchedForPreset.placeId === filterVal?.selectedPlace?.place_id && isFetchedForPreset[preset]) return;
+
     if (!message || !message.content) {
       return;
+    }
+
+    if (openaiCache && openaiCache[`${filterVal.address}`]) {
+      upsertDataForUrl(preset, filterVal.selectedPlace.place_id, openaiCache[`${filterVal.address}`], filterVal.city, filterVal.country);
     }
 
     setLoadingCallback(preset, variant);
