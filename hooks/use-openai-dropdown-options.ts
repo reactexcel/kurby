@@ -78,3 +78,47 @@ export const useOpenaiDropdownOptions = () => {
 
   return dropdownOptions;
 };
+
+export const useSeoTitles = (preset: string, address: string | null) => {
+  const seoTitles: Record<string, { title: string }> = {
+    living: {
+      title: `Living In ${address}: Everything You Need to Know`,
+    },
+    domesticTourism: {
+      title: `${address} Vacation: Everything For The Perfect Trip`,
+    },
+    internationalTourism: {
+      title: `International Travel to ${address}: Everything to Know`,
+    },
+    vacationHome: {
+      title: `Buying A Vacation Home in ${address}: Here’s What to Know`,
+    },
+    corporateRelocation: {
+      title: `Relocating to ${address} For Work? Here’s What to Know`,
+    },
+    retireeLiving: {
+      title: `${address} Retirement Home: Everything You Need to Know`,
+    },
+    shortTermRental: {
+      title: `${address} Short-Term Rental: Everything You Need to Know to Be Profitable`,
+    },
+    buyAndHold: {
+      title: `Investing In Real Estate In ${address}: Everything You Need to Know`,
+    },
+    glamping: {
+      title: `${address} Glamping: Everything You Need to Know`,
+    },
+    realEstateDeveloper: {
+      title: `Real Estate Development In ${address}: Everything You Need to Know`,
+    },
+    luxuryEstates: {
+      title: `Luxury Homes in ${address}: Here’s What You Need to Know`,
+    },
+  };
+
+  if (preset) {
+    return seoTitles[preset];
+  } else {
+    return null;
+  }
+};
