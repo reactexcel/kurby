@@ -1,3 +1,4 @@
+import Head from "next/head";
 import Resultspage from "components/Resultspage/Resultspage";
 import { addressState, filterState } from "context/filterContext";
 import { propertyDetailAvailable, propertyDetailContext, propertyInfoV2Context } from "context/propertyContext";
@@ -31,6 +32,9 @@ const Address = () => {
 
   return (
     <>
+      <Head>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6265800628963979" crossOrigin="anonymous" />
+      </Head>
       <NextSeo title={`Living In ${address}: Everything You Need to Know`} description={`Living In ${address}: Everything You Need to Know`} />
       <Resultspage />
     </>

@@ -5,6 +5,7 @@ import { propertyDetailAvailable, propertyDetailContext, propertyInfoV2Context }
 import { PresetType } from "context/openaiDropdownContext";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { urlToAddress, covertIntoCamelCase } from "utils/address";
@@ -50,6 +51,9 @@ function AIPreset() {
 
   return (
     <>
+      <Head>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6265800628963979" crossOrigin="anonymous" />
+      </Head>
       <NextSeo title={selectedSeo?.title} description={selectedSeo?.title || ""} />
       <Resultspage />
     </>
