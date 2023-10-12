@@ -75,7 +75,7 @@ export const Location = () => {
               <h3 className={styles.address}>{filterVal.address}</h3>
             </div>
             <Typography className={styles.margin} variant="subtitle1">
-              {dropdownValue.value === "living" ? "Explained like a local" : dropdownOptions[dropdownValue.value]?.label}:
+              {dropdownValue.value === "living" ? "Explained like a loca" : dropdownOptions[dropdownValue.value]?.label}:
               <AIWarningToolTip />
             </Typography>
             {isDev && <Typography className={styles.margin}>{message("Location")}</Typography>}
