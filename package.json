@@ -29,7 +29,6 @@
     "google-maps-react-markers": "^1.0.9",
     "isomorphic-unfetch": "^4.0.2",
     "jwt-decode": "^3.1.2",
-    "langchain": "^0.0.166",
     "lodash": "^4.17.21",
     "lottie-react": "^2.4.0",
     "luxon": "^3.4.0",
