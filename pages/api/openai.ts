@@ -40,7 +40,6 @@ const handler = async (req: any) => {
   }
 
   let isPresetAllowed = ["living", "domesticTourism", "internationalTourism"].includes(preset);
-  console.log("token....", token, isPresetAllowed);
 
   if (token && !isPresetAllowed) {
     try {
