@@ -7,6 +7,13 @@ import { getPlan } from "utils/plans";
 import { isPresetValid } from "utils/isPresetValid";
 import { canUsePreset } from "utils/canUsePreset";
 
+import { initializeAgentExecutorWithOptions } from "langchain/agents";
+import { ChatOpenAI } from "langchain/chat_models/openai";
+import { SerpAPI } from "langchain/tools";
+// import { Calculator } from "langchain/tools/calculator";
+import { AIMessage, ChatMessage, HumanMessage } from "langchain/schema";
+import { BufferMemory, ChatMessageHistory } from "langchain/memory";
+
 /**
  * Stream OpenAI chat completion
  * @param message
@@ -281,6 +288,51 @@ const handler = async (req: any) => {
 export default handler;
 
 const streamChatCompletion = async (variantObj: { prompt: string; max_tokens: number }) => {
+  const PREFIX_TEMPLATE = "";
+  const tools = [new SerpAPI(process.env.NEXT_PUBLIC_SERPAPI_API_KEY)];
+  const chat = new ChatOpenAI({ modelName: "gpt-4", temperature: 0 });
+
+  /**
+   * The default prompt for the OpenAI functions agent has a placeholder
+   * where chat messages get injected - that's why we set "memoryKey" to
+   * "chat_history". This will be made clearer and more customizable in the future.
+   */
+  const executor = await initializeAgentExecutorWithOptions(tools, chat, {
+    agentType: "openai-functions",
+    verbose: true,
+    // returnIntermediateSteps,
+    // memory: new BufferMemory({
+    //   memoryKey: "chat_history",
+    //   chatHistory: new ChatMessageHistory(previousMessages),
+    //   returnMessages: true,
+    //   outputKey: "output",
+    // }),
+    agentArgs: {
+      prefix: PREFIX_TEMPLATE,
+    },
+  });
+
+  const result = await executor.call({
+    input: variantObj.prompt,
+  });
+
+  /**
+   * Agent executors don't support streaming responses (yet!), so stream back the
+   * complete response one character at a time with a delay to simluate it.
+   */
+  const textEncoder = new TextEncoder();
+  const fakeStream = new ReadableStream({
+    async start(controller) {
+      for (const character of result.output) {
+        controller.enqueue(textEncoder.encode(character));
+        await new Promise((resolve) => setTimeout(resolve, 20));
+      }
+      controller.close();
+    },
+  });
+
+  return new StreamingTextResponse(fakeStream);
+
   const response = await openai.createChatCompletion({
     model: "gpt-4",
     stream: true,
