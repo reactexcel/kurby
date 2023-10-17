@@ -38,6 +38,8 @@ import GoogleMapButton from "public/icons/google_button_icon.svg";
 import FilterMapButton from "public/icons/filter.svg";
 import { gmapMobileScreen } from "context/mobileScreenContext";
 import CustomLoginSignUpButton from "features/landing-page/components/CustomLoginSignupButton/CustomLoginSignupButton";
+import { countries } from "mock/countries";
+import { states } from "mock/states";
 
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
@@ -363,6 +365,7 @@ export default function Filters() {
         //TODO handle error and display it to the client
         const place = await autoCompleteRef.current?.getPlace();
         const encodedAddress = addressToUrl(place?.formatted_address);
+        // getAbsoluteAddress(place?.formatted_address);
         if (router.query.preset) {
           router.push({
             pathname: "/app/[address]/[preset]",
