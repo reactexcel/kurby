@@ -1253,6 +1253,16 @@ export const countries = [
 
 const _countries = [
   {
+    name: "Benin",
+    iso3: "BEN",
+    iso2: "BJ",
+  },
+  {
+    name: "Brazil",
+    iso3: "BRA",
+    iso2: "BR",
+  },
+  {
     name: "United States",
     iso3: "USA",
     iso2: "US",

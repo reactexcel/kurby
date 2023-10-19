@@ -353,6 +353,32 @@ export default function Filters() {
     }));
   };
 
+  const standardizeAddress = (address: string) => {
+    const addressArray = address.split(/,?\s+/);
+    const updatedAddressArray = [...addressArray];
+
+    for (const state of states) {
+      if (addressArray.includes(state.state_code)) {
+        if (addressArray.includes(state.country_code)) {
+          const index = addressArray.indexOf(state.state_code);
+          updatedAddressArray[index] = state.name;
+        }
+      }
+
+      if (addressArray.includes(state.country_code)) {
+        const index = addressArray.indexOf(state.country_code);
+        updatedAddressArray[index] = state.country_name;
+      }
+    }
+
+    if (updatedAddressArray) {
+      const formattedAddress = updatedAddressArray.join(" ");
+      // const finalAddress = formattedAddress.replace(/ (?!and\b)/g, ", ");
+      // console.log("Formatted Address:", formattedAddress);
+      return formattedAddress;
+    }
+  };
+
   useEffect(() => {
     //* This use effect runs on component render
     //* Check that input ref exists before proceeding
@@ -364,8 +390,14 @@ export default function Filters() {
       autoCompleteRef.current.addListener("place_changed", async function () {
         //TODO handle error and display it to the client
         const place = await autoCompleteRef.current?.getPlace();
-        const encodedAddress = addressToUrl(place?.formatted_address);
-        // getAbsoluteAddress(place?.formatted_address);
+        const _address = standardizeAddress(place?.formatted_address);
+        let encodedAddress = "";
+        if (_address) {
+          encodedAddress = addressToUrl(_address);
+        } else {
+          encodedAddress = addressToUrl(place?.formatted_address);
+        }
+
         if (router.query.preset) {
           router.push({
             pathname: "/app/[address]/[preset]",
