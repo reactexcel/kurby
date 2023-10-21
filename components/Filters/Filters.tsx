@@ -38,8 +38,7 @@ import GoogleMapButton from "public/icons/google_button_icon.svg";
 import FilterMapButton from "public/icons/filter.svg";
 import { gmapMobileScreen } from "context/mobileScreenContext";
 import CustomLoginSignUpButton from "features/landing-page/components/CustomLoginSignupButton/CustomLoginSignupButton";
-import { countries } from "mock/countries";
-import { states } from "mock/states";
+import { standardizeAddress } from "hooks/standardize-address";
 
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
@@ -112,13 +111,18 @@ export default function Filters() {
       label: dropdownOptions[value]?.label || "",
       value,
     });
-    router.push({
-      pathname: "/app/[address]/[preset]",
-      query: {
-        address: router.query?.address,
-        preset: dropdownOptions[value].url,
-      },
-    });
+
+    if (dropdownOptions[value].url !== "living") {
+      router.push({
+        pathname: "/app/[address]/[preset]",
+        query: {
+          address: router.query?.address,
+          preset: dropdownOptions[value].url,
+        },
+      });
+    } else {
+      router.push(`/app/${router.query?.address}`);
+    }
   };
 
   useEffect(() => {
@@ -353,35 +357,10 @@ export default function Filters() {
     }));
   };
 
-  const standardizeAddress = (address: string) => {
-    const addressArray = address.split(/,?\s+/);
-    const updatedAddressArray = [...addressArray];
-
-    for (const state of states) {
-      if (addressArray.includes(state.state_code)) {
-        if (addressArray.includes(state.country_code)) {
-          const index = addressArray.indexOf(state.state_code);
-          updatedAddressArray[index] = state.name;
-        }
-      }
-
-      if (addressArray.includes(state.country_code)) {
-        const index = addressArray.indexOf(state.country_code);
-        updatedAddressArray[index] = state.country_name;
-      }
-    }
-
-    if (updatedAddressArray) {
-      const formattedAddress = updatedAddressArray.join(" ");
-      // const finalAddress = formattedAddress.replace(/ (?!and\b)/g, ", ");
-      // console.log("Formatted Address:", formattedAddress);
-      return formattedAddress;
-    }
-  };
-
   useEffect(() => {
     //* This use effect runs on component render
     //* Check that input ref exists before proceeding
+
     if (inputRef.current) {
       //* init the autocomplete for searching addresses
       autoCompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current, AUTOCOMPLETE_OPTIONS);
@@ -398,7 +377,7 @@ export default function Filters() {
           encodedAddress = addressToUrl(place?.formatted_address);
         }
 
-        if (router.query.preset) {
+        if (router.query.preset && router.query.preset !== "living") {
           router.push({
             pathname: "/app/[address]/[preset]",
             query: {

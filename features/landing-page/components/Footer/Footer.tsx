@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { Accordion, AccordionDetails, AccordionSummary, Box } from "@mui/material";
 import styles from "./Footer.module.scss";
 import { AccordionStyle } from "../Questions/Questions";
@@ -38,6 +39,13 @@ type Option = {
   option: string;
 };
 
+interface Props {
+  linkText: string;
+  link?: string;
+  onClick?: () => void;
+  style?: object;
+}
+
 function FooterAccordion({ summary, options }: { summary: string; options: Option[] }) {
   return (
     <Accordion className={styles.footer_accordion} sx={AccordionStyle}>
@@ -55,6 +63,15 @@ function FooterAccordion({ summary, options }: { summary: string; options: Optio
 
 export default function Footer() {
   const { isDesktop } = useContext(WindowSizeContext);
+  const router = useRouter();
+
+  const Link = ({ linkText, link, onClick, style }: Props) => {
+    return (
+      <div className={styles.privacy} onClick={() => (onClick ? onClick() : link && router.push(link))}>
+        {linkText}
+      </div>
+    );
+  };
 
   return (
     <Box className={styles.main}>
@@ -132,7 +149,7 @@ export default function Footer() {
       <Box className={styles.second_section}>
         <Box className={styles.kurby_privacy}>
           <div>@ 2023 Kurby</div>
-          <div className={styles.privacy}>Privacy Policy</div>
+          <Link linkText="Privacy Policy" link="https://blog.kurby.ai/privacy-policy/" />
         </Box>
         <hr className={styles.line} />
         <div className={styles.address}>7969 NW 2nd Street #1185, Miami, FL 33126, United States</div>
