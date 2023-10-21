@@ -8,8 +8,9 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { urlToAddress, covertIntoCamelCase } from "utils/address";
+import { addressToUrl, urlToAddress, covertIntoCamelCase } from "utils/address";
 import { useOpenaiDropdownOptions, useSeoTitles } from "hooks/use-openai-dropdown-options";
+import { standardizeAddress } from "hooks/standardize-address";
 
 function AIPreset() {
   const router = useRouter();
@@ -28,6 +29,26 @@ function AIPreset() {
     if (encodedAddress) {
       const originalAddress = urlToAddress(encodedAddress.toString());
       setAddress(originalAddress);
+      const _address = standardizeAddress(originalAddress);
+      const _encodedAddress = addressToUrl(_address);
+      if (_address && encodedAddress !== _encodedAddress) {
+        if (_preset !== "living") {
+          router.push({
+            pathname: "/app/[address]/[preset]",
+            query: {
+              address: _encodedAddress,
+              preset: _preset,
+            },
+          });
+        } else {
+          router.push(`/app/${_encodedAddress}`);
+        }
+      } else {
+        if (_preset === "living") {
+          router.push(`/app/${_encodedAddress}`);
+        }
+      }
+
       if (_preset) {
         for (const key in dropdownOptions) {
           let item = dropdownOptions[key as PresetType];

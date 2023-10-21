@@ -38,6 +38,7 @@ import GoogleMapButton from "public/icons/google_button_icon.svg";
 import FilterMapButton from "public/icons/filter.svg";
 import { gmapMobileScreen } from "context/mobileScreenContext";
 import CustomLoginSignUpButton from "features/landing-page/components/CustomLoginSignupButton/CustomLoginSignupButton";
+import { standardizeAddress } from "hooks/standardize-address";
 
 //TODO REFACTOR ALL GLOBAL SETTINGS FOR MAPS INTO GLOBAL_SETTINGS FILE
 //TODO ADD LOADING TO GLOBAL STATE AND ADD SPINNERS
@@ -110,13 +111,18 @@ export default function Filters() {
       label: dropdownOptions[value]?.label || "",
       value,
     });
-    router.push({
-      pathname: "/app/[address]/[preset]",
-      query: {
-        address: router.query?.address,
-        preset: dropdownOptions[value].url,
-      },
-    });
+
+    if (dropdownOptions[value].url !== "living") {
+      router.push({
+        pathname: "/app/[address]/[preset]",
+        query: {
+          address: router.query?.address,
+          preset: dropdownOptions[value].url,
+        },
+      });
+    } else {
+      router.push(`/app/${router.query?.address}`);
+    }
   };
 
   useEffect(() => {
@@ -354,6 +360,7 @@ export default function Filters() {
   useEffect(() => {
     //* This use effect runs on component render
     //* Check that input ref exists before proceeding
+
     if (inputRef.current) {
       //* init the autocomplete for searching addresses
       autoCompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current, AUTOCOMPLETE_OPTIONS);
@@ -362,8 +369,15 @@ export default function Filters() {
       autoCompleteRef.current.addListener("place_changed", async function () {
         //TODO handle error and display it to the client
         const place = await autoCompleteRef.current?.getPlace();
-        const encodedAddress = addressToUrl(place?.formatted_address);
-        if (router.query.preset) {
+        const _address = standardizeAddress(place?.formatted_address);
+        let encodedAddress = "";
+        if (_address) {
+          encodedAddress = addressToUrl(_address);
+        } else {
+          encodedAddress = addressToUrl(place?.formatted_address);
+        }
+
+        if (router.query.preset && router.query.preset !== "living") {
           router.push({
             pathname: "/app/[address]/[preset]",
             query: {

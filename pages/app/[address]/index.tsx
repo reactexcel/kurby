@@ -6,7 +6,8 @@ import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { urlToAddress } from "utils/address";
+import { addressToUrl, urlToAddress } from "utils/address";
+import { standardizeAddress } from "hooks/standardize-address";
 
 const Address = () => {
   const router = useRouter();
@@ -21,6 +22,16 @@ const Address = () => {
     if (encodedAddress) {
       const originalAddress = urlToAddress(encodedAddress.toString());
       setAddress(originalAddress);
+      const _address = standardizeAddress(originalAddress);
+      const _encodedAddress = addressToUrl(_address);
+      if (_address && encodedAddress !== _encodedAddress) {
+        router.push({
+          pathname: "/app/[address]",
+          query: {
+            address: _encodedAddress,
+          },
+        });
+      }
     }
   }, [router.query]);
 
