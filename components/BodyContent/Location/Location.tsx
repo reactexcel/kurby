@@ -24,6 +24,8 @@ export const Location = () => {
   const openaiResponse = useOpenAi({ preset: dropdownValue.value });
   const dropdownOptions = useOpenaiDropdownOptions();
 
+  console.log("openaiResponse...", openaiResponse);
+
   const separateMessage = useMemo(() => openaiResponse.living && openaiResponse.living.explainedLikeAlocal?.split("- ").filter((part) => part), [openaiResponse.living]);
 
   if (loading.walkscore) {
