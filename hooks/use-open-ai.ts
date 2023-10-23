@@ -408,6 +408,10 @@ export const useOpenAi = ({ preset }: OpenAiHookType) => {
     };
   }, [filterVal.address, preset]);
 
+  console.log("LOADING STATE", loading);
+
+  console.log("MESSAGES", messages);
+
   useEffect(() => {
     if (isFetchedForPreset.placeId === filterVal?.selectedPlace?.place_id && isFetchedForPreset[preset]) return;
 
