@@ -1,4 +1,5 @@
 import { useContext, useMemo } from "react";
+import { useRouter } from "next/router";
 import { Box, Typography, CircularProgress } from "@mui/material";
 import StreetView from "../StreetView/StreetView";
 import LocationSvg from "../../../public/icons/location.svg";
@@ -17,11 +18,13 @@ import { openaiDropdownContext } from "context/openaiDropdownContext";
 import { useOpenaiDropdownOptions } from "hooks/use-openai-dropdown-options";
 
 export const Location = () => {
+  const router = useRouter();
+  const URL = `https://kurby.ai${router.asPath}`;
   const [filterVal] = useRecoilState(filterState);
   const [loading] = useRecoilState(loadingContext);
   const { isDev, message } = useContext(IsDevContext);
   const [dropdownValue] = useRecoilState(openaiDropdownContext);
-  const openaiResponse = useOpenAi({ preset: dropdownValue.value });
+  const openaiResponse = useOpenAi({ preset: dropdownValue.value, URL: URL });
   const dropdownOptions = useOpenaiDropdownOptions();
 
   const separateMessage = useMemo(() => openaiResponse.living && openaiResponse.living.explainedLikeAlocal?.split("- ").filter((part) => part), [openaiResponse.living]);

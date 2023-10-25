@@ -26,7 +26,7 @@ export const fetchingUrlByPlaceId = async (preset: String, place_id: String) => 
   return data;
 };
 
-export const upsertDataForUrl = async (preset: String, place_id: String, cache: any, city: string | null, country: string | null) => {
+export const upsertDataForUrl = async (preset: string, place_id: string, URL: string, seo_title: any | null, cache: any, city: string | null, country: string | null) => {
   if (!cache) return;
   if (!cache[`${preset}`]) return;
   if (preset === "living" && (!cache.living.explainedLikeAlocal || !cache.living.redFlags || !cache.living.greenFlags)) return;
@@ -44,7 +44,7 @@ export const upsertDataForUrl = async (preset: String, place_id: String, cache: 
   }
   if (data && data.length > 0) return;
   try {
-    await supabase.from("urls").insert({ preset: preset, place_id: place_id, cache: cache });
+    await supabase.from("urls").insert({ preset: preset, place_id: place_id, url: URL, seo_title: seo_title?.title, cache: cache });
   } catch (err) {
     console.log(err);
     return [];
