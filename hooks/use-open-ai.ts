@@ -15,6 +15,7 @@ import { useSeoTitles } from "hooks/use-openai-dropdown-options";
 
 interface OpenAiHookType {
   preset: PresetType;
+  URL: string;
 }
 
 const openaiResponseInitialState: OpenAiResponseType = {
@@ -44,20 +45,20 @@ const isFetchedForPreset = {
   vacationHome: false,
 };
 
-const createObjectForPreset = (preset: string, value: string, address: string | null) => {
-  if (preset === "buyAndHold") return { buyAndHold: value, seoTitle: useSeoTitles(preset, address) };
-  if (preset === "shortTermRental") return { shortTermRental: value, seoTitle: useSeoTitles(preset, address) };
-  if (preset === "domesticTourism") return { domesticTourism: value, seoTitle: useSeoTitles(preset, address) };
-  if (preset === "internationalTourism") return { internationalTourism: value, seoTitle: useSeoTitles(preset, address) };
-  if (preset === "glamping") return { glamping: value, seoTitle: useSeoTitles(preset, address) };
-  if (preset === "corporateRelocation") return { corporateRelocation: value, seoTitle: useSeoTitles(preset, address) };
-  if (preset === "luxuryEstates") return { luxuryEstates: value, seoTitle: useSeoTitles(preset, address) };
-  if (preset === "realEstateDeveloper") return { realEstateDeveloper: value, seoTitle: useSeoTitles(preset, address) };
-  if (preset === "retireeLiving") return { retireeLiving: value, seoTitle: useSeoTitles(preset, address) };
-  if (preset === "vacationHome") return { vacationHome: value, seoTitle: useSeoTitles(preset, address) };
+const createObjectForPreset = (preset: string, value: string) => {
+  if (preset === "buyAndHold") return { buyAndHold: value };
+  if (preset === "shortTermRental") return { shortTermRental: value };
+  if (preset === "domesticTourism") return { domesticTourism: value };
+  if (preset === "internationalTourism") return { internationalTourism: value };
+  if (preset === "glamping") return { glamping: value };
+  if (preset === "corporateRelocation") return { corporateRelocation: value };
+  if (preset === "luxuryEstates") return { luxuryEstates: value };
+  if (preset === "realEstateDeveloper") return { realEstateDeveloper: value };
+  if (preset === "retireeLiving") return { retireeLiving: value };
+  if (preset === "vacationHome") return { vacationHome: value };
 };
 
-export const useOpenAi = ({ preset }: OpenAiHookType) => {
+export const useOpenAi = ({ preset, URL }: OpenAiHookType) => {
   const [
     {
       living,
@@ -155,7 +156,15 @@ export const useOpenAi = ({ preset }: OpenAiHookType) => {
         }
       } else {
         updateOpenAiCache(preset, message.content);
-        upsertDataForUrl(preset, filterVal?.selectedPlace?.place_id, createObjectForPreset(preset, message.content, filterVal?.address), filterVal.city, filterVal.country);
+        upsertDataForUrl(
+          preset,
+          filterVal?.selectedPlace?.place_id,
+          URL,
+          useSeoTitles(preset, filterVal?.address),
+          createObjectForPreset(preset, message.content),
+          filterVal.city,
+          filterVal.country,
+        );
       }
     },
   });
@@ -420,7 +429,15 @@ export const useOpenAi = ({ preset }: OpenAiHookType) => {
     }
 
     if (openaiCache && openaiCache[`${filterVal.address}`]) {
-      upsertDataForUrl(preset, filterVal.selectedPlace.place_id, openaiCache[`${filterVal.address}`], filterVal.city, filterVal.country);
+      upsertDataForUrl(
+        preset,
+        filterVal.selectedPlace.place_id,
+        URL,
+        useSeoTitles(preset, filterVal?.address),
+        openaiCache[`${filterVal.address}`],
+        filterVal.city,
+        filterVal.country,
+      );
     }
 
     setLoadingCallback(preset, variant);
