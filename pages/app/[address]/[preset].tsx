@@ -12,15 +12,15 @@ import { addressToUrl, urlToAddress, covertIntoCamelCase } from "utils/address";
 import { useOpenaiDropdownOptions, useSeoTitles } from "hooks/use-openai-dropdown-options";
 import { standardizeAddress } from "hooks/standardize-address";
 
-function AIPreset() {
+function AIPreset({ selectedSeo }: { selectedSeo: any }) {
   const router = useRouter();
   const [address, setAddress] = useRecoilState(addressState);
   const [filterVal] = useRecoilState(filterState);
   const [, setPropertyInfoV2] = useRecoilState(propertyInfoV2Context);
   const [, setPropertyDetail] = useRecoilState(propertyDetailContext);
   const [, setTabAvailable] = useRecoilState(propertyDetailAvailable);
-  const [selectedSeo, setSelectedSeo] = useState<any>("AI for Real Estate - Kurby");
-  const dropdownOptions = useOpenaiDropdownOptions();
+  // const [selectedSeo, setSelectedSeo] = useState<any>("AI for Real Estate - Kurby");
+  // const dropdownOptions = useOpenaiDropdownOptions();
 
   useEffect(() => {
     const encodedAddress = router.query.address;
@@ -49,18 +49,18 @@ function AIPreset() {
         }
       }
 
-      if (_preset) {
-        for (const key in dropdownOptions) {
-          let item = dropdownOptions[key as PresetType];
-          if (item?.url === _preset) {
-            const selectedSeoTitle = useSeoTitles(item.value, originalAddress);
-            setSelectedSeo(selectedSeoTitle);
-            break;
-          }
-        }
-      } else {
-        setSelectedSeo(useSeoTitles("living", originalAddress));
-      }
+      // if (_preset) {
+      //   for (const key in dropdownOptions) {
+      //     let item = dropdownOptions[key as PresetType];
+      //     if (item?.url === _preset) {
+      //       const selectedSeoTitle = useSeoTitles(item.value, originalAddress);
+      //       setSelectedSeo(selectedSeoTitle);
+      //       break;
+      //     }
+      //   }
+      // } else {
+      //   setSelectedSeo(useSeoTitles("living", originalAddress));
+      // }
     }
   }, [router]);
 
@@ -82,3 +82,86 @@ function AIPreset() {
 }
 
 export default AIPreset;
+
+export const getServerSideProps = async (ctx: any) => {
+  const { address, preset } = ctx.query;
+  const addressFormatted = urlToAddress(address);
+
+  const dropdownOptions = {
+    living: {
+      value: "living",
+      label: "Living",
+      url: "living",
+    },
+    domesticTourism: {
+      value: "domesticTourism",
+      label: "Domestic Tourism",
+      url: "domestic-tourism",
+    },
+    internationalTourism: {
+      value: "internationalTourism",
+      label: "International Tourism",
+      url: "international-travel",
+    },
+    vacationHome: {
+      value: "vacationHome",
+      label: "Vacation Home",
+      url: "vacation-home",
+    },
+    corporateRelocation: {
+      value: "corporateRelocation",
+      label: "Corporate Relocation",
+      url: "corporate-relocation",
+    },
+    retireeLiving: {
+      value: "retireeLiving",
+      label: "Retiree Living",
+      url: "retirement-home",
+    },
+    shortTermRental: {
+      value: "shortTermRental",
+      label: "Short Term Rental",
+      url: "short-term-rental",
+    },
+    buyAndHold: {
+      value: "buyAndHold",
+      label: "Buy and Hold",
+      url: "buy-and-hold",
+    },
+    glamping: {
+      value: "glamping",
+      label: "Glamping",
+      url: "glamping",
+    },
+    realEstateDeveloper: {
+      value: "realEstateDeveloper",
+      label: "Real Estate Developer",
+      url: "real-estate-developer",
+    },
+    luxuryEstates: {
+      value: "luxuryEstates",
+      label: "Luxury Estates",
+      url: "luxury-homes",
+    },
+  };
+
+  let selectedSeo = null as any;
+
+  if (preset) {
+    for (const key in dropdownOptions) {
+      let item = dropdownOptions[key as PresetType];
+      if (item?.url === preset) {
+        selectedSeo = useSeoTitles(item.value, addressFormatted);
+        break;
+      }
+    }
+  } else {
+    selectedSeo = useSeoTitles("living", addressFormatted);
+  }
+
+  return {
+    props: {
+      selectedSeo,
+    },
+  };
+};
