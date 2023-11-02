@@ -285,3 +285,5 @@ google.com, pub-3565385483761681, RESELLER, f08c47fec0942fa0
 tvp.tv, BC15, RESELLER, 1125b6434104a723
 sharethrough.com, KnLYRz1v, RESELLER, d53b998a7bd4ecd2
 video.unrulymedia.com, 687806135, RESELLER
+google.com, pub-5717092533913515, RESELLER, f08c47fec0942fa0
+google.com, pub-5717092533913515, RESELLER, f08c47fec0942fa0
