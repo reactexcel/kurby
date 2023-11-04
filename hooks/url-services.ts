@@ -14,6 +14,18 @@ export const fetchingUrl = async (preset: String, place_id: String) => {
   return data;
 };
 
+export const fetchingAllUrl = async () => {
+  const { data, error } = await supabase.from("urls").select("url");
+  if (error) {
+    // console.log(error)
+    return [];
+  }
+  if (!data) {
+    return [];
+  }
+  return data;
+};
+
 export const fetchingUrlByPlaceId = async (preset: String, place_id: String) => {
   const { data, error } = await supabase.from("urls").select().eq("place_id", place_id);
   if (error) {
