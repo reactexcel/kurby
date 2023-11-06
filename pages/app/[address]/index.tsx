@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { addressToUrl, urlToAddress } from "utils/address";
 import { standardizeAddress } from "hooks/standardize-address";
+import SiteMap from "../../sitemap.xml";
 
 const Address = () => {
   const router = useRouter();
@@ -18,6 +19,7 @@ const Address = () => {
   const [, setTabAvailable] = useRecoilState(propertyDetailAvailable);
 
   useEffect(() => {
+    SiteMap();
     const encodedAddress = router.query.address;
     if (encodedAddress) {
       const originalAddress = urlToAddress(encodedAddress.toString());

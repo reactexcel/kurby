@@ -23,10 +23,10 @@ function generateSiteMap(urls) {
 export async function getServerSideProps({ res }) {
   const urls = await fetchingAllUrl();
 
-  // Generate the XML sitemap with the blog data
   const sitemap = generateSiteMap(urls);
 
   res.setHeader("Content-Type", "text/xml");
+
   // Send the XML to the browser
   res.write(sitemap);
   res.end();
