@@ -493,11 +493,11 @@ export default function Filters() {
           {activeTab === "location" && (
             <DropdownWrapper>
               <Select style={{ height: "42px" }} id="openai-dropdown" value={openaiDropdownValue.value} onChange={handleOpenaiDropdownChange}>
-                {!isPro && (
+                {/* {!isPro && (
                   <div className={styles.dropdownUpgradeMessageWrapper}>
                     <div className={styles.dropdownUpgradeMessage}>Upgrade Plan to Access More Options</div>
                   </div>
-                )}
+                )} */}
                 {dropdownMenuItems}
               </Select>
             </DropdownWrapper>
