@@ -74,6 +74,7 @@ function AIPreset({ selectedSeo }: { selectedSeo: any }) {
     <>
       <Head>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6265800628963979" crossOrigin="anonymous" />
+        <title>{selectedSeo?.title || ""}</title>
       </Head>
       <NextSeo title={selectedSeo?.title} description={selectedSeo?.title || ""} />
       <Resultspage />
