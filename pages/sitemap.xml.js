@@ -25,6 +25,9 @@ export async function getServerSideProps({ res }) {
 
   const sitemap = generateSiteMap(urls);
 
+  /**  Set Cache Control in vercel @see https://vercel.com/docs/edge-network/caching#stale-while-revalidate */
+  res.setHeader("Cache-Control", "s-maxage=30, stale-while-revalidate");
+
   res.setHeader("Content-Type", "text/xml");
 
   // Send the XML to the browser
