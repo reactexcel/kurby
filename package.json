@@ -34,7 +34,7 @@
     "luxon": "^3.4.0",
     "moment": "^2.29.4",
     "next": "^13.4.12",
-    "next-seo": "^5.15.0",
+    "next-seo": "^6.4.0",
     "openai": "^3.3.0",
     "openai-edge": "1.2.2",
     "outseta-api-client": "^1.1.0",
