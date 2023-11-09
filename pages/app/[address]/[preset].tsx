@@ -163,7 +163,7 @@ export const getServerSideProps = async (ctx: any) => {
   return {
     props: {
       selectedSeo,
-      seoTitle: selectedSeo?.title,
+      seoTitle: urlToAddress(selectedSeo?.title),
     },
   };
 };
