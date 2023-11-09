@@ -15,3 +15,13 @@ export default function locationData() {
     </>
   );
 }
+
+export const getServerSideProps = async () => {
+  const seoTitle = "Real Estate AI - Kurby";
+
+  return {
+    props: {
+      seoTitle,
+    },
+  };
+};
