@@ -13,7 +13,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <meta name="robots" content="index, follow" />
-        <title>Real Estate AI - Kurby</title>
+        <title>{pageProps?.seoTitle || "Real Estate AI - Kurby"}</title>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6265800628963979" crossOrigin="anonymous" />
       </Head>
       {/* @next/next/no-before-interactive-script-outside-document */}

@@ -10,7 +10,7 @@ import { addressToUrl, urlToAddress } from "utils/address";
 import { standardizeAddress } from "hooks/standardize-address";
 import SiteMap from "../../sitemap.xml";
 
-const Address = () => {
+const Address = ({ seoTitle }: { seoTitle: string }) => {
   const router = useRouter();
   const [address, setAddress] = useRecoilState(addressState);
   const [filterVal] = useRecoilState(filterState);
@@ -48,10 +48,22 @@ const Address = () => {
       <Head>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6265800628963979" crossOrigin="anonymous" />
       </Head>
-      <NextSeo title={`Living In ${address}: Everything You Need to Know`} description={`Living In ${address}: Everything You Need to Know`} />
+      <NextSeo title={seoTitle} description={seoTitle} />
       <Resultspage />
     </>
   );
+};
+
+export const getServerSideProps = async (ctx: any) => {
+  const { address } = ctx.query;
+
+  const seoTitle = `Living In ${urlToAddress(address)}: Everything You Need to Know`;
+
+  return {
+    props: {
+      seoTitle,
+    },
+  };
 };
 
 export default Address;

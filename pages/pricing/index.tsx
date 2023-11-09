@@ -15,3 +15,13 @@ export default function pricingPage() {
     </>
   );
 }
+
+export const getServerSideProps = async () => {
+  const seoTitle = "Real Estate AI - Kurby";
+
+  return {
+    props: {
+      seoTitle,
+    },
+  };
+};
