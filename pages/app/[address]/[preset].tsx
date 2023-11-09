@@ -147,12 +147,14 @@ export const getServerSideProps = async (ctx: any) => {
   };
 
   let selectedSeo = null as any;
+  let seoTitleWithComma = null as any;
 
   if (preset) {
     for (const key in dropdownOptions) {
       let item = dropdownOptions[key as PresetType];
       if (item?.url === preset) {
         selectedSeo = useSeoTitles(item.value, addressFormatted);
+        seoTitleWithComma = useSeoTitles(item.value, address.replace(/-/g, ","));
         break;
       }
     }
@@ -163,7 +165,7 @@ export const getServerSideProps = async (ctx: any) => {
   return {
     props: {
       selectedSeo,
-      seoTitle: urlToAddress(selectedSeo?.title),
+      seoTitle: seoTitleWithComma?.title,
     },
   };
 };

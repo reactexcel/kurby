@@ -57,7 +57,7 @@ const Address = ({ seoTitle }: { seoTitle: string }) => {
 export const getServerSideProps = async (ctx: any) => {
   const { address } = ctx.query;
 
-  const seoTitle = `Living In ${urlToAddress(address)}: Everything You Need to Know`;
+  const seoTitle = `Living In ${address.replace(/-/g, ",")}: Everything You Need to Know`;
 
   return {
     props: {
