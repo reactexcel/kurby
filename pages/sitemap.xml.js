@@ -1,7 +1,22 @@
 // pages/sitemap.xml.js
 import { fetchingAllUrl } from "../hooks/url-services";
 
+function escapeXml(str) {
+  return str.replace(
+    /[<>&'"]/g,
+    (match) =>
+      ({
+        "<": "&lt;",
+        ">": "&gt;",
+        "&": "&amp;",
+        "'": "&apos;",
+        '"': "&quot;",
+      }[match]),
+  );
+}
+
 function generateSiteMap(urls) {
+  console.log("urls...", urls);
   return `<?xml version="1.0" encoding="UTF-8"?>
    <urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
      ${urls
@@ -11,7 +26,7 @@ function generateSiteMap(urls) {
          }
          return `
            <url>
-               <loc>${`${url}`}</loc>
+               <loc>${escapeXml(`${url.toString()}`)}</loc>
            </url>
          `;
        })
