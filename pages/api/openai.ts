@@ -282,7 +282,7 @@ export default handler;
 
 const streamChatCompletion = async (variantObj: { prompt: string; max_tokens: number }) => {
   const response = await openai.createChatCompletion({
-    model: "gpt-4",
+    model: "gpt-4-vision-preview",
     stream: true,
     messages: [
       {
