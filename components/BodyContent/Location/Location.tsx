@@ -17,9 +17,9 @@ import { useOpenAi } from "hooks/use-open-ai";
 import { openaiDropdownContext } from "context/openaiDropdownContext";
 import { useOpenaiDropdownOptions } from "hooks/use-openai-dropdown-options";
 
-export const Location = ({ ctx }: { ctx: any }) => {
+export const Location = () => {
   const router = useRouter();
-  console.log("ctx...", ctx);
+
   const URL = `https://kurby.ai${router.asPath}`;
   const [filterVal] = useRecoilState(filterState);
   const [loading] = useRecoilState(loadingContext);
@@ -108,12 +108,4 @@ export const Location = ({ ctx }: { ctx: any }) => {
       </Box>
     </TabLayout>
   );
-};
-
-export const getServerSideProps = async (ctx: any) => {
-  return {
-    props: {
-      ctx: ctx,
-    },
-  };
 };
