@@ -45,6 +45,7 @@ export default function HouseCard({ cardInfo, shouldUseContext, context }: { car
     <div
       className={styles.main}
       onClick={() => {
+        localStorage.setItem("prevAddress", router.asPath);
         if (shouldUseContext && context) {
           const encodedAddress = addressToUrl(cardInfo?.formattedAddress);
           // encode context to base 64:

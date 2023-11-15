@@ -226,9 +226,13 @@ function ErrorPage({ onTryAgain }: { onTryAgain: () => void }) {
 
 function BackNavigation() {
   const router = useRouter();
+  const prevAddress = localStorage.getItem("prevAddress") as string;
 
   const goBack = () => {
-    router.back();
+    localStorage.removeItem("prevAddress");
+    if (prevAddress) {
+      router.push(prevAddress);
+    }
   };
 
   return (
