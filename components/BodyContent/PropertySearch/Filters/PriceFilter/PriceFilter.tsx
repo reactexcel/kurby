@@ -1,9 +1,8 @@
-import { FilterItem } from "../../FilterItem/FilterItem";
+import { FilterCheckboxOption, FilterItem } from "../../FilterItem/FilterItem";
 import styles from "./PriceFilter.module.scss";
 import { Button } from "components/Button/Button";
 import { atom, useRecoilState } from "recoil";
 import { priceFilter } from "context/propertySearchContext";
-import React from "react";
 import { Collapse, Fade } from "@mui/material";
 import { toUSDField } from "components/BodyContent/Property/utils";
 
@@ -53,6 +52,13 @@ const PriceFilterContents = () => {
         isFilterApplied: false,
       },
       [keyToUse]: isNaN(numericValue) ? 0 : numericValue,
+    });
+  };
+
+  const handleSortChange = (value: string) => {
+    setPriceFilter({
+      ...priceFilterState,
+      priceSort: value,
     });
   };
 
@@ -130,6 +136,18 @@ const PriceFilterContents = () => {
           </div>
         </div>
 
+        <div className={styles.priceSorts}>
+          <div className={styles.sortTitle}>Sort by Price:</div>
+          <div className={styles.sortOptions}>
+            <FilterCheckboxOption id={"lowToHeigh"} onSelect={() => handleSortChange("lowToHigh")} isSelected={priceFilterState.priceSort === "lowToHigh"}>
+              Low to heigh
+            </FilterCheckboxOption>
+            <FilterCheckboxOption id={"lowToHeigh"} onSelect={() => handleSortChange("highToLow")} isSelected={priceFilterState.priceSort === "highToLow"}>
+              Heigh to low
+            </FilterCheckboxOption>
+          </div>
+        </div>
+
         {/* {currentTab === IPriceFilterCurrentTab.MONTHLY_PAYMENT_TAB && (
           <>
             <p className={styles.monthlyPaymentDescription}>Includes estimated principal and interest, mortgage insurance, property taxes, home insurance and HOA fees.</p>
@@ -160,6 +178,7 @@ const PriceFilterContents = () => {
 
 export function PriceFilter() {
   const [priceFilterState] = useRecoilState(priceFilter);
+
   const renderThumb = () => {
     if (!priceFilterState.__meta__.isFilterApplied) {
       return "Price";
