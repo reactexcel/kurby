@@ -140,10 +140,10 @@ const PriceFilterContents = () => {
           <div className={styles.sortTitle}>Sort by Price:</div>
           <div className={styles.sortOptions}>
             <FilterCheckboxOption id={"lowToHeigh"} onSelect={() => handleSortChange("lowToHigh")} isSelected={priceFilterState.priceSort === "lowToHigh"}>
-              Low to heigh
+              Low to High
             </FilterCheckboxOption>
             <FilterCheckboxOption id={"lowToHeigh"} onSelect={() => handleSortChange("highToLow")} isSelected={priceFilterState.priceSort === "highToLow"}>
-              Heigh to low
+              High to Low
             </FilterCheckboxOption>
           </div>
         </div>
