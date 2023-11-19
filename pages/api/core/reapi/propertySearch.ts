@@ -94,17 +94,6 @@ export interface IPropertyHouse {
   readonly rentAmount: any;
   readonly reo: boolean;
   readonly roomsCount: number;
-  readonly schoolName: string;
-  readonly schoolStreet: string;
-  readonly schoolCity: string;
-  readonly schoolState: string;
-  readonly schoolZip: string;
-  readonly schoolType: string;
-  readonly schoolGrades: string;
-  readonly schoolRating: string;
-  readonly schoolParentRating: string;
-  readonly schoolEnrollment: string;
-  readonly schoolLevels: string;
   readonly squareFeet: number;
   readonly totalPortfolioEquity?: string;
   readonly totalPortfolioMortgageBalance?: string;
