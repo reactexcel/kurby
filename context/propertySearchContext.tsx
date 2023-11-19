@@ -203,7 +203,6 @@ interface SearchResultContext {
     results: IPropertyHouse[] | null;
     isError: boolean;
     isClientSideRendered: boolean;
-    totalCount: number;
   };
 }
 
@@ -214,7 +213,6 @@ const propertySearchResultContext: SearchResultContext = {
     results: null,
     isError: false,
     isClientSideRendered: false,
-    totalCount: 0,
   },
 };
 
