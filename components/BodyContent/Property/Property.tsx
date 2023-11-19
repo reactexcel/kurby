@@ -19,6 +19,7 @@ import { IPropertyDetailResponse } from "pages/api/propertyDetail";
 import { propertyDetailAvailable, propertyDetailContext, propertyInfoV2Context } from "context/propertyContext";
 import { AdditionalPropertyInformation } from "./AdditionalPropertyInformation/AdditionalPropertyInformation";
 import LotInfo from "./LotInfo/LotInfo";
+import School from "./SchoolData/SchoolData";
 import TaxInfo from "./TaxInfo/TaxInfo";
 import KurbyPaidPlanLimit, { TabLimitMessage } from "components/AIWarningTooltip/KurbyPaidPlanLimit";
 import { useAuth } from "providers/AuthProvider";
@@ -195,6 +196,9 @@ export default function Property() {
               </GridItem>
               <GridItem>
                 <PropertyStatus />
+              </GridItem>
+              <GridItem>
+                <School />
               </GridItem>
               {/* <GridItem isEmpty={!propertyInfo?.valueEstimate}>
                 <EstimationGraph valueEstimate={propertyInfo?.valueEstimate} />

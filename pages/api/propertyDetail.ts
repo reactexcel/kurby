@@ -168,6 +168,7 @@ interface MailAddress {
 
 interface PropertyInfo {
   readonly address: Address;
+  readonly attic: boolean;
   readonly basementFinishedPercent: any;
   readonly basementSquareFeet: number;
   readonly basementSquareFeetFinished: number;
@@ -177,6 +178,8 @@ interface PropertyInfo {
   readonly bathrooms: number;
   readonly bedrooms: number;
   readonly buildingSquareFeet: number;
+  readonly construction?: string;
+  readonly deckArea: number;
   readonly fireplace: boolean;
   readonly fireplaces: number;
   readonly garageSquareFeet: number;
@@ -190,12 +193,20 @@ interface PropertyInfo {
   readonly lotSquareFeet: number;
   readonly parkingSpaces: number;
   readonly partialBathrooms: number;
+  readonly patioArea: number;
   readonly pool: boolean;
+  readonly poolArea: number;
+  readonly porchArea: number;
+  readonly porchType: string;
   readonly propertyUse: string;
   readonly propertyUseCode: number;
   readonly roomsCount: number;
+  readonly rvParking: boolean;
+  readonly safetyFireSprinklers: boolean;
   readonly stories: number;
+  readonly utilitiesSewageUsage: string;
   readonly unitsCount: string;
+  readonly utilitiesWaterSource?: string;
   readonly yearBuilt: number;
 }
 

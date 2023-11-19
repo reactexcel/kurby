@@ -1,0 +1,165 @@
+@import "../../../../styles/media.scss";
+
+.wrapper {
+  display: flex;
+  flex: 1;
+  background-color: rgba(190, 190, 190, 0.1);
+  border: 1px solid #e0e0e0;
+  width: 100%;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.icon {
+  display: flex;
+  scale: 0.65;
+  justify-content: center;
+  align-items: center;
+}
+
+.info {
+  padding: 15px;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.address {
+  font-size: 1.25rem;
+  display: flex;
+  margin-top: 4px;
+  gap: 0.5rem;
+
+  > div:last-child {
+    margin-top: 0.25rem;
+  }
+}
+
+.ownerAddress {
+  font-family: Filson Pro;
+  font-size: 16px;
+  font-weight: 250;
+  letter-spacing: 0em;
+  text-align: left;
+  padding: 0;
+  margin: 0;
+}
+
+.getInfo {
+  margin-top: 10px;
+}
+
+.skipTracingModal {
+  background-color: white;
+  padding: 30px;
+}
+
+.skipTracingDescription {
+  font-size: 15px;
+}
+
+.buttonFooter {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 0px 80px;
+}
+
+.checkboxWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  font-size: 13px;
+  margin-bottom: 30px;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  margin-top: 20px;
+}
+
+.button {
+  flex: 0.5;
+  padding: 10px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px;
+  height: 40px;
+}
+
+.getInfoButton {
+  width: 180px;
+}
+
+.accordionHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 10px 0px;
+  gap: 10px;
+}
+
+.contactInput {
+  width: 100%;
+  background-color: #9e9e9e1a;
+  padding: 10px;
+  border: 0px;
+  border-radius: 10px;
+}
+
+.modalBody {
+  margin-bottom: 20px;
+}
+
+.saveContactButton {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.getErrorButton {
+  width: 200px;
+  background-color: red;
+  border: 0px;
+}
+
+.schoolsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .schoolBox {
+    width: 48%;
+    margin-bottom: 20px;
+    padding: 10px; // Add padding for internal spacing
+    border: 1px solid #ccc; // Optional: for border around each box
+    // Other styling as required
+  }
+  
+  .schoolHeader {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; // Space between header and the rest of the content
+  }
+  
+  .schoolIcon {
+    width: 30px; // Adjust the size of the icon as needed
+    height: 30px; // Adjust the height to maintain aspect ratio
+    margin-right: 10px;
+  }
+  
+  // Ensure other text and elements are styled to fit within the box
+  

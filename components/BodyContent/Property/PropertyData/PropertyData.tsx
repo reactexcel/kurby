@@ -12,6 +12,7 @@ export default function PropertyData() {
     createData("MFH2to4", propertyInfo?.MFH2to4),
     createData("MFH5plus", propertyInfo?.MFH5plus),
     createData("Square Feet", propertyInfo?.squareFeet),
+    createData("Price Per Square Foot (LSP)", toUSDField(propertyInfo?.pricePerSquareFoot)),
     createData("Bathrooms", propertyInfo?.bathrooms),
     createData("Bedrooms", propertyInfo?.bedrooms),
     createData("Year built", propertyInfo?.yearBuilt),
@@ -25,6 +26,8 @@ export default function PropertyData() {
     createData("Distressed", propertyInfo?.distressed),
     createData("Garage Available", propertyInfo?.garage),
     createData("Air Conditioning Available", propertyInfo?.airConditioningAvailable),
+    createData("Deck", propertyInfo?.deck),
+    createData("Patio", propertyInfo?.patio),
   ];
 
   return (

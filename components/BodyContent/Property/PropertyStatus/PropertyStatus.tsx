@@ -9,6 +9,7 @@ export default function PropertyStatus() {
   console.log(propertyInfo?.mlsActive);
   const propertyDataHouse = [
     createData("MLS Active", propertyInfo?.mlsActive),
+    createData("MLS Status", propertyInfo?.mlsStatus),
     createData("Auction", propertyInfo?.auction),
     createData("MLS Cancelled", propertyInfo?.mlsCancelled),
     createData("MLS Failed", propertyInfo?.mlsFailed),
