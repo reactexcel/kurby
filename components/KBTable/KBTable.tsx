@@ -22,7 +22,7 @@ export default function KBTable({ sx, fields, data, lineColor, maxHeight }: KBTa
     <Box className={styles.main}>
       <TableContainer component={Paper} sx={{ ...sx, maxHeight: maxHeight ? maxHeight : "unset" }}>
         <Table className={styles.table} aria-label="simple table">
-          <TableHead>
+          <TableHead sx={{ position: "sticky", top: 0, backgroundColor: "#e0e6ea", zIndex: 1 }}>
             <TableRow>
               {fields.map((field, index) => (
                 <TableCell key={index} sx={{ border: `solid ${lineColor} 1px !important` }}>
@@ -33,7 +33,7 @@ export default function KBTable({ sx, fields, data, lineColor, maxHeight }: KBTa
           </TableHead>
           <TableBody>
             {data.map((row: any, rowKey: number) => (
-              <TableRow key={rowKey}>
+              <TableRow key={rowKey} sx={{ backgroundColor: "white" }}>
                 {fields.map((field: any, fieldKey) => (
                   <TableCell key={fieldKey} component="td" sx={{ border: `solid ${lineColor} 1px !important`, color: KBColor.DRAK_GREY }}>
                     <ProTypography>{row[field?.key]}</ProTypography>

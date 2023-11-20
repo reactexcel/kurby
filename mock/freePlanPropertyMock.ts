@@ -19,6 +19,7 @@ export const propertyV2Mock = {
   bedrooms: 4,
   cashBuyer: false,
   corporateOwned: false,
+  mlsDaysOnMarket: 120,
   death: false,
   deck: true,
   distressed: false,

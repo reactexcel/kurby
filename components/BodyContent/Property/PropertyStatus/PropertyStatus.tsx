@@ -16,6 +16,7 @@ export default function PropertyStatus() {
     createData("MLS Listing Price", toUSDField(propertyInfo?.mlsListingPrice)),
     createData("MLS Pending", propertyInfo?.mlsPending),
     createData("MLS Sold", propertyInfo?.mlsSold),
+    createData("Days on Market", propertyInfo?.mlsDaysOnMarket),
   ];
 
   console.log(propertyInfo?.mlsSold);

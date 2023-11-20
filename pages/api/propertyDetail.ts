@@ -31,6 +31,7 @@ export interface IPropertyDetailHouse {
   readonly cashSale: boolean;
   readonly corporateOwned: boolean;
   readonly currentMortgages: Mortgage[];
+  readonly mlsDaysOnMarket: number;
   readonly death: boolean;
   readonly deathTransfer: boolean;
   readonly deedInLieu: boolean;

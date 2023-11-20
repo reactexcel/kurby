@@ -179,9 +179,11 @@ export default function Property() {
                   <RentalEstimates />
                 </GridItem>
               )}
+              {/*
               <GridItem>
                 <ListingHistory />
               </GridItem>
+              */}
               <GridItem>
                 <PropertyData />
               </GridItem>

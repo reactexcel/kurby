@@ -35,6 +35,7 @@ export interface IPropertyHouse {
   readonly cashBuyer: boolean;
   readonly companyName?: string;
   readonly corporateOwned: boolean;
+  readonly mlsDaysOnMarket: number;
   readonly death: boolean;
   readonly deck: boolean;
   readonly distressed: boolean;
