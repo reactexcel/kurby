@@ -64,7 +64,7 @@ const priceFilterContext: PriceContext = {
     minimum: 0,
     maximum: 0,
     downPayment: IPriceFilterDownPayment.NO_DOWN_PAYMENT,
-    priceSort: "lowToHeigh",
+    priceSort: "lowToHigh",
   },
 };
 
