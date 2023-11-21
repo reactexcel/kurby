@@ -4,6 +4,7 @@ import { atom, useRecoilState } from "recoil";
 import { homeTypeFilter } from "context/propertySearchContext";
 import { Button } from "components/Button/Button";
 import styles from "./HomeType.module.scss";
+import { Stack } from "@mui/material";
 
 const homeTypeSelector = {
   key: "homeTypeSelector",
@@ -27,6 +28,22 @@ const HomeTypeContents = () => {
       },
       // @ts-ignore
       [id]: !filter[id],
+      duplex: filter["multiFamily"] ? !filter["multiFamily"] : filter["duplex"],
+      triplex: filter["multiFamily"] ? !filter["multiFamily"] : filter["triplex"],
+      quadplex: filter["multiFamily"] ? !filter["multiFamily"] : filter["quadplex"],
+      mfh_5plus: filter["multiFamily"] ? !filter["multiFamily"] : filter["mfh_5plus"],
+    });
+  };
+
+  const handleSelectMultiFamily = (id: string) => {
+    setFilter({
+      ...filter,
+      __meta__: {
+        createdAt: new Date(),
+        isFilterApplied: false,
+      },
+      // @ts-ignore
+      [id]: !filter[id],
     });
   };
 
@@ -36,6 +53,10 @@ const HomeTypeContents = () => {
       houses: true,
       townHouse: true,
       multiFamily: true,
+      duplex: true,
+      triplex: true,
+      quadplex: true,
+      mfh_5plus: true,
       condosCoOps: true,
       lotsLands: true,
       apartment: true,
@@ -78,7 +99,20 @@ const HomeTypeContents = () => {
       <FilterCheckboxOption id={"multiFamily"} onSelect={() => handleSelect("multiFamily")} isSelected={filter.multiFamily}>
         Multi family
       </FilterCheckboxOption>
-
+      <Stack sx={{ marginLeft: '20px' }}>
+        <FilterCheckboxOption id={"duplex"} onSelect={() => handleSelectMultiFamily("duplex")} isSelected={filter.duplex}>
+          Duplex
+        </FilterCheckboxOption>
+        <FilterCheckboxOption id={"triplex"} onSelect={() => handleSelectMultiFamily("triplex")} isSelected={filter.triplex}>
+          Triplex
+        </FilterCheckboxOption>
+        <FilterCheckboxOption id={"quadplex"} onSelect={() => handleSelectMultiFamily("quadplex")} isSelected={filter.quadplex}>
+          Quadplex
+        </FilterCheckboxOption>
+        <FilterCheckboxOption id={"mfh_5plus"} onSelect={() => handleSelectMultiFamily("mfh_5plus")} isSelected={filter.mfh_5plus}>
+          5+
+        </FilterCheckboxOption>
+      </Stack>
       <FilterCheckboxOption id={"condosCoOps"} onSelect={() => handleSelect("condosCoOps")} isSelected={filter.condosCoOps}>
         Condos/co-ops
       </FilterCheckboxOption>

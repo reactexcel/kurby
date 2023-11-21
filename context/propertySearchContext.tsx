@@ -73,6 +73,10 @@ export interface HomeFilterContext {
     houses: boolean;
     townHouse: boolean;
     multiFamily: boolean;
+    duplex: boolean;
+    triplex: boolean;
+    quadplex: boolean;
+    mfh_5plus: boolean;
     condosCoOps: boolean;
     lotsLands: boolean;
     apartment: boolean;
@@ -90,6 +94,10 @@ const homeType: HomeFilterContext = {
     houses: false,
     townHouse: false,
     multiFamily: false,
+    duplex: false,
+    triplex: false,
+    quadplex: false,
+    mfh_5plus: false,
     condosCoOps: false,
     lotsLands: false,
     apartment: false,

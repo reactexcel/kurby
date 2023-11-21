@@ -162,14 +162,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (filters) {
     const { latitude, longitude } = filters;
     const { isGrowth, isPro } = await checkPlan(req.body.userToken);
-
-    if (!isGrowth && !isPro) {
-      return res.status(401).send(
-        JSON.stringify({
-          error: "You are not allowed to create this request.",
-        }),
-      );
-    }
+    // if (!isGrowth && !isPro) {
+    //   return res.status(401).send(
+    //     JSON.stringify({
+    //       error: "You are not allowed to create this request.",
+    //     }),
+    //   );
+    // }
 
     // Use pagination parameters or set default values:
     const size = req.body?.size ? Number(req.body?.size) : 25; // default is 25
