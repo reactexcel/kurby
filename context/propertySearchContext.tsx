@@ -50,6 +50,8 @@ export interface PriceContext {
     maximum: number;
     downPayment: IPriceFilterDownPayment;
     priceSort: string;
+    value_min: number;
+    value_max: number;
   };
 }
 
@@ -65,6 +67,8 @@ const priceFilterContext: PriceContext = {
     maximum: 0,
     downPayment: IPriceFilterDownPayment.NO_DOWN_PAYMENT,
     priceSort: "lowToHigh",
+    value_min: 0,
+    value_max: 0,
   },
 };
 
@@ -109,6 +113,7 @@ export interface MoreFilterContext {
     preForeclosure: boolean | null;
     auction: boolean | null;
     foreclosure: boolean | null;
+    vacant: boolean | null;
     nonOwnerOccupied: boolean | null;
     absenteeOwner: boolean | null;
     outOfStateAbsenteeOwner: boolean | null;
@@ -160,6 +165,7 @@ const moreFilterContext: MoreFilterContext = {
     preForeclosure: null,
     auction: null,
     foreclosure: null,
+    vacant: null,
     nonOwnerOccupied: null,
     absenteeOwner: null,
     outOfStateAbsenteeOwner: null,

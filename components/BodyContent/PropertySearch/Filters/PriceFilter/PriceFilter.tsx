@@ -43,7 +43,7 @@ const PriceFilterContents = () => {
   type InputKeyTypes = "min" | "max";
   const handleInputChange = (value: string, key: InputKeyTypes) => {
     const numericValue = parseFloat(value);
-    const keyToUse = key === "min" ? "minimum" : "maximum";
+    const keyToUse = key === "min" ? "value_min" : "value_max";
 
     setPriceFilter({
       ...priceFilterState,
@@ -97,30 +97,14 @@ const PriceFilterContents = () => {
 
   return (
     <div className={styles.main}>
-      {/* <div className={styles.tabs}>
-        <div
-          onClick={() => setCurrentTab(IPriceFilterCurrentTab.LIST_PRICE_TAB)}
-          style={currentTab === IPriceFilterCurrentTab.LIST_PRICE_TAB ? activeTabStyle : inactiveTab}
-          className={styles.tab}
-        >
-          List Price
-        </div>
-        <div
-          onClick={() => setCurrentTab(IPriceFilterCurrentTab.MONTHLY_PAYMENT_TAB)}
-          style={currentTab === IPriceFilterCurrentTab.MONTHLY_PAYMENT_TAB ? activeTabStyle : inactiveTab}
-          className={styles.tab}
-        >
-          Monthly Payment
-        </div>
-      </div> */}
       <div className={styles.content}>
         <div className={styles.priceSelector}>
           <div className={styles.min}>
             <small className={styles.priceSelectorText}>Minimum</small>
             <input
-              value={priceFilterState.minimum && priceFilterState.minimum !== 0 ? priceFilterState.minimum.toString() : ""}
+              value={priceFilterState.value_min && priceFilterState.value_min !== 0 ? priceFilterState.value_min.toString() : ""}
               onChange={(event) => handleInputChange(event.target.value, "min")}
-              placeholder="Eg. $120"
+              placeholder="Eg. $200,000"
               className={styles.input}
             />
           </div>
@@ -128,9 +112,9 @@ const PriceFilterContents = () => {
           <div className={styles.max}>
             <small className={styles.priceSelectorText}>Maximum</small>
             <input
-              value={priceFilterState.maximum && priceFilterState.maximum !== 0 ? priceFilterState.maximum.toString() : ""}
+              value={priceFilterState.value_max && priceFilterState.value_max !== 0 ? priceFilterState.value_max.toString() : ""}
               onChange={(event) => handleInputChange(event.target.value, "max")}
-              placeholder="Eg. $120"
+              placeholder="Eg. $450,000"
               className={styles.input}
             />
           </div>
@@ -148,24 +132,8 @@ const PriceFilterContents = () => {
           </div>
         </div>
 
-        {/* {currentTab === IPriceFilterCurrentTab.MONTHLY_PAYMENT_TAB && (
-          <>
-            <p className={styles.monthlyPaymentDescription}>Includes estimated principal and interest, mortgage insurance, property taxes, home insurance and HOA fees.</p>
-            <div className={styles.downPayment}>
-              <div>Down Payment</div>
-              <select className={styles.downPaymentSelector} value={priceFilterState.downPayment} onChange={(e) => setDownPayment(e.target.value as IPriceFilterDownPayment)}>
-                <option value={IPriceFilterDownPayment.NO_DOWN_PAYMENT}>NO Down payment</option>
-                <option value={IPriceFilterDownPayment.FIVE}>5%</option>
-                <option value={IPriceFilterDownPayment.TEN}>10%</option>
-                <option value={IPriceFilterDownPayment.FIFTHTEEN}>15%</option>
-                <option value={IPriceFilterDownPayment.TWENTY}>20%</option>
-              </select>
-            </div>
-          </>
-        )} */}
-
         <div className={styles.buttonParentLayout}>
-          <Collapse timeout={200} in={Boolean(priceFilterState.minimum || priceFilterState.maximum)}>
+          <Collapse timeout={200} in={Boolean(priceFilterState.value_min || priceFilterState.value_max)}>
             <Button variant={isFilterApplied ? "outlined" : "filled"} onClick={handleApply} className={styles.buttonWrapper}>
               {isFilterApplied ? "Applied" : "Apply"}
             </Button>
@@ -184,16 +152,16 @@ export function PriceFilter() {
       return "Price";
     }
 
-    if (priceFilterState.minimum && !priceFilterState.maximum) {
-      return `${toUSDField(priceFilterState.minimum)}`;
+    if (priceFilterState.value_min && !priceFilterState.value_max) {
+      return `${toUSDField(priceFilterState.value_min)}`;
     }
 
-    if (!priceFilterState.minimum && priceFilterState.maximum) {
-      return `${toUSDField(priceFilterState.maximum)}`;
+    if (!priceFilterState.value_min && priceFilterState.value_max) {
+      return `${toUSDField(priceFilterState.value_max)}`;
     }
 
-    if (priceFilterState.minimum && priceFilterState.maximum) {
-      return `${toUSDField(priceFilterState.minimum)} to ${toUSDField(priceFilterState.maximum)}`;
+    if (priceFilterState.value_min && priceFilterState.value_max) {
+      return `${toUSDField(priceFilterState.value_min)} to ${toUSDField(priceFilterState.value_max)}`;
     }
 
     return "Price";

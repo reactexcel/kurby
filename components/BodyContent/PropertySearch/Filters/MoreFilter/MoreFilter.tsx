@@ -123,6 +123,7 @@ function MoreFilterContent() {
         preForeclosure: null,
         auction: null,
         foreclosure: null,
+        vacant: null,
         propertyStatusActive: null,
         propertyStatusPending: null,
         propertyStatusOffMarket: null,
@@ -215,6 +216,9 @@ function MoreFilterContent() {
           <div className={styles.column}>
             <FilterCheckboxOption id="foreclosure" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.foreclosure)} isSelected={moreFilterState.foreclosure}>
               Foreclosure
+            </FilterCheckboxOption>
+            <FilterCheckboxOption id="vacant" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.vacant)} isSelected={moreFilterState.vacant}>
+              Vacant
             </FilterCheckboxOption>
           </div>
         </div>
@@ -379,7 +383,7 @@ function MoreFilterContent() {
         </div>
       </div>
       {/* Estimated Value */}
-      <div style={defaultSpacing}>
+      {/*  <div style={defaultSpacing}>
         <div style={spaceBottom(0)}>Estimated Value</div>
         <div className={styles.minMaxSelector}>
           <div className={styles.min}>
@@ -402,7 +406,7 @@ function MoreFilterContent() {
             />
           </div>
         </div>
-      </div>
+      </div> */}
       {/* Open Mortgage Balance */}
       <div style={spaceBottom(30)}>
         <div style={spaceBottom(0)}>Open Mortgage Balance</div>
