@@ -20,22 +20,42 @@ const HomeTypeContents = () => {
   const [filter, setFilter] = useRecoilState(homeTypeFilter);
 
   const handleSelect = (id: string) => {
-    setFilter({
-      ...filter,
-      __meta__: {
-        createdAt: new Date(),
-        isFilterApplied: false,
-      },
-      // @ts-ignore
-      [id]: !filter[id],
-      duplex: filter["multiFamily"] ? !filter["multiFamily"] : filter["duplex"],
-      triplex: filter["multiFamily"] ? !filter["multiFamily"] : filter["triplex"],
-      quadplex: filter["multiFamily"] ? !filter["multiFamily"] : filter["quadplex"],
-      mfh_5plus: filter["multiFamily"] ? !filter["multiFamily"] : filter["mfh_5plus"],
-    });
+    if (id == "multiFamily") {
+      setFilter({
+        ...filter,
+        __meta__: {
+          createdAt: new Date(),
+          isFilterApplied: false,
+        },
+        // @ts-ignore
+        [id]: !filter[id],
+        duplex: !filter["multiFamily"],
+        triplex: !filter["multiFamily"],
+        quadplex: !filter["multiFamily"],
+        mfh_5plus: !filter["multiFamily"],
+      });
+    } else {
+      setFilter({
+        ...filter,
+        __meta__: {
+          createdAt: new Date(),
+          isFilterApplied: false,
+        },
+        // @ts-ignore
+        [id]: !filter[id],
+      });
+    }
   };
 
   const handleSelectMultiFamily = (id: string) => {
+    const type = {
+      duplex: false,
+      triplex: false,
+      quadplex: false,
+      mfh_5plus: false,
+      multiFamily: false,
+    };
+    const radioSelect = Object.fromEntries(Object.entries(type).map(([key]) => [key, key === id]));
     setFilter({
       ...filter,
       __meta__: {
@@ -44,6 +64,7 @@ const HomeTypeContents = () => {
       },
       // @ts-ignore
       [id]: !filter[id],
+      ...radioSelect,
     });
   };
 
@@ -99,7 +120,7 @@ const HomeTypeContents = () => {
       <FilterCheckboxOption id={"multiFamily"} onSelect={() => handleSelect("multiFamily")} isSelected={filter.multiFamily}>
         Multi family
       </FilterCheckboxOption>
-      <Stack sx={{ marginLeft: '20px' }}>
+      <Stack sx={{ marginLeft: "20px" }}>
         <FilterCheckboxOption id={"duplex"} onSelect={() => handleSelectMultiFamily("duplex")} isSelected={filter.duplex}>
           Duplex
         </FilterCheckboxOption>

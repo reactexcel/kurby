@@ -29,7 +29,24 @@ export function PropertyFilter() {
         filters: { latitude: filterVal.mapCenter?.lat, longitude: filterVal.mapCenter?.lng, ...searchCriteria },
         userToken: localStorage.getItem("Outseta.nocode.accessToken"),
       });
-      setPropertyData({ results: data, isLoading: false, isError: false, isClientSideRendered: false });
+
+      if (searchCriteria.homeFilter?.multiFamily) {
+        setPropertyData({ results: data, isLoading: false, isError: false, isClientSideRendered: false });
+      } else if (searchCriteria.homeFilter?.duplex) {
+        const duplexdata = data.filter((val) => val.unitsCount == 2 && val.propertyUseCode == 362);
+        setPropertyData({ results: duplexdata, isLoading: false, isError: false, isClientSideRendered: false });
+      } else if (searchCriteria.homeFilter?.triplex) {
+        const triplexdata = data.filter((val) => val.unitsCount == 3 && val.propertyUseCode == 388);
+        setPropertyData({ results: triplexdata, isLoading: false, isError: false, isClientSideRendered: false });
+      } else if (searchCriteria.homeFilter?.quadplex) {
+        const quadplexdata = data.filter((val) => val.unitsCount == 4 && val.propertyUseCode == 378);
+        setPropertyData({ results: quadplexdata, isLoading: false, isError: false, isClientSideRendered: false });
+      } else if (searchCriteria.homeFilter?.mfh_5plus) {
+        const mfh_5plusdata = data.filter((val) => val.unitsCount >= 5);
+        setPropertyData({ results: mfh_5plusdata, isLoading: false, isError: false, isClientSideRendered: false });
+      } else {
+        setPropertyData({ results: data, isLoading: false, isError: false, isClientSideRendered: false });
+      }
     } catch (e) {
       setPropertyData({ results: null, isLoading: false, isError: true, isClientSideRendered: true });
     }
