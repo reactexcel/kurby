@@ -62,7 +62,7 @@ function MoreFilterContent() {
   const handleCheckboxSelect = (id: string, value: boolean) => {
     setMoreFilter((prevState) => ({
       ...prevState,
-      [id]: value,
+      [id]: value ? true : null,
       ...disableFilter,
     }));
   };
@@ -123,6 +123,8 @@ function MoreFilterContent() {
         preForeclosure: null,
         auction: null,
         foreclosure: null,
+        vacant: null,
+        taxLien: null,
         propertyStatusActive: null,
         propertyStatusPending: null,
         propertyStatusOffMarket: null,
@@ -211,10 +213,16 @@ function MoreFilterContent() {
             <FilterCheckboxOption id="preForeclosure" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.preForeclosure)} isSelected={moreFilterState.preForeclosure}>
               Pre-Foreclosure
             </FilterCheckboxOption>
+            <FilterCheckboxOption id="taxLien" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.taxLien)} isSelected={moreFilterState.taxLien}>
+              Tax Lien
+            </FilterCheckboxOption>
           </div>
           <div className={styles.column}>
             <FilterCheckboxOption id="foreclosure" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.foreclosure)} isSelected={moreFilterState.foreclosure}>
               Foreclosure
+            </FilterCheckboxOption>
+            <FilterCheckboxOption id="vacant" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.vacant)} isSelected={moreFilterState.vacant}>
+              Vacant
             </FilterCheckboxOption>
           </div>
         </div>
@@ -379,7 +387,7 @@ function MoreFilterContent() {
         </div>
       </div>
       {/* Estimated Value */}
-      <div style={defaultSpacing}>
+      {/*  <div style={defaultSpacing}>
         <div style={spaceBottom(0)}>Estimated Value</div>
         <div className={styles.minMaxSelector}>
           <div className={styles.min}>
@@ -402,7 +410,7 @@ function MoreFilterContent() {
             />
           </div>
         </div>
-      </div>
+      </div> */}
       {/* Open Mortgage Balance */}
       <div style={spaceBottom(30)}>
         <div style={spaceBottom(0)}>Open Mortgage Balance</div>
