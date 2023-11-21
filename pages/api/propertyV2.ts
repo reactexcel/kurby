@@ -77,6 +77,7 @@ const filterHandler = (filters: IFilterSearchProps) => {
     pre_foreclosure: moreFilter?.preForeclosure,
     foreclosure: moreFilter?.foreclosure,
     vacant: moreFilter?.vacant,
+    tax_lien: moreFilter?.taxLien,
     // More Filter - Owner Information
     absentee_owner: moreFilter?.nonOwnerOccupied || moreFilter?.absenteeOwner,
     out_of_state_owner: moreFilter?.outOfStateAbsenteeOwner,
@@ -183,7 +184,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       longitude,
       size, // Using the size from body or default value
       resultIndex, // Using the resultIndex from body or default value
-      radius: 890,
+      radius: 5, // Search within 5 miles radius
     });
     return res.status(200).json(response);
   }

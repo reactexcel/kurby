@@ -20,10 +20,10 @@ export default function TaxInfo() {
     createData("Market Value", toUSDField(propertyInfo?.marketValue), IAppPlans.PROFESSIONAL),
     createData("Property Id", toUSDField(propertyInfo?.propertyId), IAppPlans.PROFESSIONAL),
     createData("Tax Amount", toUSDField(propertyInfo?.taxAmount), IAppPlans.PROFESSIONAL),
-    createData("Tax Lien", toUSDField(propertyDetail?.taxLien), IAppPlans.PROFESSIONAL),
-    createData("Trustee Sale", toUSDField(propertyDetail?.trusteeSale), IAppPlans.PROFESSIONAL),
-    createData("Warranty Deed", toUSDField(propertyDetail?.warrantyDeed), IAppPlans.PROFESSIONAL),
-    createData("Sheriff's Deed", toUSDField(propertyDetail?.sheriffsDeed), IAppPlans.PROFESSIONAL),
+    createData("Tax Lien", propertyDetail?.taxLien, IAppPlans.PROFESSIONAL),
+    createData("Trustee Sale", propertyDetail?.trusteeSale, IAppPlans.PROFESSIONAL),
+    createData("Warranty Deed", propertyDetail?.warrantyDeed, IAppPlans.PROFESSIONAL),
+    createData("Sheriff's Deed", propertyDetail?.sheriffsDeed, IAppPlans.PROFESSIONAL),
     createData("Year", propertyInfo?.year),
   ];
 

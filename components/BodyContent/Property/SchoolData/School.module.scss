@@ -8,6 +8,10 @@
   width: 100%;
   cursor: pointer;
   border-radius: 10px;
+  @media (max-width: $breakpoint-tablet-portrait) {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
 
 .icon {
@@ -15,6 +19,9 @@
   scale: 0.65;
   justify-content: center;
   align-items: center;
+  @media (max-width: $breakpoint-tablet-portrait) {
+    scale: 0.5;
+  }
 }
 
 .info {
@@ -144,21 +151,29 @@
   .schoolBox {
     width: 48%;
     margin-bottom: 20px;
-    padding: 10px; // Add padding for internal spacing
-    border: 1px solid #ccc; // Optional: for border around each box
-    // Other styling as required
+    padding: 10px;
+    border: 1px solid #ccc;
+    @media (max-width: $breakpoint-tablet-portrait) {
+      width: 100%;
+    }
   }
   
   .schoolHeader {
     display: flex;
     align-items: center;
     margin-bottom: 10px; // Space between header and the rest of the content
+    @media (max-width: $breakpoint-tablet-portrait) {
+      // Adjust styles for mobile here, if needed
+    }
   }
   
   .schoolIcon {
     width: 30px; // Adjust the size of the icon as needed
     height: 30px; // Adjust the height to maintain aspect ratio
     margin-right: 10px;
+    @media (max-width: $breakpoint-tablet-portrait) {
+      // Adjust icon size for mobile if needed
+    }
   }
   
   // Ensure other text and elements are styled to fit within the box
