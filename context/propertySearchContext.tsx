@@ -49,6 +49,7 @@ export interface PriceContext {
     minimum: number;
     maximum: number;
     downPayment: IPriceFilterDownPayment;
+    priceSort: string;
     value_min: number;
     value_max: number;
   };
@@ -65,6 +66,7 @@ const priceFilterContext: PriceContext = {
     minimum: 0,
     maximum: 0,
     downPayment: IPriceFilterDownPayment.NO_DOWN_PAYMENT,
+    priceSort: "lowToHigh",
     value_min: 0,
     value_max: 0,
   },

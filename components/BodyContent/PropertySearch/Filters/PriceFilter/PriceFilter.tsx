@@ -1,9 +1,8 @@
-import { FilterItem } from "../../FilterItem/FilterItem";
+import { FilterCheckboxOption, FilterItem } from "../../FilterItem/FilterItem";
 import styles from "./PriceFilter.module.scss";
 import { Button } from "components/Button/Button";
 import { atom, useRecoilState } from "recoil";
 import { priceFilter } from "context/propertySearchContext";
-import React from "react";
 import { Collapse, Fade } from "@mui/material";
 import { toUSDField } from "components/BodyContent/Property/utils";
 
@@ -53,6 +52,13 @@ const PriceFilterContents = () => {
         isFilterApplied: false,
       },
       [keyToUse]: isNaN(numericValue) ? 0 : numericValue,
+    });
+  };
+
+  const handleSortChange = (value: string) => {
+    setPriceFilter({
+      ...priceFilterState,
+      priceSort: value,
     });
   };
 
@@ -114,6 +120,18 @@ const PriceFilterContents = () => {
           </div>
         </div>
 
+        <div className={styles.priceSorts}>
+          <div className={styles.sortTitle}>Sort by Price:</div>
+          <div className={styles.sortOptions}>
+            <FilterCheckboxOption id={"lowToHeigh"} onSelect={() => handleSortChange("lowToHigh")} isSelected={priceFilterState.priceSort === "lowToHigh"}>
+              Low to High
+            </FilterCheckboxOption>
+            <FilterCheckboxOption id={"lowToHeigh"} onSelect={() => handleSortChange("highToLow")} isSelected={priceFilterState.priceSort === "highToLow"}>
+              High to Low
+            </FilterCheckboxOption>
+          </div>
+        </div>
+
         <div className={styles.buttonParentLayout}>
           <Collapse timeout={200} in={Boolean(priceFilterState.value_min || priceFilterState.value_max)}>
             <Button variant={isFilterApplied ? "outlined" : "filled"} onClick={handleApply} className={styles.buttonWrapper}>
@@ -128,6 +146,7 @@ const PriceFilterContents = () => {
 
 export function PriceFilter() {
   const [priceFilterState] = useRecoilState(priceFilter);
+
   const renderThumb = () => {
     if (!priceFilterState.__meta__.isFilterApplied) {
       return "Price";

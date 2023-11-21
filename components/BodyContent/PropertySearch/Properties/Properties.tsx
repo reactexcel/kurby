@@ -1,6 +1,6 @@
 import HouseCard from "components/BodyContent/Property/HouseCard/HouseCard";
 import styles from "./Properties.module.scss";
-import { propertySearch } from "context/propertySearchContext";
+import { priceFilter, propertySearch } from "context/propertySearchContext";
 import { useRecoilState } from "recoil";
 import { IPropertyHouse } from "pages/api/core/reapi/propertySearch";
 import { useSearchCriteria } from "hooks/use-search-criteria";
@@ -9,6 +9,7 @@ import { useEffect } from "react";
 export function Properties() {
   const [propertyData, setPropertyData] = useRecoilState(propertySearch);
   const { searchCriteria } = useSearchCriteria();
+  const [priceFilterState] = useRecoilState(priceFilter);
 
   const isResultsAvailable = !propertyData || !propertyData.results || !Array.isArray(propertyData.results);
 
@@ -85,32 +86,37 @@ export function Properties() {
   return (
     <div className={styles.houseGrid}>
       {Array.isArray(propertyData?.results) &&
-        propertyData.results.map((property: IPropertyHouse) => {
-          return (
-            <div key={property.id} className={styles.house}>
-              <HouseCard
-                key={property.address.address}
-                shouldUseContext
-                context={property}
-                cardInfo={{
-                  id: property.id,
-                  formattedAddress: property.address.address,
-                  longitude: property.longitude,
-                  latitude: property.latitude,
-                  city: property.mailAddress.city || "",
-                  state: property.mailAddress.state || "",
-                  zipcode: property.mailAddress.zip || "",
-                  price: property.estimatedValue,
-                  address: property.address.address,
-                  bedrooms: property.bedrooms,
-                  bathrooms: property.bathrooms,
-                  propertyType: property.propertyType,
-                  squareFootage: property.squareFeet,
-                }}
-              />
-            </div>
-          );
-        })}
+        [...propertyData.results]
+          .sort((a, b) => {
+            const sortOrder = priceFilterState.priceSort === "lowToHigh" ? 1 : -1;
+            return sortOrder * (a.estimatedValue - b.estimatedValue);
+          })
+          .map((property: IPropertyHouse) => {
+            return (
+              <div key={property.id} className={styles.house}>
+                <HouseCard
+                  key={property.address.address}
+                  shouldUseContext
+                  context={property}
+                  cardInfo={{
+                    id: property.id,
+                    formattedAddress: property.address.address,
+                    longitude: property.longitude,
+                    latitude: property.latitude,
+                    city: property.mailAddress.city || "",
+                    state: property.mailAddress.state || "",
+                    zipcode: property.mailAddress.zip || "",
+                    price: property.estimatedValue,
+                    address: property.address.address,
+                    bedrooms: property.bedrooms,
+                    bathrooms: property.bathrooms,
+                    propertyType: property.propertyType,
+                    squareFootage: property.squareFeet,
+                  }}
+                />
+              </div>
+            );
+          })}
     </div>
   );
 }
