@@ -28,6 +28,8 @@ export default function ListingHistory() {
       },
     ];
   };
+  {
+    /*
   return (
     <div>
       <h3 className={styles.titleStyle}>Listing History</h3>
@@ -36,4 +38,6 @@ export default function ListingHistory() {
       </Box>
     </div>
   );
+    */
+  }
 }

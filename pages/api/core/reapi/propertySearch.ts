@@ -35,7 +35,9 @@ export interface IPropertyHouse {
   readonly cashBuyer: boolean;
   readonly companyName?: string;
   readonly corporateOwned: boolean;
+  readonly mlsDaysOnMarket: number;
   readonly death: boolean;
+  readonly deck: boolean;
   readonly distressed: boolean;
   readonly documentType?: string;
   readonly documentTypeCode?: string;
@@ -76,12 +78,15 @@ export interface IPropertyHouse {
   readonly mlsListingPrice: any;
   readonly mlsPending: boolean;
   readonly mlsSold: boolean;
+  readonly mlsStatus?: string;
   readonly negativeEquity: boolean;
   readonly openMortgageBalance: number;
   readonly outOfStateAbsenteeOwner: boolean;
   readonly owner1LastName: string;
   readonly ownerOccupied: boolean;
+  readonly patio: boolean;
   readonly preForeclosure: boolean;
+  readonly pricePerSquareFoot: number;
   readonly privateLender: boolean;
   readonly propertyId: string;
   readonly propertyType: string;
