@@ -64,8 +64,8 @@ const filterHandler = (filters: IFilterSearchProps) => {
     mls_pending: forSale?.propertyStatusPending,
     mls_cancelled: forSale?.propertyStatusCancelled,
     // Price Filter
-    mls_listing_price_min: priceFilter?.minimum,
-    mls_listing_price_max: priceFilter?.maximum * (1 - 0.1),
+    value_min: priceFilter?.minimum,
+    value_max: priceFilter?.maximum * (1 - 0.1),
     // Beds & Baths Filter
     beds_min: bedsFilter?.bedrooms,
     beds_max: 5,
@@ -76,6 +76,7 @@ const filterHandler = (filters: IFilterSearchProps) => {
     auction: moreFilter?.auction,
     pre_foreclosure: moreFilter?.preForeclosure,
     foreclosure: moreFilter?.foreclosure,
+    vacant: moreFilter?.vacant,
     // More Filter - Owner Information
     absentee_owner: moreFilter?.nonOwnerOccupied || moreFilter?.absenteeOwner,
     out_of_state_owner: moreFilter?.outOfStateAbsenteeOwner,
@@ -113,8 +114,8 @@ const filterHandler = (filters: IFilterSearchProps) => {
         : estimatedEquityMedian,
     equity_operator: moreFilter?.estimatedEquityMin || moreFilter?.estimatedEquityMax ? "lt" : null,
     // More Filter - Estiamted Value
-    value_min: moreFilter?.estimatedValueMin,
-    value_max: moreFilter?.estimatedValueMax,
+    // value_min: moreFilter?.estimatedValueMin,
+    // value_max: moreFilter?.estimatedValueMax,
     // More Filter - Open Mortgage Balance
     mortgage_min: moreFilter?.openMortgageBalanceMin,
     mortgage_max: moreFilter?.openMortgageBalanceMax,
