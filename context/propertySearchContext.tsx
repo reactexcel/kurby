@@ -112,6 +112,7 @@ export interface MoreFilterContext {
     auction: boolean | null;
     foreclosure: boolean | null;
     vacant: boolean | null;
+    tax_lien: boolean | null;
     nonOwnerOccupied: boolean | null;
     absenteeOwner: boolean | null;
     outOfStateAbsenteeOwner: boolean | null;
@@ -164,6 +165,7 @@ const moreFilterContext: MoreFilterContext = {
     auction: null,
     foreclosure: null,
     vacant: null,
+    tax_lien: null,
     nonOwnerOccupied: null,
     absenteeOwner: null,
     outOfStateAbsenteeOwner: null,

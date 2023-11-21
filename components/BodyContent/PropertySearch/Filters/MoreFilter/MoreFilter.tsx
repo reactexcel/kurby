@@ -62,7 +62,7 @@ function MoreFilterContent() {
   const handleCheckboxSelect = (id: string, value: boolean) => {
     setMoreFilter((prevState) => ({
       ...prevState,
-      [id]: value,
+      [id]: value ? true : null,
       ...disableFilter,
     }));
   };
@@ -124,6 +124,7 @@ function MoreFilterContent() {
         auction: null,
         foreclosure: null,
         vacant: null,
+        taxLien: null,
         propertyStatusActive: null,
         propertyStatusPending: null,
         propertyStatusOffMarket: null,
@@ -211,6 +212,9 @@ function MoreFilterContent() {
             </FilterCheckboxOption>
             <FilterCheckboxOption id="preForeclosure" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.preForeclosure)} isSelected={moreFilterState.preForeclosure}>
               Pre-Foreclosure
+            </FilterCheckboxOption>
+            <FilterCheckboxOption id="taxLien" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.taxLien)} isSelected={moreFilterState.taxLien}>
+              Tax Lien
             </FilterCheckboxOption>
           </div>
           <div className={styles.column}>
