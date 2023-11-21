@@ -125,6 +125,8 @@ function MoreFilterContent() {
         foreclosure: null,
         vacant: null,
         taxLien: null,
+        assumable: null,
+        judgment: null,
         propertyStatusActive: null,
         propertyStatusPending: null,
         propertyStatusOffMarket: null,
@@ -216,6 +218,9 @@ function MoreFilterContent() {
             <FilterCheckboxOption id="taxLien" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.taxLien)} isSelected={moreFilterState.taxLien}>
               Tax Lien
             </FilterCheckboxOption>
+            <FilterCheckboxOption id="assumable" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.assumable)} isSelected={moreFilterState.assumable}>
+              Assumable
+            </FilterCheckboxOption>
           </div>
           <div className={styles.column}>
             <FilterCheckboxOption id="foreclosure" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.foreclosure)} isSelected={moreFilterState.foreclosure}>
@@ -223,6 +228,9 @@ function MoreFilterContent() {
             </FilterCheckboxOption>
             <FilterCheckboxOption id="vacant" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.vacant)} isSelected={moreFilterState.vacant}>
               Vacant
+            </FilterCheckboxOption>
+            <FilterCheckboxOption id="judgment" onSelect={(id) => handleCheckboxSelect(id, !moreFilterState.judgment)} isSelected={moreFilterState.judgment}>
+              Judgment
             </FilterCheckboxOption>
           </div>
         </div>

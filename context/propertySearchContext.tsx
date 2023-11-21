@@ -109,6 +109,8 @@ export interface MoreFilterContext {
     __meta__: IFilterMetaProps;
     listingType: ListingTypeTab;
     agentListed: boolean | null;
+    assumable: boolean | null;
+    judgment: boolean | null;
     newConstruction: boolean | null;
     preForeclosure: boolean | null;
     auction: boolean | null;
@@ -168,6 +170,8 @@ const moreFilterContext: MoreFilterContext = {
     foreclosure: null,
     vacant: null,
     taxLien: null,
+    judgment: null,
+    assumable: null,
     nonOwnerOccupied: null,
     absenteeOwner: null,
     outOfStateAbsenteeOwner: null,
