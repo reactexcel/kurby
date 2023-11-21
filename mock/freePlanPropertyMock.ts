@@ -96,6 +96,7 @@ export const propertyV2Mock = {
   safetyFireSprinklers: false,
   squareFeet: 4824,
   suggestedRent: "2430",
+  taxLien: false,
   unitsCount: 0,
   utilitiesSewageUsage: "Unknown",
   utilitiesWaterSource: "Public",

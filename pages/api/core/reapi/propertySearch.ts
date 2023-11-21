@@ -96,6 +96,7 @@ export interface IPropertyHouse {
   readonly reo: boolean;
   readonly roomsCount: number;
   readonly squareFeet: number;
+  readonly taxLien: boolean;
   readonly totalPortfolioEquity?: string;
   readonly totalPortfolioMortgageBalance?: string;
   readonly totalPortfolioValue?: string;

@@ -330,6 +330,7 @@ export interface IPropertyDetailComps {
   readonly owner2LastName?: string;
   readonly companyName?: string;
   readonly preForeclosure?: boolean;
+  readonly taxLien?: boolean;
   readonly cashBuyer: boolean;
   readonly privateLender: boolean;
   readonly lenderName: string;
