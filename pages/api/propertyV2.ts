@@ -78,6 +78,8 @@ const filterHandler = (filters: IFilterSearchProps) => {
     foreclosure: moreFilter?.foreclosure,
     vacant: moreFilter?.vacant,
     tax_lien: moreFilter?.taxLien,
+    judgment: moreFilter?.judgment,
+    assumable: moreFilter?.assumable,
     // More Filter - Owner Information
     absentee_owner: moreFilter?.nonOwnerOccupied || moreFilter?.absenteeOwner,
     out_of_state_owner: moreFilter?.outOfStateAbsenteeOwner,

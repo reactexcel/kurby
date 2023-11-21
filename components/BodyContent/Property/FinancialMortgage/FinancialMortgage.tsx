@@ -22,12 +22,20 @@ export default function FinancialMortgage() {
   );
 }
 
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};
+
 function FinancialInformationTable() {
   const [propertyHouse] = useRecoilState(propertyInfoV2Context);
   const propertyHouseData = [
     createData("Cash Buyer", propertyHouse?.cashBuyer),
     createData("Equity", propertyHouse?.equity),
-    createData("Equity Percent", propertyHouse?.equityPercent),
+    createData("Equity Percent", `${(propertyHouse?.equityPercent || 0).toFixed(0)}%`),
     createData("Estimated Equity", toUSDField(propertyHouse?.estimatedEquity)),
     createData("Estimated Value", toUSDField(propertyHouse?.estimatedValue)),
     createData("High Equity", propertyHouse?.highEquity),
@@ -35,6 +43,7 @@ function FinancialInformationTable() {
     createData("Open Mortgage Balance", toUSDField(propertyHouse?.openMortgageBalance)),
     createData("Pre Foreclosure", propertyHouse?.preForeclosure),
     createData("REO", propertyHouse?.reo),
+    createData("Judgment", propertyHouse?.judgment),
   ];
   return <InformationTable dataFields={propertyHouseData} />;
 }
@@ -52,7 +61,8 @@ function MortgageInformation() {
     createData("Lender Type", mortgage?.lenderType, IAppPlans.PROFESSIONAL),
     createData("Grantee Name", mortgage?.granteeName, IAppPlans.PROFESSIONAL),
     createData("Load Date", mortgage?.load_date, IAppPlans.PROFESSIONAL),
-    createData("Maturity Date", mortgage?.maturityDate, IAppPlans.PROFESSIONAL),
+    createData("Maturity Date", formatDate(mortgage?.maturityDate), IAppPlans.PROFESSIONAL),
+    createData("Assumable", mortgage?.assumable, IAppPlans.PROFESSIONAL),
   ];
 
   return <InformationTable dataFields={propertyHouseData} />;

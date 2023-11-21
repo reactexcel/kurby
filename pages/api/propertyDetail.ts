@@ -27,6 +27,7 @@ export interface IPropertyDetailHouse {
   readonly _searchedAddress: string;
   readonly absenteeOwner: boolean;
   readonly auction: boolean;
+  readonly assumable: boolean;
   readonly cashBuyer: boolean;
   readonly cashSale: boolean;
   readonly corporateOwned: boolean;
@@ -50,6 +51,7 @@ export interface IPropertyDetailHouse {
   readonly inherited: boolean;
   readonly inStateAbsenteeOwner: boolean;
   readonly investorBuyer: boolean;
+  readonly judgment: boolean;
   readonly lastSale: LastSale;
   readonly lastSaleDate: string;
   readonly lastSalePrice: string;
@@ -283,11 +285,13 @@ interface TaxInfo {
 
 interface Mortgage {
   readonly amount: number;
+  readonly assumable: boolean;
   readonly deedType: string;
   readonly documentDate: string;
   readonly granteeName: string;
   readonly interestRate: number;
   readonly interestRateType: string;
+  readonly judgment: boolean;
   readonly lenderCode: string;
   readonly lenderName: string;
   readonly lenderType: string;
