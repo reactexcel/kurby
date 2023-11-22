@@ -1,9 +1,11 @@
 {
   "rewrites": [
-      {
-        "source": "/blog",
-        "destination": "https://kurby.ai/blog"
-      }
-    ]
-  
+    {
+      "source": "/blog",
+      "destination": "https://kurby.ai/blog"
+    }
+  ],
+  "env": {
+    "BRANCH": "staging"
+  }
 }
