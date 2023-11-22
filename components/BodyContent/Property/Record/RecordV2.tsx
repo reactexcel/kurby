@@ -81,6 +81,7 @@ export default function RecordV2({ description }: { description?: string }) {
         <AdditionalInfoField label="Property Type" data={propertyInfo?.propertyType || "-"} />
         <AdditionalInfoField label="Year Built" data={propertyInfo?.yearBuilt || "-"} />
         <AdditionalInfoField label="County" data={propertyInfo?.address.county || "-"} />
+        <AdditionalInfoField label="Neighborhood" data={propertyInfo?.neighborhood?.name || "-"} />
       </Box>
 
       {isMobileTablet && (

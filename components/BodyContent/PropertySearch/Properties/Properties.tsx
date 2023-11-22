@@ -41,6 +41,18 @@ export function Properties() {
       if (searchCriteria.moreFilter?.foreclosure) {
         condition = condition || propertyInfo.preForeclosure;
       }
+      if (searchCriteria.moreFilter?.vacant) {
+        condition = condition || propertyInfo.vacant;
+      }
+      if (searchCriteria.moreFilter?.taxLien) {
+        condition = condition || propertyInfo.taxLien;
+      }
+      if (searchCriteria.moreFilter?.judgment) {
+        condition = condition || propertyInfo.judgment;
+      }
+      if (searchCriteria.moreFilter?.assumable) {
+        condition = condition || propertyInfo.assumable;
+      }
       if (searchCriteria.moreFilter?.outOfStateAbsenteeOwner) {
         condition = condition || propertyInfo.outOfStateAbsenteeOwner;
       }

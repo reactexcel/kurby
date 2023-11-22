@@ -28,6 +28,7 @@ export interface IPropertyHouse {
   readonly assessedImprovementValue: number;
   readonly assessedLandValue: number;
   readonly assessedValue: number;
+  readonly assumable: boolean;
   readonly auction: boolean;
   readonly basement: boolean;
   readonly bathrooms: number;
@@ -57,6 +58,7 @@ export interface IPropertyHouse {
   readonly inherited: boolean;
   readonly inStateAbsenteeOwner: boolean;
   readonly investorBuyer: boolean;
+  readonly judgment: boolean;
   readonly landUse: string;
   readonly lastMortgage1Amount: any;
   readonly lastSaleAmount?: string;
@@ -97,10 +99,10 @@ export interface IPropertyHouse {
   readonly roomsCount: number;
   readonly squareFeet: number;
   readonly taxLien: boolean;
-  readonly totalPortfolioEquity?: string;
-  readonly totalPortfolioMortgageBalance?: string;
-  readonly totalPortfolioValue?: string;
-  readonly totalPropertiesOwned?: string;
+  readonly totalPortfolioEquity?: number;
+  readonly totalPortfolioMortgageBalance?: number;
+  readonly totalPortfolioValue?: number;
+  readonly totalPropertiesOwned?: number;
   readonly unitsCount: number;
   readonly vacant: boolean;
   readonly yearBuilt?: number;

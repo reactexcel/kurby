@@ -3,7 +3,7 @@
 .root {
   display: flex;
   flex-direction: column;
-  width: 100%; // adjust as necessary
+  width: 100%;
 
   @include mq-phone-only {
     border: 1px solid #264b5c33;
@@ -11,8 +11,8 @@
     margin-bottom: 15px;
   }
 }
+
 .filterItem {
-  flex: 1;
   padding: 15px;
   background-color: white;
   border-radius: 10px;
@@ -32,7 +32,6 @@
 }
 
 .content {
-  z-index: 100;
   padding: 10px;
   max-height: 420px;
 
