@@ -80,6 +80,17 @@ const filterHandler = (filters: IFilterSearchProps) => {
     tax_lien: moreFilter?.taxLien,
     judgment: moreFilter?.judgment,
     assumable: moreFilter?.assumable,
+    // More Filters - Property Information
+    units_min: moreFilter?.unitsMin,
+    units_max: moreFilter?.unitsMax,
+    year_built_min: moreFilter?.yearBuiltMin,
+    year_built_max: moreFilter?.yearBuiltMax,
+    lot_size_min: moreFilter?.lotSquareFeetMin,
+    lot_size_max: moreFilter?.lotSquareFeetMax,
+    stories_min: moreFilter?.storiesMin,
+    stories_max: moreFilter?.storiesMax,
+    building_size_min: moreFilter?.livingSquareFeetMin,
+    building_size_max: moreFilter?.livingSquareFeetMax,
     // More Filter - Owner Information
     absentee_owner: moreFilter?.nonOwnerOccupied || moreFilter?.absenteeOwner,
     out_of_state_owner: moreFilter?.outOfStateAbsenteeOwner,
@@ -88,6 +99,8 @@ const filterHandler = (filters: IFilterSearchProps) => {
     investor_buyer: moreFilter?.investorBuyer,
     inherited: moreFilter?.inherited,
     death: moreFilter?.ownerDeath || moreFilter?.spousalDeath,
+    tax_delinquent_year_min: moreFilter?.taxDelinquentYearMin,
+    tax_delinquent_year_max: moreFilter?.taxDelinquentYearMax,
     // More Filter - Years Owned
     years_owned_min: moreFilter?.yearsOwnedMin,
     years_owned_max: moreFilter?.yearsOwnedMax,
@@ -100,6 +113,16 @@ const filterHandler = (filters: IFilterSearchProps) => {
     private_lender: moreFilter?.privateLender,
     adjustable_rate: moreFilter?.adjustableRate,
     free_clear: moreFilter?.freeClear,
+   last_sale_date_min: moreFilter?.lastSaleDateMin,
+   last_sale_date_max: moreFilter?.lastSaleDateMax,
+   assessed_land_value_min: moreFilter?.assessedLandValueMin,
+   assessed_land_value_max: moreFilter?.assessedLandValueMax,
+   assessed_value_min: moreFilter?.assessedValueMin,
+   assessed_value_max: moreFilter?.assessedValueMax,
+   assessed_improvement_value_min: moreFilter?.assessedImprovementValueMin,
+   assessed_improvement_value_max: moreFilter?.assessedImprovementValueMax,
+   last_sale_price_min: moreFilter?.lastSalePriceMin,
+   last_sale_price_max: moreFilter?.lastSalePriceMax,
     // More Filter - Equity Percent
     equity_percent:
       moreFilter?.equityPercentMin && !moreFilter?.equityPercentMax
@@ -125,9 +148,24 @@ const filterHandler = (filters: IFilterSearchProps) => {
     document_type: moreFilter?.deedType,
     // More Filter - Loan Types
     loan_type_code_first: moreFilter?.loanType,
+    // More Filter - Properties Owned
+    properties_owned_min: moreFilter?.propertiesOwnedMin,
+    properties_owned_max: moreFilter?.propertiesOwnedMax,
+    // More Filter - Portfolio Value
+    portfolio_value_min: moreFilter?.portfolioValueMin,
+    portfolio_value_max: moreFilter?.portfolioValueMax,
+    // More Filter - Portfolio Mortgage Balance
+    portfolio_mortgage_balance_min: moreFilter?.portfolioMortgageBalanceMin,
+    portfolio_mortgage_balance_max: moreFilter?.portfolioMortgageBalanceMax,
+    // More Filter - Portfolio Equity
+    portfolio_equity_min: moreFilter?.portfolioEquityMin,
+    portfolio_equity_max: moreFilter?.portfolioEquityMax,
     // More Filter - Interest Rate
-    portfolio_equity_min: moreFilter?.interestRateMin,
-    portfolio_equity_max: moreFilter?.interestRateMax,
+    interest_rate_min: moreFilter?.interestRateMin,
+    interest_rate_max: moreFilter?.interestRateMax,
+    // More Filters = Demographics
+    median_income_min: moreFilter?.medianIncomeMin,
+    median_income_max: moreFilter?.medianIncomeMax,
   };
 
   const trueFilters = Object.keys(filtersObject)
@@ -186,7 +224,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       longitude,
       size, // Using the size from body or default value
       resultIndex, // Using the resultIndex from body or default value
-      radius: 5, // Search within 5 miles radius
+      radius: 10, // Search within 10 miles radius
     });
     return res.status(200).json(response);
   }

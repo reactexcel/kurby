@@ -125,6 +125,14 @@ export interface MoreFilterContext {
     investorBuyer: boolean | null;
     inherited: boolean | null;
     ownerDeath: boolean | null;
+    propertiesOwnedMin: number | null;
+    propertiesOwnedMax: number | null;
+    portfolioValueMin: number | null;
+    portfolioValueMax: number | null;
+    portfolioMortgageBalanceMin: number | null;
+    portfolioMortgageBalanceMax: number | null;
+    portfolioEquityMin: number | null;
+    portfolioEquityMax: number | null;
     spousalDeath: boolean | null;
     yearsOwnedMin: number | null;
     yearsOwnedMax: number | null;
@@ -152,6 +160,32 @@ export interface MoreFilterContext {
     loadDateBefore: null | Date;
     maturityDateAfter: null | Date;
     maturityDateBefore: null | Date;
+    taxDelinquentYearMin: number | null;
+    taxDelinquentYearMax: number | null;
+    unitsMin: number | null;
+    unitsMax: number | null;
+    yearBuiltMin: number | null;
+    yearBuiltMax: number | null;
+    lotSquareFeetMin: number | null;
+    lotSquareFeetMax: number | null;
+    lastSaleDateMin: Date | null;
+    lastSaleDateMax: Date | null;
+    assessedLandValueMin: number | null;
+    assessedLandValueMax: number | null;
+    assessedValueMin: number | null;
+    assessedValueMax: number | null;
+    assessedImprovementValueMin: number | null;
+    assessedImprovementValueMax: number | null;
+    lastSalePriceMin: number | null;
+    lastSalePriceMax: number | null;
+    medianIncomeMin: number | null;
+    medianIncomeMax: number | null;
+    mortgageBalanceMin: number | null;
+    mortgageBalanceMax: number | null;
+    storiesMin: number | null;
+    storiesMax: number | null;
+    livingSquareFeetMin: number | null;
+    livingSquareFeetMax: number | null;
   };
 }
 
@@ -207,6 +241,40 @@ const moreFilterContext: MoreFilterContext = {
     loadDateBefore: null,
     maturityDateAfter: null,
     maturityDateBefore: null,
+    propertiesOwnedMin: null,
+    propertiesOwnedMax: null,
+    portfolioValueMin: null,
+    portfolioValueMax: null,
+    portfolioMortgageBalanceMin: null,
+    portfolioMortgageBalanceMax: null,
+    portfolioEquityMin: null,
+    portfolioEquityMax: null,
+    taxDelinquentYearMin: null,
+    taxDelinquentYearMax: null,
+    unitsMin: null,
+    unitsMax: null,
+    yearBuiltMin: null,
+    yearBuiltMax: null,
+    lotSquareFeetMin: null,
+    lotSquareFeetMax: null,
+    lastSaleDateMin: null,
+    lastSaleDateMax: null,
+    assessedLandValueMin: null,
+    assessedLandValueMax: null,
+    assessedValueMin: null,
+    assessedValueMax: null,
+    assessedImprovementValueMin: null,
+    assessedImprovementValueMax: null,
+    lastSalePriceMin: null,
+    lastSalePriceMax: null,
+    medianIncomeMin: null,
+    medianIncomeMax: null,
+    storiesMin: null,
+    storiesMax: null,
+    livingSquareFeetMin: null,
+    livingSquareFeetMax: null,
+    mortgageBalanceMin: null,
+    mortgageBalanceMax: null,
   },
 };
 
