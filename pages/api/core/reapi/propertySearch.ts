@@ -99,10 +99,10 @@ export interface IPropertyHouse {
   readonly roomsCount: number;
   readonly squareFeet: number;
   readonly taxLien: boolean;
-  readonly totalPortfolioEquity?: string;
-  readonly totalPortfolioMortgageBalance?: string;
-  readonly totalPortfolioValue?: string;
-  readonly totalPropertiesOwned?: string;
+  readonly totalPortfolioEquity?: number;
+  readonly totalPortfolioMortgageBalance?: number;
+  readonly totalPortfolioValue?: number;
+  readonly totalPropertiesOwned?: number;
   readonly unitsCount: number;
   readonly vacant: boolean;
   readonly yearBuilt?: number;

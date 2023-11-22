@@ -89,6 +89,7 @@ export interface IPropertyDetailHouse {
   readonly warrantyDeed: boolean;
   readonly reapiAvm: any;
   readonly comps: IPropertyDetailComps[];
+  readonly linkedProperties: linkedProperties[];
 }
 
 interface Demographics {
@@ -260,6 +261,15 @@ interface School {
   readonly street: string;
   readonly type: string;
   readonly zip: string;
+}
+
+interface linkedProperties {
+  readonly totalOwned: number;
+  readonly totalEquity: number;
+  readonly totalMortgageBalance: number;
+  readonly totalValue: number;
+  readonly properties: [];
+
 }
 
 interface Levels {
