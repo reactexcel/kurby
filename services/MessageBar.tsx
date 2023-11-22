@@ -7,6 +7,7 @@ import {
 import snackbarContext from '../context/snackbarContext';
 import { useRecoilState } from 'recoil';
 
+
 const stylesMap = {
   success: {
     backgroundColor: green[600],
@@ -32,7 +33,7 @@ export default function MessageBar() {
   const [snackbar, setSnackbar] = useRecoilState(snackbarContext);
 
   const handleSnackbarClose = () => {
-    setSnackbar((prev:any)=>{
+    setSnackbar((prev: any) => {
       return {
         ...prev,
         message: '',
